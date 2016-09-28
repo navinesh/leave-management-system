@@ -12,12 +12,12 @@ class PendingLeave extends Component {
   }
 
   render() {
-    const { records, isFetching } = this.props
+    const { pending_items, isFetching } = this.props
     return (
       <div className="container">
         {isFetching ?
           <div className="text-xs-center"><BeatLoader color="#0275d8" size="12px" /></div> :
-          <PendingLeaveList records={records} />
+          <PendingLeaveList pending_items={pending_items} />
         }
       </div>
     )
@@ -28,11 +28,11 @@ const mapStateToProps = (state) => {
   const { pendingLeave } = state
   const {
     isFetching,
-    items: records
+    pending_items
   } = pendingLeave
 
   return {
-    records,
+    pending_items,
     isFetching
   }
 }
