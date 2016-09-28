@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react'
+import { Link } from 'react-router'
 
-const RecordList = ({ records, onApproveClick, onDeclineClick, onEditClick }) => {
-  var itemNodes = records.map((record) => {
+const RecordList = ({ pending_items }) => {
+  var itemNodes = pending_items.map((record) => {
     return (
       <tr key={record.id}>
         <td>{record.user.othernames} {record.user.surname}</td>
@@ -11,15 +12,15 @@ const RecordList = ({ records, onApproveClick, onDeclineClick, onEditClick }) =>
         <td>{record.end_date}</td>
         <td>{record.leave_days}</td>
         <td>{record.leave_reason}</td>
-        <td><button onClick={() => onApproveClick()} className="btn btn-success">
-          Approve
-        </button></td>
-        <td><button onClick={() => onDeclineClick()} className="btn btn-danger">
-          Decline
-        </button></td>
-      <td><button onClick={() => onEditClick()} className="btn btn-info">
-          Edit
-        </button></td>
+        <td>
+          <Link to="/reset">Approve</Link>
+        </td>
+        <td>
+          <Link to="/reset">Decline</Link>
+        </td>
+        <td>
+          <Link to="/reset">Edit</Link>
+        </td>
       </tr>
     )
   })
@@ -48,17 +49,14 @@ const RecordList = ({ records, onApproveClick, onDeclineClick, onEditClick }) =>
   )
 }
 
-const PendingLeaveList = ({ records }) => {
+const PendingLeaveList = ({ pending_items }) => {
   return (
-    <RecordList records={records} />
+    <RecordList pending_items={pending_items} />
   )
 }
 
 PendingLeaveList.propTypes = {
-  records: PropTypes.array.isRequired,
-  onApproveClick: PropTypes.func.isRequired,
-  onDeclineClick: PropTypes.func.isRequired,
-  onEditClick: PropTypes.func.isRequired
+  pending_items: PropTypes.array.isRequired
 }
 
 export default PendingLeaveList
