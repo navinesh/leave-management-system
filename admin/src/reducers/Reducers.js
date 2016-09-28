@@ -43,7 +43,7 @@ const adminAuth = (state = {isFetching: false,
 }
 
 const pendingLeave = (state = {isFetching: false,
-  message: '', items: []}, action) => {
+  message: '', pending_items: []}, action) => {
   switch (action.type) {
     case REQUEST_PENDING_LEAVE:
     return { ...state,
@@ -51,7 +51,7 @@ const pendingLeave = (state = {isFetching: false,
     case RECEIVE_PENDING_LEAVE:
     return { ...state,
       isFetching: false,
-      items: action.records}
+      pending_items: action.pending_records}
     case ERROR_PENDING_LEAVE:
     return { ...state,
       isFetching: false,
@@ -62,7 +62,7 @@ const pendingLeave = (state = {isFetching: false,
 }
 
 const approvedLeave = (state = {isFetching: false,
-  message: '', items: []}, action) => {
+  message: '', approved_items: []}, action) => {
   switch (action.type) {
     case REQUEST_APPROVED_LEAVE:
     return { ...state,
@@ -70,7 +70,7 @@ const approvedLeave = (state = {isFetching: false,
     case RECEIVE_APPROVED_LEAVE:
     return { ...state,
       isFetching: false,
-      items: action.records}
+      approved_items: action.approved_records}
     case ERROR_APPROVED_LEAVE:
     return { ...state,
       isFetching: false,
