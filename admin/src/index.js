@@ -4,7 +4,6 @@ import { Provider } from 'react-redux'
 import { Router, Route, browserHistory, IndexRoute } from 'react-router'
 import configureStore from './stores/ConfigureStore'
 
-import App from './App'
 import AdminHeader from './containers/AdminHeader'
 import NewRecord from './containers/NewRecord'
 import PendingLeave from './containers/PendingLeave'
