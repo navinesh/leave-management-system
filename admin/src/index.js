@@ -9,6 +9,7 @@ import NewRecord from './containers/NewRecord'
 import PendingLeave from './containers/PendingLeave'
 
 import './index.css'
+import './App.css'
 
 const store = configureStore()
 
