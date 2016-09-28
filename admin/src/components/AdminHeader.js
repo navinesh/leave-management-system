@@ -16,7 +16,7 @@ const Header = ({ isAuthenticated, onLogoutClick, children }) => {
                 <Link className="nav-item nav-link" to="/">
                   Staff record
                 </Link>
-                <Link className="nav-item nav-link" to="/">
+                <Link className="nav-item nav-link" to="/approvedleave">
                   Leave calendar
                 </Link>
                 <Link className="nav-item nav-link" to="/">
