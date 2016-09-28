@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import { fetchPendingLeave } from '../actions/PendingLeave'
 import PendingLeaveList from '../components/PendingLeave'
 
+const BeatLoader = require('halogen/BeatLoader');
+
 class PendingLeave extends Component {
   componentDidMount() {
     const { dispatch } = this.props
@@ -14,7 +16,7 @@ class PendingLeave extends Component {
     return (
       <div className="container">
         {isFetching ?
-          <div className="text-xs-center">Loading...</div> :
+          <div className="text-xs-center"><BeatLoader color="#0275d8" size="12px" /></div> :
           <PendingLeaveList records={records} />
         }
       </div>
