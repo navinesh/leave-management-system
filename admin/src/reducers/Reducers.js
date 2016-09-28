@@ -6,6 +6,8 @@ import { LOGOUT_ADMIN_REQUEST, LOGOUT_ADMIN_SUCCESS } from '../actions/AdminLogo
 
 import { REQUEST_PENDING_LEAVE, RECEIVE_PENDING_LEAVE, ERROR_PENDING_LEAVE } from '../actions/PendingLeave'
 
+import { REQUEST_APPROVED_LEAVE, RECEIVE_APPROVED_LEAVE, ERROR_APPROVED_LEAVE } from '../actions/ApprovedLeave'
+
 const adminAuth = (state = {isFetching: false,
   isAuthenticated: true,
   message: '', auth_info: {}}, action) => {
@@ -59,9 +61,29 @@ const pendingLeave = (state = {isFetching: false,
   }
 }
 
+const approvedLeave = (state = {isFetching: false,
+  message: '', items: []}, action) => {
+  switch (action.type) {
+    case REQUEST_APPROVED_LEAVE:
+    return { ...state,
+      isFetching: true}
+    case RECEIVE_APPROVED_LEAVE:
+    return { ...state,
+      isFetching: false,
+      items: action.records}
+    case ERROR_APPROVED_LEAVE:
+    return { ...state,
+      isFetching: false,
+      message: action.message}
+    default:
+      return state
+  }
+}
+
 const rootReducer = combineReducers({
   adminAuth,
-  pendingLeave
+  pendingLeave,
+  approvedLeave
 })
 
 export default rootReducer
