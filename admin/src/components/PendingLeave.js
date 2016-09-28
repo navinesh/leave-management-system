@@ -17,7 +17,7 @@ const RecordList = ({ records, onApproveClick, onDeclineClick, onEditClick }) =>
         <td><button onClick={() => onDeclineClick()} className="btn btn-danger">
           Decline
         </button></td>
-        <td><button onClick={() => onEditClick()} className="btn btn-warning">
+      <td><button onClick={() => onEditClick()} className="btn btn-info">
           Edit
         </button></td>
       </tr>
@@ -30,7 +30,7 @@ const RecordList = ({ records, onApproveClick, onDeclineClick, onEditClick }) =>
         <tr>
           <th>Name</th>
           <th>Leave</th>
-          <th>Leave type</th>
+          <th>Type</th>
           <th>Start date</th>
           <th>End date</th>
           <th>Leave days</th>
