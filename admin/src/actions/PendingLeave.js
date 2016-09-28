@@ -8,7 +8,7 @@ export const requestPendingLeave = () => ({
 
 export const receivePendingLeave = (json) => ({
   type: RECEIVE_PENDING_LEAVE,
-  records: json.pending_leave_records,
+  pending_records: json.pending_leave_records,
   receivedAt: Date.now()
 })
 
