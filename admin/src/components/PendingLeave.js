@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 
 const RecordList = ({ pending_items }) => {
-  var itemNodes = pending_items.map((record) => {
+  const itemNodes = pending_items.map((record) => {
     return (
       <tr key={record.id}>
         <td>{record.user.othernames} {record.user.surname}</td>
@@ -13,13 +13,13 @@ const RecordList = ({ pending_items }) => {
         <td>{record.leave_days}</td>
         <td>{record.leave_reason}</td>
         <td>
-          <Link to="/reset">Approve</Link>
+          <Link to="/reset" className="btn btn-success btn-sm">Approve</Link>
         </td>
         <td>
-          <Link to="/reset">Decline</Link>
+          <Link to="/reset" className="btn btn-warning btn-sm">Decline</Link>
         </td>
         <td>
-          <Link to="/reset">Edit</Link>
+          <Link to="/reset" className="btn btn-info btn-sm">Edit</Link>
         </td>
       </tr>
     )
