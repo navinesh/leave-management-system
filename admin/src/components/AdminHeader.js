@@ -20,7 +20,7 @@ const Header = ({ isAuthenticated, onLogoutClick, children }) => {
                   Leave calendar
                 </Link>
                 <Link className="nav-item nav-link" to="/">
-                  Leave record
+                  Leave report
                 </Link>
                 <Link className="nav-item nav-link" to="/">
                   Sick sheet record
