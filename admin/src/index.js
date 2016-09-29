@@ -10,7 +10,7 @@ import ApprovedLeave from './containers/ApprovedLeave'
 import NewRecord from './containers/NewRecord'
 
 import './index.css'
-import './App.css'
+import './bootstrap.min.css'
 
 const store = configureStore()
 
