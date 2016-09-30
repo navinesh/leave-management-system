@@ -10,7 +10,7 @@ const Header = ({ isAuthenticated, onLogoutClick, children }) => {
           <div className="container">
             <div className="nav navbar-nav">
               <Link className="nav-item nav-link" to="/">
-                Leave management system - admin
+                LMS - dashboard
               </Link>
               <div className="pull-xs-right">
                 <Link className="nav-item nav-link" to="/">
