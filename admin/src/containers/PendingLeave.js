@@ -12,12 +12,12 @@ class PendingLeave extends Component {
   }
 
   render() {
-    const { pending_items, isFetching } = this.props
+    const { isFetching, pending_items, isAuthenticated } = this.props
     return (
       <div className="container">
-        {isFetching ?
+        {isAuthenticated && (isFetching ?
           <div className="text-xs-center"><BeatLoader color="#0275d8" size="12px" /></div> :
-          <PendingLeaveList pending_items={pending_items} />
+          <PendingLeaveList pending_items={pending_items} />)
         }
       </div>
     )
@@ -25,15 +25,19 @@ class PendingLeave extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { pendingLeave } = state
+  const { pendingLeave, adminAuth } = state
+
   const {
     isFetching,
     pending_items
   } = pendingLeave
 
+  const { isAuthenticated } = adminAuth
+
   return {
+    isFetching,
     pending_items,
-    isFetching
+    isAuthenticated
   }
 }
 
