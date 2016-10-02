@@ -8,7 +8,7 @@ const RecordList = ({ records }) => {
         <td>{record.leave_name}</td>
         <td>{record.start_date}</td>
         <td>{record.end_date}</td>
-        <td>{record.leave_days} day(s)</td>
+        <td>{record.leave_days}</td>
       </tr>
     )
   })
@@ -21,7 +21,7 @@ const RecordList = ({ records }) => {
           <th>Leave type</th>
           <th>Start date</th>
           <th>End date</th>
-          <th>Duration</th>
+          <th>Leave days</th>
         </tr>
       </thead>
       <tbody>
