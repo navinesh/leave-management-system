@@ -23,7 +23,7 @@ export const fetchPendingLeave = () => {
       .then(response => response.json())
       .then(json => dispatch(receivePendingLeave(json)))
       .catch((error) => {
-        console.log(error)
+        dispatch(errorPendingLeave())
       })
   }
 }
