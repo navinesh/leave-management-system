@@ -4,25 +4,22 @@ import Header from '../components/AdminHeader'
 import AdminLogin from './AdminLogin'
 import { logoutAdmin } from '../actions/AdminLogout'
 
-const AdminHeader = ({ isAuthenticated, dispatch, children }) => {
-  return (
-    <div className="AdminHeader">
-      {isAuthenticated &&
-        <Header
-        onLogoutClick={() => dispatch(logoutAdmin())} />
-      }
-      {!isAuthenticated &&
-        <div>
-          <h1 className="display-4 text-xs-center p-b-3">
-            Leave Management System
-          </h1>
-        <AdminLogin />
-        </div>
-      }
-      {children}
-    </div>
-  )
-}
+const AdminHeader = ({ isAuthenticated, dispatch, children }) =>
+  <div className="AdminHeader">
+    {isAuthenticated &&
+      <Header
+      onLogoutClick={() => dispatch(logoutAdmin())} />
+    }
+    {!isAuthenticated &&
+      <div>
+        <h1 className="display-4 text-xs-center p-b-3">
+          Leave Management System
+        </h1>
+      <AdminLogin />
+      </div>
+    }
+    {children}
+  </div>
 
 const mapStateToProps = (state) => {
   const { adminAuth } = state
