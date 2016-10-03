@@ -8,6 +8,7 @@ import AdminHeader from './containers/AdminHeader'
 import PendingLeave from './containers/PendingLeave'
 import ApprovedLeave from './containers/ApprovedLeave'
 import NewRecord from './containers/NewRecord'
+import StaffRecord from './containers/StaffRecord'
 
 import './index.css'
 import './bootstrap.min.css'
@@ -21,6 +22,7 @@ render(
         <IndexRoute component={PendingLeave} />
         <Route path="/approvedleave" component={ApprovedLeave} />
         <Route path="/newrecord" component={NewRecord} />
+        <Route path="/staffrecord" component={StaffRecord} />
       </Route>
     </Router>
   </Provider>,
