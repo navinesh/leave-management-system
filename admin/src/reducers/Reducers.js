@@ -8,6 +8,8 @@ import { REQUEST_PENDING_LEAVE, RECEIVE_PENDING_LEAVE, ERROR_PENDING_LEAVE } fro
 
 import { REQUEST_APPROVED_LEAVE, RECEIVE_APPROVED_LEAVE, ERROR_APPROVED_LEAVE } from '../actions/ApprovedLeave'
 
+import { REQUEST_STAFF_RECORD, RECEIVE_STAFF_RECORD, ERROR_STAFF_RECORD } from '../actions/StaffRecord'
+
 const adminAuth = (state = {isFetching: false,
   isAuthenticated: true,
   message: '', auth_info: {}}, action) => {
@@ -80,10 +82,30 @@ const approvedLeave = (state = {isFetching: false,
   }
 }
 
+const staffRecord = (state = {isFetching: false,
+  message: '', staff_record: []}, action) => {
+  switch (action.type) {
+    case REQUEST_STAFF_RECORD:
+    return { ...state,
+      isFetching: true}
+    case RECEIVE_STAFF_RECORD:
+    return { ...state,
+      isFetching: false,
+      staff_record: action.staff_record}
+    case ERROR_STAFF_RECORD:
+    return { ...state,
+      isFetching: false,
+      message: action.message}
+    default:
+      return state
+  }
+}
+
 const rootReducer = combineReducers({
   adminAuth,
   pendingLeave,
-  approvedLeave
+  approvedLeave,
+  staffRecord
 })
 
 export default rootReducer
