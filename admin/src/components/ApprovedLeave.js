@@ -4,7 +4,7 @@ import { Link } from 'react-router'
 const moment = require('moment');
 
 const ApprovedRecordList = ({ approved_items }) => {
-  const items = approved_items.map((record) => {
+  const items = approved_items.filter((record) => {
     // get current date and format it
     let dateToday = moment()
     let todayDate = dateToday.format('DD/MM/YYYY')
@@ -20,39 +20,29 @@ const ApprovedRecordList = ({ approved_items }) => {
     let endDate = moment(new Date(eDate))
     let isEndDate = endDate.isSameOrAfter(dateToday)
 
-    // display only current and future leaves
-    if (isCurrentDate || isEndDate) {
-      return (
-        <tr key={record.id}>
-          <td>{record.user.othernames} {record.user.surname}</td>
-          <td>{record.leave_name}</td>
-          <td>{record.leave_type}</td>
-          <td>{record.start_date}</td>
-          <td>{record.end_date}</td>
-          <td>{record.leave_days}</td>
-          <td>
-            <Link to="/reset" className="btn btn-info btn-sm">Edit</Link>
-          </td>
-          <td>
-            <Link to="/reset" className="btn btn-danger btn-sm">Delete</Link>
-          </td>
-        </tr>
-      )
-    }
-    else {
-      return (null)
-    }
+    // return true for current and future leaves
+    return ((isCurrentDate || isEndDate) ? true : false)
+
+  }).map((data) => {
+    return (
+      <tr key={data.id}>
+        <td>{data.user.othernames} {data.user.surname}</td>
+        <td>{data.leave_name}</td>
+        <td>{data.leave_type}</td>
+        <td>{data.start_date}</td>
+        <td>{data.end_date}</td>
+        <td>{data.leave_days}</td>
+        <td>
+          <Link to="/reset" className="btn btn-info btn-sm">Edit</Link>
+        </td>
+        <td>
+          <Link to="/reset" className="btn btn-danger btn-sm">Delete</Link>
+        </td>
+      </tr>)
   })
 
-  // check if there are current and upcoming approved leave
-  const item = items.filter((val) =>
-    val !== null).map((d) => {
-      return d
-          })
-
-  if (item.length > 0) {
-    return (
-      <div className="table-responsive">
+  return ((items.length > 0) ?
+    (<div className="table-responsive">
       <table className="table table-bordered table-hover">
         <thead className="thead-default">
           <tr>
@@ -70,16 +60,11 @@ const ApprovedRecordList = ({ approved_items }) => {
           {items}
         </tbody>
       </table>
-    </div>
-    )
-  }
-  else {
-    return (
-      <div className="container text-xs-center" style={{paddingTop: '100px'}}>
-          <h1 className="display-4">There are no approved leave record.</h1>
-      </div>
-    )
-  }
+    </div>) :
+    (<div className="container text-xs-center" style={{paddingTop: '100px'}}>
+        <h1 className="display-4">There are no approved leave record.</h1>
+    </div>)
+  )
 }
 
 const ApprovedLeaveList = ({ approved_items }) => {
