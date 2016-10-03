@@ -11,7 +11,7 @@ const Header = ({ onLogoutClick }) => {
               LMS - dashboard
             </Link>
             <div className="pull-xs-right">
-              <Link className="nav-item nav-link" to="/">
+              <Link className="nav-item nav-link" to="/staffrecord">
                 Staff record
               </Link>
               <Link className="nav-item nav-link" to="/approvedleave">
