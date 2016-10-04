@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import { Link } from 'react-router'
 
-const moment = require('moment');
+const moment = require('moment')
 
 const ApprovedRecordList = ({ approved_items }) => {
   const items = approved_items.filter((record) => {
@@ -67,11 +67,8 @@ const ApprovedRecordList = ({ approved_items }) => {
   )
 }
 
-const ApprovedLeaveList = ({ approved_items }) => {
-  return (
-    <ApprovedRecordList approved_items={approved_items} />
-  )
-}
+const ApprovedLeaveList = ({ approved_items }) =>
+  <ApprovedRecordList approved_items={approved_items} />
 
 ApprovedLeaveList.propTypes = {
   approved_items: PropTypes.array.isRequired
