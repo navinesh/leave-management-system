@@ -143,36 +143,51 @@ export default class NewRecordForm extends Component {
                   placeholder="Date of birth" id="dob"
                   onChange={this.handleDOBChange} />
               </div>
-              <div className="form-group">
-                <label htmlFor="annualLeave">Annual leave</label>
-                <input type="number" className="form-control"
-                  placeholder="Annual leave" id="annualLeave"
-                  onChange={this.handleAnnualLeaveChange} />
+              <div className="row">
+                <div className="col-sm-6">
+                  <div className="form-group">
+                    <label htmlFor="annualLeave">Annual leave</label>
+                    <input type="number" className="form-control"
+                      placeholder="Annual leave" id="annualLeave"
+                      onChange={this.handleAnnualLeaveChange} />
+                  </div>
+                </div>
+                <div className="col-sm-6">
+                  <div className="form-group">
+                    <label htmlFor="sickLeave">Sick leave</label>
+                    <input type="number" className="form-control"
+                      placeholder="Sick leave" id="sickLeave"
+                      onChange={this.handleSickLeaveChange} />
+                  </div>
+                </div>
               </div>
-
-              <div className="form-group">
-                <label htmlFor="sickLeave">Sick leave</label>
-                <input type="number" className="form-control"
-                  placeholder="Sick leave" id="sickLeave"
-                  onChange={this.handleSickLeaveChange} />
+              <div className="row">
+                <div className="col-sm-6">
+                  <div className="form-group">
+                    <label htmlFor="christmasLeave">Christmas leave</label>
+                    <input type="number" className="form-control"
+                      placeholder="Christmas leave" id="christmasLeave"
+                      onChange={this.handleChristmasLeaveChange} />
+                  </div>
+                </div>
+                <div className="col-sm-6">
+                  <div className="form-group">
+                    <label htmlFor="bereavementLeave">Bereavement leave</label>
+                    <input type="number" className="form-control"
+                      placeholder="Bereavement leave" id="bereavementLeave"
+                      onChange={this.handleBereavementLeaveChange} />
+                  </div>
+                </div>
               </div>
-              <div className="form-group">
-                <label htmlFor="christmasLeave">Christmas leave</label>
-                <input type="number" className="form-control"
-                  placeholder="Christmas leave" id="christmasLeave"
-                  onChange={this.handleChristmasLeaveChange} />
-              </div>
-              <div className="form-group">
-                <label htmlFor="bereavementLeave">Bereavement leave</label>
-                <input type="number" className="form-control"
-                  placeholder="Bereavement leave" id="bereavementLeave"
-                  onChange={this.handleBereavementLeaveChange} />
-              </div>
-              <div className="form-group">
-                <label htmlFor="Maternity leave">Maternity leave</label>
-                <input type="number" className="form-control"
-                  placeholder="Maternity leave" id="maternityLeave"
-                  onChange={this.handleMaternityLeaveChange} />
+              <div className="row">
+                <div className="col-sm-6">
+                  <div className="form-group">
+                    <label htmlFor="Maternity leave">Maternity leave</label>
+                    <input type="number" className="form-control"
+                      placeholder="Maternity leave" id="maternityLeave"
+                      onChange={this.handleMaternityLeaveChange} />
+                  </div>
+                </div>
               </div>
               <div className="form-group">
                 <button type="submit" className="btn btn-primary col-xs-12 col-sm-12">Submit</button>
