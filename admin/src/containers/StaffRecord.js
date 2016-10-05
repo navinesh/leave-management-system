@@ -1,12 +1,13 @@
 import React, {Component} from 'react'
 import { connect } from 'react-redux'
-import { fetchStaffRecord } from '../actions/StaffRecord'
+import { fetchStaffRecord, clearSearchStaffRecord } from '../actions/StaffRecord'
 import StaffRecordList from '../components/StaffRecord'
 
 class StaffRecord extends Component {
   componentDidMount() {
     const { dispatch } = this.props
     dispatch(fetchStaffRecord())
+    dispatch(clearSearchStaffRecord())
   }
 
   render () {
