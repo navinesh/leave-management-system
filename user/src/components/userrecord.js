@@ -105,7 +105,7 @@ export const UserRecord = ({ user_detail, message }) => {
             <p style={{fontSize: '20px'}}>Christmas&nbsp;<span className="tag tag-primary tag-pill">{user_detail.christmas}</span></p>
           </div>
           <div className="col-sm-2">
-            <p style={{fontSize: '20px'}}>Bereavment&nbsp;<span className="tag tag-primary tag-pill">{user_detail.bereavement}</span></p>
+            <p style={{fontSize: '20px'}}>Bereavement&nbsp;<span className="tag tag-primary tag-pill">{user_detail.bereavement}</span></p>
           </div>
           <div className="col-sm-2">
             {user_detail.maternity >= 1 ?
