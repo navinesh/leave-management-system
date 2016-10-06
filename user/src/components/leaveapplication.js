@@ -232,7 +232,7 @@ export default class LeaveApplications extends Component {
             <div className="card card-block">
               <form encType='multipart/form-data' onSubmit={this.handleSubmit}>
                 <div className="form-group">
-                  <label for="leave">Leave</label>
+                  <label htmlFor="leave">Leave</label>
                   <select className="form-control" id="leave" onChange={this.handleLeaveChange}>
                     <option></option>
                     <option>annual</option>
@@ -246,7 +246,7 @@ export default class LeaveApplications extends Component {
                   </select>
                 </div>
                 <div className="form-group">
-                  <label for="leaveType">Leave type</label>
+                  <label htmlFor="leaveType">Leave type</label>
                   <select className="form-control" id="leaveType" onChange={this.handleLeaveTypeChange}>
                     <option></option>
                     <option>full</option>
@@ -257,7 +257,7 @@ export default class LeaveApplications extends Component {
                 <div className="row">
                   <div className="col-sm-6">
                     <div className="form-group">
-                      <label for="startDate">Start date</label>
+                      <label htmlFor="startDate">Start date</label>
                       <DatePicker className="form-control"
                         selected={this.state.startDate}
                         startDate={this.state.startDate}
@@ -267,7 +267,7 @@ export default class LeaveApplications extends Component {
                   </div>
                   <div className="col-sm-6">
                     <div className="form-group">
-                      <label for="endDate">End date</label>
+                      <label htmlFor="endDate">End date</label>
                       <DatePicker className="form-control"
                         selected={this.state.endDate}
                         startDate={this.state.startDate}
@@ -277,25 +277,25 @@ export default class LeaveApplications extends Component {
                   </div>
                 </div>
                 <div className="form-group">
-                  <label for="supervisorEmail">Supervisor email</label>
+                  <label htmlFor="supervisorEmail">Supervisor email</label>
                   <input type="email" className="form-control"
                     placeholder="Supervisor email" id="supervisorEmail"
                     onChange={this.handleSupervisorEmailChange} />
                 </div>
                 <div className="form-group">
-                  <label for="secretaryEmail">Second supervisor / secretary email</label>
+                  <label htmlFor="secretaryEmail">Second supervisor / secretary email</label>
                   <input type="email" className="form-control"
                     placeholder="Second supervisor / secretary email" id="secretaryEmail"
                     onChange={this.handleSecretaryEmailChange} />
                 </div>
                 <div className="form-group">
-                  <label for="reason">Reason</label>
+                  <label htmlFor="reason">Reason</label>
                   <input type="text" className="form-control"
                     placeholder="Reason for leave" id="reason"
                     onChange={this.handleReasonChange} />
                 </div>
                 <div className="form-group">
-                  <label for="sicksheet">Sick sheet</label>
+                  <label htmlFor="sicksheet">Sick sheet</label>
                   <input type="file" className="form-control-file" id="sicksheet"
                     onChange={this.handleFileChange} />
                   <small className="form-text text-muted">A medical certificate is required for absence of two consecutive days or more and after four single day absences.</small>
