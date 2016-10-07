@@ -19,7 +19,7 @@ const Header = ({ onLogoutClick }) =>
             <Link className="nav-item nav-link" to="/leavereport">
               Leave report
             </Link>
-            <Link className="nav-item nav-link" to="/">
+            <Link className="nav-item nav-link" to="/sicksheetrecord">
               Sick sheet record
             </Link>
             <Link className="nav-item nav-link" to="/newrecord">
