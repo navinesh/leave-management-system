@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { fetchUserDetailsIfNeeded } from '../actions/userdetails'
-import { fetchUserRecord } from '../actions/userrecord'
+import { fetchUserRecordIfNeeded } from '../actions/userrecord'
 import { UserRecord, RecordList } from '../components/userrecord'
 
 const BeatLoader = require('halogen/BeatLoader');
@@ -13,16 +13,17 @@ class UserRecords extends Component {
     let auth_token = auth_info.auth_token;
     if(auth_token) {
       dispatch(fetchUserDetailsIfNeeded(auth_token))
-      dispatch(fetchUserRecord(auth_token))
+      dispatch(fetchUserRecordIfNeeded(auth_token))
     }
     else {
       auth_token= localStorage.getItem('auth_token')
       if(auth_token) {
         dispatch(fetchUserDetailsIfNeeded(auth_token))
-        dispatch(fetchUserRecord(auth_token))
+        dispatch(fetchUserRecordIfNeeded(auth_token))
       }
     }
   }
+
 
   render() {
     const { isFetching, isRecordFetching, user_detail, user_record, message } = this.props
