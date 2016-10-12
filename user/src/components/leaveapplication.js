@@ -214,7 +214,7 @@ export default class LeaveApplications extends Component {
               </li>
               <li className="list-group-item">
                 <span className="tag tag-primary tag-pill pull-xs-right">{user_detail.bereavement}</span>
-                Bereavment
+                Bereavement
               </li>
               <li className="list-group-item">
                 <span className="tag tag-primary tag-pill pull-xs-right">{user_detail.christmas}</span>
