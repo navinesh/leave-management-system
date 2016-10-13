@@ -25,7 +25,7 @@ const Header = ({ onLogoutClick }) =>
             <Link className="nav-item nav-link" to="/newrecord">
               New record
             </Link>
-            <Link className="nav-item nav-link" to="/">
+            <Link className="nav-item nav-link" to="/archivedstaffrecord">
               Archived staff
             </Link>
             <button onClick={() => onLogoutClick()} className="btn btn-primary m-l-1">
