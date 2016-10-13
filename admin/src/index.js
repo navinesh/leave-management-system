@@ -8,6 +8,7 @@ import AdminHeader from './containers/AdminHeader'
 import PendingLeave from './containers/PendingLeave'
 import ApprovedLeave from './containers/ApprovedLeave'
 import StaffRecord from './containers/StaffRecord'
+import ArchivedStaffRecord from './containers/ArchivedStaffRecord'
 import SickSheetRecord from './containers/SickSheetRecord'
 import NewRecord from './containers/NewRecord'
 
@@ -26,6 +27,7 @@ render(
         <Route path="/sicksheetrecord" component={SickSheetRecord} />
         <Route path="/sicksheetrecord/:fileId" component={SickSheetRecord}/>
         <Route path="/newrecord" component={NewRecord} />
+        <Route path="/archivedstaffrecord" component={ArchivedStaffRecord} />
       </Route>
     </Router>
   </Provider>,
