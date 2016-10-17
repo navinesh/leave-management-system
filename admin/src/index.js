@@ -9,6 +9,7 @@ import PendingLeave from './containers/PendingLeave'
 import ApprovedLeave from './containers/ApprovedLeave'
 import StaffRecord from './containers/StaffRecord'
 import ArchivedStaffRecord from './containers/ArchivedStaffRecord'
+import LeaveReport from './containers/LeaveReport'
 import SickSheetRecord from './containers/SickSheetRecord'
 import NewRecord from './containers/NewRecord'
 
@@ -24,6 +25,7 @@ render(
         <IndexRoute component={PendingLeave} />
         <Route path="/staffrecord" component={StaffRecord} />
         <Route path="/approvedleave" component={ApprovedLeave} />
+        <Route path="/leavereport" component={LeaveReport} />
         <Route path="/sicksheetrecord" component={SickSheetRecord} />
         <Route path="/sicksheetrecord/:fileId" component={SickSheetRecord}/>
         <Route path="/newrecord" component={NewRecord} />
