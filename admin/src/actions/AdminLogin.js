@@ -33,7 +33,7 @@ export const fetchLogin = (creds) => {
           dispatch(loginAdminError(response.data))
         }
         else {
-          localStorage.setItem('auth_token', response.data.auth_token)
+          localStorage.setItem('admin_token', response.data.admin_token)
           dispatch(receiveAdminLogin(response.data))
         }
       })
