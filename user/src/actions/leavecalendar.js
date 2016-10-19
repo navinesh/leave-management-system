@@ -16,7 +16,7 @@ export const receiveLeave = (json) => ({
 export const fetchLeave = () => {
   return dispatch => {
     dispatch(requestLeave())
-    return fetch(`leave.api`)
+    return fetch(`approved-leave.api`)
       .then(response => response.json())
       .then(json => dispatch(receiveLeave(json)))
   }
