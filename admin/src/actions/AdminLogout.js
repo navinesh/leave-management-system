@@ -13,6 +13,6 @@ export const logoutAdmin = () => {
   return dispatch => {
     dispatch(requestLogout())
     dispatch(receiveLogout())
-    localStorage.removeItem('auth_token')
+    localStorage.removeItem('admin_token')
   }
 }
