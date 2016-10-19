@@ -19,7 +19,7 @@ import { REQUEST_SICKSHEET_RECORD, RECEIVE_SICKSHEET_RECORD, ERROR_SICKSHEET_REC
 import { REQUEST_LEAVE_RECORD, RECEIVE_LEAVE_RECORD, ERROR_LEAVE_RECORD } from '../actions/LeaveReport'
 
 const adminAuth = (state = {isFetching: false,
-  isAuthenticated: true,
+  isAuthenticated: localStorage.getItem('admin_token') ? true : false,
   message: '', auth_info: {}}, action) => {
   switch (action.type) {
     case LOGIN_ADMIN_REQUEST:
