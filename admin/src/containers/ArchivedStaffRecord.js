@@ -8,6 +8,10 @@ class ArchivedStaffRecord extends Component {
   componentDidMount() {
     const { dispatch } = this.props
     dispatch(fetchArchivedStaffRecord())
+  }
+
+  componentWillUnmount() {
+    const { dispatch } = this.props
     dispatch(clearSearchStaffRecord())
   }
 
