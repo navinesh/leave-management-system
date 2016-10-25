@@ -7,6 +7,10 @@ class StaffRecord extends Component {
   componentDidMount() {
     const { dispatch } = this.props
     dispatch(fetchStaffRecord())
+  }
+
+  componentWillUnmount() {
+    const { dispatch } = this.props
     dispatch(clearSearchStaffRecord())
   }
 
