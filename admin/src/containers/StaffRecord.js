@@ -15,19 +15,26 @@ class StaffRecord extends Component {
   }
 
   render () {
-    const { staff_record, searchTerm, dispatch } = this.props
+    const { staff_record, isAuthenticated, searchTerm, dispatch } = this.props
     return (
-      <StaffRecordList  staff_record={staff_record} searchTerm={searchTerm} dispatch={dispatch} />
+      <div className="StaffRecord">
+        {isAuthenticated &&
+          <StaffRecordList  staff_record={staff_record} searchTerm={searchTerm} dispatch={dispatch} />
+        }
+      </div>
     )
   }
 }
 
 const mapStateToProps = (state) => {
-  const { staffRecord, searchStaffRecord } = state
+  const { staffRecord, searchStaffRecord, adminAuth } = state
   const { staff_record } = staffRecord
+  const { isAuthenticated } = adminAuth
   const { searchTerm } = searchStaffRecord
+
   return {
     staff_record,
+    isAuthenticated,
     searchTerm
   }
 }
