@@ -18,18 +18,25 @@ import './bootstrap.min.css'
 
 const store = configureStore()
 
+const requireAuthentication = (nextState, replace) => {
+    let isAuthenticated = store.getState().adminAuth.isAuthenticated
+    if (!isAuthenticated) {
+        replace('/')
+    }
+}
+
 render(
   <Provider store={store}>
     <Router history={browserHistory}>
       <Route path="/" component={AdminHeader}>
         <IndexRoute component={PendingLeave} />
-        <Route path="/staffrecord" component={StaffRecord} />
-        <Route path="/approvedleave" component={ApprovedLeave} />
-        <Route path="/leavereport" component={LeaveReport} />
-        <Route path="/sicksheetrecord" component={SickSheetRecord} />
-        <Route path="/sicksheetrecord/:fileId" component={SickSheetRecord}/>
-        <Route path="/newrecord" component={NewRecord} />
-        <Route path="/archivedstaffrecord" component={ArchivedStaffRecord} />
+        <Route path="/staffrecord" onEnter={requireAuthentication} component={StaffRecord} />
+        <Route path="/approvedleave" onEnter={requireAuthentication} component={ApprovedLeave} />
+        <Route path="/leavereport" onEnter={requireAuthentication} component={LeaveReport} />
+        <Route path="/sicksheetrecord" onEnter={requireAuthentication} component={SickSheetRecord} />
+        <Route path="/sicksheetrecord/:fileId" onEnter={requireAuthentication} component={SickSheetRecord}/>
+        <Route path="/newrecord" onEnter={requireAuthentication} component={NewRecord} />
+        <Route path="/archivedstaffrecord" onEnter={requireAuthentication} component={ArchivedStaffRecord} />
       </Route>
     </Router>
   </Provider>,
