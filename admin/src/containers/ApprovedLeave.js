@@ -12,12 +12,12 @@ class ApprovedLeave extends Component {
   }
 
   render() {
-    const { approved_items, isFetching } = this.props
+    const { approved_items, isFetching, isAuthenticated } = this.props
     return (
       <div className="container">
-        {isFetching ?
+        {isAuthenticated && (isFetching ?
           <div className="text-xs-center"><BeatLoader color="#0275d8" size="12px" /></div> :
-          <ApprovedLeaveList approved_items={approved_items} />
+          <ApprovedLeaveList approved_items={approved_items} />)
         }
       </div>
     )
@@ -25,15 +25,18 @@ class ApprovedLeave extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { approvedLeave } = state
+  const { approvedLeave, adminAuth } = state
   const {
     isFetching,
     approved_items
   } = approvedLeave
 
+  const { isAuthenticated } = adminAuth
+
   return {
     approved_items,
-    isFetching
+    isFetching,
+    isAuthenticated
   }
 }
 
