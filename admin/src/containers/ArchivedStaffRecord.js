@@ -16,19 +16,26 @@ class ArchivedStaffRecord extends Component {
   }
 
   render () {
-    const { archived_staff_record, searchTerm, dispatch } = this.props
+    const { archived_staff_record, isAuthenticated, searchTerm, dispatch } = this.props
     return (
-      <ArchivedStaffRecordList  archived_staff_record={archived_staff_record} searchTerm={searchTerm} dispatch={dispatch} />
+      <div className="ArchivedStaffRecord">
+        {isAuthenticated &&
+          <ArchivedStaffRecordList  archived_staff_record={archived_staff_record} searchTerm={searchTerm} dispatch={dispatch} />
+        }
+      </div>
     )
   }
 }
 
 const mapStateToProps = (state) => {
-  const { archivedStaffRecord, searchStaffRecord } = state
+  const { archivedStaffRecord, searchStaffRecord, adminAuth } = state
   const { archived_staff_record } = archivedStaffRecord
+  const { isAuthenticated } = adminAuth
   const { searchTerm } = searchStaffRecord
+
   return {
     archived_staff_record,
+    isAuthenticated,
     searchTerm
   }
 }
