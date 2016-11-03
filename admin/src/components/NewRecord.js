@@ -73,6 +73,11 @@ export default class NewRecordForm extends Component {
     const dateOfBirth = this.state.dob;
     const maternityDays = this.state.maternityLeave ? this.state.maternityLeave : null;
     // verify data
+    if (!surname || !othernames || !staffEmail || !designation || !annualDays ||
+      !sickDays || !bereavmentDays || !christmasDays || !dateOfBirth) {
+      this.setState({errorMessage: 'One or more required fields are missing!'});
+      return;
+    }
     // disptach action to post data to database
   }
 
