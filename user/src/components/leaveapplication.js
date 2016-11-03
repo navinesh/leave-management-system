@@ -144,7 +144,6 @@ export default class LeaveApplications extends Component {
         'maternity': () => {
           return maternityDays - myLeaveDays;
         },
-
         'lwop': () => {
           return myLeaveDays;
         },
