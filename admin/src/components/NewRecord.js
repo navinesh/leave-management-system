@@ -62,7 +62,16 @@ export default class NewRecordForm extends Component {
 
   handleSubmit (e) {
     e.preventDefault();
-    // get form values
+    const surname = this.state.leave;
+    const othernames = this.state.otherNames;
+    const staffEmail = this.state.staffEmail;
+    const designation = this.state.designation;    
+    const annualDays = this.state.annualLeave;
+    const sickDays = this.state.sickLeave;
+    const bereavmentDays = this.state.bereavementLeave;
+    const christmasDays = this.state.christmasLeave;
+    const dateOfBirth = this.state.dob;
+    const maternityDays = this.state.maternityLeave;
     // verify data
     // disptach action to post data to database
   }
