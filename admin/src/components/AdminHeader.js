@@ -1,44 +1,54 @@
-import React, { PropTypes } from 'react'
-import { Link } from 'react-router'
+import React, { PropTypes, Component } from 'react'
+import { Link, browserHistory } from 'react-router'
+import { logoutAdmin } from '../actions/AdminLogout'
 
-const Header = ({ onLogoutClick }) =>
-  <div className="Navs">
-    <nav className="navbar navbar-fixed-top">
-      <div className="container">
-        <div className="nav navbar-nav">
-          <Link className="nav-item nav-link" to="/">
-            LMS - dashboard
-          </Link>
-          <div className="pull-xs-right">
-            <Link className="nav-item nav-link" to="/staffrecord">
-              Staff record
-            </Link>
-            <Link className="nav-item nav-link" to="/approvedleave">
-              Leave calendar
-            </Link>
-            <Link className="nav-item nav-link" to="/leavereport">
-              Leave report
-            </Link>
-            <Link className="nav-item nav-link" to="/sicksheetrecord">
-              Sick sheet record
-            </Link>
-            <Link className="nav-item nav-link" to="/newrecord">
-              New record
-            </Link>
-            <Link className="nav-item nav-link" to="/archivedstaffrecord">
-              Archived staff
-            </Link>
-            <button onClick={() => onLogoutClick()} className="btn btn-primary m-l-1">
-              Sign out
-            </button>
+export default class Header extends Component {
+  adminLogout(e) {
+    e.preventDefault()
+    this.props.dispatch(logoutAdmin())
+    browserHistory.push('/')
+  }
+
+  render() {
+    return (
+      <div className="Navs">
+        <nav className="navbar navbar-fixed-top">
+          <div className="container">
+            <div className="nav navbar-nav">
+              <Link className="nav-item nav-link" to="/">
+                LMS - dashboard
+              </Link>
+              <div className="pull-xs-right">
+                <Link className="nav-item nav-link" to="/staffrecord">
+                  Staff record
+                </Link>
+                <Link className="nav-item nav-link" to="/approvedleave">
+                  Leave calendar
+                </Link>
+                <Link className="nav-item nav-link" to="/leavereport">
+                  Leave report
+                </Link>
+                <Link className="nav-item nav-link" to="/sicksheetrecord">
+                  Sick sheet record
+                </Link>
+                <Link className="nav-item nav-link" to="/newrecord">
+                  New record
+                </Link>
+                <Link className="nav-item nav-link" to="/archivedstaffrecord">
+                  Archived staff
+                </Link>
+                <button onClick={this.adminLogout.bind(this)} className="btn btn-primary m-l-1">
+                  Sign out
+                </button>
+              </div>
+            </div>
           </div>
-        </div>
+        </nav>
       </div>
-    </nav>
-  </div>
-
-Header.propTypes = {
-  onLogoutClick: PropTypes.func.isRequired
+    )
+  }
 }
 
-export default Header
+Header.propTypes = {
+  dispatch: PropTypes.func.isRequired
+}
