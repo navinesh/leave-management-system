@@ -2,15 +2,12 @@ import React from 'react'
 import { connect } from 'react-redux'
 import Header from '../components/AdminHeader'
 import AdminLogin from './AdminLogin'
-import { logoutAdmin } from '../actions/AdminLogout'
 
 const AdminHeader = ({ isAuthenticated, dispatch, children }) =>
   <div className="AdminHeader">
-    {isAuthenticated &&
-      <Header
-      onLogoutClick={() => dispatch(logoutAdmin())} />
-    }
-    {!isAuthenticated &&
+    {
+      isAuthenticated ?
+      <Header dispatch={dispatch} /> :
       <div>
         <h1 className="display-4 text-xs-center p-b-3">
           Leave Management System
