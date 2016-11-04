@@ -2,19 +2,20 @@ import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
 import { connect } from 'react-redux'
 import NewRecordForm from '../components/NewRecord'
+import { submitNewUserRecord } from '../actions/NewRecord'
 
 class NewRecord extends Component {
   render() {
-    const { message, isAuthenticated, isFetching } = this.props
+    const { dispatch, message, isAuthenticated, isFetching } = this.props
     return (
       <div className="NewRecord">
-        {isAuthenticated &&
+        {
+          isAuthenticated ?
           <NewRecordForm
           isFetching={isFetching}
           message={message}
-          />
-        }
-        {!isAuthenticated &&
+          onNewUserRecordSubmit={ newUserDetails => dispatch(submitNewUserRecord(newUserDetails)) }
+          /> :
           browserHistory.push('/')
         }
       </div>
