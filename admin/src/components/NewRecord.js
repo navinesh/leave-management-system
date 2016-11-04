@@ -76,9 +76,14 @@ export default class NewRecordForm extends Component {
     if (!surname || !othernames || !staffEmail || !designation || !annualDays ||
       !sickDays || !bereavmentDays || !christmasDays || !dateOfBirth) {
       this.setState({errorMessage: 'One or more required fields are missing!'});
-      return;
+      return null;
     }
     // disptach action to post data to database
+    const newUserDetails = { surname: surname, othernames: othernames,
+      staffEmail: staffEmail, designation: designation, annualDays: annualDays,
+      sickDays: sickDays, bereavmentDays: bereavmentDays, christmasDays: christmasDays,
+      dateOfBirth: dateOfBirth, maternityDays: maternityDays }
+    this.props.onNewUserRecordSubmit(newUserDetails)
   }
 
   render() {
@@ -225,6 +230,7 @@ export default class NewRecordForm extends Component {
 }
 
 NewRecordForm.propTypes = {
+  onNewUserRecordSubmit: PropTypes.func.isRequired,
   message: PropTypes.string,
   isFetching: PropTypes.bool.isRequired
 }
