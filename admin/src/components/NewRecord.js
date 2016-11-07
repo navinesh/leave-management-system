@@ -60,6 +60,10 @@ export default class NewRecordForm extends Component {
     this.setState({maternityLeave: e.target.value});
   }
 
+  handlegenderChange (e) {
+    this.setState({gender: e.target.value});
+  }
+
   handleSubmit (e) {
     e.preventDefault();
     const surname = this.state.leave;
@@ -72,17 +76,18 @@ export default class NewRecordForm extends Component {
     const christmasDays = this.state.christmasLeave;
     const dateOfBirth = this.state.dob;
     const maternityDays = this.state.maternityLeave ? this.state.maternityLeave : null;
+    const gender = this.state.gender;
     // verify data
     if (!surname || !othernames || !staffEmail || !designation || !annualDays ||
-      !sickDays || !bereavmentDays || !christmasDays || !dateOfBirth) {
+      !sickDays || !bereavmentDays || !christmasDays || !dateOfBirth || gender) {
       this.setState({errorMessage: 'One or more required fields are missing!'});
       return null;
     }
-    // disptach action to post data to database
+    // prepare data to post to database
     const newUserDetails = { surname: surname, othernames: othernames,
       staffEmail: staffEmail, designation: designation, annualDays: annualDays,
       sickDays: sickDays, bereavmentDays: bereavmentDays, christmasDays: christmasDays,
-      dateOfBirth: dateOfBirth, maternityDays: maternityDays }
+      dateOfBirth: dateOfBirth, maternityDays: maternityDays, gender: gender }
     this.props.onNewUserRecordSubmit(newUserDetails)
   }
 
@@ -207,6 +212,20 @@ export default class NewRecordForm extends Component {
                       onChange={this.handleMaternityLeaveChange} />
                   </div>
                 </div>
+                <div className="col-sm-6">
+                  <div className="form-group">
+                    <label htmlFor="gender">Gender</label>
+                      <select className="form-control" id="designation" onChange={this.handlegenderChange}>
+                      <option></option>
+                      <option>
+                        Male
+                      </option>
+                      <option>
+                        Female
+                      </option>
+                      </select>
+                  </div>
+                </div>
               </div>
               <div className="form-group">
                 <button type="submit" className="btn btn-primary col-xs-12 col-sm-12">Submit</button>
@@ -217,7 +236,7 @@ export default class NewRecordForm extends Component {
                 <div>Loading...</div>:
                 message}
             </div>
-            <div className="text-danger text-xs-center p-t-2">
+            <div className="text-danger text-xs-center">
               {this.state.errorMessage ?
                 <div>{this.state.errorMessage}</div> :
                    ''}
