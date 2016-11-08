@@ -18,6 +18,8 @@ import { REQUEST_SICKSHEET_RECORD, RECEIVE_SICKSHEET_RECORD, ERROR_SICKSHEET_REC
 
 import { REQUEST_LEAVE_RECORD, RECEIVE_LEAVE_RECORD, ERROR_LEAVE_RECORD } from '../actions/LeaveReport'
 
+import { NEW_USER_RECORD_REQUEST, NEW_USER_RECORD_SUCCESS, NEW_USER_RECORD_FAILURE } from '../actions/NewRecord'
+
 const adminAuth = (state = {isFetching: false,
   isAuthenticated: localStorage.getItem('admin_token') ? true : false,
   message: '', auth_info: {}}, action) => {
@@ -176,6 +178,27 @@ const sickSheet = (state = {isFetching: false, sickSheet_items: []},
   }
 }
 
+const addUser = (state = {isFetching: false, message: ''},
+  action) => {
+    switch(action.type) {
+      case NEW_USER_RECORD_REQUEST:
+      return { ...state,
+        isFetching: true}
+      case NEW_USER_RECORD_SUCCESS:
+      return { ...state,
+        isFetching: false,
+        message: action.message
+        }
+      case NEW_USER_RECORD_FAILURE:
+      return { ...state,
+        isFetching: false,
+        message: action.message
+        }
+      default:
+        return state
+  }
+}
+
 const rootReducer = combineReducers({
   adminAuth,
   pendingLeave,
@@ -184,7 +207,8 @@ const rootReducer = combineReducers({
   searchStaffRecord,
   archivedStaffRecord,
   leaveReport,
-  sickSheet
+  sickSheet,
+  addUser
 })
 
 export default rootReducer
