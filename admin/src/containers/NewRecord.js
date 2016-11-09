@@ -21,14 +21,14 @@ class NewRecord extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { adminAuth } = state
-  const { isAuthenticated, isFetching, message, auth_info } = adminAuth
+  const { adminAuth, addUser } = state
+  const { isAuthenticated } = adminAuth
+  const { isFetching, message } = addUser
 
   return {
-    message,
     isAuthenticated,
     isFetching,
-    auth_info
+    message
   }
 }
 
