@@ -98,17 +98,23 @@ export default class NewRecordForm extends Component {
         <div className="col-xs-12 col-sm-4 offset-sm-4">
           <div className="card card-block">
             <form encType='multipart/form-data' onSubmit={this.handleSubmit}>
-              <div className="form-group">
-                <label htmlFor="surName">Surname</label>
-                <input type="text" className="form-control"
-                  placeholder="Surname" id="surName"
-                  onChange={this.handleSurnameChange} />
-              </div>
-              <div className="form-group">
-                <label htmlFor="otherNames">Other Names</label>
-                <input type="text" className="form-control"
-                  placeholder="Other Names" id="otherNames"
-                  onChange={this.handleOtherNamesChange} />
+              <div className="row">
+                <div className="col-sm-6">
+                  <div className="form-group">
+                    <label htmlFor="surName">Surname</label>
+                    <input type="text" className="form-control"
+                      placeholder="Surname" id="surName"
+                      onChange={this.handleSurnameChange} />
+                  </div>
+                </div>
+                <div className="col-sm-6">
+                  <div className="form-group">
+                    <label htmlFor="otherNames">Other Names</label>
+                    <input type="text" className="form-control"
+                      placeholder="Other Names" id="otherNames"
+                      onChange={this.handleOtherNamesChange} />
+                  </div>
+                </div>
               </div>
               <div className="form-group">
                 <label htmlFor="staffEmail">Staff email</label>
