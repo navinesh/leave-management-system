@@ -2,6 +2,8 @@ import { combineReducers } from 'redux'
 
 import { LOGIN_ADMIN_REQUEST, LOGIN_ADMIN_SUCCESS, LOGIN_ADMIN_FAILURE } from '../actions/AdminLogin'
 
+import { LOGIN_ADMIN_REQUEST_FROM_TOKEN, LOGIN_ADMIN_SUCCESS_FROM_TOKEN, LOGIN_ADMIN_FAILURE_FROM_TOKEN } from '../actions/AdminLogin'
+
 import { LOGOUT_ADMIN_REQUEST, LOGOUT_ADMIN_SUCCESS } from '../actions/AdminLogout'
 
 import { REQUEST_PENDING_LEAVE, RECEIVE_PENDING_LEAVE, ERROR_PENDING_LEAVE } from '../actions/PendingLeave'
@@ -39,6 +41,19 @@ const adminAuth = (state = {isFetching: false,
       isFetching: false,
       isAuthenticated: false,
       message: action.message}
+    case LOGIN_ADMIN_REQUEST_FROM_TOKEN:
+      return { ...state,
+        isFetching: true}
+    case LOGIN_ADMIN_SUCCESS_FROM_TOKEN:
+      return { ...state,
+        isFetching: false,
+        isAuthenticated: true,
+        auth_info: action.auth_info}
+    case LOGIN_ADMIN_FAILURE_FROM_TOKEN:
+      return {...state,
+        isFetching: false,
+        isAuthenticated: false,
+        message: action.message}
     case LOGOUT_ADMIN_REQUEST:
     return { ...state,
       isFetching: true,
