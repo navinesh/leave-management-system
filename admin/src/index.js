@@ -13,16 +13,28 @@ import LeaveReport from './containers/LeaveReport'
 import SickSheetRecord from './containers/SickSheetRecord'
 import NewRecord from './containers/NewRecord'
 
+import { fetchLoginFromToken } from './actions/AdminLogin'
+
 import './index.css'
 import './bootstrap.min.css'
 
 const store = configureStore()
 
 const requireAuthentication = (nextState, replace) => {
-    let isAuthenticated = store.getState().adminAuth.isAuthenticated
-    if (!isAuthenticated) {
-        replace('/')
+  let admin_token = store.getState().adminAuth.auth_info.admin_token
+  if(admin_token) {
+    store.dispatch(fetchLoginFromToken(admin_token))
+  }
+  else {
+    admin_token = localStorage.getItem('admin_token')
+    if(admin_token) {
+      store.dispatch(fetchLoginFromToken(admin_token))
     }
+  }
+  let isAuthenticated = store.getState().adminAuth.isAuthenticated
+  if (!isAuthenticated) {
+    replace('/')   
+  }
 }
 
 render(
