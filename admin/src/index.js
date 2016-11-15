@@ -33,7 +33,7 @@ const requireAuthentication = (nextState, replace) => {
   }
   let isAuthenticated = store.getState().adminAuth.isAuthenticated
   if (!isAuthenticated) {
-    replace('/')   
+    replace('/')
   }
 }
 
