@@ -2,6 +2,8 @@ import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { Router, Route, browserHistory, IndexRoute } from 'react-router'
+import axios from 'axios'
+
 import configureStore from './stores/ConfigureStore'
 
 import AdminHeader from './containers/AdminHeader'
@@ -13,27 +15,64 @@ import LeaveReport from './containers/LeaveReport'
 import SickSheetRecord from './containers/SickSheetRecord'
 import NewRecord from './containers/NewRecord'
 
-import { fetchLoginFromToken } from './actions/AdminLogin'
+import { requestAdminLoginFromToken, loginAdminErrorFromToken, receiveAdminLoginFromToken } from './actions/AdminLogin'
 
 import './index.css'
 import './bootstrap.min.css'
 
 const store = configureStore()
 
-const requireAuthentication = (nextState, replace) => {
+export const requireAuthentication = (nextState, replace, callback) => {
   let admin_token = store.getState().adminAuth.auth_info.admin_token
   if(admin_token) {
-    store.dispatch(fetchLoginFromToken(admin_token))
+    store.dispatch(requestAdminLoginFromToken(admin_token))
+    axios.post('http://localhost:8080/admintoken', {
+      admin_token: admin_token
+    })
+    .then((response) => {
+      if (response.status === 200){
+        replace('/')
+        localStorage.removeItem('admin_token')
+        store.dispatch(loginAdminErrorFromToken(response.data))
+      }
+      else {
+        store.dispatch(receiveAdminLoginFromToken(response.data))
+      }
+      callback()
+    })
+    .catch((error) => {
+      console.log(error)
+      callback(error)
+    })
   }
   else {
     admin_token = localStorage.getItem('admin_token')
     if(admin_token) {
-      store.dispatch(fetchLoginFromToken(admin_token))
+      store.dispatch(requestAdminLoginFromToken(admin_token))
+      axios.post('http://localhost:8080/admintoken', {
+        admin_token: admin_token
+      })
+      .then((response) => {
+        if (response.status === 200){
+          replace('/')
+          localStorage.removeItem('admin_token')
+          store.dispatch(loginAdminErrorFromToken(response.data))
+        }
+        else {
+          store.dispatch(receiveAdminLoginFromToken(response.data))
+        }
+        callback()
+      })
+      .catch((error) => {
+        console.log(error)
+        callback(error)
+      })
     }
   }
   let isAuthenticated = store.getState().adminAuth.isAuthenticated
   if (!isAuthenticated) {
     replace('/')
+    callback()
   }
 }
 
