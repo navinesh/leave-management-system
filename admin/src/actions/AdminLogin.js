@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { browserHistory} from 'react-router'
 
 export const LOGIN_ADMIN_REQUEST = 'LOGIN_ADMIN_REQUEST'
 export const LOGIN_ADMIN_SUCCESS = 'LOGIN_ADMIN_SUCCESS'
@@ -70,7 +69,6 @@ export const fetchLoginFromToken = (admin_token) => {
       })
       .then((response) => {
         if (response.status === 200){
-          browserHistory.push('/')
           localStorage.removeItem('admin_token')
           dispatch(loginAdminErrorFromToken(response.data))
         }
