@@ -14,6 +14,7 @@ import ArchivedStaffRecord from './containers/ArchivedStaffRecord'
 import LeaveReport from './containers/LeaveReport'
 import SickSheetRecord from './containers/SickSheetRecord'
 import NewRecord from './containers/NewRecord'
+import Error from './components/Error'
 
 import { requestAdminLoginFromToken, loginAdminErrorFromToken, receiveAdminLoginFromToken } from './actions/AdminLogin'
 
@@ -89,6 +90,7 @@ render(
         <Route path="/newrecord" onEnter={requireAuthentication} component={NewRecord} />
         <Route path="/archivedstaffrecord" onEnter={requireAuthentication} component={ArchivedStaffRecord} />
       </Route>
+      <Route path="*" component={Error}/>
     </Router>
   </Provider>,
   document.getElementById('root')
