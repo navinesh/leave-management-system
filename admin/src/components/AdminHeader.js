@@ -18,7 +18,7 @@ export default class Header extends Component {
               <Link className="nav-item nav-link" to="/">
                 LMS - dashboard
               </Link>
-              <div className="pull-xs-right">
+              <div className="float-xs-right">
                 <Link className="nav-item nav-link" to="/staffrecord">
                   Staff record
                 </Link>
