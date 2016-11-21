@@ -1,11 +1,18 @@
 import React, { PropTypes, Component } from 'react'
-import { Link } from 'react-router'
 const moment = require('moment')
 import { searchStaffRecord } from '../actions/StaffRecord'
 
 class StaffRecordList extends Component {
   handleSearchChange (e) {
     this.props.dispatch(searchStaffRecord((e.target.value).toLowerCase()))
+  }
+
+  editRecord (e) {
+    console.log('edit')
+  }
+
+  archiveRecord (e) {
+    console.log('archive')
   }
 
   render () {
@@ -21,32 +28,32 @@ class StaffRecordList extends Component {
               <ul className="list-group list-group-flush">
                 <li className="list-group-item">{record.othernames} {record.surname}</li>
                 <li className="list-group-item">
-                  <span className="tag tag-primary tag-pill pull-xs-right">{record.annual}</span>
+                  <span className="tag tag-primary tag-pill float-xs-right">{record.annual}</span>
                   Annual
                 </li>
                 <li className="list-group-item">
-                  <span className="tag tag-primary tag-pill pull-xs-right">{record.sick}</span>
+                  <span className="tag tag-primary tag-pill float-xs-right">{record.sick}</span>
                   Sick
                 </li>
                 <li className="list-group-item">
-                  <span className="tag tag-primary tag-pill pull-xs-right">{record.bereavement}</span>
+                  <span className="tag tag-primary tag-pill float-xs-right">{record.bereavement}</span>
                   Bereavement
                 </li>
                 <li className="list-group-item">
-                  <span className="tag tag-primary tag-pill pull-xs-right">{record.christmas}</span>
+                  <span className="tag tag-primary tag-pill float-xs-right">{record.christmas}</span>
                   Christmas
                 </li>
                 <li className="list-group-item">
-                  <span className="tag tag-primary tag-pill pull-xs-right">{dateOfBirth}</span>
+                  <span className="tag tag-primary tag-pill float-xs-right">{dateOfBirth}</span>
                   DOB
                 </li>
                 <li className="list-group-item">
-                  <span className="tag tag-primary tag-pill pull-xs-right">{record.maternity}</span>
+                  <span className="tag tag-primary tag-pill float-xs-right">{record.maternity}</span>
                   Maternity
                 </li>
                 <li className="list-group-item">
-                  <Link to="#" className="card-link">Edit</Link>
-                  <Link to="#" className="card-link">Archive</Link>
+                  <button onClick={this.editRecord.bind(this)} className="btn btn-link">Edit</button>
+                  <button onClick={this.archiveRecord.bind(this)} className="btn btn-link">Archive</button>
                 </li>
               </ul>
             </div>
