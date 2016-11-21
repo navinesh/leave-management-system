@@ -10,7 +10,7 @@ export default class Header extends Component {
   }
 
   render() {
-    return (      
+    return (
       <nav className="navbar navbar-fixed-top">
         <div className="container">
           <div className="nav navbar-nav">
