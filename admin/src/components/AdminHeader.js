@@ -10,41 +10,39 @@ export default class Header extends Component {
   }
 
   render() {
-    return (
-      <div className="Navs">
-        <nav className="navbar navbar-fixed-top">
-          <div className="container">
-            <div className="nav navbar-nav">
-              <Link className="nav-item nav-link" to="/">
-                LMS - dashboard
+    return (      
+      <nav className="navbar navbar-fixed-top">
+        <div className="container">
+          <div className="nav navbar-nav">
+            <Link className="nav-item nav-link" to="/">
+              LMS - dashboard
+            </Link>
+            <div className="float-xs-right">
+              <Link className="nav-item nav-link" to="/staffrecord">
+                Staff record
               </Link>
-              <div className="float-xs-right">
-                <Link className="nav-item nav-link" to="/staffrecord">
-                  Staff record
-                </Link>
-                <Link className="nav-item nav-link" to="/approvedleave">
-                  Leave calendar
-                </Link>
-                <Link className="nav-item nav-link" to="/leavereport">
-                  Leave report
-                </Link>
-                <Link className="nav-item nav-link" to="/sicksheetrecord">
-                  Sick sheet record
-                </Link>
-                <Link className="nav-item nav-link" to="/newrecord">
-                  New record
-                </Link>
-                <Link className="nav-item nav-link" to="/archivedstaffrecord">
-                  Archived staff
-                </Link>
-                <button onClick={this.adminLogout.bind(this)} className="btn btn-primary m-l-1">
-                  Sign out
-                </button>
-              </div>
+              <Link className="nav-item nav-link" to="/approvedleave">
+                Leave calendar
+              </Link>
+              <Link className="nav-item nav-link" to="/leavereport">
+                Leave report
+              </Link>
+              <Link className="nav-item nav-link" to="/sicksheetrecord">
+                Sick sheet record
+              </Link>
+              <Link className="nav-item nav-link" to="/newrecord">
+                New record
+              </Link>
+              <Link className="nav-item nav-link" to="/archivedstaffrecord">
+                Archived staff
+              </Link>
+              <button onClick={this.adminLogout.bind(this)} className="btn btn-primary ml-1">
+                Sign out
+              </button>
             </div>
           </div>
-        </nav>
-      </div>
+        </div>
+      </nav>
     )
   }
 }
