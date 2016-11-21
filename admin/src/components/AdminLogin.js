@@ -53,7 +53,7 @@ export default class Login extends Component {
               <button type="submit" className="btn btn-primary col-xs-12 col-sm-12">Log in</button>
             </div>
           </form>
-          <div className="text-danger text-xs-center p-t-3">
+          <div className="text-danger text-xs-center pt-3">
             {this.props.isFetching ?
               <div>Loading...</div>:
               this.props.message}
