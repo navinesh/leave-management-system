@@ -95,7 +95,7 @@ export default class NewRecordForm extends Component {
     const { isFetching, message } = this.props
     return (
       <div className="NewRecordForm">
-        <div className="col-xs-12 col-sm-4 offset-sm-4">
+        <div className="col-xs-12 col-sm-6 offset-sm-2">
           <div className="card card-block">
             <form encType='multipart/form-data' onSubmit={this.handleSubmit}>
               <div className="row">
@@ -122,56 +122,68 @@ export default class NewRecordForm extends Component {
                   placeholder="Staff email" id="staffEmail"
                   onChange={this.handleStaffEmailChange} />
               </div>
-              <div className="form-group">
-                <label htmlFor="designation">Designation</label>
-                <select className="form-control" id="designation" onChange={this.handleDesignationChange}>
-                <option></option>
-                <option>
-  								Admin
-  							</option>
-  							<option>
-  								Level 3 Lawyer
-  							</option>
-  							<option>
-  								Level 4 Lawyer
-  							</option>
-  							<option>
-  								Level 3 Secretary
-  							</option>
-  							<option>
-  								Level 4 Secretary
-  							</option>
-  							<option>
-  								TM
-  							</option>
-  							<option>
-  								Accounts
-  							</option>
-  							<option>
-  								Library
-  							</option>
-  							<option>
-  								IT
-  							</option>
-  							<option>
-  								Search Clerk Level 3
-  							</option>
-  							<option>
-  								Search Clerk Level 4
-  							</option>
-  							<option>
-  								Legal Executive
-  							</option>
-  							<option>
-  								Partner
-  							</option>
-                </select>
-              </div>
-              <div className="form-group">
-                <label htmlFor="dob">Date of birth</label>
-                <input type="date" className="form-control"
-                  placeholder="Date of birth" id="dob"
-                  onChange={this.handleDOBChange} />
+              <div className="row">
+                <div className="col-sm-6">
+                  <div className="form-group">
+                    <label htmlFor="designation">Designation</label>
+                    <select className="form-control" id="designation" onChange={this.handleDesignationChange}>
+                    <option></option>
+                    <option>
+      								Admin
+      							</option>
+      							<option>
+      								Level 3 Lawyer
+      							</option>
+      							<option>
+      								Level 4 Lawyer
+      							</option>
+      							<option>
+      								Level 3 Secretary
+      							</option>
+      							<option>
+      								Level 4 Secretary
+      							</option>
+      							<option>
+      								TM
+      							</option>
+      							<option>
+      								Accounts
+      							</option>
+      							<option>
+      								Library
+      							</option>
+      							<option>
+      								IT
+      							</option>
+      							<option>
+      								Search Clerk Level 3
+      							</option>
+      							<option>
+      								Search Clerk Level 4
+      							</option>
+      							<option>
+      								Legal Executive
+      							</option>
+      							<option>
+      								Partner
+      							</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="col-sm-6">
+                  <div className="form-group">
+                    <label htmlFor="gender">Gender</label>
+                      <select className="form-control" id="designation" onChange={this.handlegenderChange}>
+                      <option></option>
+                      <option>
+                        Male
+                      </option>
+                      <option>
+                        Female
+                      </option>
+                      </select>
+                  </div>
+                </div>
               </div>
               <div className="row">
                 <div className="col-sm-6">
@@ -220,16 +232,10 @@ export default class NewRecordForm extends Component {
                 </div>
                 <div className="col-sm-6">
                   <div className="form-group">
-                    <label htmlFor="gender">Gender</label>
-                      <select className="form-control" id="designation" onChange={this.handlegenderChange}>
-                      <option></option>
-                      <option>
-                        Male
-                      </option>
-                      <option>
-                        Female
-                      </option>
-                      </select>
+                    <label htmlFor="dob">Date of birth</label>
+                    <input type="date" className="form-control"
+                      placeholder="Date of birth" id="dob"
+                      onChange={this.handleDOBChange} />
                   </div>
                 </div>
               </div>
