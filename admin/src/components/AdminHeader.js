@@ -12,13 +12,13 @@ export default class Header extends Component {
   render() {
     return (
       <nav className="navbar navbar-fixed-top">
-        <div className="container">
+        <div className="">
           <div className="nav navbar-nav">
             <Link className="nav-item nav-link" to="/">
-              LMS - dashboard
+              Leave management system
             </Link>
             <div className="float-xs-right">
-              <Link className="nav-item nav-link" to="/staffrecord">
+              {/**<Link className="nav-item nav-link" to="/staffrecord">
                 Staff record
               </Link>
               <Link className="nav-item nav-link" to="/approvedleave">
@@ -35,7 +35,7 @@ export default class Header extends Component {
               </Link>
               <Link className="nav-item nav-link" to="/archivedstaffrecord">
                 Archived staff
-              </Link>
+              </Link>**/}
               <button onClick={this.adminLogout.bind(this)} className="btn btn-primary ml-1">
                 Sign out
               </button>
