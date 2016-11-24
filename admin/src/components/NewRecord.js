@@ -95,7 +95,7 @@ export default class NewRecordForm extends Component {
     const { isFetching, message } = this.props
     return (
       <div className="NewRecordForm">
-        <div className="col-xs-12 col-sm-6 offset-sm-2">
+        <div className="col-xs-12 col-sm-5 offset-sm-2">
           <div className="card card-block">
             <form encType='multipart/form-data' onSubmit={this.handleSubmit}>
               <div className="row">
