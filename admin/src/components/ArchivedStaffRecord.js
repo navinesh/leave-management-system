@@ -49,7 +49,7 @@ class ArchivedStaffRecordList extends Component {
         })
 
     return (
-      <div className="container">
+      <div className="ArchivedStaffRecordList">
         <div className="row">
           <div className="col-sm-3">
             <div className="form-group">
