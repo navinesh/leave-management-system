@@ -14,7 +14,7 @@ class SickSheetRecord extends Component {
   render() {
     const { isFetching, sickSheet_items, isAuthenticated } = this.props
     return (
-      <div className="container">
+      <div className="SickSheetRecord">
         {isAuthenticated && (isFetching ?
           <div className="text-xs-center"><BeatLoader color="#0275d8" size="12px" /></div> :
           <SickSheetList sickSheet_items={sickSheet_items} />)
