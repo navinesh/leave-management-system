@@ -61,7 +61,7 @@ class StaffRecordList extends Component {
         })
 
     return (
-      <div className="container">
+      <div className="StaffRecordList">
         <div className="row">
           <div className="col-sm-3">
             <div className="form-group">
