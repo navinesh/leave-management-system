@@ -87,7 +87,7 @@ const App = ({ main }) =>
     <div className="Header">
       <AdminHeader />
     </div>
-    <div className="col-sm-2">
+    <div className="col-sm-2 p-0">
       <AdminSidebar />
     </div>
     <div className="col-sm-10">
