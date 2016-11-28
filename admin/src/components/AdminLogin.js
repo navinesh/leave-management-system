@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { Link } from 'react-router'
-//var Loader = require('halogen/ClipLoader');
+var Loader = require('halogen/ClipLoader');
 
 export default class Login extends Component {
   constructor() {
@@ -27,6 +27,8 @@ export default class Login extends Component {
       this.setState({errorMessage: 'One or more required fields are missing!'})
       return;
     }
+
+    this.setState({errorMessage: ''})
 
     const creds = { email: email, password: password }
     this.props.onLoginClick(creds)
@@ -55,7 +57,7 @@ export default class Login extends Component {
           </form>
           <div className="text-danger text-xs-center pt-3">
             {this.props.isFetching ?
-              <div>Loading...</div>:
+              <Loader color="#0275d8" size="20px" />:
               this.props.message}
           </div>
           <div className="text-danger text-xs-center ">
