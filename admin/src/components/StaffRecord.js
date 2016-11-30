@@ -26,7 +26,7 @@ class StaffRecordList extends Component {
           <div className="col-sm-3" key={record.id}>
             <div className="card card-block">
               <ul className="list-unstyled">
-                <li>{record.othernames} {record.surname}</li>
+                <li className="h5">{record.othernames} {record.surname}</li>
                 <li>
                   <span className="tag tag-primary tag-pill float-xs-right">{record.annual}</span>
                   Annual
