@@ -24,35 +24,35 @@ class StaffRecordList extends Component {
         let dateOfBirth = moment(dob).format('DD/MM/YYYY')
         return (
           <div className="col-sm-3" key={record.id}>
-            <div className="card">
-              <ul className="list-group list-group-flush">
-                <li className="list-group-item">{record.othernames} {record.surname}</li>
-                <li className="list-group-item">
+            <div className="card card-block">
+              <ul className="list-unstyled">
+                <li>{record.othernames} {record.surname}</li>
+                <li>
                   <span className="tag tag-primary tag-pill float-xs-right">{record.annual}</span>
                   Annual
                 </li>
-                <li className="list-group-item">
+                <li>
                   <span className="tag tag-primary tag-pill float-xs-right">{record.sick}</span>
                   Sick
                 </li>
-                <li className="list-group-item">
+                <li>
                   <span className="tag tag-primary tag-pill float-xs-right">{record.bereavement}</span>
                   Bereavement
                 </li>
-                <li className="list-group-item">
+                <li>
                   <span className="tag tag-primary tag-pill float-xs-right">{record.christmas}</span>
                   Christmas
                 </li>
-                <li className="list-group-item">
+                <li>
                   <span className="tag tag-primary tag-pill float-xs-right">{dateOfBirth}</span>
                   DOB
                 </li>
-                <li className="list-group-item">
+                <li>
                   <span className="tag tag-primary tag-pill float-xs-right">{record.maternity}</span>
                   Maternity
                 </li>
-                <li className="list-group-item">
-                  <button onClick={this.editRecord.bind(this)} className="btn btn-link">Edit</button>
+                <li>
+                  <button onClick={this.editRecord.bind(this)} className="btn btn-link p-0">Edit</button>
                   <button onClick={this.archiveRecord.bind(this)} className="btn btn-link">Archive</button>
                 </li>
               </ul>
