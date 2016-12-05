@@ -14,7 +14,7 @@ class ApprovedLeave extends Component {
   render() {
     const { approved_items, isFetching, isAuthenticated } = this.props
     return (
-      <div className="ApprovedLeave">
+      <div className="container">
         {isAuthenticated && (isFetching ?
           <div className="text-xs-center"><BeatLoader color="#0275d8" size="12px" /></div> :
           <ApprovedLeaveList approved_items={approved_items} />)
