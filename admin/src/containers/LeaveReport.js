@@ -14,7 +14,7 @@ class LeaveReport extends Component {
   render() {
     const { isFetching, leave_record, isAuthenticated } = this.props
     return (
-      <div className="LeaveReport">
+      <div className="container">
         {isAuthenticated && (isFetching ?
           <div className="text-xs-center"><BeatLoader color="#0275d8" size="12px" /></div> :
           <LeaveReportList leave_record={leave_record} />)
