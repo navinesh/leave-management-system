@@ -18,7 +18,7 @@ class ArchivedStaffRecord extends Component {
   render () {
     const { archived_staff_record, isAuthenticated, searchTerm, dispatch } = this.props
     return (
-      <div className="ArchivedStaffRecord">
+      <div className="container">
         {isAuthenticated &&
           <ArchivedStaffRecordList  archived_staff_record={archived_staff_record} searchTerm={searchTerm} dispatch={dispatch} />
         }
