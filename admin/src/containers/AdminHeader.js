@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import Header from '../components/AdminHeader'
 import AdminLogin from './AdminLogin'
 
-const AdminHeader = ({ isAuthenticated, dispatch }) =>
+const AdminHeader = ({ isAuthenticated, dispatch, children }) =>
   <div className="AdminHeader">
     {
       isAuthenticated ?
@@ -15,6 +15,7 @@ const AdminHeader = ({ isAuthenticated, dispatch }) =>
       <AdminLogin />
       </div>
     }
+    {children}
   </div>
 
 const mapStateToProps = (state) => {
