@@ -14,7 +14,7 @@ class PendingLeave extends Component {
   render() {
     const { isFetching, pending_items, isAuthenticated } = this.props
     return (
-      <div className="PendingLeave">
+      <div className="container">
         {isAuthenticated && (isFetching ?
           <div className="text-xs-center"><BeatLoader color="#0275d8" size="12px" /></div> :
           <PendingLeaveList pending_items={pending_items} />)
