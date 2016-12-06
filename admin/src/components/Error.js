@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Error = () =>
+export default () =>
   <div className="container text-xs-center">
     <div className="offset-sm-2 col-sm-8">
       <h2 className="display-2">404</h2>
@@ -8,5 +8,3 @@ const Error = () =>
       <h5 className="display-4">The site configured at this address does not contain the requested file.</h5>
     </div>
   </div>
-
-export default Error
