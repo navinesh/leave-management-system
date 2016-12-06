@@ -17,7 +17,7 @@ class StaffRecord extends Component {
   render () {
     const { staff_record, isAuthenticated, searchTerm, dispatch } = this.props
     return (
-      <div className="StaffRecord">
+      <div className="container">
         {isAuthenticated &&
           <StaffRecordList  staff_record={staff_record} searchTerm={searchTerm} dispatch={dispatch} />
         }
