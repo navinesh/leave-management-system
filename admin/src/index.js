@@ -7,7 +7,7 @@ import axios from 'axios'
 import configureStore from './stores/ConfigureStore'
 
 import AdminHeader from './containers/AdminHeader'
-import AdminSidebar from './containers/Sidebar'
+//import AdminSidebar from './containers/Sidebar'
 import PendingLeave from './containers/PendingLeave'
 import ApprovedLeave from './containers/ApprovedLeave'
 import StaffRecord from './containers/StaffRecord'
@@ -82,31 +82,18 @@ export const requireAuthentication = (nextState, replace, callback) => {
   }
 }
 
-const App = ({ main }) =>
-  <div className="App">
-    <div className="Header">
-      <AdminHeader />
-    </div>
-    <div className="col-sm-2 p-0">
-      <AdminSidebar />
-    </div>
-    <div className="col-sm-10">
-      {main}
-    </div>
-  </div>
-
 render(
   <Provider store={store}>
     <Router history={browserHistory}>
-      <Route path="/" component={App}>
-        <IndexRoute onEnter={requireAuthentication} components={{main: PendingLeave}}/>
-        <Route path="/staffrecord" onEnter={requireAuthentication} components={{main: StaffRecord}} />
-        <Route path="/approvedleave" onEnter={requireAuthentication} components={{main: ApprovedLeave}} />
-        <Route path="/leavereport" onEnter={requireAuthentication} components={{main: LeaveReport}} />
-        <Route path="/sicksheetrecord" onEnter={requireAuthentication} components={{main: SickSheetRecord}} />
-        <Route path="/sicksheetrecord/:fileId" onEnter={requireAuthentication} components={{main: SickSheetRecord}}/>
-        <Route path="/archivedstaffrecord" onEnter={requireAuthentication} components={{main: ArchivedStaffRecord}} />
-        <Route path="/newrecord" onEnter={requireAuthentication} components={{main: NewRecord} }/>
+      <Route path="/" component={AdminHeader}>
+        <IndexRoute onEnter={requireAuthentication} component={PendingLeave} />
+        <Route path="/staffrecord" onEnter={requireAuthentication} component={StaffRecord} />
+        <Route path="/approvedleave" onEnter={requireAuthentication} component={ApprovedLeave} />
+        <Route path="/leavereport" onEnter={requireAuthentication} component={LeaveReport} />
+        <Route path="/sicksheetrecord" onEnter={requireAuthentication} component={SickSheetRecord} />
+        <Route path="/sicksheetrecord/:fileId" onEnter={requireAuthentication} component={SickSheetRecord} />
+        <Route path="/archivedstaffrecord" onEnter={requireAuthentication} component={ArchivedStaffRecord} />
+        <Route path="/newrecord" onEnter={requireAuthentication} component={NewRecord} />
       </Route>
       <Route path="*" component={Error}/>
     </Router>
