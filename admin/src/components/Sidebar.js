@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router'
 
-const Sidebar = () =>
+export default () =>
   <nav className="nav nav-pills nav-stacked">
     <Link className="nav-link" to="/">
         Dashboard
@@ -25,5 +25,3 @@ const Sidebar = () =>
       New record
     </Link>
   </nav>
-
-export default Sidebar
