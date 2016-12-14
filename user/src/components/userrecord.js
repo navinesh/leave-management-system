@@ -91,7 +91,7 @@ export const UserRecord = ({ user_detail, message }) => {
     return (
       <div className="jumbotron jumbotron-fluid" style={{backgroundColor: '#F8F8F8'}}>
         <div className="container">
-          <div className="col-sm-3">
+          <div className="col-sm-2">
             <p style={{fontSize: '20px'}}>{user_detail.othernames} {user_detail.surname}</p>
             <Link to="/changepassword" className="card-link">Change password</Link>
           </div>
