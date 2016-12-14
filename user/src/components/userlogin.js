@@ -31,13 +31,13 @@ export default class Login extends Component {
         <div className="card card-block">
           <form onSubmit={this.handleSubmit.bind(this)}>
             <div className="form-group">
-              <label for="email">Email address</label>
+              <label htmlFor="email">Email address</label>
               <input type="email" className="form-control"
                 placeholder="Enter email" id="email"
                 onChange={this.handleEmailChange.bind(this)} />
             </div>
             <div className="form-group">
-              <label for="password">Password</label>
+              <label htmlFor="password">Password</label>
               <input type="password" className="form-control"
                 placeholder="Password" id="password"
                 onChange={this.handlePasswordChange.bind(this)} />
