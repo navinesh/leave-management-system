@@ -6,7 +6,7 @@ import UserRecord from './userrecord'
 
 const Main = ({ isAuthenticated }) => {
   return (
-    <div className="Main">
+    <div className="container">
       {!isAuthenticated &&
         <div className="row">
           <div className="col-sm-8">
