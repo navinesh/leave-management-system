@@ -200,7 +200,7 @@ export default class LeaveApplications extends Component {
     else {
       return(
         <div className="LeaveApplications">
-          <div className="col-xs-12 col-sm-3 offset-sm-1">
+          <div className="col-xs-12 col-sm-3 offset-sm-2">
             <p>{user_detail.othernames} {user_detail.surname}</p>
             <ul className="list-group">
               <li className="list-group-item">
@@ -227,31 +227,37 @@ export default class LeaveApplications extends Component {
                 : ''}
             </ul>
           </div>
-          <div className="col-xs-12 col-sm-6">
+          <div className="col-xs-12 col-sm-5">
             <div className="card card-block">
               <form encType='multipart/form-data' onSubmit={this.handleSubmit}>
-                <div className="form-group">
-                  <label htmlFor="leave">Leave</label>
-                  <select className="form-control" id="leave" onChange={this.handleLeaveChange}>
-                    <option></option>
-                    <option>annual</option>
-                    <option>sick</option>
-                    <option>bereavement</option>
-                    <option>christmas</option>
-                    <option>birthday</option>
-                    <option>maternity</option>
-                    <option>lwop</option>
-                    <option>other</option>
-                  </select>
-                </div>
-                <div className="form-group">
-                  <label htmlFor="leaveType">Leave type</label>
-                  <select className="form-control" id="leaveType" onChange={this.handleLeaveTypeChange}>
-                    <option></option>
-                    <option>full</option>
-                    <option>half day am</option>
-                    <option>half day pm</option>
-                  </select>
+                <div className="row">
+                  <div className="col-sm-6">
+                    <div className="form-group">
+                      <label htmlFor="leave">Leave</label>
+                      <select className="form-control" id="leave" onChange={this.handleLeaveChange}>
+                        <option></option>
+                        <option>annual</option>
+                        <option>sick</option>
+                        <option>bereavement</option>
+                        <option>christmas</option>
+                        <option>birthday</option>
+                        <option>maternity</option>
+                        <option>lwop</option>
+                        <option>other</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div className="col-sm-6">
+                    <div className="form-group">
+                      <label htmlFor="leaveType">Leave type</label>
+                      <select className="form-control" id="leaveType" onChange={this.handleLeaveTypeChange}>
+                        <option></option>
+                        <option>full</option>
+                        <option>half day am</option>
+                        <option>half day pm</option>
+                      </select>
+                    </div>
+                  </div>
                 </div>
                 <div className="row">
                   <div className="col-sm-6">
