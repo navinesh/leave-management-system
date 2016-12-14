@@ -89,7 +89,7 @@ export const UserRecord = ({ user_detail, message }) => {
   }
   else {
     return (
-      <div className="jumbotron jumbotron-fluid p-t-2 p-b-2">
+      <div className="jumbotron jumbotron-fluid" style={{backgroundColor: '#F8F8F8'}}>
         <div className="container">
           <div className="col-sm-3">
             <p style={{fontSize: '20px'}}>{user_detail.othernames} {user_detail.surname}</p>
