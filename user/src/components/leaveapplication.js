@@ -204,24 +204,24 @@ export default class LeaveApplications extends Component {
             <p>{user_detail.othernames} {user_detail.surname}</p>
             <ul className="list-group">
               <li className="list-group-item">
-                <span className="tag tag-primary tag-pill pull-xs-right">{user_detail.annual}</span>
+                <span className="tag tag-primary tag-pill float-xs-right">{user_detail.annual}</span>
                 Annual
               </li>
               <li className="list-group-item">
-                <span className="tag tag-primary tag-pill pull-xs-right">{user_detail.sick}</span>
+                <span className="tag tag-primary tag-pill float-xs-right">{user_detail.sick}</span>
                 Sick
               </li>
               <li className="list-group-item">
-                <span className="tag tag-primary tag-pill pull-xs-right">{user_detail.bereavement}</span>
+                <span className="tag tag-primary tag-pill float-xs-right">{user_detail.bereavement}</span>
                 Bereavement
               </li>
               <li className="list-group-item">
-                <span className="tag tag-primary tag-pill pull-xs-right">{user_detail.christmas}</span>
+                <span className="tag tag-primary tag-pill float-xs-right">{user_detail.christmas}</span>
                 Christmas
               </li>
               {user_detail.maternity ?
                 <li className="list-group-item">
-                  <span className="tag tag-primary tag-pill pull-xs-right">{user_detail.maternity}</span>
+                  <span className="tag tag-primary tag-pill float-xs-right">{user_detail.maternity}</span>
                   Maternity
                 </li>
                 : ''}
