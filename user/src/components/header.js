@@ -18,14 +18,14 @@ const Navs = ({ isAuthenticated, onLogoutClick, children }) => {
               <Link className="nav-item nav-link" to="/">
                 Leave management system
               </Link>
-              <div className="pull-xs-right">
+              <div className="float-xs-right">
                 <Link className="nav-item nav-link" to="/leaveapplication">
                   Leave application
                 </Link>
                 <Link className="nav-item nav-link" to="/leavecalendar">
                   Leave calendar
                 </Link>
-                <button onClick={() => onLogoutClick()} className="btn btn-primary m-l-1">
+                <button onClick={() => onLogoutClick()} className="btn btn-primary ml-1">
                   Sign out
                 </button>
               </div>
