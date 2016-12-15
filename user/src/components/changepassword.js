@@ -55,19 +55,19 @@ export default class UserChange extends Component {
       <div className="card card-block">
         <form onSubmit={this.handleSubmit.bind(this)}>
         <div className="form-group">
-          <label for="currentPassword">Current password</label>
+          <label htmlFor="currentPassword">Current password</label>
           <input type="password" className="form-control"
             placeholder="Current password" id="currentPassword"
             onChange={this.handleCurrentPasswordChange.bind(this)} />
         </div>
         <div className="form-group">
-          <label for="newPassword">New password</label>
+          <label htmlFor="newPassword">New password</label>
           <input type="password" className="form-control"
             placeholder="New password" id="newPassword"
             onChange={this.handleNewPasswordChange.bind(this)} />
         </div>
         <div className="form-group">
-          <label for="newPasswordConfirm">Confirm new password</label>
+          <label htmlFor="newPasswordConfirm">Confirm new password</label>
           <input type="password" className="form-control"
             placeholder="Confirm new password" id="newPasswordConfirm"
             onChange={this.handleNewPasswordConfirmChange.bind(this)} />
