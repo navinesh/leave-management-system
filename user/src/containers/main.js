@@ -6,14 +6,16 @@ import UserRecord from './userrecord'
 
 const Main = ({ isAuthenticated }) => {
   return (
-    <div className="container">
+    <div className="Main">
       {!isAuthenticated &&
-        <div className="row">
-          <div className="col-sm-8">
-            <LeaveCalendar />
-          </div>
-          <div className="col-sm-4">
-            <UserLogin />
+        <div className="container">
+          <div className="row">
+            <div className="col-sm-8">
+              <LeaveCalendar />
+            </div>
+            <div className="col-sm-4">
+              <UserLogin />
+            </div>
           </div>
         </div>
       }
