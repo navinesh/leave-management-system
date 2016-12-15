@@ -1,14 +1,15 @@
 import React from 'react'
 import { connect } from 'react-redux'
 import Navs from '../components/header'
-import { logoutUser } from '../actions/userlogout'
 
 const Header = ({ isAuthenticated, dispatch, children }) => {
   return (
-    <Navs
-      isAuthenticated={isAuthenticated}
-      onLogoutClick={() => dispatch(logoutUser())}
-      children={children} />
+    <div className="Header">
+      <Navs
+        isAuthenticated={isAuthenticated}
+        dispatch={dispatch} />
+      {children}
+    </div>
   )
 }
 
