@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { browserHistory } from 'react-router'
 import { connect } from 'react-redux'
 import { fetchUserDetailsIfNeeded } from '../actions/userdetails'
 import { fetchLeaveApplication } from '../actions/leaveapplication'
@@ -30,9 +29,6 @@ class LeaveApplication extends Component {
           message={message}
           user_detail={user_detail}
           onLeaveApplicationClick={ applicationDetails => dispatch(fetchLeaveApplication(applicationDetails)) } />
-        }
-        {!isAuthenticated &&
-          browserHistory.push('/')
         }
       </div>
     )
