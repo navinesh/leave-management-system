@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { browserHistory } from 'react-router'
 import { connect } from 'react-redux'
 import UserChange from '../components/changepassword'
 import { changePassword, clearChangePasswordError } from '../actions/changepassword'
@@ -24,9 +23,6 @@ class UserChangePassword extends Component {
               onChangeClick={ creds => dispatch(changePassword(creds)) } />
             </div>
           </div>
-        }
-        {!isAuthenticated &&
-          browserHistory.push('/')
         }
       </div>
     )
