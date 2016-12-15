@@ -5,7 +5,7 @@ import Login from '../components/userlogin'
 
 const UserLogin = ({ dispatch, message, isAuthenticated, isFetching }) => {
   return (
-    <div className="UserLoginBox">
+    <div className="UserLogin">
       {!isAuthenticated &&
         <Login
         isFetching={isFetching}
