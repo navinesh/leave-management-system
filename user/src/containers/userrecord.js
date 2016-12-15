@@ -28,14 +28,18 @@ class UserRecords extends Component {
   render() {
     const { isFetching, isRecordFetching, user_detail, user_record, message } = this.props
     return (
-      <div className="UserDetailsContainer">
+      <div className="UserRecords">
         {isFetching ? <div className="text-xs-center">
           <BeatLoader color="#0275d8" size="12px" /></div> :
           <UserRecord user_detail={user_detail} message={message} />
         }
         {isRecordFetching ? <div className="text-xs-center" style={{paddingTop: '100px'}}>
           <PulseLoader color="#0275d8" size="12px" /></div> :
-          <RecordList user_record={user_record} />
+          <div className="container">
+            <div className="row">
+              <RecordList user_record={user_record} />
+            </div>
+          </div>
         }
       </div>
     )
