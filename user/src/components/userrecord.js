@@ -93,24 +93,24 @@ export const UserRecord = ({ user_detail, message }) => {
         <div className="container">
           <div className="row">
             <div className="col-sm-2">
-              <p style={{fontSize: '20px'}}>{user_detail.othernames} {user_detail.surname}</p>
+              <p className="lead">{user_detail.othernames} {user_detail.surname}</p>
               <Link to="/changepassword" className="card-link">Change password</Link>
             </div>
             <div className="col-sm-2">
-              <p style={{fontSize: '20px'}}>Annual&nbsp;<span className="tag tag-primary tag-pill">{user_detail.annual}</span></p>
+              <p className="lead">Annual&nbsp;<span className="tag tag-primary tag-pill">{user_detail.annual}</span></p>
             </div>
             <div className="col-sm-2">
-              <p style={{fontSize: '20px'}}>Sick&nbsp;<span className="tag tag-primary tag-pill">{user_detail.sick}</span></p>
+              <p className="lead">Sick&nbsp;<span className="tag tag-primary tag-pill">{user_detail.sick}</span></p>
             </div>
             <div className="col-sm-2">
-              <p style={{fontSize: '20px'}}>Christmas&nbsp;<span className="tag tag-primary tag-pill">{user_detail.christmas}</span></p>
+              <p className="lead">Christmas&nbsp;<span className="tag tag-primary tag-pill">{user_detail.christmas}</span></p>
             </div>
             <div className="col-sm-2">
-              <p style={{fontSize: '20px'}}>Bereavement&nbsp;<span className="tag tag-primary tag-pill">{user_detail.bereavement}</span></p>
+              <p className="lead">Bereavement&nbsp;<span className="tag tag-primary tag-pill">{user_detail.bereavement}</span></p>
             </div>
             <div className="col-sm-2">
               {user_detail.maternity >= 1 ?
-                <p style={{fontSize: '20px'}}>Maternity&nbsp;<span className="tag tag-primary tag-pill">{user_detail.maternity}</span></p>
+                <p className="lead">Maternity&nbsp;<span className="tag tag-primary tag-pill">{user_detail.maternity}</span></p>
               : ''}
             </div>
           </div>
