@@ -28,7 +28,7 @@ export default class Login extends Component {
   render(){
     return(
       <div className="Login">
-        <div className="card card-block">
+        <div className="card card-block" style={{borderColor: '#66afe9'}}>
           <form onSubmit={this.handleSubmit.bind(this)}>
             <div className="form-group">
               <label htmlFor="email">Email address</label>
