@@ -14,14 +14,12 @@ class UserChangePassword extends Component {
     return (
       <div className="UserAccount">
         {isAuthenticated &&
-          <div className="row">
-            <div className="col-xs-12 col-sm-4 offset-sm-4 pt-3">
-              <UserChange
-              isFetching={isFetching}
-              message={message}
-              auth_info={auth_info}
-              onChangeClick={ creds => dispatch(changePassword(creds)) } />
-            </div>
+          <div className="col-xs-12 col-sm-4 offset-sm-4 pt-3">
+            <UserChange
+            isFetching={isFetching}
+            message={message}
+            auth_info={auth_info}
+            onChangeClick={ creds => dispatch(changePassword(creds)) } />
           </div>
         }
       </div>
