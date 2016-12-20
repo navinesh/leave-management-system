@@ -184,7 +184,7 @@ export default class LeaveApplications extends Component {
     this.props.onLeaveApplicationClick(applicationDetails)
   }
 
-  render(){
+  render() {
     const { isFetching, message, user_detail } = this.props
     if (this.state.successMessage) {
       return(
