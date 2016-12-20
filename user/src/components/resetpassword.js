@@ -17,7 +17,7 @@ export default class UserResetPassword extends Component {
     this.props.onResetClick(email)
   }
 
-  render(){
+  render() {
     return(
       <div className="card card-block">
         <form onSubmit={this.handleSubmit.bind(this)}>
