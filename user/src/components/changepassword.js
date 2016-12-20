@@ -50,7 +50,7 @@ export default class UserChange extends Component {
     this.props.onChangeClick(creds)
   }
 
-  render(){
+  render() {
     return(
       <div className="card card-block">
         <form onSubmit={this.handleSubmit.bind(this)}>
