@@ -25,7 +25,7 @@ export default class Login extends Component {
     this.props.onLoginClick(creds)
   }
 
-  render(){
+  render() {
     return(
       <div className="Login">
         <div className="card card-block" style={{borderColor: '#66afe9'}}>
