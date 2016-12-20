@@ -20,11 +20,7 @@ const Main = ({ isAuthenticated }) => {
         </div>
       }
       {isAuthenticated &&
-        <div className="row">
-          <div className="col-sm-12">
-            <UserRecord />
-        </div>
-      </div>
+        <UserRecord />
       }
     </div>
   )
