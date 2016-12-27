@@ -89,26 +89,26 @@ export const UserRecord = ({ user_detail, message }) => {
   }
   else {
     return (
-      <div className="jumbotron jumbotron-fluid" style={{backgroundColor: '#F8F8F8'}}>
+      <div className="jumbotron jumbotron-fluid" style={{color: '#FFFFFF', backgroundColor: '#0275D8'}}>
         <div className="container">
           <div className="row">
-            <div className="col-sm-2">
-              <p className="lead">{user_detail.othernames} {user_detail.surname}</p>
-              <Link to="/changepassword" className="card-link">Change password</Link>
+            <div className="col-sm-12">
+              <p className="display-4">{user_detail.othernames} {user_detail.surname}</p>
+              <Link to="/changepassword" className="btn btn-secondary">Change password</Link>
             </div>
-            <div className="col-sm-2">
+            <div className="col-sm-2 pt-3">
               <p className="lead">Annual&nbsp;<span className="tag tag-primary tag-pill">{user_detail.annual}</span></p>
             </div>
-            <div className="col-sm-2">
+            <div className="col-sm-2 pt-3">
               <p className="lead">Sick&nbsp;<span className="tag tag-primary tag-pill">{user_detail.sick}</span></p>
             </div>
-            <div className="col-sm-2">
+            <div className="col-sm-2 pt-3">
               <p className="lead">Christmas&nbsp;<span className="tag tag-primary tag-pill">{user_detail.christmas}</span></p>
             </div>
-            <div className="col-sm-2">
+            <div className="col-sm-2 pt-3">
               <p className="lead">Bereavement&nbsp;<span className="tag tag-primary tag-pill">{user_detail.bereavement}</span></p>
             </div>
-            <div className="col-sm-2">
+            <div className="col-sm-2 pt-3">
               {user_detail.maternity >= 1 ?
                 <p className="lead">Maternity&nbsp;<span className="tag tag-primary tag-pill">{user_detail.maternity}</span></p>
               : ''}
