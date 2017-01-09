@@ -36,7 +36,7 @@ export default class Login extends Component {
 
   render(){
     return(
-      <div className="col-xs-12 col-sm-4 offset-sm-4">
+      <div className="col-md-4 offset-md-4">
         <div className="card card-block">
           <form onSubmit={this.handleSubmit.bind(this)}>
             <div className="form-group">
@@ -52,21 +52,21 @@ export default class Login extends Component {
                 onChange={this.handlePasswordChange.bind(this)} />
             </div>
             <div className="form-group">
-              <button type="submit" className="btn btn-primary col-xs-12 col-sm-12">Log in</button>
+              <button type="submit" className="btn btn-primary col">Log in</button>
             </div>
           </form>
-          <div className="text-danger text-xs-center pt-3">
+          <div className="text-danger text-center">
             {this.props.isFetching ?
               <Loader color="#0275d8" size="20px" />:
               this.props.message}
           </div>
-          <div className="text-danger text-xs-center ">
+          <div className="text-danger text-center">
             {this.state.errorMessage ?
               <div>{this.state.errorMessage}</div> :
                  ''}
           </div>
         </div>
-        <Link to="/reset" className="btn col-xs-12 col-sm-12">Forgot your password?</Link>
+        <Link to="/reset" className="btn col">Forgot your password?</Link>
       </div>
     )
   }
