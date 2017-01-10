@@ -16,7 +16,7 @@ class PendingLeave extends Component {
     return (
       <div className="container">
         {isAuthenticated && (isFetching ?
-          <div className="text-xs-center"><BeatLoader color="#0275d8" size="12px" /></div> :
+          <div className="text-center"><BeatLoader color="#0275d8" size="12px" /></div> :
           <PendingLeaveList pending_items={pending_items} />)
         }
       </div>
