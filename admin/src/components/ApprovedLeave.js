@@ -61,7 +61,7 @@ const ApprovedRecordList = ({ approved_items }) => {
         </tbody>
       </table>
     </div>) :
-    (<div className="container text-xs-center" style={{paddingTop: '100px'}}>
+    (<div className="container text-center" style={{paddingTop: '100px'}}>
         <h1 className="display-3">There are no approved leave record.</h1>
     </div>)
   )
