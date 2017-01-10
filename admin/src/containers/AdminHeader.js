@@ -9,7 +9,7 @@ const AdminHeader = ({ isAuthenticated, dispatch, children }) =>
       isAuthenticated ?
       <Header dispatch={dispatch} /> :
       <div>
-        <h1 className="display-4 text-center pb-3">
+        <h1 className="display-4 text-center pb-4">
           Leave Management System
         </h1>
       <AdminLogin />
