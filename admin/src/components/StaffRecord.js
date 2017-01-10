@@ -23,32 +23,32 @@ class StaffRecordList extends Component {
         let dob = new Date(record.date_of_birth)
         let dateOfBirth = moment(dob).format('DD/MM/YYYY')
         return (
-          <div className="col-sm-3" key={record.id}>
+          <div className="col-md-3" key={record.id}>
             <div className="card card-block">
               <ul className="list-unstyled">
                 <li className="h5">{record.othernames} {record.surname}</li>
                 <li>
-                  <span className="tag tag-primary tag-pill float-xs-right">{record.annual}</span>
+                  <span className="badge badge-primary badge-pill float-right">{record.annual}</span>
                   Annual
                 </li>
                 <li>
-                  <span className="tag tag-primary tag-pill float-xs-right">{record.sick}</span>
+                  <span className="badge badge-primary badge-pill float-right">{record.sick}</span>
                   Sick
                 </li>
                 <li>
-                  <span className="tag tag-primary tag-pill float-xs-right">{record.bereavement}</span>
+                  <span className="badge badge-primary badge-pill float-right">{record.bereavement}</span>
                   Bereavement
                 </li>
                 <li>
-                  <span className="tag tag-primary tag-pill float-xs-right">{record.christmas}</span>
+                  <span className="badge badge-primary badge-pill float-right">{record.christmas}</span>
                   Christmas
                 </li>
                 <li>
-                  <span className="tag tag-primary tag-pill float-xs-right">{dateOfBirth}</span>
+                  <span className="badge badge-primary badge-pill float-right">{dateOfBirth}</span>
                   DOB
                 </li>
                 <li>
-                  <span className="tag tag-primary tag-pill float-xs-right">{record.maternity}</span>
+                  <span className="badge badge-primary badge-pill float-right">{record.maternity}</span>
                   Maternity
                 </li>
                 <li>
@@ -63,7 +63,7 @@ class StaffRecordList extends Component {
     return (
       <div className="StaffRecordList">
         <div className="row">
-          <div className="col-sm-3">
+          <div className="col-md-3">
             <div className="form-group">
               <input
                 type="text"
