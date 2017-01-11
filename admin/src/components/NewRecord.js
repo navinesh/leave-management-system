@@ -95,11 +95,11 @@ export default class NewRecordForm extends Component {
     const { isFetching, message } = this.props
     return (
       <div className="container">
-        <div className="col-xs-12 col-sm-5 offset-sm-3">
+        <div className="col-md-5 offset-md-3 pb-2">
           <div className="card card-block">
             <form encType='multipart/form-data' onSubmit={this.handleSubmit}>
               <div className="row">
-                <div className="col-sm-6">
+                <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="surName">Surname</label>
                     <input type="text" className="form-control"
@@ -107,7 +107,7 @@ export default class NewRecordForm extends Component {
                       onChange={this.handleSurnameChange} />
                   </div>
                 </div>
-                <div className="col-sm-6">
+                <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="otherNames">Other Names</label>
                     <input type="text" className="form-control"
@@ -123,7 +123,7 @@ export default class NewRecordForm extends Component {
                   onChange={this.handleStaffEmailChange} />
               </div>
               <div className="row">
-                <div className="col-sm-6">
+                <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="designation">Designation</label>
                     <select className="form-control" id="designation" onChange={this.handleDesignationChange}>
@@ -170,7 +170,7 @@ export default class NewRecordForm extends Component {
                     </select>
                   </div>
                 </div>
-                <div className="col-sm-6">
+                <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="gender">Gender</label>
                       <select className="form-control" id="designation" onChange={this.handlegenderChange}>
@@ -186,7 +186,7 @@ export default class NewRecordForm extends Component {
                 </div>
               </div>
               <div className="row">
-                <div className="col-sm-6">
+                <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="annualLeave">Annual leave</label>
                     <input type="number" className="form-control"
@@ -194,7 +194,7 @@ export default class NewRecordForm extends Component {
                       onChange={this.handleAnnualLeaveChange} />
                   </div>
                 </div>
-                <div className="col-sm-6">
+                <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="sickLeave">Sick leave</label>
                     <input type="number" className="form-control"
@@ -204,7 +204,7 @@ export default class NewRecordForm extends Component {
                 </div>
               </div>
               <div className="row">
-                <div className="col-sm-6">
+                <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="christmasLeave">Christmas leave</label>
                     <input type="number" className="form-control"
@@ -212,7 +212,7 @@ export default class NewRecordForm extends Component {
                       onChange={this.handleChristmasLeaveChange} />
                   </div>
                 </div>
-                <div className="col-sm-6">
+                <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="bereavementLeave">Bereavement leave</label>
                     <input type="number" className="form-control"
@@ -222,7 +222,7 @@ export default class NewRecordForm extends Component {
                 </div>
               </div>
               <div className="row">
-                <div className="col-sm-6">
+                <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="Maternity leave">Maternity leave</label>
                     <input type="number" className="form-control"
@@ -230,7 +230,7 @@ export default class NewRecordForm extends Component {
                       onChange={this.handleMaternityLeaveChange} />
                   </div>
                 </div>
-                <div className="col-sm-6">
+                <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="dob">Date of birth</label>
                     <input type="date" className="form-control"
@@ -240,15 +240,15 @@ export default class NewRecordForm extends Component {
                 </div>
               </div>
               <div className="form-group">
-                <button type="submit" className="btn btn-primary col-xs-12 col-sm-12">Submit</button>
+                <button type="submit" className="btn btn-primary col">Submit</button>
               </div>
             </form>
-            <div className="text-danger text-xs-center">
+            <div className="text-danger text-center">
               {isFetching ?
                 <div>Loading...</div>:
                 message}
             </div>
-            <div className="text-danger text-xs-center">
+            <div className="text-danger text-center">
               {this.state.errorMessage ?
                 <div>{this.state.errorMessage}</div> :
                    ''}
