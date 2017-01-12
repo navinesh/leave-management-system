@@ -47,7 +47,7 @@ export const loginFailureFromToken = () => ({
 export const fetchLogin = (creds) => {
   return dispatch => {
     dispatch(requestUserLogin(creds))
-    axios.post('http://localhost:8080/userlogin', {
+    axios.post('userlogin', {
         email: creds.email,
         password: creds.password
       })
@@ -66,7 +66,7 @@ export const fetchLogin = (creds) => {
 export const fetchLoginFromToken = (auth_token) => {
   return dispatch => {
     dispatch(requestUserLoginFromToken(auth_token))
-    axios.post('http://localhost:8080/usertoken', {
+    axios.post('usertoken', {
         auth_token: auth_token
       })
       .then((response) => {

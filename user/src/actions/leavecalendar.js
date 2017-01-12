@@ -9,14 +9,14 @@ export const requestLeave = () => ({
 
 export const receiveLeave = (json) => ({
   type: RECEIVE_LEAVE_CALENDAR,
-  records: json.approved_leave_records,
+  records: json.leave_records,
   receivedAt: Date.now()
 })
 
 export const fetchLeave = () => {
   return dispatch => {
     dispatch(requestLeave())
-    return fetch(`http://localhost:8080/approved-leave.api`)
+    return fetch(`approved-leave.api`)
       .then(response => response.json())
       .then(json => dispatch(receiveLeave(json)))
   }
