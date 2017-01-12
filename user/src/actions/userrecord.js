@@ -28,7 +28,7 @@ export const fetchUserRecord = (auth_token) => {
   return dispatch => {
     dispatch(requestUserRecord(auth_token))
     axios({
-      url: 'user-record.api',
+      url: 'http://localhost:8080/user-record.api',
       auth: { username: auth_token }
       })
       .then((response) => {

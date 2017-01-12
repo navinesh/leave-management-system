@@ -1,23 +1,32 @@
-import React, { PropTypes, Component } from 'react'
-import { Link, browserHistory } from 'react-router'
-import { logoutAdmin } from '../actions/AdminLogout'
+import React, { PropTypes, Component } from "react";
+
+import { Link, browserHistory } from "react-router";
+
+import { logoutAdmin } from "../actions/AdminLogout";
 
 export default class Header extends Component {
   adminLogout(e) {
-    e.preventDefault()
-    this.props.dispatch(logoutAdmin())
-    browserHistory.push('/')
+    e.preventDefault();
+
+    this.props.dispatch(logoutAdmin());
+
+    browserHistory.push("/");
   }
 
   render() {
     return (
-      <nav className="navbar navbar-fixed-top">
+      <nav className="navbar fixed-top navbar-toggleable-md">
         <div className="container">
-          <div className="nav navbar-nav">
-            <Link className="nav-item nav-link" to="/">
-              Leave management system
-            </Link>
-            <div className="float-xs-right">
+          <button style={
+            { borderColor: "#66afe9" }
+          } className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <Link className="navbar-brand" to="/">
+            Leave management system
+          </Link>
+          <div className="collapse navbar-collapse" id="navbarNav">
+            <div className="navbar-nav">
               <Link className="nav-item nav-link" to="/staffrecord">
                 Staff record
               </Link>
@@ -36,17 +45,17 @@ export default class Header extends Component {
               <Link className="nav-item nav-link" to="/archivedstaffrecord">
                 Archived staff
               </Link>
-              <button onClick={this.adminLogout.bind(this)} className="btn btn-primary ml-1">
+              <button onClick={
+                this.adminLogout.bind(this)
+              } className="btn btn-primary ml-1">
                 Sign out
               </button>
             </div>
           </div>
         </div>
       </nav>
-    )
+    );
   }
 }
 
-Header.propTypes = {
-  dispatch: PropTypes.func.isRequired
-}
+Header.propTypes = { dispatch: PropTypes.func.isRequired };

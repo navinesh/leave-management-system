@@ -28,7 +28,7 @@ export const fetchUserDetails = (auth_token) => {
   return dispatch => {
     dispatch(requestUserDetails(auth_token))
     axios({
-      url: 'user-detail.api',
+      url: 'http://localhost:8080/user-detail.api',
       auth: { username: auth_token }
       })
       .then((response) => {
