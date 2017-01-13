@@ -31,7 +31,7 @@ const ApprovedRecordList = ({ approved_items }) => {
     .map(data => {
       return (
         <tr key={data.id}>
-          <td>{data.user.othernames}{data.user.surname}</td>
+          <td>{data.user.othernames}{" "}{data.user.surname}</td>
           <td>{data.leave_name}</td>
           <td>{data.leave_type}</td>
           <td>{data.start_date}</td>

@@ -35,7 +35,7 @@ class StaffRecordList extends Component {
           <div className="col-md-3" key={record.id}>
             <div className="card card-block">
               <ul className="list-unstyled">
-                <li className="h5">{record.othernames}{record.surname}</li>
+                <li className="h5">{record.othernames}{" "}{record.surname}</li>
                 <li>
                   <span className="badge badge-primary badge-pill float-right">{record.annual}</span>
                   Annual

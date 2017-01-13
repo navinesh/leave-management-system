@@ -6,7 +6,7 @@ const RecordList = ({ pending_items }) => {
   const itemNodes = pending_items.map(record => {
     return (
       <tr key={record.id}>
-        <td>{record.user.othernames}{record.user.surname}</td>
+        <td>{record.user.othernames}{" "}{record.user.surname}</td>
         <td>{record.leave_name}</td>
         <td>{record.leave_type}</td>
         <td>{record.start_date}</td>
