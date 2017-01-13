@@ -2,8 +2,6 @@
 
 ##ReactJS
 
-This repo contains admin files
-
 to-do
 
 ##Required Libraries and Dependencies
