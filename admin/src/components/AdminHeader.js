@@ -1,15 +1,11 @@
 import React, { PropTypes, Component } from "react";
-
 import { Link, browserHistory } from "react-router";
-
 import { logoutAdmin } from "../actions/AdminLogout";
 
 export default class Header extends Component {
   adminLogout(e) {
     e.preventDefault();
-
     this.props.dispatch(logoutAdmin());
-
     browserHistory.push("/");
   }
 
@@ -36,7 +32,7 @@ export default class Header extends Component {
             className="collapse navbar-collapse justify-content-end"
             id="navbarNav"
           >
-            <div className="navbar-nav float-right">
+            <div className="navbar-nav">
               <Link className="nav-item nav-link" to="/staffrecord">
                 Staff record
               </Link>
