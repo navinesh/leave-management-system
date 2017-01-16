@@ -27,30 +27,44 @@ class ArchivedStaffRecordList extends Component {
           <div className="col-md-3" key={record.id}>
             <div className="card">
               <ul className="list-group list-group-flush">
-                <li className="list-group-item">{record.othernames}{" "}{record.surname}</li>
+                <li className="list-group-item">
+                  <span>{record.othernames}{" "}{record.surname}</span>
+                </li>
                 <li className="list-group-item justify-content-between">
                   Annual
-                  <span className="badge badge-primary badge-pill">{record.annual}</span>
+                  <span className="badge badge-primary badge-pill">
+                    {record.annual}
+                  </span>
                 </li>
                 <li className="list-group-item justify-content-between">
                   Sick
-                  <span className="badge badge-primary badge-pill">{record.sick}</span>
+                  <span className="badge badge-primary badge-pill">
+                    {record.sick}
+                  </span>
                 </li>
                 <li className="list-group-item justify-content-between">
                   Bereavement
-                  <span className="badge badge-primary badge-pill">{record.bereavement}</span>
+                  <span className="badge badge-primary badge-pill">
+                    {record.bereavement}
+                  </span>
                 </li>
                 <li className="list-group-item justify-content-between">
                   Christmas
-                  <span className="badge badge-primary badge-pill">{record.christmas}</span>
+                  <span className="badge badge-primary badge-pill">
+                    {record.christmas}
+                  </span>
                 </li>
                 <li className="list-group-item justify-content-between">
                   DOB
-                  <span className="badge badge-primary badge-pill">{dateOfBirth}</span>
+                  <span className="badge badge-primary badge-pill">
+                    {dateOfBirth}
+                  </span>
                 </li>
                 <li className="list-group-item justify-content-between">
                   Maternity
-                  <span className="badge badge-primary badge-pill">{record.maternity}</span>
+                  <span className="badge badge-primary badge-pill">
+                    {record.maternity}
+                  </span>
                 </li>
               </ul>
             </div>
@@ -63,9 +77,12 @@ class ArchivedStaffRecordList extends Component {
         <div className="row">
           <div className="col-md-3">
             <div className="form-group">
-              <input type="text" className="form-control" placeholder="Search" onChange={
-                this.handleSearchChange.bind(this)
-              } />
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Search"
+                onChange={this.handleSearchChange.bind(this)}
+              />
             </div>
           </div>
         </div>
