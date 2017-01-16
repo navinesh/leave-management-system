@@ -1,20 +1,18 @@
-import React from 'react'
-import { connect } from 'react-redux'
-import Sidebar from '../components/Sidebar'
+import React from "react";
+import { connect } from "react-redux";
+import Sidebar from "../components/Sidebar";
 
-const AdminSidebar = ({ isAuthenticated }) =>
+const AdminSidebar = ({ isAuthenticated }) => (
   <div className="AdminSidebar">
-    {
-      isAuthenticated &&
-      <Sidebar />
-    }
+    {isAuthenticated && <Sidebar />}
   </div>
+);
 
-const mapStateToProps = (state) => {
-  const { adminAuth } = state
-  const { isAuthenticated } = adminAuth
+const mapStateToProps = state => {
+  const { adminAuth } = state;
+  const { isAuthenticated } = adminAuth;
 
-  return { isAuthenticated }
-}
+  return { isAuthenticated };
+};
 
 export default connect(mapStateToProps)(AdminSidebar)

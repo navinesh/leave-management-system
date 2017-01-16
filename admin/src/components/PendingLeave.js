@@ -1,5 +1,4 @@
 import React, { PropTypes } from "react";
-
 import { Link } from "react-router";
 
 const RecordList = ({ pending_items }) => {
@@ -51,8 +50,9 @@ const RecordList = ({ pending_items }) => {
   );
 };
 
-const PendingLeaveList = ({ pending_items }) =>
-  <RecordList pending_items={pending_items} />;
+const PendingLeaveList = ({ pending_items }) => (
+  <RecordList pending_items={pending_items} />
+);
 
 PendingLeaveList.propTypes = { pending_items: PropTypes.array.isRequired };
 

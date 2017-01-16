@@ -20,6 +20,7 @@ const AdminHeader = ({ isAuthenticated, dispatch, children }) => (
 const mapStateToProps = state => {
   const { adminAuth } = state;
   const { isAuthenticated } = adminAuth;
+
   return { isAuthenticated };
 };
 

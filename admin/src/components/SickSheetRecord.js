@@ -1,5 +1,4 @@
 import React, { PropTypes } from "react";
-
 import { Link } from "react-router";
 
 const RecordList = ({ sickSheet_items }) => {
@@ -12,9 +11,12 @@ const RecordList = ({ sickSheet_items }) => {
         <td>{record.leave_days}</td>
         <td>{record.date_posted}</td>
         <td>
-          <Link className="btn btn-primary btn-sm" to={
-            `/sicksheetrecord/${record.file_name}`
-          }>Download</Link>
+          <Link
+            className="btn btn-primary btn-sm"
+            to={`/sicksheetrecord/${record.file_name}`}
+          >
+            Download
+          </Link>
         </td>
       </tr>
     );
@@ -41,8 +43,9 @@ const RecordList = ({ sickSheet_items }) => {
   );
 };
 
-const SickSheetList = ({ sickSheet_items }) =>
-  <RecordList sickSheet_items={sickSheet_items} />;
+const SickSheetList = ({ sickSheet_items }) => (
+  <RecordList sickSheet_items={sickSheet_items} />
+);
 
 SickSheetList.propTypes = { sickSheet_items: PropTypes.array.isRequired };
 

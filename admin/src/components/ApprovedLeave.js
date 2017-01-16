@@ -1,5 +1,4 @@
 import React, { PropTypes } from "react";
-
 import { Link } from "react-router";
 
 const moment = require("moment");
@@ -47,33 +46,36 @@ const ApprovedRecordList = ({ approved_items }) => {
       );
     });
 
-  return items.length > 0 ? <div className="table-responsive">
-      <table className="table table-bordered table-hover">
-        <thead className="thead-default">
-          <tr>
-            <th>Name</th>
-            <th>Leave</th>
-            <th>Type</th>
-            <th>Start date</th>
-            <th>End date</th>
-            <th>Leave days</th>
-            <th>Edit</th>
-            <th>Delete</th>
-          </tr>
-        </thead>
-        <tbody>
-          {items}
-        </tbody>
-      </table>
-    </div> : <div className="container text-center" style={
-      { paddingTop: "100px" }
-    }>
-      <h1 className="display-3">There are no approved leave record.</h1>
-    </div>;
+  return items.length > 0 ? (
+      <div className="table-responsive">
+        <table className="table table-bordered table-hover">
+          <thead className="thead-default">
+            <tr>
+              <th>Name</th>
+              <th>Leave</th>
+              <th>Type</th>
+              <th>Start date</th>
+              <th>End date</th>
+              <th>Leave days</th>
+              <th>Edit</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            {items}
+          </tbody>
+        </table>
+      </div>
+    ) : (
+      <div className="container text-center" style={{ paddingTop: "100px" }}>
+        <h1 className="display-3">There are no approved leave record.</h1>
+      </div>
+    );
 };
 
-const ApprovedLeaveList = ({ approved_items }) =>
-  <ApprovedRecordList approved_items={approved_items} />;
+const ApprovedLeaveList = ({ approved_items }) => (
+  <ApprovedRecordList approved_items={approved_items} />
+);
 
 ApprovedLeaveList.propTypes = { approved_items: PropTypes.array.isRequired };
 

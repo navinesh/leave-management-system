@@ -41,8 +41,9 @@ const ReportList = ({ leave_record }) => {
   );
 };
 
-const LeaveReportList = ({ leave_record }) =>
-  <ReportList leave_record={leave_record} />;
+const LeaveReportList = ({ leave_record }) => (
+  <ReportList leave_record={leave_record} />
+);
 
 LeaveReportList.propTypes = { leave_record: PropTypes.array.isRequired };
 

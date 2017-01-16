@@ -1,8 +1,7 @@
 import React, { PropTypes, Component } from "react";
+import { searchStaffRecord } from "../actions/StaffRecord";
 
 const moment = require("moment");
-
-import { searchStaffRecord } from "../actions/StaffRecord";
 
 class StaffRecordList extends Component {
   handleSearchChange(e) {
@@ -37,36 +36,54 @@ class StaffRecordList extends Component {
               <ul className="list-unstyled">
                 <li className="h5">{record.othernames}{" "}{record.surname}</li>
                 <li>
-                  <span className="badge badge-primary badge-pill float-right">{record.annual}</span>
+                  <span className="badge badge-primary badge-pill float-right">
+                    {record.annual}
+                  </span>
                   Annual
                 </li>
                 <li>
-                  <span className="badge badge-primary badge-pill float-right">{record.sick}</span>
+                  <span className="badge badge-primary badge-pill float-right">
+                    {record.sick}
+                  </span>
                   Sick
                 </li>
                 <li>
-                  <span className="badge badge-primary badge-pill float-right">{record.bereavement}</span>
+                  <span className="badge badge-primary badge-pill float-right">
+                    {record.bereavement}
+                  </span>
                   Bereavement
                 </li>
                 <li>
-                  <span className="badge badge-primary badge-pill float-right">{record.christmas}</span>
+                  <span className="badge badge-primary badge-pill float-right">
+                    {record.christmas}
+                  </span>
                   Christmas
                 </li>
                 <li>
-                  <span className="badge badge-primary badge-pill float-right">{dateOfBirth}</span>
+                  <span className="badge badge-primary badge-pill float-right">
+                    {dateOfBirth}
+                  </span>
                   DOB
                 </li>
                 <li>
-                  <span className="badge badge-primary badge-pill float-right">{record.maternity}</span>
+                  <span className="badge badge-primary badge-pill float-right">
+                    {record.maternity}
+                  </span>
                   Maternity
                 </li>
                 <li>
-                  <button onClick={
-                    this.editRecord.bind(this)
-                  } className="btn btn-link p-0">Edit</button>
-                  <button onClick={
-                    this.archiveRecord.bind(this)
-                  } className="btn btn-link">Archive</button>
+                  <button
+                    onClick={this.editRecord.bind(this)}
+                    className="btn btn-link p-0"
+                  >
+                    Edit
+                  </button>
+                  <button
+                    onClick={this.archiveRecord.bind(this)}
+                    className="btn btn-link"
+                  >
+                    Archive
+                  </button>
                 </li>
               </ul>
             </div>
@@ -79,9 +96,12 @@ class StaffRecordList extends Component {
         <div className="row">
           <div className="col-md-3">
             <div className="form-group">
-              <input type="text" className="form-control" placeholder="Search" onChange={
-                this.handleSearchChange.bind(this)
-              } />
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Search"
+                onChange={this.handleSearchChange.bind(this)}
+              />
             </div>
           </div>
         </div>

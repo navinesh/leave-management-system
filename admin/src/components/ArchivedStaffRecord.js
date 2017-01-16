@@ -1,8 +1,7 @@
 import React, { PropTypes, Component } from "react";
+import { searchStaffRecord } from "../actions/StaffRecord";
 
 const moment = require("moment");
-
-import { searchStaffRecord } from "../actions/StaffRecord";
 
 class ArchivedStaffRecordList extends Component {
   handleSearchChange(e) {

@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from "react";
-
 import { Link } from "react-router";
 
 var Loader = require("halogen/ClipLoader");
@@ -7,7 +6,6 @@ var Loader = require("halogen/ClipLoader");
 export default class Login extends Component {
   constructor() {
     super();
-
     this.state = { errorMessage: "" };
   }
 
@@ -21,9 +19,7 @@ export default class Login extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-
     const email = this.state.email ? this.state.email.trim() : null;
-
     const password = this.state.password ? this.state.password.trim() : null;
 
     if (!email || !password) {
@@ -37,7 +33,6 @@ export default class Login extends Component {
     this.setState({ errorMessage: "" });
 
     const creds = { email: email, password: password };
-
     this.props.onLoginClick(creds);
   }
 
@@ -48,18 +43,28 @@ export default class Login extends Component {
           <form onSubmit={this.handleSubmit.bind(this)}>
             <div className="form-group">
               <label htmlFor="email">Email address</label>
-              <input type="email" className="form-control" placeholder="Enter email" id="email" onChange={
-                this.handleEmailChange.bind(this)
-              } />
+              <input
+                type="email"
+                className="form-control"
+                placeholder="Enter email"
+                id="email"
+                onChange={this.handleEmailChange.bind(this)}
+              />
             </div>
             <div className="form-group">
               <label htmlFor="password">Password</label>
-              <input type="password" className="form-control" placeholder="Password" id="password" onChange={
-                this.handlePasswordChange.bind(this)
-              } />
+              <input
+                type="password"
+                className="form-control"
+                placeholder="Password"
+                id="password"
+                onChange={this.handlePasswordChange.bind(this)}
+              />
             </div>
             <div className="form-group">
-              <button type="submit" className="btn btn-primary col">Log in</button>
+              <button type="submit" className="btn btn-primary col">
+                Log in
+              </button>
             </div>
           </form>
           <div className="text-danger text-center">

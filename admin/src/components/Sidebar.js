@@ -1,13 +1,13 @@
-import React from 'react'
-import { Link } from 'react-router'
+import React from "react";
+import { Link } from "react-router";
 
-export default () =>
+export default () => (
   <nav className="nav nav-pills nav-stacked">
     <Link className="nav-link" to="/">
-        Dashboard
+      Dashboard
     </Link>
     <Link className="nav-link" to="/staffrecord">
-        Staff record
+      Staff record
     </Link>
     <Link className="nav-link" to="/approvedleave">
       Leave calendar
@@ -25,3 +25,4 @@ export default () =>
       New record
     </Link>
   </nav>
+)
