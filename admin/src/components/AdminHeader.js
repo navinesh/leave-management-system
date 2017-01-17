@@ -14,7 +14,6 @@ export default class Header extends Component {
       <nav className="navbar fixed-top navbar-toggleable-md">
         <div className="container">
           <button
-            style={{ borderColor: "#66afe9" }}
             className="navbar-toggler navbar-toggler-right"
             type="button"
             data-toggle="collapse"
