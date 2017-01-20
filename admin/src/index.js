@@ -16,7 +16,6 @@ import LeaveReport from "./containers/LeaveReport";
 import SickSheetRecord from "./containers/SickSheetRecord";
 import NewRecord from "./containers/NewRecord";
 import Error from "./components/Error";
-
 import {
   requestAdminLoginFromToken,
   loginAdminErrorFromToken,
