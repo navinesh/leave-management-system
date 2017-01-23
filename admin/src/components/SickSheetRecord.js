@@ -1,7 +1,7 @@
 import React, { PropTypes } from "react";
 import { Link } from "react-router";
 
-const RecordList = ({ sickSheet_items }) => {
+const SickSheetList = ({ sickSheet_items }) => {
   const itemNodes = sickSheet_items.map(record => {
     return (
       <tr key={record.id}>
@@ -42,10 +42,6 @@ const RecordList = ({ sickSheet_items }) => {
     </div>
   );
 };
-
-const SickSheetList = ({ sickSheet_items }) => (
-  <RecordList sickSheet_items={sickSheet_items} />
-);
 
 SickSheetList.propTypes = { sickSheet_items: PropTypes.array.isRequired };
 
