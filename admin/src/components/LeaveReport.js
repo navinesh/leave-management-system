@@ -1,6 +1,6 @@
 import React, { PropTypes } from "react";
 
-const ReportList = ({ leave_record }) => {
+const LeaveReportList = ({ leave_record }) => {
   const itemNodes = leave_record.map(record => {
     return (
       <tr key={record.id}>
@@ -40,10 +40,6 @@ const ReportList = ({ leave_record }) => {
     </div>
   );
 };
-
-const LeaveReportList = ({ leave_record }) => (
-  <ReportList leave_record={leave_record} />
-);
 
 LeaveReportList.propTypes = { leave_record: PropTypes.array.isRequired };
 
