@@ -1,6 +1,5 @@
 import React, { PropTypes, Component } from "react";
 import { searchStaffRecord } from "../actions/StaffRecord";
-import Modal from "./Modal";
 
 const moment = require("moment");
 
@@ -73,7 +72,7 @@ class StaffRecordList extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const surname = this.state.leave;
+    const surname = this.state.surname;
     const othernames = this.state.otherNames;
     const staffEmail = this.state.staffEmail;
     const designation = this.state.designation;
@@ -518,8 +517,8 @@ class StaffRecordList extends Component {
 StaffRecordList.propTypes = {
   staff_record: PropTypes.array.isRequired,
   searchTerm: React.PropTypes.string,
-  dispatch: PropTypes.func.isRequired,
-  onEditUserRecordSubmit: PropTypes.func.isRequired
+  //onEditUserRecordSubmit: PropTypes.func.isRequired
+  dispatch: PropTypes.func.isRequired
 };
 
 export default StaffRecordList;
