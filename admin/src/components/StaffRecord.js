@@ -1,22 +1,37 @@
 import React, { PropTypes, Component } from "react";
 import { searchStaffRecord } from "../actions/StaffRecord";
+import Modal from "./Modal";
 
 const moment = require("moment");
 
 class StaffRecordList extends Component {
+  constructor() {
+    super();
+    this.state = { editShow: false, archiveShow: false };
+  }
+
+  editShow(e) {
+    this.setState({ editShow: true });
+  }
+
+  editClose(e) {
+    this.setState({ editShow: false });
+  }
+
+  archiveShow(e) {
+    this.setState({ archiveShow: true });
+  }
+
+  archiveClose(e) {
+    this.setState({ archiveShow: false });
+  }
+
   handleSearchChange(e) {
     this.props.dispatch(searchStaffRecord(e.target.value.toLowerCase()));
   }
 
-  editRecord(e) {
-    console.log("edit");
-  }
-
-  archiveRecord(e) {
-    console.log("archive");
-  }
-
   render() {
+    console.log(this.state);
     const { staff_record, searchTerm } = this.props;
 
     const filteredElements = staff_record
@@ -34,7 +49,9 @@ class StaffRecordList extends Component {
           <div className="col-md-3" key={record.id}>
             <div className="card card-block">
               <ul className="list-unstyled">
-                <li className="h5">{record.othernames}{" "}{record.surname}</li>
+                <li className="h5">
+                  {record.othernames}{" "}{record.surname}
+                </li>
                 <li>
                   <span className="badge badge-primary badge-pill float-right">
                     {record.annual}
@@ -71,19 +88,313 @@ class StaffRecordList extends Component {
                   </span>
                   Maternity
                 </li>
-                <li>
+                <li className="mt-2">
                   <button
-                    onClick={this.editRecord.bind(this)}
-                    className="btn btn-link p-0"
+                    type="button"
+                    className="btn btn-primary btn-sm"
+                    data-toggle="modal"
+                    data-target="#id"
                   >
                     Edit
                   </button>
+                  <div
+                    className="modal fade"
+                    id="id"
+                    tabIndex="-1"
+                    role="dialog"
+                    aria-hidden="true"
+                  >
+                    <div className="modal-dialog" role="document">
+                      <div className="modal-content">
+                        <div className="modal-header">
+                          <h5 className="modal-title" id="editModalLabel">
+                            Edit
+                          </h5>
+                          <button
+                            type="button"
+                            className="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                          >
+                            <span aria-hidden="true">×</span>
+                          </button>
+                        </div>
+                        <div className="modal-body">
+                          <form
+                            encType="multipart/form-data"
+                            onSubmit={this.handleSubmit}
+                          >
+                            <div className="row">
+                              <div className="col-md-6">
+                                <div className="form-group">
+                                  <label htmlFor="surName">Surname</label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder={record.othernames}
+                                    id="surName"
+                                    onChange={this.handleSurnameChange}
+                                  />
+                                </div>
+                              </div>
+                              <div className="col-md-6">
+                                <div className="form-group">
+                                  <label htmlFor="otherNames">
+                                    Other Names
+                                  </label>
+                                  <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder={record.surname}
+                                    id="otherNames"
+                                    onChange={this.handleOtherNamesChange}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                            <div className="form-group">
+                              <label htmlFor="staffEmail">
+                                Email address
+                              </label>
+                              <input
+                                type="email"
+                                className="form-control"
+                                placeholder={record.email}
+                                id="staffEmail"
+                                onChange={this.handleStaffEmailChange}
+                              />
+                            </div>
+                            <div className="row">
+                              <div className="col-md-6">
+                                <div className="form-group">
+                                  <label htmlFor="designation">
+                                    Designation
+                                  </label>
+                                  <select
+                                    className="form-control"
+                                    id="designation"
+                                    onChange={this.handleDesignationChange}
+                                  >
+                                    <option>{record.designation}</option>
+                                    <option>
+                                      Admin
+                                    </option>
+                                    <option>
+                                      Level 3 Lawyer
+                                    </option>
+                                    <option>
+                                      Level 4 Lawyer
+                                    </option>
+                                    <option>
+                                      Level 3 Secretary
+                                    </option>
+                                    <option>
+                                      Level 4 Secretary
+                                    </option>
+                                    <option>
+                                      TM
+                                    </option>
+                                    <option>
+                                      Accounts
+                                    </option>
+                                    <option>
+                                      Library
+                                    </option>
+                                    <option>
+                                      IT
+                                    </option>
+                                    <option>
+                                      Search Clerk Level 3
+                                    </option>
+                                    <option>
+                                      Search Clerk Level 4
+                                    </option>
+                                    <option>
+                                      Legal Executive
+                                    </option>
+                                    <option>
+                                      Partner
+                                    </option>
+                                  </select>
+                                </div>
+                              </div>
+                              <div className="col-md-6">
+                                <div className="form-group">
+                                  <label htmlFor="gender">Gender</label>
+                                  <select
+                                    className="form-control"
+                                    id="designation"
+                                    onChange={this.handlegenderChange}
+                                  >
+                                    <option>{record.gender}</option>
+                                    <option>
+                                      Male
+                                    </option>
+                                    <option>
+                                      Female
+                                    </option>
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="row">
+                              <div className="col-md-6">
+                                <div className="form-group">
+                                  <label htmlFor="annualLeave">
+                                    Annual leave
+                                  </label>
+                                  <input
+                                    type="number"
+                                    className="form-control"
+                                    placeholder={record.annual}
+                                    id="annualLeave"
+                                    onChange={this.handleAnnualLeaveChange}
+                                  />
+                                </div>
+                              </div>
+                              <div className="col-md-6">
+                                <div className="form-group">
+                                  <label htmlFor="sickLeave">Sick leave</label>
+                                  <input
+                                    type="number"
+                                    className="form-control"
+                                    placeholder={record.sick}
+                                    id="sickLeave"
+                                    onChange={this.handleSickLeaveChange}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                            <div className="row">
+                              <div className="col-md-6">
+                                <div className="form-group">
+                                  <label htmlFor="christmasLeave">
+                                    Christmas leave
+                                  </label>
+                                  <input
+                                    type="number"
+                                    className="form-control"
+                                    placeholder={record.christmas}
+                                    id="christmasLeave"
+                                    onChange={this.handleChristmasLeaveChange}
+                                  />
+                                </div>
+                              </div>
+                              <div className="col-md-6">
+                                <div className="form-group">
+                                  <label htmlFor="bereavementLeave">
+                                    Bereavement leave
+                                  </label>
+                                  <input
+                                    type="number"
+                                    className="form-control"
+                                    placeholder={record.bereavement}
+                                    id="bereavementLeave"
+                                    onChange={this.handleBereavementLeaveChange}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                            <div className="row">
+                              <div className="col-md-6">
+                                <div className="form-group">
+                                  <label htmlFor="Maternity leave">
+                                    Maternity leave
+                                  </label>
+                                  <input
+                                    type="number"
+                                    className="form-control"
+                                    placeholder={record.maternity}
+                                    id="maternityLeave"
+                                    onChange={this.handleMaternityLeaveChange}
+                                  />
+                                </div>
+                              </div>
+                              <div className="col-md-6">
+                                <div className="form-group">
+                                  <label htmlFor="dob">Date of birth</label>
+                                  <input
+                                    type="date"
+                                    className="form-control"
+                                    placeholder={dateOfBirth}
+                                    id="dob"
+                                    onChange={this.handleDOBChange}
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                            <div className="modal-footer">
+                              <div className="form-group">
+                                <button
+                                  type="button"
+                                  className="btn btn-outline-primary"
+                                  data-dismiss="modal"
+                                >
+                                  Close
+                                </button>
+                              </div>
+                              <div className="form-group">
+                                <button
+                                  type="submit"
+                                  className="btn btn-primary col"
+                                >
+                                  Save changes
+                                </button>
+                              </div>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   <button
-                    onClick={this.archiveRecord.bind(this)}
-                    className="btn btn-link"
+                    type="button"
+                    className="btn btn-primary btn-sm ml-2"
+                    data-toggle="modal"
+                    data-target="#archive"
                   >
                     Archive
                   </button>
+                  <div
+                    className="modal fade"
+                    id="archive"
+                    tabIndex="-1"
+                    role="dialog"
+                    aria-hidden="true"
+                  >
+                    <div className="modal-dialog" role="document">
+                      <div className="modal-content">
+                        <div className="modal-header">
+                          <h5 className="modal-title" id="archive">
+                            Archive
+                          </h5>
+                          <button
+                            type="button"
+                            className="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                          >
+                            <span aria-hidden="true">×</span>
+                          </button>
+                        </div>
+                        <div className="modal-body">
+                          Archive staff record
+                        </div>
+                        <div className="modal-footer">
+                          <button
+                            type="button"
+                            className="btn btn-secondary"
+                            data-dismiss="modal"
+                          >
+                            Close
+                          </button>
+                          <button type="button" className="btn btn-primary">
+                            Save changes
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </li>
               </ul>
             </div>
