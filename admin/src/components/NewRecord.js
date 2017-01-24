@@ -69,7 +69,7 @@ export default class NewRecordForm extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const surname = this.state.leave;
+    const surname = this.state.surname;
     const othernames = this.state.otherNames;
     const staffEmail = this.state.staffEmail;
     const designation = this.state.designation;
