@@ -7,23 +7,114 @@ const moment = require("moment");
 class StaffRecordList extends Component {
   constructor() {
     super();
-    this.state = { editShow: false, archiveShow: false };
+    this.state = { errorMessage: "", successMessage: "" };
+    this.handleSurnameChange = this.handleSurnameChange.bind(this);
+    this.handleOtherNamesChange = this.handleOtherNamesChange.bind(this);
+    this.handleStaffEmailChange = this.handleStaffEmailChange.bind(this);
+    this.handleDesignationChange = this.handleDesignationChange.bind(this);
+    this.handleDOBChange = this.handleDOBChange.bind(this);
+    this.handleAnnualLeaveChange = this.handleAnnualLeaveChange.bind(this);
+    this.handleSickLeaveChange = this.handleSickLeaveChange.bind(this);
+    this.handleChristmasLeaveChange = this.handleChristmasLeaveChange.bind(
+      this
+    );
+    this.handleBereavementLeaveChange = this.handleBereavementLeaveChange.bind(
+      this
+    );
+    this.handleMaternityLeaveChange = this.handleMaternityLeaveChange.bind(
+      this
+    );
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  editShow(e) {
-    this.setState({ editShow: true });
+  handleSurnameChange(e) {
+    this.setState({ surname: e.target.value });
   }
 
-  editClose(e) {
-    this.setState({ editShow: false });
+  handleOtherNamesChange(e) {
+    this.setState({ otherNames: e.target.value });
   }
 
-  archiveShow(e) {
-    this.setState({ archiveShow: true });
+  handleStaffEmailChange(e) {
+    this.setState({ staffEmail: e });
   }
 
-  archiveClose(e) {
-    this.setState({ archiveShow: false });
+  handleDesignationChange(e) {
+    this.setState({ designation: e });
+  }
+
+  handleDOBChange(e) {
+    this.setState({ dob: e.target.value });
+  }
+
+  handleAnnualLeaveChange(e) {
+    this.setState({ annualLeave: e.target.value });
+  }
+
+  handleSickLeaveChange(e) {
+    this.setState({ sickLeave: e.target.value });
+  }
+
+  handleChristmasLeaveChange(e) {
+    this.setState({ christmasLeave: e.target.files[0] });
+  }
+
+  handleBereavementLeaveChange(e) {
+    this.setState({ bereavementLeave: e.target.value });
+  }
+
+  handleMaternityLeaveChange(e) {
+    this.setState({ maternityLeave: e.target.value });
+  }
+
+  handlegenderChange(e) {
+    this.setState({ gender: e.target.value });
+  }
+
+  handleSubmit(e) {
+    e.preventDefault();
+    const surname = this.state.leave;
+    const othernames = this.state.otherNames;
+    const staffEmail = this.state.staffEmail;
+    const designation = this.state.designation;
+    const annualDays = this.state.annualLeave;
+    const sickDays = this.state.sickLeave;
+    const bereavmentDays = this.state.bereavementLeave;
+    const christmasDays = this.state.christmasLeave;
+    const dateOfBirth = this.state.dob;
+    const maternityDays = this.state.maternityLeave
+      ? this.state.maternityLeave
+      : null;
+    const gender = this.state.gender;
+    // verify data
+    if (
+      !surname || !othernames || !staffEmail || !designation || !annualDays ||
+        !sickDays ||
+        !bereavmentDays ||
+        !christmasDays ||
+        !dateOfBirth ||
+        gender
+    ) {
+      this.setState({
+        errorMessage: "One or more required fields are missing!"
+      });
+      return null;
+    }
+    // prepare data to post to database
+    const editUserDetails = {
+      surname: surname,
+      othernames: othernames,
+      staffEmail: staffEmail,
+      designation: designation,
+      annualDays: annualDays,
+      sickDays: sickDays,
+      bereavmentDays: bereavmentDays,
+      christmasDays: christmasDays,
+      dateOfBirth: dateOfBirth,
+      maternityDays: maternityDays,
+      gender: gender
+    };
+    this.props.onEditUserRecordSubmit(editUserDetails);
   }
 
   handleSearchChange(e) {
@@ -427,7 +518,8 @@ class StaffRecordList extends Component {
 StaffRecordList.propTypes = {
   staff_record: PropTypes.array.isRequired,
   searchTerm: React.PropTypes.string,
-  dispatch: PropTypes.func.isRequired
+  dispatch: PropTypes.func.isRequired,
+  onEditUserRecordSubmit: PropTypes.func.isRequired
 };
 
 export default StaffRecordList;
