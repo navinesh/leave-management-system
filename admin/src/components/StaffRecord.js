@@ -110,13 +110,11 @@ class StaffRecordList extends Component {
 
   handleOpenModal1(e) {
     this.setState({ showModal1: true });
-    this.setState({ showModal2: false });
     this.setState({ listID: e.target.id });
   }
 
   handleOpenModal2(e) {
     this.setState({ showModal2: true });
-    this.setState({ showModal1: false });
     this.setState({ listID: e.target.id });
   }
 
