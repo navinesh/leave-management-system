@@ -1,12 +1,41 @@
 import React, { PropTypes, Component } from "react";
 import { searchStaffRecord } from "../actions/StaffRecord";
+import Modal from "react-modal";
 
 const moment = require("moment");
+
+const customStyles = {
+  overlay: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(255, 255, 255, 0.75)"
+  },
+  content: {
+    position: "absolute",
+    top: "60px",
+    left: "0px",
+    right: "0px",
+    bottom: "0px",
+    border: "0",
+    background: "#fff",
+    overflow: "auto",
+    WebkitOverflowScrolling: "touch",
+    outline: "none"
+  }
+};
 
 class StaffRecordList extends Component {
   constructor() {
     super();
-    this.state = { errorMessage: "", successMessage: "" };
+    this.state = {
+      errorMessage: "",
+      successMessage: "",
+      showModal1: false,
+      showModal2: false
+    };
     this.handleSurnameChange = this.handleSurnameChange.bind(this);
     this.handleOtherNamesChange = this.handleOtherNamesChange.bind(this);
     this.handleStaffEmailChange = this.handleStaffEmailChange.bind(this);
@@ -24,6 +53,15 @@ class StaffRecordList extends Component {
       this
     );
     this.handleSubmit = this.handleSubmit.bind(this);
+
+    this.handleOpenModal1 = this.handleOpenModal1.bind(this);
+    this.handleCloseModal1 = this.handleCloseModal1.bind(this);
+    this.handleOpenModal2 = this.handleOpenModal2.bind(this);
+    this.handleCloseModal2 = this.handleCloseModal2.bind(this);
+  }
+
+  handleSearchChange(e) {
+    this.props.dispatch(searchStaffRecord(e.target.value.toLowerCase()));
   }
 
   handleSurnameChange(e) {
@@ -68,6 +106,26 @@ class StaffRecordList extends Component {
 
   handlegenderChange(e) {
     this.setState({ gender: e.target.value });
+  }
+
+  handleOpenModal1(e) {
+    this.setState({ showModal1: true });
+    this.setState({ showModal2: false });
+    this.setState({ listID: e.target.id });
+  }
+
+  handleOpenModal2(e) {
+    this.setState({ showModal2: true });
+    this.setState({ showModal1: false });
+    this.setState({ listID: e.target.id });
+  }
+
+  handleCloseModal1() {
+    this.setState({ showModal1: false });
+  }
+
+  handleCloseModal2() {
+    this.setState({ showModal2: false });
   }
 
   handleSubmit(e) {
@@ -116,13 +174,9 @@ class StaffRecordList extends Component {
     this.props.onEditUserRecordSubmit(editUserDetails);
   }
 
-  handleSearchChange(e) {
-    this.props.dispatch(searchStaffRecord(e.target.value.toLowerCase()));
-  }
-
   render() {
-    console.log(this.state);
     const { staff_record, searchTerm } = this.props;
+    const listID = parseInt(this.state.listID, 10);
 
     const filteredElements = staff_record
       .filter(
@@ -137,7 +191,7 @@ class StaffRecordList extends Component {
 
         return (
           <div className="col-md-3" key={record.id}>
-            <div className="card card-block">
+            <div className="card card-block mb-2">
               <ul className="list-unstyled">
                 <li className="h5">
                   {record.othernames}{" "}{record.surname}
@@ -182,32 +236,60 @@ class StaffRecordList extends Component {
                   <button
                     type="button"
                     className="btn btn-primary btn-sm"
-                    data-toggle="modal"
-                    data-target="#id"
+                    onClick={this.handleOpenModal1}
+                    id={record.id}
                   >
                     Edit
                   </button>
-                  <div
-                    className="modal fade"
-                    id="id"
-                    tabIndex="-1"
-                    role="dialog"
-                    aria-hidden="true"
+                  <button
+                    type="button"
+                    className="btn btn-primary btn-sm ml-2"
+                    onClick={this.handleOpenModal2}
+                    id={record.id}
                   >
-                    <div className="modal-dialog" role="document">
+                    Archive
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        );
+      });
+
+    return (
+      <div className="StaffRecordList">
+        <div className="row">
+          <div className="col-md-3">
+            <div className="form-group">
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Search"
+                onChange={this.handleSearchChange.bind(this)}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="row">
+          {filteredElements}
+          {staff_record
+              .filter(e => e.id === listID)
+              .map(
+                record => (
+                  <div key={record.id}>
+                    <Modal
+                      className="Modal__Bootstrap modal-dialog"
+                      isOpen={this.state.showModal1}
+                      onRequestClose={this.handleCloseModal1}
+                      overlayClassName="Overlay"
+                      contentLabel="Modal 1"
+                      style={customStyles}
+                    >
                       <div className="modal-content">
                         <div className="modal-header">
                           <h5 className="modal-title" id="editModalLabel">
                             Edit
                           </h5>
-                          <button
-                            type="button"
-                            className="close"
-                            data-dismiss="modal"
-                            aria-label="Close"
-                          >
-                            <span aria-hidden="true">×</span>
-                          </button>
                         </div>
                         <div className="modal-body">
                           <form
@@ -223,7 +305,7 @@ class StaffRecordList extends Component {
                                     className="form-control"
                                     placeholder={record.othernames}
                                     id="surName"
-                                    onChange={this.handleSurnameChange}
+                                    onChange={this.handleOtherNamesChange}
                                   />
                                 </div>
                               </div>
@@ -237,7 +319,7 @@ class StaffRecordList extends Component {
                                     className="form-control"
                                     placeholder={record.surname}
                                     id="otherNames"
-                                    onChange={this.handleOtherNamesChange}
+                                    onChange={this.handleSurnameChange}
                                   />
                                 </div>
                               </div>
@@ -406,7 +488,7 @@ class StaffRecordList extends Component {
                                   <input
                                     type="date"
                                     className="form-control"
-                                    placeholder={dateOfBirth}
+                                    placeholder="{dateOfBirth}"
                                     id="dob"
                                     onChange={this.handleDOBChange}
                                   />
@@ -418,7 +500,7 @@ class StaffRecordList extends Component {
                                 <button
                                   type="button"
                                   className="btn btn-outline-primary"
-                                  data-dismiss="modal"
+                                  onClick={this.handleCloseModal1}
                                 >
                                   Close
                                 </button>
@@ -435,79 +517,49 @@ class StaffRecordList extends Component {
                           </form>
                         </div>
                       </div>
-                    </div>
+                    </Modal>
                   </div>
-                  <button
-                    type="button"
-                    className="btn btn-primary btn-sm ml-2"
-                    data-toggle="modal"
-                    data-target="#archive"
-                  >
-                    Archive
-                  </button>
-                  <div
-                    className="modal fade"
-                    id="archive"
-                    tabIndex="-1"
-                    role="dialog"
-                    aria-hidden="true"
-                  >
-                    <div className="modal-dialog" role="document">
+                )
+              )}
+          {staff_record
+              .filter(e => e.id === listID)
+              .map(
+                record => (
+                  <div key={record.id}>
+                    <Modal
+                      className="Modal__Bootstrap modal-dialog"
+                      isOpen={this.state.showModal2}
+                      onRequestClose={this.handleCloseModal2}
+                      contentLabel="Modal #2"
+                      overlayClassName="Overlay"
+                      style={customStyles}
+                    >
                       <div className="modal-content">
                         <div className="modal-header">
-                          <h5 className="modal-title" id="archive">
+                          <h5 className="modal-title">
                             Archive
                           </h5>
-                          <button
-                            type="button"
-                            className="close"
-                            data-dismiss="modal"
-                            aria-label="Close"
-                          >
-                            <span aria-hidden="true">×</span>
-                          </button>
                         </div>
                         <div className="modal-body">
-                          Archive staff record
+                          <p>Modal #2 text!</p>
+                          {record.id}
                         </div>
                         <div className="modal-footer">
                           <button
-                            type="button"
-                            className="btn btn-secondary"
-                            data-dismiss="modal"
+                            className="btn btn-outline-primary"
+                            onClick={this.handleCloseModal2}
                           >
                             Close
                           </button>
-                          <button type="button" className="btn btn-primary">
+                          <button type="submit" className="btn btn-primary">
                             Save changes
                           </button>
                         </div>
                       </div>
-                    </div>
+                    </Modal>
                   </div>
-                </li>
-              </ul>
-            </div>
-          </div>
-        );
-      });
-
-    return (
-      <div className="StaffRecordList">
-        <div className="row">
-          <div className="col-md-3">
-            <div className="form-group">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Search"
-                onChange={this.handleSearchChange.bind(this)}
-              />
-            </div>
-          </div>
-        </div>
-        <div className="row">
-          {filteredElements}
+                )
+              )}
         </div>
       </div>
     );
