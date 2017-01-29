@@ -15,7 +15,7 @@ const customStyles = {
   },
   content: {
     position: "absolute",
-    top: "60px",
+    top: "40px",
     left: "0px",
     right: "0px",
     bottom: "0px",
@@ -115,6 +115,7 @@ class StaffRecordList extends Component {
 
   handleOpenModal2(e) {
     this.setState({ showModal2: true });
+
     this.setState({ listID: e.target.id });
   }
 
@@ -143,7 +144,11 @@ class StaffRecordList extends Component {
     const gender = this.state.gender;
     // verify data
     if (
-      !surname || !othernames || !staffEmail || !designation || !annualDays ||
+      !surname ||
+        !othernames ||
+        !staffEmail ||
+        !designation ||
+        !annualDays ||
         !sickDays ||
         !bereavmentDays ||
         !christmasDays ||
@@ -224,12 +229,16 @@ class StaffRecordList extends Component {
                   </span>
                   DOB
                 </li>
-                <li>
-                  <span className="badge badge-primary badge-pill float-right">
-                    {record.maternity}
-                  </span>
-                  Maternity
-                </li>
+                {
+                  record.gender.toLowerCase() === "female" ? <li>
+                      <span
+                        className="badge badge-primary badge-pill float-right"
+                      >
+                        {record.maternity}
+                      </span>
+                      Maternity
+                    </li> : <br />
+                }
                 <li className="mt-2">
                   <button
                     type="button"
@@ -271,202 +280,215 @@ class StaffRecordList extends Component {
         <div className="row">
           {filteredElements}
           {staff_record
-              .filter(e => e.id === listID)
-              .map(
-                record => (
-                  <div key={record.id}>
-                    <Modal
-                      className="Modal__Bootstrap modal-dialog"
-                      isOpen={this.state.showModal1}
-                      onRequestClose={this.handleCloseModal1}
-                      overlayClassName="Overlay"
-                      contentLabel="Modal 1"
-                      style={customStyles}
-                    >
-                      <div className="modal-content">
-                        <div className="modal-header">
-                          <h5 className="modal-title" id="editModalLabel">
-                            Edit
-                          </h5>
-                        </div>
-                        <div className="modal-body">
-                          <form
-                            encType="multipart/form-data"
-                            onSubmit={this.handleSubmit}
-                          >
-                            <div className="row">
-                              <div className="col-md-6">
-                                <div className="form-group">
-                                  <label htmlFor="surName">Surname</label>
-                                  <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder={record.othernames}
-                                    id="surName"
-                                    onChange={this.handleOtherNamesChange}
-                                  />
-                                </div>
-                              </div>
-                              <div className="col-md-6">
-                                <div className="form-group">
-                                  <label htmlFor="otherNames">
-                                    Other Names
-                                  </label>
-                                  <input
-                                    type="text"
-                                    className="form-control"
-                                    placeholder={record.surname}
-                                    id="otherNames"
-                                    onChange={this.handleSurnameChange}
-                                  />
-                                </div>
-                              </div>
-                            </div>
+            .filter(e => e.id === listID)
+            .map(record => (
+              <div key={record.id}>
+                <Modal
+                  className="Modal__Bootstrap modal-dialog"
+                  isOpen={this.state.showModal1}
+                  onRequestClose={this.handleCloseModal1}
+                  overlayClassName="Overlay"
+                  contentLabel="Modal 1"
+                  style={customStyles}
+                >
+                  <div className="modal-content">
+                    <div className="modal-header">
+                      <h5 className="modal-title" id="editModalLabel">
+                        Edit
+                      </h5>
+                    </div>
+                    <div className="modal-body">
+                      <form
+                        encType="multipart/form-data"
+                        onSubmit={this.handleSubmit}
+                      >
+                        <div className="row">
+                          <div className="col-md-6">
                             <div className="form-group">
-                              <label htmlFor="staffEmail">
-                                Email address
-                              </label>
+                              <label htmlFor="surName">Surname</label>
                               <input
-                                type="email"
+                                type="text"
                                 className="form-control"
-                                placeholder={record.email}
-                                id="staffEmail"
-                                onChange={this.handleStaffEmailChange}
+                                placeholder={record.othernames}
+                                id="surName"
+                                onChange={this.handleOtherNamesChange}
                               />
                             </div>
-                            <div className="row">
-                              <div className="col-md-6">
-                                <div className="form-group">
-                                  <label htmlFor="designation">
-                                    Designation
-                                  </label>
-                                  <select
-                                    className="form-control"
-                                    id="designation"
-                                    onChange={this.handleDesignationChange}
-                                  >
-                                    <option>{record.designation}</option>
-                                    <option>
-                                      Admin
-                                    </option>
-                                    <option>
-                                      Level 3 Lawyer
-                                    </option>
-                                    <option>
-                                      Level 4 Lawyer
-                                    </option>
-                                    <option>
-                                      Level 3 Secretary
-                                    </option>
-                                    <option>
-                                      Level 4 Secretary
-                                    </option>
-                                    <option>
-                                      TM
-                                    </option>
-                                    <option>
-                                      Accounts
-                                    </option>
-                                    <option>
-                                      Library
-                                    </option>
-                                    <option>
-                                      IT
-                                    </option>
-                                    <option>
-                                      Search Clerk Level 3
-                                    </option>
-                                    <option>
-                                      Search Clerk Level 4
-                                    </option>
-                                    <option>
-                                      Legal Executive
-                                    </option>
-                                    <option>
-                                      Partner
-                                    </option>
-                                  </select>
-                                </div>
-                              </div>
-                              <div className="col-md-6">
-                                <div className="form-group">
-                                  <label htmlFor="gender">Gender</label>
-                                  <select
-                                    className="form-control"
-                                    id="designation"
-                                    onChange={this.handlegenderChange}
-                                  >
-                                    <option>{record.gender}</option>
-                                    <option>
-                                      Male
-                                    </option>
-                                    <option>
-                                      Female
-                                    </option>
-                                  </select>
-                                </div>
-                              </div>
+                          </div>
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label htmlFor="otherNames">
+                                Other Names
+                              </label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                placeholder={record.surname}
+                                id="otherNames"
+                                onChange={this.handleSurnameChange}
+                              />
                             </div>
-                            <div className="row">
-                              <div className="col-md-6">
-                                <div className="form-group">
-                                  <label htmlFor="annualLeave">
-                                    Annual leave
-                                  </label>
-                                  <input
-                                    type="number"
-                                    className="form-control"
-                                    placeholder={record.annual}
-                                    id="annualLeave"
-                                    onChange={this.handleAnnualLeaveChange}
-                                  />
-                                </div>
-                              </div>
-                              <div className="col-md-6">
-                                <div className="form-group">
-                                  <label htmlFor="sickLeave">Sick leave</label>
-                                  <input
-                                    type="number"
-                                    className="form-control"
-                                    placeholder={record.sick}
-                                    id="sickLeave"
-                                    onChange={this.handleSickLeaveChange}
-                                  />
-                                </div>
-                              </div>
+                          </div>
+                        </div>
+                        <div className="form-group">
+                          <label htmlFor="staffEmail">
+                            Email address
+                          </label>
+                          <input
+                            type="email"
+                            className="form-control"
+                            placeholder={record.email}
+                            id="staffEmail"
+                            onChange={this.handleStaffEmailChange}
+                          />
+                        </div>
+                        <div className="row">
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label htmlFor="designation">
+                                Designation
+                              </label>
+                              <select
+                                className="form-control"
+                                id="designation"
+                                onChange={this.handleDesignationChange}
+                              >
+                                <option>{record.designation}</option>
+                                <option>
+                                  Admin
+                                </option>
+                                <option>
+                                  Level 3 Lawyer
+                                </option>
+                                <option>
+                                  Level 4 Lawyer
+                                </option>
+                                <option>
+                                  Level 3 Secretary
+                                </option>
+                                <option>
+                                  Level 4 Secretary
+                                </option>
+                                <option>
+                                  TM
+                                </option>
+                                <option>
+                                  Accounts
+                                </option>
+                                <option>
+                                  Library
+                                </option>
+                                <option>
+                                  IT
+                                </option>
+                                <option>
+                                  Search Clerk Level 3
+                                </option>
+                                <option>
+                                  Search Clerk Level 4
+                                </option>
+                                <option>
+                                  Legal Executive
+                                </option>
+                                <option>
+                                  Partner
+                                </option>
+                              </select>
                             </div>
-                            <div className="row">
-                              <div className="col-md-6">
-                                <div className="form-group">
-                                  <label htmlFor="christmasLeave">
-                                    Christmas leave
-                                  </label>
-                                  <input
-                                    type="number"
-                                    className="form-control"
-                                    placeholder={record.christmas}
-                                    id="christmasLeave"
-                                    onChange={this.handleChristmasLeaveChange}
-                                  />
-                                </div>
-                              </div>
-                              <div className="col-md-6">
-                                <div className="form-group">
-                                  <label htmlFor="bereavementLeave">
-                                    Bereavement leave
-                                  </label>
-                                  <input
-                                    type="number"
-                                    className="form-control"
-                                    placeholder={record.bereavement}
-                                    id="bereavementLeave"
-                                    onChange={this.handleBereavementLeaveChange}
-                                  />
-                                </div>
-                              </div>
+                          </div>
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label htmlFor="gender">Gender</label>
+                              <select
+                                className="form-control"
+                                id="designation"
+                                onChange={this.handlegenderChange}
+                              >
+                                <option>{record.gender}</option>
+                                <option>
+                                  Male
+                                </option>
+                                <option>
+                                  Female
+                                </option>
+                              </select>
                             </div>
-                            <div className="row">
-                              <div className="col-md-6">
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label htmlFor="annualLeave">
+                                Annual leave
+                              </label>
+                              <input
+                                type="number"
+                                className="form-control"
+                                placeholder={record.annual}
+                                id="annualLeave"
+                                onChange={this.handleAnnualLeaveChange}
+                              />
+                            </div>
+                          </div>
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label htmlFor="sickLeave">Sick leave</label>
+                              <input
+                                type="number"
+                                className="form-control"
+                                placeholder={record.sick}
+                                id="sickLeave"
+                                onChange={this.handleSickLeaveChange}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label htmlFor="christmasLeave">
+                                Christmas leave
+                              </label>
+                              <input
+                                type="number"
+                                className="form-control"
+                                placeholder={record.christmas}
+                                id="christmasLeave"
+                                onChange={this.handleChristmasLeaveChange}
+                              />
+                            </div>
+                          </div>
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label htmlFor="bereavementLeave">
+                                Bereavement leave
+                              </label>
+                              <input
+                                type="number"
+                                className="form-control"
+                                placeholder={record.bereavement}
+                                id="bereavementLeave"
+                                onChange={this.handleBereavementLeaveChange}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label htmlFor="dob">Date of birth</label>
+                              <input
+                                type="date"
+                                className="form-control"
+                                placeholder="{dateOfBirth}"
+                                id="dob"
+                                onChange={this.handleDOBChange}
+                              />
+                            </div>
+                          </div>
+                          {
+                            record.gender.toLowerCase() === "female"
+                              ? <div className="col-md-6">
                                 <div className="form-group">
                                   <label htmlFor="Maternity leave">
                                     Maternity leave
@@ -480,84 +502,71 @@ class StaffRecordList extends Component {
                                   />
                                 </div>
                               </div>
-                              <div className="col-md-6">
-                                <div className="form-group">
-                                  <label htmlFor="dob">Date of birth</label>
-                                  <input
-                                    type="date"
-                                    className="form-control"
-                                    placeholder="{dateOfBirth}"
-                                    id="dob"
-                                    onChange={this.handleDOBChange}
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                            <div className="modal-footer">
-                              <div className="form-group">
-                                <button
-                                  type="button"
-                                  className="btn btn-outline-primary"
-                                  onClick={this.handleCloseModal1}
-                                >
-                                  Close
-                                </button>
-                              </div>
-                              <div className="form-group">
-                                <button
-                                  type="submit"
-                                  className="btn btn-primary col"
-                                >
-                                  Save changes
-                                </button>
-                              </div>
-                            </div>
-                          </form>
-                        </div>
-                      </div>
-                    </Modal>
-                  </div>
-                )
-              )}
-          {staff_record
-              .filter(e => e.id === listID)
-              .map(
-                record => (
-                  <div key={record.id}>
-                    <Modal
-                      className="Modal__Bootstrap modal-dialog"
-                      isOpen={this.state.showModal2}
-                      onRequestClose={this.handleCloseModal2}
-                      contentLabel="Modal #2"
-                      overlayClassName="Overlay"
-                      style={customStyles}
-                    >
-                      <div className="modal-content">
-                        <div className="modal-header">
-                          <h5 className="modal-title">
-                            Archive
-                          </h5>
-                        </div>
-                        <div className="modal-body">
-                          <p>Modal #2 text!</p>
-                          {record.id}
+                              : <br />
+                          }
                         </div>
                         <div className="modal-footer">
-                          <button
-                            className="btn btn-outline-primary"
-                            onClick={this.handleCloseModal2}
-                          >
-                            Close
-                          </button>
-                          <button type="submit" className="btn btn-primary">
-                            Save changes
-                          </button>
+                          <div className="form-group">
+                            <button
+                              type="button"
+                              className="btn btn-outline-primary"
+                              onClick={this.handleCloseModal1}
+                            >
+                              Close
+                            </button>
+                          </div>
+                          <div className="form-group">
+                            <button
+                              type="submit"
+                              className="btn btn-primary col"
+                            >
+                              Save changes
+                            </button>
+                          </div>
                         </div>
-                      </div>
-                    </Modal>
+                      </form>
+                    </div>
                   </div>
-                )
-              )}
+                </Modal>
+              </div>
+            ))}
+          {staff_record
+            .filter(e => e.id === listID)
+            .map(record => (
+              <div key={record.id}>
+                <Modal
+                  className="Modal__Bootstrap modal-dialog"
+                  isOpen={this.state.showModal2}
+                  onRequestClose={this.handleCloseModal2}
+                  contentLabel="Modal #2"
+                  overlayClassName="Overlay"
+                  style={customStyles}
+                >
+                  <div className="modal-content">
+                    <div className="modal-header">
+                      <h5 className="modal-title">
+                        Archive
+                      </h5>
+                    </div>
+                    <div className="modal-body">
+                      <p>Modal #2 text!</p>
+                      {record.id}
+                    </div>
+                    <div className="modal-footer">
+                      <button
+                        className="btn btn-outline-primary"
+                        onClick={this.handleCloseModal2}
+                      >
+                        Close
+                      </button>
+                      <button type="submit" className="btn btn-primary">
+                        Save changes
+                      </button>
+                    </div>
+                  </div>
+                </Modal>
+              </div>
+            ))}
         </div>
       </div>
     );
