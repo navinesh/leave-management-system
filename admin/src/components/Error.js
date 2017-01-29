@@ -10,4 +10,4 @@ export default () => (
       </h5>
     </div>
   </div>
-)
+);
