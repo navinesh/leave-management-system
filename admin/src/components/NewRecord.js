@@ -8,6 +8,7 @@ export default class NewRecordForm extends Component {
     this.handleOtherNamesChange = this.handleOtherNamesChange.bind(this);
     this.handleStaffEmailChange = this.handleStaffEmailChange.bind(this);
     this.handleDesignationChange = this.handleDesignationChange.bind(this);
+    this.handleGenderChange = this.handleGenderChange.bind(this);
     this.handleDOBChange = this.handleDOBChange.bind(this);
     this.handleAnnualLeaveChange = this.handleAnnualLeaveChange.bind(this);
     this.handleSickLeaveChange = this.handleSickLeaveChange.bind(this);
@@ -32,15 +33,15 @@ export default class NewRecordForm extends Component {
   }
 
   handleStaffEmailChange(e) {
-    this.setState({ staffEmail: e });
+    this.setState({ staffEmail: e.target.value });
   }
 
   handleDesignationChange(e) {
-    this.setState({ designation: e });
+    this.setState({ designation: e.target.value });
   }
 
-  handleDOBChange(e) {
-    this.setState({ dob: e.target.value });
+  handleGenderChange(e) {
+    this.setState({ gender: e.target.value });
   }
 
   handleAnnualLeaveChange(e) {
@@ -63,8 +64,8 @@ export default class NewRecordForm extends Component {
     this.setState({ maternityLeave: e.target.value });
   }
 
-  handlegenderChange(e) {
-    this.setState({ gender: e.target.value });
+  handleDOBChange(e) {
+    this.setState({ dob: e.target.value });
   }
 
   handleSubmit(e) {
@@ -73,18 +74,22 @@ export default class NewRecordForm extends Component {
     const othernames = this.state.otherNames;
     const staffEmail = this.state.staffEmail;
     const designation = this.state.designation;
+    const gender = this.state.gender;
     const annualDays = this.state.annualLeave;
     const sickDays = this.state.sickLeave;
     const bereavmentDays = this.state.bereavementLeave;
     const christmasDays = this.state.christmasLeave;
-    const dateOfBirth = this.state.dob;
     const maternityDays = this.state.maternityLeave
       ? this.state.maternityLeave
       : null;
-    const gender = this.state.gender;
+    const dateOfBirth = this.state.dob;
     // verify data
     if (
-      !surname || !othernames || !staffEmail || !designation || !annualDays ||
+      !surname ||
+        !othernames ||
+        !staffEmail ||
+        !designation ||
+        !annualDays ||
         !sickDays ||
         !bereavmentDays ||
         !christmasDays ||
@@ -114,7 +119,11 @@ export default class NewRecordForm extends Component {
   }
 
   render() {
+    let staffGender = this.state.gender
+      ? this.state.gender.toLowerCase()
+      : "female";
     const { isFetching, message } = this.props;
+    console.log(this.state);
     return (
       <div className="container">
         <div className="col-md-5 offset-md-3 pb-2">
@@ -165,7 +174,7 @@ export default class NewRecordForm extends Component {
                       id="designation"
                       onChange={this.handleDesignationChange}
                     >
-                      <option></option>
+                      <option />
                       <option>
                         Admin
                       </option>
@@ -213,10 +222,10 @@ export default class NewRecordForm extends Component {
                     <label htmlFor="gender">Gender</label>
                     <select
                       className="form-control"
-                      id="designation"
-                      onChange={this.handlegenderChange}
+                      id="gender"
+                      onChange={this.handleGenderChange}
                     >
-                      <option></option>
+                      <option />
                       <option>
                         Male
                       </option>
@@ -282,18 +291,6 @@ export default class NewRecordForm extends Component {
               <div className="row">
                 <div className="col-md-6">
                   <div className="form-group">
-                    <label htmlFor="Maternity leave">Maternity leave</label>
-                    <input
-                      type="number"
-                      className="form-control"
-                      placeholder="Maternity leave"
-                      id="maternityLeave"
-                      onChange={this.handleMaternityLeaveChange}
-                    />
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="form-group">
                     <label htmlFor="dob">Date of birth</label>
                     <input
                       type="date"
@@ -304,6 +301,20 @@ export default class NewRecordForm extends Component {
                     />
                   </div>
                 </div>
+                {
+                  staffGender === "female" ? <div className="col-md-6">
+                      <div className="form-group">
+                        <label htmlFor="Maternity leave">Maternity leave</label>
+                        <input
+                          type="number"
+                          className="form-control"
+                          placeholder="Maternity leave"
+                          id="maternityLeave"
+                          onChange={this.handleMaternityLeaveChange}
+                        />
+                      </div>
+                    </div> : null
+                }
               </div>
               <div className="form-group">
                 <button type="submit" className="btn btn-primary col">
