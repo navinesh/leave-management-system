@@ -194,63 +194,61 @@ class StaffRecordList extends Component {
 
         return (
           <div className="col-md-3" key={record.id}>
-            <div className="card card-block mb-2">
-              <ul className="list-unstyled">
-                <li className="h5">
-                  {record.othernames}{" "}{record.surname}
+            <div className="card mb-3">
+              <ul className="list-group list-group-flush">
+                <li className="list-group-item">
+                  <p className="h5">{record.othernames}{" "}{record.surname}</p>
                 </li>
-                <li>
-                  <span className="badge badge-primary badge-pill float-right">
+                <li className="list-group-item justify-content-between">
+                  Annual
+                  <span className="badge badge-primary badge-pill ">
                     {record.annual}
                   </span>
-                  Annual
                 </li>
-                <li>
-                  <span className="badge badge-primary badge-pill float-right">
+                <li className="list-group-item justify-content-between">
+                  Sick
+                  <span className="badge badge-primary badge-pill ">
                     {record.sick}
                   </span>
-                  Sick
                 </li>
-                <li>
-                  <span className="badge badge-primary badge-pill float-right">
+                <li className="list-group-item justify-content-between">
+                  Bereavement
+                  <span className="badge badge-primary badge-pill ">
                     {record.bereavement}
                   </span>
-                  Bereavement
                 </li>
-                <li>
-                  <span className="badge badge-primary badge-pill float-right">
+                <li className="list-group-item justify-content-between">
+                  Christmas
+                  <span className="badge badge-primary badge-pill ">
                     {record.christmas}
                   </span>
-                  Christmas
                 </li>
-                <li>
-                  <span className="badge badge-primary badge-pill float-right">
+                <li className="list-group-item justify-content-between">
+                  DOB
+                  <span className="badge badge-primary badge-pill ">
                     {dateOfBirth}
                   </span>
-                  DOB
                 </li>
                 {
-                  record.gender.toLowerCase() === "female" ? <li>
-                      <span
-                        className="badge badge-primary badge-pill float-right"
-                      >
+                  record.gender.toLowerCase() === "female"
+                    ? <li className="list-group-item justify-content-between">
+                      Maternity
+                      <span className="badge badge-primary badge-pill ">
                         {record.maternity}
                       </span>
-                      Maternity
-                    </li> : <br />
+                    </li>
+                    : <p className="list-group-item"><br /></p>
                 }
-                <li className="mt-2">
+                <li className="list-group-item">
                   <button
-                    type="button"
-                    className="btn btn-primary btn-sm"
+                    className="btn btn-secondary btn-sm"
                     onClick={this.handleOpenModal1}
                     id={record.id}
                   >
                     Edit
                   </button>
                   <button
-                    type="button"
-                    className="btn btn-primary btn-sm ml-2"
+                    className="btn btn-secondary btn-sm ml-3"
                     onClick={this.handleOpenModal2}
                     id={record.id}
                   >
@@ -297,11 +295,11 @@ class StaffRecordList extends Component {
                         Edit
                       </h5>
                     </div>
-                    <div className="modal-body">
-                      <form
-                        encType="multipart/form-data"
-                        onSubmit={this.handleSubmit}
-                      >
+                    <form
+                      encType="multipart/form-data"
+                      onSubmit={this.handleSubmit}
+                    >
+                      <div className="modal-body">
                         <div className="row">
                           <div className="col-md-6">
                             <div className="form-group">
@@ -505,27 +503,24 @@ class StaffRecordList extends Component {
                               : <br />
                           }
                         </div>
-                        <div className="modal-footer">
-                          <div className="form-group">
-                            <button
-                              type="button"
-                              className="btn btn-outline-primary"
-                              onClick={this.handleCloseModal1}
-                            >
-                              Close
-                            </button>
-                          </div>
-                          <div className="form-group">
-                            <button
-                              type="submit"
-                              className="btn btn-primary col"
-                            >
-                              Save changes
-                            </button>
-                          </div>
+                      </div>
+                      <div className="modal-footer">
+                        <div className="form-group">
+                          <button
+                            type="button"
+                            className="btn btn-outline-primary"
+                            onClick={this.handleCloseModal1}
+                          >
+                            Close
+                          </button>
                         </div>
-                      </form>
-                    </div>
+                        <div className="form-group">
+                          <button type="submit" className="btn btn-primary col">
+                            Save changes
+                          </button>
+                        </div>
+                      </div>
+                    </form>
                   </div>
                 </Modal>
               </div>
