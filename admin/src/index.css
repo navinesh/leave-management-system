@@ -1,7 +1,5 @@
-/*.navbar {background-color: #fff; border-bottom: 1px solid #edeeee;}*/
-
-body{padding-top: 60px;}
-.navbar {background-color: #fff;}
+body{padding-top: 70px;}
+.navbar {background-color: #fff; border-bottom: 1px solid #edeeee;}
 .ReactModal__Overlay {
   -webkit-perspective: 600;
   perspective: 600;
