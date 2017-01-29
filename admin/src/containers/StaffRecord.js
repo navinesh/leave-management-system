@@ -46,4 +46,4 @@ const mapStateToProps = state => {
   return { staff_record, isAuthenticated, searchTerm };
 };
 
-export default connect(mapStateToProps)(StaffRecord)
+export default connect(mapStateToProps)(StaffRecord);
