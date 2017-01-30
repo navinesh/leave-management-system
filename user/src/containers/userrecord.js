@@ -40,11 +40,9 @@ class UserRecords extends Component {
             </div> : <UserRecord user_detail={user_detail} message={message} />
         }
         {
-          isRecordFetching
-            ? <div className="text-center" style={{ paddingTop: "100px" }}>
+          isRecordFetching ? <div className="text-center">
               <PulseLoader color="#0275d8" size="12px" />
-            </div>
-            : <RecordList user_record={user_record} />
+            </div> : <RecordList user_record={user_record} />
         }
       </div>
     );
