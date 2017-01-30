@@ -230,7 +230,7 @@ export default class LeaveApplications extends Component {
 
     if (this.state.successMessage) {
       return (
-        <div className="container text-center" style={{ paddingTop: "100px" }}>
+        <div className="container text-center" style={{ marginTop: "100px" }}>
           <div className="col-md-12">
             <h1 className="display-4">{this.state.successMessage}</h1>
             <br />
@@ -245,7 +245,7 @@ export default class LeaveApplications extends Component {
       );
     } else {
       return (
-        <div className="container" style={{ paddingTop: "80px" }}>
+        <div className="container" style={{ marginTop: "80px" }}>
           <div className="row">
             <div className="col-md-12 pb-2">
               <div className="col-md-10 offset-md-2">
@@ -292,7 +292,7 @@ export default class LeaveApplications extends Component {
                 }
               </ul>
             </div>
-            <div className="col-md-5">
+            <div className="col-md-5 mb-3">
               <div className="card card-block">
                 <form
                   encType="multipart/form-data"
@@ -422,7 +422,7 @@ export default class LeaveApplications extends Component {
                       : message
                   }
                 </div>
-                <div className="text-danger text-center p-t-2">
+                <div className="text-danger text-center pt-2">
                   {
                     this.state.errorMessage
                       ? <div>{this.state.errorMessage}</div>
