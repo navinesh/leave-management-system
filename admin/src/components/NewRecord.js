@@ -123,7 +123,7 @@ export default class NewRecordForm extends Component {
       ? this.state.gender.toLowerCase()
       : "female";
     const { isFetching, message } = this.props;
-    console.log(this.state);
+
     return (
       <div className="container">
         <div className="col-md-5 offset-md-3 pb-2">
