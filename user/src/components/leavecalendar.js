@@ -37,7 +37,7 @@ const RecordList = ({ records }) => {
 
 const Leaves = ({ records }) => {
   return (
-    <div style={{ paddingTop: "80px" }}><RecordList records={records} /></div>
+    <div style={{ marginTop: "80px" }}><RecordList records={records} /></div>
   );
 };
 
