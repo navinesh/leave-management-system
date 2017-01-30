@@ -26,7 +26,7 @@ export default class Login extends Component {
 
   render() {
     return (
-      <div className="Login" style={{ paddingTop: "80px" }}>
+      <div className="Login" style={{ marginTop: "80px" }}>
         <div className="card card-block">
           <form onSubmit={this.handleSubmit.bind(this)}>
             <div className="form-group">
@@ -66,7 +66,9 @@ export default class Login extends Component {
             }
           </div>
         </div>
-        <Link to="/reset" className="btn col">Forgot your password?</Link>
+        <div className="card card-block mt-3">
+          <Link to="/reset" className="btn">Forgot your password?</Link>
+        </div>
       </div>
     );
   }
