@@ -93,7 +93,7 @@ export const UserRecord = ({ user_detail, message }) => {
   if (message) {
     return (
       <div className="container text-center" style={{ paddingTop: "100px" }}>
-        <div className="offset-md-2 col-md-8">
+        <div className="col-md-8 offset-md-2 ">
           <h1 className="display-4">
             The site configured at this address does not contain the requested resource.
           </h1>
@@ -104,7 +104,7 @@ export const UserRecord = ({ user_detail, message }) => {
     return (
       <div
         className="jumbotron jumbotron-fluid"
-        style={{ backgroundColor: "#FFFFFF", paddingTop: "90px" }}
+        style={{ backgroundColor: "#FFFFFF", paddingTop: "80px" }}
       >
         <div className="container">
           <div className="row">
