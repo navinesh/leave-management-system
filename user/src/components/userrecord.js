@@ -86,6 +86,7 @@ export const UserRecord = ({ user_detail, message }) => {
 
   if (message) {
     return (
+      <div className="container text-center" style={{ paddingTop: "100px" }}>
         <div className="offset-md-2 col-md-8">
           <h1 className="display-4">
             The site configured at this address does not contain the requested resource.
