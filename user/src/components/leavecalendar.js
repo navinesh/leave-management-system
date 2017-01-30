@@ -14,10 +14,7 @@ const RecordList = ({ records }) => {
   });
   return (
     <div className="table-responsive">
-      <table
-        className="table table-bordered table-hover"
-        style={{ backgroundColor: "#FFFFFF" }}
-      >
+      <table className="table table-bordered table-hover">
         <thead className="thead-default">
           <tr>
             <th>Name</th>
@@ -37,9 +34,7 @@ const RecordList = ({ records }) => {
 
 const Leaves = ({ records }) => {
   return (
-    <div style={{ paddingTop: "80px" }}>
-      <RecordList records={records} />
-    </div>
+    <div style={{ paddingTop: "80px" }}><RecordList records={records} /></div>
   );
 };
 

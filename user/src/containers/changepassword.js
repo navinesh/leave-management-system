@@ -26,7 +26,7 @@ class UserChangePassword extends Component {
           isAuthenticated && (
               <div
                 className="col col-md-4 offset-md-4"
-                style={{ paddingTop: "100px" }}
+                style={{ paddingTop: "80px" }}
               >
                 <UserChange
                   isFetching={isFetching}

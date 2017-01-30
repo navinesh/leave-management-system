@@ -20,10 +20,7 @@ const PendingRecordList = ({ user_record }) => {
     return (
       <div className="col-md-12">
         PENDING LEAVE SCHEDULE
-        <table
-          className="table table-bordered table-hover"
-          style={{ backgroundColor: "#FFFFFF" }}
-        >
+        <table className="table table-bordered table-hover">
           <thead className="thead-default">
             <tr>
               <th>Leave type</th>
@@ -63,10 +60,7 @@ const ApprovedRecordList = ({ user_record }) => {
     return (
       <div className="col-md-12">
         APPROVED LEAVE SCHEDULE
-        <table
-          className="table table-bordered table-hover"
-          style={{ backgroundColor: "#FFFFFF" }}
-        >
+        <table className="table table-bordered table-hover">
           <thead className="thead-default">
             <tr>
               <th>Leave type</th>
