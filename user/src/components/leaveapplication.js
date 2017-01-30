@@ -245,179 +245,190 @@ export default class LeaveApplications extends Component {
       );
     } else {
       return (
-        <div className="row" style={{ paddingTop: "80px" }}>
-          <div className="col-md-12 offset-md-2 pb-2">
-            <p className="h5">
-              {user_detail.othernames}{" "}{user_detail.surname}
-            </p>
-          </div>
-          <div className="col-md-2 offset-md-2">
-            <ul className="list-group">
-              <li className="list-group-item justify-content-between">
-                Annual
-                <span className="badge badge-primary badge-pill">
-                  {user_detail.annual}
-                </span>
-              </li>
-              <li className="list-group-item justify-content-between">
-                Sick
-                <span className="badge badge-primary badge-pill">
-                  {user_detail.sick}
-                </span>
-              </li>
-              <li className="list-group-item justify-content-between">
-                Bereavement
-                <span className="badge badge-primary badge-pill">
-                  {user_detail.bereavement}
-                </span>
-              </li>
-              <li className="list-group-item justify-content-between">
-                Christmas
-                <span className="badge badge-primary badge-pill">
-                  {user_detail.christmas}
-                </span>
-              </li>
-              {
-                gender === "female"
-                  ? <li className="list-group-item justify-content-between">
-                    Maternity
-                    <span className="badge badge-primary badge-pill">
-                      {user_detail.maternity}
-                    </span>
-                  </li>
-                  : null
-              }
-            </ul>
-          </div>
-          <div className="col-md-5">
-            <div className="card card-block">
-              <form encType="multipart/form-data" onSubmit={this.handleSubmit}>
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label htmlFor="leave">Leave</label>
-                      <select
-                        className="form-control"
-                        id="leave"
-                        onChange={this.handleLeaveChange}
-                      >
-                        <option />
-                        <option>annual</option>
-                        <option>sick</option>
-                        <option>bereavement</option>
-                        <option>christmas</option>
-                        <option>birthday</option>
-                        {
-                          gender === "female"
-                            ? <option>maternity</option>
-                            : null
-                        }
-                        <option>lwop</option>
-                        <option>other</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label htmlFor="leaveType">Leave type</label>
-                      <select
-                        className="form-control"
-                        id="leaveType"
-                        onChange={this.handleLeaveTypeChange}
-                      >
-                        <option />
-                        <option>full</option>
-                        <option>half day am</option>
-                        <option>half day pm</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label htmlFor="startDate">Start date</label>
-                      <DatePicker
-                        className="form-control"
-                        selected={this.state.startDate}
-                        startDate={this.state.startDate}
-                        endDate={this.state.endDate}
-                        onChange={this.handleStartDateChange}
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label htmlFor="endDate">End date</label>
-                      <DatePicker
-                        className="form-control"
-                        selected={this.state.endDate}
-                        startDate={this.state.startDate}
-                        endDate={this.state.endDate}
-                        onChange={this.handleEndDateChange}
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className="form-group">
-                  <label htmlFor="supervisorEmail">Supervisor email</label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    placeholder="Supervisor email"
-                    id="supervisorEmail"
-                    onChange={this.handleSupervisorEmailChange}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="secretaryEmail">
-                    Second supervisor / secretary email
-                  </label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    placeholder="Second supervisor / secretary email"
-                    id="secretaryEmail"
-                    onChange={this.handleSecretaryEmailChange}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="reason">Reason</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    placeholder="Reason for leave"
-                    id="reason"
-                    onChange={this.handleReasonChange}
-                  />
-                </div>
-                <div className="form-group">
-                  <label htmlFor="sicksheet">Sick sheet</label>
-                  <input
-                    type="file"
-                    className="form-control-file"
-                    id="sicksheet"
-                    onChange={this.handleFileChange}
-                  />
-                  <small className="form-text text-muted">
-                    A medical certificate is required for absence of two consecutive days or more and after four single day absences.
-                  </small>
-                </div>
-                <div className="form-group">
-                  <button type="submit" className="btn btn-primary col">
-                    Submit
-                  </button>
-                </div>
-              </form>
-              <div className="text-danger text-center">
-                {isFetching ? <Loader color="#0275d8" size="20px" /> : message}
+        <div className="container" style={{ paddingTop: "80px" }}>
+          <div className="row">
+            <div className="col-md-12 pb-2">
+              <div className="col-md-10 offset-md-2">
+                <p className="h5">
+                  {user_detail.othernames}{" "}{user_detail.surname}
+                </p>
               </div>
-              <div className="text-danger text-center p-t-2">
+            </div>
+            <div className="col-md-2 offset-md-2">
+              <ul className="list-group">
+                <li className="list-group-item justify-content-between">
+                  Annual
+                  <span className="badge badge-primary badge-pill">
+                    {user_detail.annual}
+                  </span>
+                </li>
+                <li className="list-group-item justify-content-between">
+                  Sick
+                  <span className="badge badge-primary badge-pill">
+                    {user_detail.sick}
+                  </span>
+                </li>
+                <li className="list-group-item justify-content-between">
+                  Bereavement
+                  <span className="badge badge-primary badge-pill">
+                    {user_detail.bereavement}
+                  </span>
+                </li>
+                <li className="list-group-item justify-content-between">
+                  Christmas
+                  <span className="badge badge-primary badge-pill">
+                    {user_detail.christmas}
+                  </span>
+                </li>
                 {
-                  this.state.errorMessage
-                    ? <div>{this.state.errorMessage}</div>
+                  gender === "female"
+                    ? <li className="list-group-item justify-content-between">
+                      Maternity
+                      <span className="badge badge-primary badge-pill">
+                        {user_detail.maternity}
+                      </span>
+                    </li>
                     : null
                 }
+              </ul>
+            </div>
+            <div className="col-md-5">
+              <div className="card card-block">
+                <form
+                  encType="multipart/form-data"
+                  onSubmit={this.handleSubmit}
+                >
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label htmlFor="leave">Leave</label>
+                        <select
+                          className="form-control"
+                          id="leave"
+                          onChange={this.handleLeaveChange}
+                        >
+                          <option />
+                          <option>annual</option>
+                          <option>sick</option>
+                          <option>bereavement</option>
+                          <option>christmas</option>
+                          <option>birthday</option>
+                          {
+                            gender === "female"
+                              ? <option>maternity</option>
+                              : null
+                          }
+                          <option>lwop</option>
+                          <option>other</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label htmlFor="leaveType">Leave type</label>
+                        <select
+                          className="form-control"
+                          id="leaveType"
+                          onChange={this.handleLeaveTypeChange}
+                        >
+                          <option />
+                          <option>full</option>
+                          <option>half day am</option>
+                          <option>half day pm</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label htmlFor="startDate">Start date</label>
+                        <DatePicker
+                          className="form-control"
+                          selected={this.state.startDate}
+                          startDate={this.state.startDate}
+                          endDate={this.state.endDate}
+                          onChange={this.handleStartDateChange}
+                        />
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label htmlFor="endDate">End date</label>
+                        <DatePicker
+                          className="form-control"
+                          selected={this.state.endDate}
+                          startDate={this.state.startDate}
+                          endDate={this.state.endDate}
+                          onChange={this.handleEndDateChange}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="supervisorEmail">Supervisor email</label>
+                    <input
+                      type="email"
+                      className="form-control"
+                      placeholder="Supervisor email"
+                      id="supervisorEmail"
+                      onChange={this.handleSupervisorEmailChange}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="secretaryEmail">
+                      Second supervisor / secretary email
+                    </label>
+                    <input
+                      type="email"
+                      className="form-control"
+                      placeholder="Second supervisor / secretary email"
+                      id="secretaryEmail"
+                      onChange={this.handleSecretaryEmailChange}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="reason">Reason</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Reason for leave"
+                      id="reason"
+                      onChange={this.handleReasonChange}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="sicksheet">Sick sheet</label>
+                    <input
+                      type="file"
+                      className="form-control-file"
+                      id="sicksheet"
+                      onChange={this.handleFileChange}
+                    />
+                    <small className="form-text text-muted">
+                      A medical certificate is required for absence of two consecutive days or more and after four single day absences.
+                    </small>
+                  </div>
+                  <div className="form-group">
+                    <button type="submit" className="btn btn-primary col">
+                      Submit
+                    </button>
+                  </div>
+                </form>
+                <div className="text-danger text-center">
+                  {
+                    isFetching
+                      ? <Loader color="#0275d8" size="20px" />
+                      : message
+                  }
+                </div>
+                <div className="text-danger text-center p-t-2">
+                  {
+                    this.state.errorMessage
+                      ? <div>{this.state.errorMessage}</div>
+                      : null
+                  }
+                </div>
               </div>
             </div>
           </div>
