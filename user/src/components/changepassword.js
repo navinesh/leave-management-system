@@ -95,22 +95,19 @@ export default class UserChange extends Component {
             />
           </div>
           <div className="form-group">
-            <button
-              type="submit"
-              className="btn btn-primary col-xs-12 col-sm-12"
-            >
+            <button type="submit" className="btn btn-primary col">
               Update password
             </button>
           </div>
         </form>
-        <div className="text-danger text-xs-center p-t-3">
+        <div className="text-danger text-center p-t-3">
           {
             this.props.isFetching
               ? <Loader color="#0275d8" size="20px" />
               : this.props.message
           }
         </div>
-        <div className="text-danger text-xs-center">
+        <div className="text-danger text-center">
           {this.state.errorMessage ? <div>{this.state.errorMessage}</div> : ""}
         </div>
       </div>
