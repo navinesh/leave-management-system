@@ -62,7 +62,7 @@ export default class UserChange extends Component {
 
   render() {
     return (
-      <div className="card card-block">
+      <div className="card card-block" style={{ marginTop: "100px" }}>
         <form onSubmit={this.handleSubmit.bind(this)}>
           <div className="form-group">
             <label htmlFor="currentPassword">Current password</label>
