@@ -59,12 +59,16 @@ class ArchivedStaffRecordList extends Component {
                     {dateOfBirth}
                   </span>
                 </li>
-                <li className="list-group-item justify-content-between">
-                  Maternity
-                  <span className="badge badge-primary badge-pill">
-                    {record.maternity}
-                  </span>
-                </li>
+                {
+                  record.gender.toLowerCase() === "female"
+                    ? <li className="list-group-item justify-content-between">
+                      Maternity
+                      <span className="badge badge-primary badge-pill">
+                        {record.maternity}
+                      </span>
+                    </li>
+                    : <p className="list-group-item"><br /></p>
+                }
               </ul>
             </div>
           </div>
