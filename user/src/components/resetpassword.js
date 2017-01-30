@@ -1,12 +1,12 @@
-import React, { Component, PropTypes } from 'react'
-var Loader = require('halogen/ClipLoader');
+import React, { Component, PropTypes } from "react";
+var Loader = require("halogen/ClipLoader");
 
 export default class UserResetPassword extends Component {
-  handleEmailChange (e) {
-    this.setState({email: e.target.value});
+  handleEmailChange(e) {
+    this.setState({ email: e.target.value });
   }
 
-  handleSubmit (e) {
+  handleSubmit(e) {
     e.preventDefault();
     const email = this.state.email.trim();
 
@@ -14,31 +14,38 @@ export default class UserResetPassword extends Component {
       return;
     }
 
-    this.props.onResetClick(email)
+    this.props.onResetClick(email);
   }
 
   render() {
-    return(
+    return (
       <div className="card card-block">
         <form onSubmit={this.handleSubmit.bind(this)}>
           <div className="form-group">
             <label for="email">Email address</label>
-            <input type="email" className="form-control"
-              placeholder="Enter email" id="email"
-              onChange={this.handleEmailChange.bind(this)} />
+            <input
+              type="email"
+              className="form-control"
+              placeholder="Enter email"
+              id="email"
+              onChange={this.handleEmailChange.bind(this)}
+            />
           </div>
           <div className="form-group">
-            <button type="submit" className="btn btn-primary col-xs-12 col-sm-12">Reset</button>
+            <button type="submit" className="btn btn-primary col">
+              Reset
+            </button>
           </div>
         </form>
-        <div className="text-danger text-xs-center">
-          {this.props.isFetching ?
-            <Loader color="#0275d8" size="20px" />:
-            this.props.message}
+        <div className="text-danger text-center">
+          {
+            this.props.isFetching
+              ? <Loader color="#0275d8" size="20px" />
+              : this.props.message
+          }
         </div>
       </div>
-
-    )
+    );
   }
 }
 
@@ -46,4 +53,4 @@ UserResetPassword.propTypes = {
   onResetClick: PropTypes.func.isRequired,
   message: PropTypes.string,
   isFetching: PropTypes.bool.isRequired
-}
+};
