@@ -104,11 +104,7 @@ export const UserRecord = ({ user_detail, message }) => {
     return (
       <div
         className="jumbotron jumbotron-fluid"
-        style={{
-          color: "#FFFFFF",
-          backgroundColor: "#0275D8",
-          paddingTop: "100px"
-        }}
+        style={{ backgroundColor: "#FFFFFF", paddingTop: "90px" }}
       >
         <div className="container">
           <div className="row">
@@ -116,7 +112,7 @@ export const UserRecord = ({ user_detail, message }) => {
               <p className="display-4">
                 {user_detail.othernames} {user_detail.surname}
               </p>
-              <Link to="/changepassword" className="btn btn-secondary">
+              <Link to="/changepassword" className="btn btn-primary">
                 Change password
               </Link>
             </div>
