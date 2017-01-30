@@ -19,10 +19,10 @@ export default class UserResetPassword extends Component {
 
   render() {
     return (
-      <div className="card card-block">
+      <div className="card card-block" style={{ marginTop: "100px" }}>
         <form onSubmit={this.handleSubmit.bind(this)}>
           <div className="form-group">
-            <label for="email">Email address</label>
+            <label htmlFor="email">Email address</label>
             <input
               type="email"
               className="form-control"
