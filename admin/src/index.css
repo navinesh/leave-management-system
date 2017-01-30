@@ -2,6 +2,10 @@ body {
     padding-top: 70px;
 }
 
+html body {
+    background-color: #FAFAFA;
+}
+
 .navbar {
     background-color: #fff;
     border-bottom: 1px solid #edeeee;
