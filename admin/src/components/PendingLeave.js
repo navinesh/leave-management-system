@@ -27,7 +27,10 @@ const PendingLeaveList = ({ pending_items }) => {
 
   return (
     <div className="table-responsive">
-      <table className="table table-bordered table-hover">
+      <table
+        className="table table-bordered table-hover"
+        style={{ backgroundColor: "#FFFFFF" }}
+      >
         <thead className="thead-default">
           <tr>
             <th>Name</th>
