@@ -24,10 +24,7 @@ class UserChangePassword extends Component {
       <div className="UserAccount">
         {
           isAuthenticated && (
-              <div
-                className="col col-md-4 offset-md-4"
-                style={{ paddingTop: "100px" }}
-              >
+              <div className="col col-md-4 offset-md-4">
                 <UserChange
                   isFetching={isFetching}
                   message={message}
