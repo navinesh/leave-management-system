@@ -8,10 +8,7 @@ const ResetPassword = ({ dispatch, isAuthenticated, message, isFetching }) => {
     <div className="ResetPassword">
       {
         !isAuthenticated && (
-            <div
-              className="col col-md-4 offset-md-4"
-              style={{ paddingTop: "100px" }}
-            >
+            <div className="col col-md-4 offset-md-4">
               <UserResetPassword
                 isFetching={isFetching}
                 message={message}
