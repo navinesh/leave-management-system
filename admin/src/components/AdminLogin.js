@@ -82,7 +82,9 @@ export default class Login extends Component {
             }
           </div>
         </div>
-        <Link to="/reset" className="btn col">Forgot your password?</Link>
+        <div className="card card-block mt-3">
+          <Link to="/reset" className="btn">Forgot your password?</Link>
+        </div>
       </div>
     );
   }
