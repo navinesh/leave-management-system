@@ -42,7 +42,7 @@ export default class Navs extends Component {
                   </Link>
                   <button
                     onClick={this.userLogout.bind(this)}
-                    className="btn btn-primary ml-1"
+                    className="btn btn-primary ml-2"
                   >
                     Sign out
                   </button>
