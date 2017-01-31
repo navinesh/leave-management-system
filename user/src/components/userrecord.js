@@ -19,7 +19,7 @@ const PendingRecordList = ({ user_record }) => {
   if (pendingList.length > 0) {
     return (
       <div className="col-md-12">
-        PENDING LEAVE SCHEDULE
+        <p className="lead">PENDING LEAVE SCHEDULE</p>
         <table
           className="table table-bordered table-hover"
           style={{ backgroundColor: "#FFFFFF" }}
@@ -62,7 +62,7 @@ const ApprovedRecordList = ({ user_record }) => {
   if (approvedList.length > 0) {
     return (
       <div className="col-md-12">
-        APPROVED LEAVE SCHEDULE
+        <p className="lead">APPROVED LEAVE SCHEDULE</p>
         <table
           className="table table-bordered table-hover"
           style={{ backgroundColor: "#FFFFFF" }}
