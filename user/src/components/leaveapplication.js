@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from "react";
 var Loader = require("halogen/ClipLoader");
 var DatePicker = require("react-datepicker");
-var moment = require("moment");
-require("moment-range");
+import Moment from "moment";
+import { extendMoment } from "moment-range";
+const moment = extendMoment(Moment);
 
 export default class LeaveApplications extends Component {
   constructor() {
@@ -65,7 +66,6 @@ export default class LeaveApplications extends Component {
     const christmasDays = user_detail.christmas;
     const dateOfBirth = user_detail.date_of_birth;
     const maternityDays = user_detail.maternity ? user_detail.maternity : null;
-
     const leave = this.state.leave;
     const leaveType = this.state.leaveType;
     const startDate = this.state.startDate ? this.state.startDate : null;
@@ -107,16 +107,16 @@ export default class LeaveApplications extends Component {
     const range = moment.range(startDate, endDate);
 
     const dateRange = [];
-    range.by("days", moment => {
-      dateRange.push(moment.format("DD, MM, YYYY"));
-    });
+    for (let numDays of range.by("days")) {
+      dateRange.push(numDays.format("DD, MM, YYYY"));
+    }
 
     const weekend = [];
-    range.by("days", moment => {
-      if (moment.isoWeekday() === 6 || moment.isoWeekday() === 7) {
-        weekend.push(moment.format("DD, MM, YYYY"));
+    for (let numWeekends of range.by("days")) {
+      if (numWeekends.isoWeekday() === 6 || numWeekends.isoWeekday() === 7) {
+        weekend.push(numWeekends.format("DD, MM, YYYY"));
       }
-    });
+    }
 
     // exclude weekends
     const dateRangeSet = new Set(dateRange);
@@ -169,7 +169,7 @@ export default class LeaveApplications extends Component {
             : undefined;
         },
         maternity: () => {
-          return maternityDays - myLeaveDays;
+          return !sickSheet ? false : maternityDays - myLeaveDays;
         },
         lwop: () => {
           return myLeaveDays;
@@ -185,6 +185,13 @@ export default class LeaveApplications extends Component {
 
     if (applicationDays < 0) {
       this.setState({ errorMessage: "Your leave balance cannot be negative!" });
+      return;
+    }
+
+    if (applicationDays === false) {
+      this.setState({
+        errorMessage: "A medical certificate is required for maternity leave!"
+      });
       return;
     }
 
