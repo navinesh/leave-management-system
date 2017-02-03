@@ -8,8 +8,8 @@ export function requestModifyUserRecord(modifyUserDetails) {
   return { type: MODIFY_USER_RECORD_REQUEST, modifyUserDetails };
 }
 
-export function successModifyUserRecord() {
-  return { type: MODIFY_USER_RECORD_SUCCESS };
+export function successModifyUserRecord(data) {
+  return { type: MODIFY_USER_RECORD_SUCCESS, message: data.message };
 }
 
 export function failureModifyUserRecord(data) {
@@ -20,6 +20,7 @@ export function submitModifyUserRecord(modifyUserDetails) {
   return dispatch => {
     dispatch(requestModifyUserRecord(modifyUserDetails));
     let data = new FormData();
+    data.append("user_id", modifyUserDetails.id);
     data.append("surname", modifyUserDetails.surname);
     data.append("othernames", modifyUserDetails.othernames);
     data.append("email", modifyUserDetails.staffEmail);
@@ -37,7 +38,7 @@ export function submitModifyUserRecord(modifyUserDetails) {
         if (response.status === 200) {
           dispatch(failureModifyUserRecord(response.data));
         } else {
-          dispatch(successModifyUserRecord());
+          dispatch(successModifyUserRecord(response.data));
         }
       })
       .catch(error => {
