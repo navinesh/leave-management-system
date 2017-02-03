@@ -22,7 +22,6 @@ import {
 
 import "./index.css";
 import "./bootstrap.min.css";
-import "./react-datepicker.css";
 
 const store = configureStore();
 
