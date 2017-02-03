@@ -24,7 +24,6 @@ export const clearChangePasswordError = () => {
 export function changePassword(creds) {
   return dispatch => {
     dispatch(requestPasswordChange(creds));
-    console.log(creds);
     axios({
       method: "post",
       url: "http://localhost:8080/change-password.api",
