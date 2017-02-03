@@ -1,5 +1,8 @@
 import React, { Component, PropTypes } from "react";
 
+var DatePicker = require("react-datepicker");
+require("react-datepicker/dist/react-datepicker.css");
+
 export default class NewRecordForm extends Component {
   constructor() {
     super();
@@ -65,7 +68,7 @@ export default class NewRecordForm extends Component {
   }
 
   handleDOBChange(e) {
-    this.setState({ dob: e.target.value });
+    this.setState({ dob: e });
   }
 
   handleSubmit(e) {
@@ -289,18 +292,6 @@ export default class NewRecordForm extends Component {
                 </div>
               </div>
               <div className="row">
-                <div className="col-md-6">
-                  <div className="form-group">
-                    <label htmlFor="dob">Date of birth</label>
-                    <input
-                      type="date"
-                      className="form-control"
-                      placeholder="Date of birth"
-                      id="dob"
-                      onChange={this.handleDOBChange}
-                    />
-                  </div>
-                </div>
                 {
                   staffGender === "female" ? <div className="col-md-6">
                       <div className="form-group">
@@ -315,6 +306,20 @@ export default class NewRecordForm extends Component {
                       </div>
                     </div> : null
                 }
+                <div className="col-md-6">
+                  <div className="form-group">
+                    <label htmlFor="dob">Date of birth</label>
+                    <DatePicker
+                      className="form-control"
+                      placeholderText="Click to select a date"
+                      selected={this.state.dob}
+                      onChange={this.handleDOBChange}
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                    />
+                  </div>
+                </div>
               </div>
               <div className="form-group">
                 <button type="submit" className="btn btn-primary col">
