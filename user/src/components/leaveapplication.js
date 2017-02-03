@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from "react";
 var Loader = require("halogen/ClipLoader");
 var DatePicker = require("react-datepicker");
+import "react-datepicker/dist/react-datepicker.css";
 import Moment from "moment";
 import { extendMoment } from "moment-range";
 const moment = extendMoment(Moment);
