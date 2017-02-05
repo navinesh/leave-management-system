@@ -3,6 +3,8 @@ import React, { Component, PropTypes } from "react";
 var DatePicker = require("react-datepicker");
 require("react-datepicker/dist/react-datepicker.css");
 
+const moment = require("moment");
+
 export default class NewRecordForm extends Component {
   constructor() {
     super();
@@ -85,7 +87,7 @@ export default class NewRecordForm extends Component {
     const maternityDays = this.state.maternityLeave
       ? this.state.maternityLeave
       : null;
-    const dateOfBirth = this.state.dob;
+    const dateOfBirth = moment(this.state.dob).format("MM DD YYYY");
     // verify data
     if (
       !surname ||
@@ -311,6 +313,7 @@ export default class NewRecordForm extends Component {
                     <label htmlFor="dob">Date of birth</label>
                     <DatePicker
                       className="form-control"
+                      dateFormat="DD/MM/YYYY"
                       placeholderText="Click to select a date"
                       selected={this.state.dob}
                       onChange={this.handleDOBChange}
