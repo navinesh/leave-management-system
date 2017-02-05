@@ -1,8 +1,14 @@
 import React, { PropTypes, Component } from "react";
-import { searchStaffRecord } from "../actions/StaffRecord";
+import { fetchStaffRecord, searchStaffRecord } from "../actions/StaffRecord";
+
 import Modal from "react-modal";
 
+var DatePicker = require("react-datepicker");
+require("react-datepicker/dist/react-datepicker.css");
+
 const moment = require("moment");
+
+var Loader = require("halogen/ClipLoader");
 
 const customStyles = {
   overlay: {
@@ -32,28 +38,13 @@ class StaffRecordList extends Component {
     super();
     this.state = {
       errorMessage: "",
-      successMessage: "",
+      listID: "",
+      dob: "",
       showModal1: false,
       showModal2: false
     };
-    this.handleSurnameChange = this.handleSurnameChange.bind(this);
-    this.handleOtherNamesChange = this.handleOtherNamesChange.bind(this);
-    this.handleStaffEmailChange = this.handleStaffEmailChange.bind(this);
-    this.handleDesignationChange = this.handleDesignationChange.bind(this);
-    this.handleDOBChange = this.handleDOBChange.bind(this);
-    this.handleAnnualLeaveChange = this.handleAnnualLeaveChange.bind(this);
-    this.handleSickLeaveChange = this.handleSickLeaveChange.bind(this);
-    this.handleChristmasLeaveChange = this.handleChristmasLeaveChange.bind(
-      this
-    );
-    this.handleBereavementLeaveChange = this.handleBereavementLeaveChange.bind(
-      this
-    );
-    this.handleMaternityLeaveChange = this.handleMaternityLeaveChange.bind(
-      this
-    );
+    this.handleDateChange = this.handleDateChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-
     this.handleOpenModal1 = this.handleOpenModal1.bind(this);
     this.handleCloseModal1 = this.handleCloseModal1.bind(this);
     this.handleOpenModal2 = this.handleOpenModal2.bind(this);
@@ -64,48 +55,8 @@ class StaffRecordList extends Component {
     this.props.dispatch(searchStaffRecord(e.target.value.toLowerCase()));
   }
 
-  handleSurnameChange(e) {
-    this.setState({ surname: e.target.value });
-  }
-
-  handleOtherNamesChange(e) {
-    this.setState({ otherNames: e.target.value });
-  }
-
-  handleStaffEmailChange(e) {
-    this.setState({ staffEmail: e });
-  }
-
-  handleDesignationChange(e) {
-    this.setState({ designation: e });
-  }
-
-  handleDOBChange(e) {
-    this.setState({ dob: e.target.value });
-  }
-
-  handleAnnualLeaveChange(e) {
-    this.setState({ annualLeave: e.target.value });
-  }
-
-  handleSickLeaveChange(e) {
-    this.setState({ sickLeave: e.target.value });
-  }
-
-  handleChristmasLeaveChange(e) {
-    this.setState({ christmasLeave: e.target.files[0] });
-  }
-
-  handleBereavementLeaveChange(e) {
-    this.setState({ bereavementLeave: e.target.value });
-  }
-
-  handleMaternityLeaveChange(e) {
-    this.setState({ maternityLeave: e.target.value });
-  }
-
-  handlegenderChange(e) {
-    this.setState({ gender: e.target.value });
+  handleDateChange(e) {
+    this.setState({ dob: e });
   }
 
   handleOpenModal1(e) {
@@ -115,36 +66,50 @@ class StaffRecordList extends Component {
 
   handleOpenModal2(e) {
     this.setState({ showModal2: true });
-
     this.setState({ listID: e.target.id });
   }
 
   handleCloseModal1() {
-    this.setState({ showModal1: false });
+    this.setState({ showModal1: false, errorMessage: "", dob: "" });
   }
 
   handleCloseModal2() {
-    this.setState({ showModal2: false });
+    this.setState({ showModal2: false, errorMessage: "", dob: "" });
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    const surname = this.state.surname;
-    const othernames = this.state.otherNames;
-    const staffEmail = this.state.staffEmail;
-    const designation = this.state.designation;
-    const annualDays = this.state.annualLeave;
-    const sickDays = this.state.sickLeave;
-    const bereavmentDays = this.state.bereavementLeave;
-    const christmasDays = this.state.christmasLeave;
-    const dateOfBirth = this.state.dob;
-    const maternityDays = this.state.maternityLeave
-      ? this.state.maternityLeave
-      : null;
-    const gender = this.state.gender;
+    const id = this.state.listID;
+    const surname = this.surname.value;
+    const othernames = this.othernames.value;
+    const staffEmail = this.email.value;
+    const designation = this.designation.value;
+    const annualDays = this.annual.value;
+    const sickDays = this.sick.value;
+    const bereavmentDays = this.bereavement.value;
+    const christmasDays = this.christmas.value;
+    const gender = this.gender.value;
+
+    let dobDate = new Date(this.dob.value);
+    let dob = moment(dobDate).format("MM DD YYYY");
+
+    const dateOfBirth = this.state.dob
+      ? moment(this.state.dob).format("MM DD YYYY")
+      : dob;
+
+    const mDays = gender => {
+      if (gender.toLowerCase() === "female") {
+        return this.maternity.value ? this.maternity.value : 0;
+      } else {
+        return 0;
+      }
+    };
+    const maternityDays = mDays(gender);
+
     // verify data
     if (
-      !surname ||
+      !id ||
+        !surname ||
         !othernames ||
         !staffEmail ||
         !designation ||
@@ -153,15 +118,17 @@ class StaffRecordList extends Component {
         !bereavmentDays ||
         !christmasDays ||
         !dateOfBirth ||
-        gender
+        !gender
     ) {
       this.setState({
         errorMessage: "One or more required fields are missing!"
       });
       return null;
     }
+
     // prepare data to post to database
-    const editUserDetails = {
+    const modifyUserDetails = {
+      id: id,
       surname: surname,
       othernames: othernames,
       staffEmail: staffEmail,
@@ -174,13 +141,14 @@ class StaffRecordList extends Component {
       maternityDays: maternityDays,
       gender: gender
     };
-    this.props.onEditUserRecordSubmit(editUserDetails);
+
+    this.props.onModifyUserRecordSubmit(modifyUserDetails);
+    this.props.dispatch(fetchStaffRecord());
   }
 
   render() {
-    const { staff_record, searchTerm } = this.props;
+    const { staff_record, searchTerm, isFetching, message } = this.props;
     const listID = parseInt(this.state.listID, 10);
-
     const filteredElements = staff_record
       .filter(
         e =>
@@ -189,7 +157,6 @@ class StaffRecordList extends Component {
       )
       .map(record => {
         let dob = new Date(record.date_of_birth);
-
         let dateOfBirth = moment(dob).format("DD/MM/YYYY");
 
         return (
@@ -279,252 +246,277 @@ class StaffRecordList extends Component {
           {filteredElements}
           {staff_record
             .filter(e => e.id === listID)
-            .map(record => (
-              <div key={record.id}>
-                <Modal
-                  className="Modal__Bootstrap modal-dialog"
-                  isOpen={this.state.showModal1}
-                  onRequestClose={this.handleCloseModal1}
-                  overlayClassName="Overlay"
-                  contentLabel="Modal 1"
-                  style={customStyles}
-                >
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <h5 className="modal-title" id="editModalLabel">
-                        Edit
-                      </h5>
-                    </div>
-                    <form
-                      encType="multipart/form-data"
-                      onSubmit={this.handleSubmit}
-                    >
-                      <div className="modal-body">
-                        <div className="row">
-                          <div className="col-md-6">
-                            <div className="form-group">
-                              <label htmlFor="surName">Surname</label>
-                              <input
-                                type="text"
-                                className="form-control"
-                                placeholder={record.othernames}
-                                id="surName"
-                                onChange={this.handleOtherNamesChange}
-                              />
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="form-group">
-                              <label htmlFor="otherNames">
-                                Other Names
-                              </label>
-                              <input
-                                type="text"
-                                className="form-control"
-                                placeholder={record.surname}
-                                id="otherNames"
-                                onChange={this.handleSurnameChange}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="form-group">
-                          <label htmlFor="staffEmail">
-                            Email address
-                          </label>
-                          <input
-                            type="email"
-                            className="form-control"
-                            placeholder={record.email}
-                            id="staffEmail"
-                            onChange={this.handleStaffEmailChange}
-                          />
-                        </div>
-                        <div className="row">
-                          <div className="col-md-6">
-                            <div className="form-group">
-                              <label htmlFor="designation">
-                                Designation
-                              </label>
-                              <select
-                                className="form-control"
-                                id="designation"
-                                onChange={this.handleDesignationChange}
-                              >
-                                <option>{record.designation}</option>
-                                <option>
-                                  Admin
-                                </option>
-                                <option>
-                                  Level 3 Lawyer
-                                </option>
-                                <option>
-                                  Level 4 Lawyer
-                                </option>
-                                <option>
-                                  Level 3 Secretary
-                                </option>
-                                <option>
-                                  Level 4 Secretary
-                                </option>
-                                <option>
-                                  TM
-                                </option>
-                                <option>
-                                  Accounts
-                                </option>
-                                <option>
-                                  Library
-                                </option>
-                                <option>
-                                  IT
-                                </option>
-                                <option>
-                                  Search Clerk Level 3
-                                </option>
-                                <option>
-                                  Search Clerk Level 4
-                                </option>
-                                <option>
-                                  Legal Executive
-                                </option>
-                                <option>
-                                  Partner
-                                </option>
-                              </select>
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="form-group">
-                              <label htmlFor="gender">Gender</label>
-                              <select
-                                className="form-control"
-                                id="designation"
-                                onChange={this.handlegenderChange}
-                              >
-                                <option>{record.gender}</option>
-                                <option>
-                                  Male
-                                </option>
-                                <option>
-                                  Female
-                                </option>
-                              </select>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="row">
-                          <div className="col-md-6">
-                            <div className="form-group">
-                              <label htmlFor="annualLeave">
-                                Annual leave
-                              </label>
-                              <input
-                                type="number"
-                                className="form-control"
-                                placeholder={record.annual}
-                                id="annualLeave"
-                                onChange={this.handleAnnualLeaveChange}
-                              />
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="form-group">
-                              <label htmlFor="sickLeave">Sick leave</label>
-                              <input
-                                type="number"
-                                className="form-control"
-                                placeholder={record.sick}
-                                id="sickLeave"
-                                onChange={this.handleSickLeaveChange}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="row">
-                          <div className="col-md-6">
-                            <div className="form-group">
-                              <label htmlFor="christmasLeave">
-                                Christmas leave
-                              </label>
-                              <input
-                                type="number"
-                                className="form-control"
-                                placeholder={record.christmas}
-                                id="christmasLeave"
-                                onChange={this.handleChristmasLeaveChange}
-                              />
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="form-group">
-                              <label htmlFor="bereavementLeave">
-                                Bereavement leave
-                              </label>
-                              <input
-                                type="number"
-                                className="form-control"
-                                placeholder={record.bereavement}
-                                id="bereavementLeave"
-                                onChange={this.handleBereavementLeaveChange}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="row">
-                          <div className="col-md-6">
-                            <div className="form-group">
-                              <label htmlFor="dob">Date of birth</label>
-                              <input
-                                type="date"
-                                className="form-control"
-                                placeholder="{dateOfBirth}"
-                                id="dob"
-                                onChange={this.handleDOBChange}
-                              />
-                            </div>
-                          </div>
-                          {
-                            record.gender.toLowerCase() === "female"
-                              ? <div className="col-md-6">
-                                <div className="form-group">
-                                  <label htmlFor="Maternity leave">
-                                    Maternity leave
-                                  </label>
-                                  <input
-                                    type="number"
-                                    className="form-control"
-                                    placeholder={record.maternity}
-                                    id="maternityLeave"
-                                    onChange={this.handleMaternityLeaveChange}
-                                  />
-                                </div>
+            .map(record => {
+              let dob = new Date(record.date_of_birth);
+              let dateOfBirth = moment(dob).format("DD/MM/YYYY");
+
+              return (
+                <div key={record.id}>
+                  <Modal
+                    className="Modal__Bootstrap modal-dialog"
+                    isOpen={this.state.showModal1}
+                    onRequestClose={this.handleCloseModal1}
+                    overlayClassName="Overlay"
+                    contentLabel="Modal 1"
+                    style={customStyles}
+                  >
+                    <div className="modal-content">
+                      <div className="modal-header">
+                        <h5 className="modal-title" id="editModalLabel">
+                          Edit
+                        </h5>
+                      </div>
+                      <form
+                        encType="multipart/form-data"
+                        onSubmit={this.handleSubmit}
+                      >
+                        <div className="modal-body">
+                          <div className="row">
+                            <div className="col-md-6">
+                              <div className="form-group">
+                                <label htmlFor="surName">Surname</label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  defaultValue={record.surname}
+                                  ref={input => this.surname = input}
+                                />
                               </div>
-                              : <br />
-                          }
+                            </div>
+                            <div className="col-md-6">
+                              <div className="form-group">
+                                <label htmlFor="otherNames">
+                                  Other Names
+                                </label>
+                                <input
+                                  type="text"
+                                  className="form-control"
+                                  defaultValue={record.othernames}
+                                  ref={input => this.othernames = input}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div className="form-group">
+                            <label htmlFor="staffEmail">
+                              Email address
+                            </label>
+                            <input
+                              type="email"
+                              className="form-control"
+                              defaultValue={record.email}
+                              ref={input => this.email = input}
+                            />
+                          </div>
+                          <div className="row">
+                            <div className="col-md-6">
+                              <div className="form-group">
+                                <label htmlFor="designation">
+                                  Designation
+                                </label>
+                                <select
+                                  className="form-control"
+                                  id="designation"
+                                  defaultValue={record.designation}
+                                  ref={select => this.designation = select}
+                                >
+                                  <option>{record.designation}</option>
+                                  <option>
+                                    Admin
+                                  </option>
+                                  <option>
+                                    Level 3 Lawyer
+                                  </option>
+                                  <option>
+                                    Level 4 Lawyer
+                                  </option>
+                                  <option>
+                                    Level 3 Secretary
+                                  </option>
+                                  <option>
+                                    Level 4 Secretary
+                                  </option>
+                                  <option>
+                                    TM
+                                  </option>
+                                  <option>
+                                    Accounts
+                                  </option>
+                                  <option>
+                                    Library
+                                  </option>
+                                  <option>
+                                    IT
+                                  </option>
+                                  <option>
+                                    Search Clerk Level 3
+                                  </option>
+                                  <option>
+                                    Search Clerk Level 4
+                                  </option>
+                                  <option>
+                                    Legal Executive
+                                  </option>
+                                  <option>
+                                    Partner
+                                  </option>
+                                </select>
+                              </div>
+                            </div>
+                            <div className="col-md-6">
+                              <div className="form-group">
+                                <label htmlFor="gender">Gender</label>
+                                <select
+                                  className="form-control"
+                                  id="designation"
+                                  defaultValue={record.gender}
+                                  ref={select => this.gender = select}
+                                >
+                                  <option>{record.gender}</option>
+                                  <option>
+                                    Male
+                                  </option>
+                                  <option>
+                                    Female
+                                  </option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="row">
+                            <div className="col-md-6">
+                              <div className="form-group">
+                                <label htmlFor="annualLeave">
+                                  Annual leave
+                                </label>
+                                <input
+                                  type="number"
+                                  className="form-control"
+                                  defaultValue={record.annual}
+                                  ref={input => this.annual = input}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-md-6">
+                              <div className="form-group">
+                                <label htmlFor="sickLeave">Sick leave</label>
+                                <input
+                                  type="number"
+                                  className="form-control"
+                                  defaultValue={record.sick}
+                                  ref={input => this.sick = input}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div className="row">
+                            <div className="col-md-6">
+                              <div className="form-group">
+                                <label htmlFor="christmasLeave">
+                                  Christmas leave
+                                </label>
+                                <input
+                                  type="number"
+                                  className="form-control"
+                                  defaultValue={record.christmas}
+                                  ref={input => this.christmas = input}
+                                />
+                              </div>
+                            </div>
+                            <div className="col-md-6">
+                              <div className="form-group">
+                                <label htmlFor="bereavementLeave">
+                                  Bereavement leave
+                                </label>
+                                <input
+                                  type="number"
+                                  className="form-control"
+                                  defaultValue={record.bereavement}
+                                  ref={input => this.bereavement = input}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div className="row">
+                            {
+                              record.gender.toLowerCase() === "female"
+                                ? <div className="col-md-6">
+                                  <div className="form-group">
+                                    <label htmlFor="Maternity leave">
+                                      Maternity leave
+                                    </label>
+                                    <input
+                                      type="number"
+                                      className="form-control"
+                                      defaultValue={record.maternity}
+                                      ref={input => this.maternity = input}
+                                    />
+                                  </div>
+                                </div>
+                                : <br />
+                            }
+                            <div className="col-md-6">
+                              <div className="form-group">
+                                <label htmlFor="dob">Date of birth</label>
+                                <input
+                                  type="hidden"
+                                  defaultValue={record.date_of_birth}
+                                  ref={input => this.dob = input}
+                                />
+                                <DatePicker
+                                  className="form-control"
+                                  dateFormat="DD/MM/YYYY"
+                                  openToDate={moment(dob)}
+                                  selected={this.state.dob}
+                                  showMonthDropdown
+                                  showYearDropdown
+                                  dropdownMode="select"
+                                  onChange={this.handleDateChange}
+                                  placeholderText={dateOfBirth}
+                                />
+                              </div>
+                            </div>
+                          </div>
                         </div>
+                        <div className="modal-footer">
+                          <div className="form-group">
+                            <button
+                              type="button"
+                              className="btn btn-outline-primary"
+                              onClick={this.handleCloseModal1}
+                            >
+                              Close
+                            </button>
+                          </div>
+                          <div className="form-group">
+                            <button
+                              type="submit"
+                              className="btn btn-primary col"
+                            >
+                              Save changes
+                            </button>
+                          </div>
+                        </div>
+                      </form>
+                      <div className="text-primary text-center bp-2">
+                        {
+                          isFetching
+                            ? <Loader color="#0275d8" size="20px" />
+                            : <p className="h5">{message}</p>
+                        }
                       </div>
-                      <div className="modal-footer">
-                        <div className="form-group">
-                          <button
-                            type="button"
-                            className="btn btn-outline-primary"
-                            onClick={this.handleCloseModal1}
-                          >
-                            Close
-                          </button>
-                        </div>
-                        <div className="form-group">
-                          <button type="submit" className="btn btn-primary col">
-                            Save changes
-                          </button>
-                        </div>
+                      <div className="text-danger text-center pb-4">
+                        {
+                          this.state.errorMessage
+                            ? <div>{this.state.errorMessage}</div>
+                            : ""
+                        }
                       </div>
-                    </form>
-                  </div>
-                </Modal>
-              </div>
-            ))}
+                    </div>
+                  </Modal>
+                </div>
+              );
+            })}
           {staff_record
             .filter(e => e.id === listID)
             .map(record => (
@@ -571,8 +563,10 @@ class StaffRecordList extends Component {
 StaffRecordList.propTypes = {
   staff_record: PropTypes.array.isRequired,
   searchTerm: React.PropTypes.string,
-  //onEditUserRecordSubmit: PropTypes.func.isRequired
-  dispatch: PropTypes.func.isRequired
+  dispatch: PropTypes.func.isRequired,
+  onModifyUserRecordSubmit: PropTypes.func.isRequired,
+  message: PropTypes.string,
+  isFetching: PropTypes.bool.isRequired
 };
 
 export default StaffRecordList;
