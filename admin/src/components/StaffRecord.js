@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from "react";
-import { fetchStaffRecord, searchStaffRecord } from "../actions/StaffRecord";
+import { searchStaffRecord } from "../actions/StaffRecord";
 
 import Modal from "react-modal";
 
@@ -143,7 +143,6 @@ class StaffRecordList extends Component {
     };
 
     this.props.onModifyUserRecordSubmit(modifyUserDetails);
-    this.props.dispatch(fetchStaffRecord());
   }
 
   render() {
@@ -502,7 +501,7 @@ class StaffRecordList extends Component {
                         {
                           isFetching
                             ? <Loader color="#0275d8" size="20px" />
-                            : <p className="h5">{message}</p>
+                            : <p className="lead">{message}</p>
                         }
                       </div>
                       <div className="text-danger text-center pb-4">
