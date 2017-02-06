@@ -6,6 +6,7 @@ import {
 } from "../actions/StaffRecord";
 import StaffRecordList from "../components/StaffRecord";
 import { submitModifyUserRecord } from "../actions/ModifyRecord";
+import { submitArchiveUser } from "../actions/ArchiveUser";
 
 class StaffRecord extends Component {
   componentDidMount() {
@@ -25,7 +26,9 @@ class StaffRecord extends Component {
       searchTerm,
       dispatch,
       isFetching,
-      message
+      message,
+      isArchiveFetching,
+      archiveMessage
     } = this.props;
 
     return (
@@ -39,8 +42,12 @@ class StaffRecord extends Component {
                 dispatch={dispatch}
                 isFetching={isFetching}
                 message={message}
+                isArchiveFetching={isArchiveFetching}
+                archiveMessage={archiveMessage}
                 onModifyUserRecordSubmit={modifyUserDetails =>
                   dispatch(submitModifyUserRecord(modifyUserDetails))}
+                onArchiveUserSubmit={archiveUser =>
+                  dispatch(submitArchiveUser(archiveUser))}
               />
             )
         }
@@ -50,13 +57,28 @@ class StaffRecord extends Component {
 }
 
 const mapStateToProps = state => {
-  const { staffRecord, searchStaffRecord, adminAuth, modifyUser } = state;
+  const {
+    staffRecord,
+    searchStaffRecord,
+    adminAuth,
+    modifyUser,
+    archiveUser
+  } = state;
   const { staff_record } = staffRecord;
   const { isAuthenticated } = adminAuth;
   const { searchTerm } = searchStaffRecord;
   const { isFetching, message } = modifyUser;
+  const { isArchiveFetching, archiveMessage } = archiveUser;
 
-  return { staff_record, isAuthenticated, searchTerm, isFetching, message };
+  return {
+    staff_record,
+    isAuthenticated,
+    searchTerm,
+    isFetching,
+    message,
+    isArchiveFetching,
+    archiveMessage
+  };
 };
 
 export default connect(mapStateToProps)(StaffRecord);
