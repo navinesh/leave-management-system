@@ -1,5 +1,4 @@
 import axios from "axios";
-import { fetchStaffRecord } from "../actions/StaffRecord";
 
 export const ARCHIVE_USER_REQUEST = "ARCHIVE_USER_REQUEST";
 export const ARCHIVE_USER_SUCCESS = "ARCHIVE_USER_SUCCESS";
@@ -34,7 +33,6 @@ export function submitArchiveUser(archiveUser) {
           dispatch(failureArchiveUser(response.data));
         } else {
           dispatch(successArchiveUser(response.data));
-          dispatch(fetchStaffRecord());
         }
       })
       .catch(error => {
