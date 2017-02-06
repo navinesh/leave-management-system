@@ -4,6 +4,7 @@ import { fetchStaffRecord } from "../actions/StaffRecord";
 export const MODIFY_USER_RECORD_REQUEST = "MODIFY_USER_RECORD_REQUEST";
 export const MODIFY_USER_RECORD_SUCCESS = "MODIFY_USER_RECORD_SUCCESS";
 export const MODIFY_USER_RECORD_FAILURE = "Modify_USER_RECORD_FAILURE";
+export const CLEAR_MODIFY_USER_MESSAGE = "CLEAR_MODIFY_USER_MESSAGE";
 
 export function requestModifyUserRecord(modifyUserDetails) {
   return { type: MODIFY_USER_RECORD_REQUEST, modifyUserDetails };
@@ -16,6 +17,8 @@ export function successModifyUserRecord(data) {
 export function failureModifyUserRecord(data) {
   return { type: MODIFY_USER_RECORD_FAILURE, message: data.message };
 }
+
+export const clearAModifyUser = () => ({ type: CLEAR_MODIFY_USER_MESSAGE });
 
 export function submitModifyUserRecord(modifyUserDetails) {
   return dispatch => {
