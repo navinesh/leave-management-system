@@ -33,24 +33,20 @@ class StaffRecord extends Component {
 
     return (
       <div className="container">
-        {
-          isAuthenticated &&
-            (
-              <StaffRecordList
-                staff_record={staff_record}
-                searchTerm={searchTerm}
-                dispatch={dispatch}
-                isFetching={isFetching}
-                message={message}
-                isArchiveFetching={isArchiveFetching}
-                archiveMessage={archiveMessage}
-                onModifyUserRecordSubmit={modifyUserDetails =>
-                  dispatch(submitModifyUserRecord(modifyUserDetails))}
-                onArchiveUserSubmit={archiveUser =>
-                  dispatch(submitArchiveUser(archiveUser))}
-              />
-            )
-        }
+        {isAuthenticated &&
+          <StaffRecordList
+            staff_record={staff_record}
+            searchTerm={searchTerm}
+            dispatch={dispatch}
+            isFetching={isFetching}
+            message={message}
+            isArchiveFetching={isArchiveFetching}
+            archiveMessage={archiveMessage}
+            onModifyUserRecordSubmit={modifyUserDetails =>
+              dispatch(submitModifyUserRecord(modifyUserDetails))}
+            onArchiveUserSubmit={archiveUser =>
+              dispatch(submitArchiveUser(archiveUser))}
+          />}
       </div>
     );
   }
