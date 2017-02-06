@@ -27,7 +27,7 @@ class ArchivedStaffRecordList extends Component {
             <div className="card">
               <ul className="list-group list-group-flush">
                 <li className="list-group-item">
-                  <span>{record.othernames}{" "}{record.surname}</span>
+                  <p className="h5">{record.othernames}{" "}{record.surname}</p>
                 </li>
                 <li className="list-group-item justify-content-between">
                   Annual
