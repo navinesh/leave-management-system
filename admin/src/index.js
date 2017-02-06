@@ -7,7 +7,6 @@ import axios from "axios";
 import configureStore from "./stores/ConfigureStore";
 
 import AdminHeader from "./containers/AdminHeader";
-//import AdminSidebar from './containers/Sidebar'
 import PendingLeave from "./containers/PendingLeave";
 import ApprovedLeave from "./containers/ApprovedLeave";
 import StaffRecord from "./containers/StaffRecord";
@@ -81,53 +80,48 @@ export const requireAuthentication = (nextState, replace, callback) => {
 };
 
 render(
-  (
-    <Provider store={store}>
-      <Router history={browserHistory}>
-        <Route path="/" component={AdminHeader}>
-          <IndexRoute
-            onEnter={requireAuthentication}
-            component={PendingLeave}
-          />
-          <Route
-            path="/staffrecord"
-            onEnter={requireAuthentication}
-            component={StaffRecord}
-          />
-          <Route
-            path="/approvedleave"
-            onEnter={requireAuthentication}
-            component={ApprovedLeave}
-          />
-          <Route
-            path="/leavereport"
-            onEnter={requireAuthentication}
-            component={LeaveReport}
-          />
-          <Route
-            path="/sicksheetrecord"
-            onEnter={requireAuthentication}
-            component={SickSheetRecord}
-          />
-          <Route
-            path="/sicksheetrecord/:fileId"
-            onEnter={requireAuthentication}
-            component={SickSheetRecord}
-          />
-          <Route
-            path="/archivedstaffrecord"
-            onEnter={requireAuthentication}
-            component={ArchivedStaffRecord}
-          />
-          <Route
-            path="/newrecord"
-            onEnter={requireAuthentication}
-            component={NewRecord}
-          />
-        </Route>
-        <Route path="*" component={Error} />
-      </Router>
-    </Provider>
-  ),
+  <Provider store={store}>
+    <Router history={browserHistory}>
+      <Route path="/" component={AdminHeader}>
+        <IndexRoute onEnter={requireAuthentication} component={PendingLeave} />
+        <Route
+          path="/staffrecord"
+          onEnter={requireAuthentication}
+          component={StaffRecord}
+        />
+        <Route
+          path="/approvedleave"
+          onEnter={requireAuthentication}
+          component={ApprovedLeave}
+        />
+        <Route
+          path="/leavereport"
+          onEnter={requireAuthentication}
+          component={LeaveReport}
+        />
+        <Route
+          path="/sicksheetrecord"
+          onEnter={requireAuthentication}
+          component={SickSheetRecord}
+        />
+        <Route
+          path="/sicksheetrecord/:fileId"
+          onEnter={requireAuthentication}
+          component={SickSheetRecord}
+        />
+        <Route
+          path="/archivedstaffrecord"
+          onEnter={requireAuthentication}
+          component={ArchivedStaffRecord}
+        />
+        <Route
+          path="/newrecord"
+          onEnter={requireAuthentication}
+          component={NewRecord}
+        />
+      </Route>
+      <Route path="*" component={Error} />
+    </Router>
+  </Provider>,
   document.getElementById("root")
 );
