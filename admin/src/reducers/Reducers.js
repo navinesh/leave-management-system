@@ -64,8 +64,16 @@ import {
 import {
   MODIFY_USER_RECORD_REQUEST,
   MODIFY_USER_RECORD_SUCCESS,
-  MODIFY_USER_RECORD_FAILURE
+  MODIFY_USER_RECORD_FAILURE,
+  CLEAR_MODIFY_USER_MESSAGE
 } from "../actions/ModifyRecord";
+
+import {
+  ARCHIVE_USER_REQUEST,
+  ARCHIVE_USER_SUCCESS,
+  ARCHIVE_USER_FAILURE,
+  CLEAR_ARCHIVE_MESSAGE
+} from "../actions/ArchiveUser";
 
 const adminAuth = (
   state = {
@@ -282,10 +290,39 @@ const modifyUser = (state = { isFetching: false, message: "" }, action) => {
       return { ...state, isFetching: false, message: action.message };
     case MODIFY_USER_RECORD_FAILURE:
       return { ...state, isFetching: false, message: action.message };
+    case CLEAR_MODIFY_USER_MESSAGE:
+      return { ...state, isFetching: false, message: "" };
     default:
       return state;
   }
 };
+
+const archiveUser = (
+  state = { isArchiveFetching: false, archiveMessage: "" },
+  action
+) =>
+  {
+    switch (action.type) {
+      case ARCHIVE_USER_REQUEST:
+        return { ...state, isArchiveFetching: true };
+      case ARCHIVE_USER_SUCCESS:
+        return {
+          ...state,
+          isArchiveFetching: false,
+          archiveMessage: action.message
+        };
+      case ARCHIVE_USER_FAILURE:
+        return {
+          ...state,
+          isArchiveFetching: false,
+          archiveMessage: action.message
+        };
+      case CLEAR_ARCHIVE_MESSAGE:
+        return { ...state, isArchiveFetching: false, archiveMessage: "" };
+      default:
+        return state;
+    }
+  };
 
 const rootReducer = combineReducers({
   adminAuth,
@@ -297,7 +334,8 @@ const rootReducer = combineReducers({
   leaveReport,
   sickSheet,
   addUser,
-  modifyUser
+  modifyUser,
+  archiveUser
 });
 
 export default rootReducer;
