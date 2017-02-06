@@ -24,7 +24,7 @@ class ArchivedStaffRecordList extends Component {
 
         return (
           <div className="col-md-3" key={record.id}>
-            <div className="card">
+            <div className="card mb-3">
               <ul className="list-group list-group-flush">
                 <li className="list-group-item">
                   <p className="h5">{record.othernames}{" "}{record.surname}</p>
@@ -59,16 +59,14 @@ class ArchivedStaffRecordList extends Component {
                     {dateOfBirth}
                   </span>
                 </li>
-                {
-                  record.gender.toLowerCase() === "female"
-                    ? <li className="list-group-item justify-content-between">
+                {record.gender.toLowerCase() === "female"
+                  ? <li className="list-group-item justify-content-between">
                       Maternity
                       <span className="badge badge-primary badge-pill">
                         {record.maternity}
                       </span>
                     </li>
-                    : <p className="list-group-item"><br /></p>
-                }
+                  : <p className="list-group-item"><br /></p>}
               </ul>
             </div>
           </div>
