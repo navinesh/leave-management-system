@@ -83,191 +83,189 @@ const adminAuth = (
     auth_info: {}
   },
   action
-) =>
-  {
-    switch (action.type) {
-      case LOGIN_ADMIN_REQUEST:
-        return { ...state, isFetching: true, isAuthenticated: false };
-      case LOGIN_ADMIN_SUCCESS:
-        return {
-          ...state,
-          isFetching: false,
-          isAuthenticated: true,
-          auth_info: action.auth_info,
-          message: "Login successful!"
-        };
-      case LOGIN_ADMIN_FAILURE:
-        return {
-          ...state,
-          isFetching: false,
-          isAuthenticated: false,
-          message: action.message
-        };
-      case LOGIN_ADMIN_REQUEST_FROM_TOKEN:
-        return { ...state, isFetching: true };
-      case LOGIN_ADMIN_SUCCESS_FROM_TOKEN:
-        return {
-          ...state,
-          isFetching: false,
-          isAuthenticated: true,
-          auth_info: action.auth_info
-        };
-      case LOGIN_ADMIN_FAILURE_FROM_TOKEN:
-        return {
-          ...state,
-          isFetching: false,
-          isAuthenticated: false,
-          message: action.message
-        };
-      case LOGOUT_ADMIN_REQUEST:
-        return { ...state, isFetching: true, isAuthenticated: true };
-      case LOGOUT_ADMIN_SUCCESS:
-        return {
-          ...state,
-          isFetching: false,
-          isAuthenticated: false,
-          message: "",
-          auth_info: ""
-        };
-      default:
-        return state;
-    }
-  };
+) => {
+  switch (action.type) {
+    case LOGIN_ADMIN_REQUEST:
+      return { ...state, isFetching: true, isAuthenticated: false };
+    case LOGIN_ADMIN_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        isAuthenticated: true,
+        auth_info: action.auth_info,
+        message: "Login successful!"
+      };
+    case LOGIN_ADMIN_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+        isAuthenticated: false,
+        message: action.message
+      };
+    case LOGIN_ADMIN_REQUEST_FROM_TOKEN:
+      return { ...state, isFetching: true };
+    case LOGIN_ADMIN_SUCCESS_FROM_TOKEN:
+      return {
+        ...state,
+        isFetching: false,
+        isAuthenticated: true,
+        auth_info: action.auth_info
+      };
+    case LOGIN_ADMIN_FAILURE_FROM_TOKEN:
+      return {
+        ...state,
+        isFetching: false,
+        isAuthenticated: false,
+        message: action.message
+      };
+    case LOGOUT_ADMIN_REQUEST:
+      return { ...state, isFetching: true, isAuthenticated: true };
+    case LOGOUT_ADMIN_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        isAuthenticated: false,
+        message: "",
+        auth_info: ""
+      };
+    default:
+      return state;
+  }
+};
 
 const pendingLeave = (
   state = { isFetching: false, pending_items: [] },
   action
-) =>
-  {
-    switch (action.type) {
-      case REQUEST_PENDING_LEAVE:
-        return { ...state, isFetching: true };
-      case RECEIVE_PENDING_LEAVE:
-        return {
-          ...state,
-          isFetching: false,
-          pending_items: action.pending_records
-        };
-      case ERROR_PENDING_LEAVE:
-        return { ...state, isFetching: false };
-      default:
-        return state;
-    }
-  };
+) => {
+  switch (action.type) {
+    case REQUEST_PENDING_LEAVE:
+      return { ...state, isFetching: true };
+    case RECEIVE_PENDING_LEAVE:
+      return {
+        ...state,
+        isFetching: false,
+        pending_items: action.pending_records
+      };
+    case ERROR_PENDING_LEAVE:
+      return { ...state, isFetching: false };
+    default:
+      return state;
+  }
+};
 
 const approvedLeave = (
   state = { isFetching: false, approved_items: [] },
   action
-) =>
-  {
-    switch (action.type) {
-      case REQUEST_APPROVED_LEAVE:
-        return { ...state, isFetching: true };
-      case RECEIVE_APPROVED_LEAVE:
-        return {
-          ...state,
-          isFetching: false,
-          approved_items: action.approved_records
-        };
-      case ERROR_APPROVED_LEAVE:
-        return { ...state, isFetching: false };
-      default:
-        return state;
-    }
-  };
+) => {
+  switch (action.type) {
+    case REQUEST_APPROVED_LEAVE:
+      return { ...state, isFetching: true };
+    case RECEIVE_APPROVED_LEAVE:
+      return {
+        ...state,
+        isFetching: false,
+        approved_items: action.approved_records
+      };
+    case ERROR_APPROVED_LEAVE:
+      return { ...state, isFetching: false };
+    default:
+      return state;
+  }
+};
 
-const staffRecord = (state = { isFetching: false, staff_record: [] }, action) =>
-  {
-    switch (action.type) {
-      case REQUEST_STAFF_RECORD:
-        return { ...state, isFetching: true };
-      case RECEIVE_STAFF_RECORD:
-        return {
-          ...state,
-          isFetching: false,
-          staff_record: action.staff_record
-        };
-      case ERROR_STAFF_RECORD:
-        return { ...state, isFetching: false };
-      default:
-        return state;
-    }
-  };
+const staffRecord = (
+  state = { isFetching: false, staff_record: [] },
+  action
+) => {
+  switch (action.type) {
+    case REQUEST_STAFF_RECORD:
+      return { ...state, isFetching: true };
+    case RECEIVE_STAFF_RECORD:
+      return {
+        ...state,
+        isFetching: false,
+        staff_record: action.staff_record
+      };
+    case ERROR_STAFF_RECORD:
+      return { ...state, isFetching: false };
+    default:
+      return state;
+  }
+};
 
 const archivedStaffRecord = (
   state = { isFetching: false, archived_staff_record: [] },
   action
-) =>
-  {
-    switch (action.type) {
-      case REQUEST_ARCHIVED_STAFF_RECORD:
-        return { ...state, isFetching: true };
-      case RECEIVE_ARCHIVED_STAFF_RECORD:
-        return {
-          ...state,
-          isFetching: false,
-          archived_staff_record: action.archived_staff_record
-        };
-      case ERROR_ARCHIVED_STAFF_RECORD:
-        return { ...state, isFetching: false };
-      default:
-        return state;
-    }
-  };
+) => {
+  switch (action.type) {
+    case REQUEST_ARCHIVED_STAFF_RECORD:
+      return { ...state, isFetching: true };
+    case RECEIVE_ARCHIVED_STAFF_RECORD:
+      return {
+        ...state,
+        isFetching: false,
+        archived_staff_record: action.archived_staff_record
+      };
+    case ERROR_ARCHIVED_STAFF_RECORD:
+      return { ...state, isFetching: false };
+    default:
+      return state;
+  }
+};
 
 const searchStaffRecord = (
   state = { isSearching: false, searchTerm: "" },
   action
-) =>
-  {
-    switch (action.type) {
-      case STAFF_RECORD_SEARCH:
-        return { ...state, isSearching: true, searchTerm: action.searchTerm };
-      case CLEAR_STAFF_RECORD_SEARCH:
-        return { ...state, isSearching: false, searchTerm: "" };
-      default:
-        return state;
-    }
-  };
+) => {
+  switch (action.type) {
+    case STAFF_RECORD_SEARCH:
+      return { ...state, isSearching: true, searchTerm: action.searchTerm };
+    case CLEAR_STAFF_RECORD_SEARCH:
+      return { ...state, isSearching: false, searchTerm: "" };
+    default:
+      return state;
+  }
+};
 
-const leaveReport = (state = { isFetching: false, leave_record: [] }, action) =>
-  {
-    switch (action.type) {
-      case REQUEST_LEAVE_RECORD:
-        return { ...state, isFetching: true };
-      case RECEIVE_LEAVE_RECORD:
-        return {
-          ...state,
-          isFetching: false,
-          leave_record: action.leave_record
-        };
-      case ERROR_LEAVE_RECORD:
-        return { ...state, isFetching: false };
-      default:
-        return state;
-    }
-  };
+const leaveReport = (
+  state = { isFetching: false, leave_record: [] },
+  action
+) => {
+  switch (action.type) {
+    case REQUEST_LEAVE_RECORD:
+      return { ...state, isFetching: true };
+    case RECEIVE_LEAVE_RECORD:
+      return {
+        ...state,
+        isFetching: false,
+        leave_record: action.leave_record
+      };
+    case ERROR_LEAVE_RECORD:
+      return { ...state, isFetching: false };
+    default:
+      return state;
+  }
+};
 
 const sickSheet = (
   state = { isFetching: false, sickSheet_items: [] },
   action
-) =>
-  {
-    switch (action.type) {
-      case REQUEST_SICKSHEET_RECORD:
-        return { ...state, isFetching: true };
-      case RECEIVE_SICKSHEET_RECORD:
-        return {
-          ...state,
-          isFetching: false,
-          sickSheet_items: action.sickSheet_records
-        };
-      case ERROR_SICKSHEET_RECORD:
-        return { ...state, isFetching: false };
-      default:
-        return state;
-    }
-  };
+) => {
+  switch (action.type) {
+    case REQUEST_SICKSHEET_RECORD:
+      return { ...state, isFetching: true };
+    case RECEIVE_SICKSHEET_RECORD:
+      return {
+        ...state,
+        isFetching: false,
+        sickSheet_items: action.sickSheet_records
+      };
+    case ERROR_SICKSHEET_RECORD:
+      return { ...state, isFetching: false };
+    default:
+      return state;
+  }
+};
 
 const addUser = (state = { isFetching: false, message: "" }, action) => {
   switch (action.type) {
@@ -300,29 +298,32 @@ const modifyUser = (state = { isFetching: false, message: "" }, action) => {
 const archiveUser = (
   state = { isArchiveFetching: false, archiveMessage: "" },
   action
-) =>
-  {
-    switch (action.type) {
-      case ARCHIVE_USER_REQUEST:
-        return { ...state, isArchiveFetching: true };
-      case ARCHIVE_USER_SUCCESS:
-        return {
-          ...state,
-          isArchiveFetching: false,
-          archiveMessage: action.message
-        };
-      case ARCHIVE_USER_FAILURE:
-        return {
-          ...state,
-          isArchiveFetching: false,
-          archiveMessage: action.message
-        };
-      case CLEAR_ARCHIVE_MESSAGE:
-        return { ...state, isArchiveFetching: false, archiveMessage: "" };
-      default:
-        return state;
-    }
-  };
+) => {
+  switch (action.type) {
+    case ARCHIVE_USER_REQUEST:
+      return { ...state, isArchiveFetching: true };
+    case ARCHIVE_USER_SUCCESS:
+      return {
+        ...state,
+        isArchiveFetching: false,
+        archiveMessage: action.message
+      };
+    case ARCHIVE_USER_FAILURE:
+      return {
+        ...state,
+        isArchiveFetching: false,
+        archiveMessage: action.message
+      };
+    case CLEAR_ARCHIVE_MESSAGE:
+      return {
+        ...state,
+        isArchiveFetching: false,
+        archiveMessage: ""
+      };
+    default:
+      return state;
+  }
+};
 
 const rootReducer = combineReducers({
   adminAuth,
