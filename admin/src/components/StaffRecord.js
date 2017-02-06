@@ -45,6 +45,7 @@ class StaffRecordList extends Component {
     };
     this.handleDateChange = this.handleDateChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleArchiveSubmit = this.handleArchiveSubmit.bind(this);
     this.handleOpenModal1 = this.handleOpenModal1.bind(this);
     this.handleCloseModal1 = this.handleCloseModal1.bind(this);
     this.handleOpenModal2 = this.handleOpenModal2.bind(this);
@@ -71,10 +72,12 @@ class StaffRecordList extends Component {
 
   handleCloseModal1() {
     this.setState({ showModal1: false, errorMessage: "", dob: "" });
+    this.props.dispatch({ type: "CLEAR_MODIFY_USER_MESSAGE" });
   }
 
   handleCloseModal2() {
     this.setState({ showModal2: false, errorMessage: "", dob: "" });
+    this.props.dispatch({ type: "CLEAR_ARCHIVE_MESSAGE" });
   }
 
   handleSubmit(e) {
@@ -145,8 +148,39 @@ class StaffRecordList extends Component {
     this.props.onModifyUserRecordSubmit(modifyUserDetails);
   }
 
+  handleArchiveSubmit(e) {
+    e.preventDefault();
+    const id = this.state.listID;
+    const isArchived = true;
+    const archiveReason = this.archiveReason.value;
+
+    if (!id || !isArchived || !archiveReason) {
+      this.setState({
+        errorMessage: "One or more required fields are missing!"
+      });
+      return null;
+    }
+
+    this.setState({ errorMessage: "" });
+
+    const archiveUser = {
+      id: id,
+      isArchived: isArchived,
+      archiveReason: archiveReason
+    };
+
+    this.props.onArchiveUserSubmit(archiveUser);
+  }
+
   render() {
-    const { staff_record, searchTerm, isFetching, message } = this.props;
+    const {
+      staff_record,
+      searchTerm,
+      isFetching,
+      message,
+      isArchiveFetching,
+      archiveMessage
+    } = this.props;
     const listID = parseInt(this.state.listID, 10);
     const filteredElements = staff_record
       .filter(
@@ -534,20 +568,53 @@ class StaffRecordList extends Component {
                         Archive
                       </h5>
                     </div>
-                    <div className="modal-body">
-                      <p>Modal #2 text!</p>
-                      {record.id}
+                    <form
+                      encType="multipart/form-data"
+                      onSubmit={this.handleArchiveSubmit}
+                    >
+                      <div className="modal-body">
+                        <p>{record.othernames}{" "}{record.surname}</p>
+                        <div className="form-group">
+                          <label htmlFor="reason">Reason</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Enter reason"
+                            id="reason"
+                            ref={input => this.archiveReason = input}
+                          />
+                        </div>
+                      </div>
+                      <div className="modal-footer">
+                        <button
+                          type="button"
+                          className="btn btn-outline-primary"
+                          onClick={this.handleCloseModal2}
+                        >
+                          Close
+                        </button>
+                        <button
+                          type="submit"
+                          className="btn btn-primary"
+                          id={record.id}
+                        >
+                          Save changes
+                        </button>
+                      </div>
+                    </form>
+                    <div className="text-primary text-center bp-2">
+                      {
+                        isArchiveFetching
+                          ? <Loader color="#0275d8" size="20px" />
+                          : <p className="lead">{archiveMessage}</p>
+                      }
                     </div>
-                    <div className="modal-footer">
-                      <button
-                        className="btn btn-outline-primary"
-                        onClick={this.handleCloseModal2}
-                      >
-                        Close
-                      </button>
-                      <button type="submit" className="btn btn-primary">
-                        Save changes
-                      </button>
+                    <div className="text-danger text-center pb-4">
+                      {
+                        this.state.errorMessage
+                          ? <div>{this.state.errorMessage}</div>
+                          : ""
+                      }
                     </div>
                   </div>
                 </Modal>
@@ -564,8 +631,11 @@ StaffRecordList.propTypes = {
   searchTerm: React.PropTypes.string,
   dispatch: PropTypes.func.isRequired,
   onModifyUserRecordSubmit: PropTypes.func.isRequired,
+  onArchiveUserSubmit: PropTypes.func.isRequired,
   message: PropTypes.string,
-  isFetching: PropTypes.bool.isRequired
+  isFetching: PropTypes.bool.isRequired,
+  isArchiveFetching: PropTypes.bool.isRequired,
+  archiveMessage: PropTypes.string
 };
 
 export default StaffRecordList;
