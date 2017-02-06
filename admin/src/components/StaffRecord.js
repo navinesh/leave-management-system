@@ -1,5 +1,5 @@
 import React, { PropTypes, Component } from "react";
-import { searchStaffRecord } from "../actions/StaffRecord";
+import { searchStaffRecord, fetchStaffRecord } from "../actions/StaffRecord";
 
 import Modal from "react-modal";
 
@@ -40,11 +40,13 @@ class StaffRecordList extends Component {
       errorMessage: "",
       listID: "",
       dob: "",
+      archiveReason: "",
       showModal1: false,
       showModal2: false
     };
     this.handleDateChange = this.handleDateChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleArchiveReason = this.handleArchiveReason.bind(this);
     this.handleArchiveSubmit = this.handleArchiveSubmit.bind(this);
     this.handleOpenModal1 = this.handleOpenModal1.bind(this);
     this.handleCloseModal1 = this.handleCloseModal1.bind(this);
@@ -58,6 +60,10 @@ class StaffRecordList extends Component {
 
   handleDateChange(e) {
     this.setState({ dob: e });
+  }
+
+  handleArchiveReason(e) {
+    this.setState({ archiveReason: e.target.value });
   }
 
   handleOpenModal1(e) {
@@ -76,8 +82,17 @@ class StaffRecordList extends Component {
   }
 
   handleCloseModal2() {
-    this.setState({ showModal2: false, errorMessage: "", dob: "" });
-    this.props.dispatch({ type: "CLEAR_ARCHIVE_MESSAGE" });
+    if (this.state.archiveReason) {
+      this.props.dispatch(fetchStaffRecord());
+      this.props.dispatch({ type: "CLEAR_ARCHIVE_MESSAGE" });
+    }
+
+    this.setState({
+      showModal2: false,
+      errorMessage: "",
+      dob: "",
+      archiveReason: ""
+    });
   }
 
   handleSubmit(e) {
@@ -152,7 +167,7 @@ class StaffRecordList extends Component {
     e.preventDefault();
     const id = this.state.listID;
     const isArchived = true;
-    const archiveReason = this.archiveReason.value;
+    const archiveReason = this.state.archiveReason;
 
     if (!id || !isArchived || !archiveReason) {
       this.setState({
@@ -181,7 +196,9 @@ class StaffRecordList extends Component {
       isArchiveFetching,
       archiveMessage
     } = this.props;
+
     const listID = parseInt(this.state.listID, 10);
+
     const filteredElements = staff_record
       .filter(
         e =>
@@ -229,16 +246,14 @@ class StaffRecordList extends Component {
                     {dateOfBirth}
                   </span>
                 </li>
-                {
-                  record.gender.toLowerCase() === "female"
-                    ? <li className="list-group-item justify-content-between">
+                {record.gender.toLowerCase() === "female"
+                  ? <li className="list-group-item justify-content-between">
                       Maternity
                       <span className="badge badge-primary badge-pill ">
                         {record.maternity}
                       </span>
                     </li>
-                    : <p className="list-group-item"><br /></p>
-                }
+                  : <p className="list-group-item"><br /></p>}
                 <li className="list-group-item">
                   <button
                     className="btn btn-secondary btn-sm"
@@ -277,349 +292,332 @@ class StaffRecordList extends Component {
         </div>
         <div className="row">
           {filteredElements}
-          {staff_record
-            .filter(e => e.id === listID)
-            .map(record => {
-              let dob = new Date(record.date_of_birth);
-              let dateOfBirth = moment(dob).format("DD/MM/YYYY");
+          {staff_record.filter(e => e.id === listID).map(record => {
+            let dob = new Date(record.date_of_birth);
+            let dateOfBirth = moment(dob).format("DD/MM/YYYY");
 
-              return (
-                <div key={record.id}>
-                  <Modal
-                    className="Modal__Bootstrap modal-dialog"
-                    isOpen={this.state.showModal1}
-                    onRequestClose={this.handleCloseModal1}
-                    overlayClassName="Overlay"
-                    contentLabel="Modal 1"
-                    style={customStyles}
-                  >
-                    <div className="modal-content">
-                      <div className="modal-header">
-                        <h5 className="modal-title" id="editModalLabel">
-                          Edit
-                        </h5>
-                      </div>
-                      <form
-                        encType="multipart/form-data"
-                        onSubmit={this.handleSubmit}
-                      >
-                        <div className="modal-body">
-                          <div className="row">
-                            <div className="col-md-6">
-                              <div className="form-group">
-                                <label htmlFor="surName">Surname</label>
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  defaultValue={record.surname}
-                                  ref={input => this.surname = input}
-                                />
-                              </div>
-                            </div>
-                            <div className="col-md-6">
-                              <div className="form-group">
-                                <label htmlFor="otherNames">
-                                  Other Names
-                                </label>
-                                <input
-                                  type="text"
-                                  className="form-control"
-                                  defaultValue={record.othernames}
-                                  ref={input => this.othernames = input}
-                                />
-                              </div>
-                            </div>
-                          </div>
-                          <div className="form-group">
-                            <label htmlFor="staffEmail">
-                              Email address
-                            </label>
-                            <input
-                              type="email"
-                              className="form-control"
-                              defaultValue={record.email}
-                              ref={input => this.email = input}
-                            />
-                          </div>
-                          <div className="row">
-                            <div className="col-md-6">
-                              <div className="form-group">
-                                <label htmlFor="designation">
-                                  Designation
-                                </label>
-                                <select
-                                  className="form-control"
-                                  id="designation"
-                                  defaultValue={record.designation}
-                                  ref={select => this.designation = select}
-                                >
-                                  <option>{record.designation}</option>
-                                  <option>
-                                    Admin
-                                  </option>
-                                  <option>
-                                    Level 3 Lawyer
-                                  </option>
-                                  <option>
-                                    Level 4 Lawyer
-                                  </option>
-                                  <option>
-                                    Level 3 Secretary
-                                  </option>
-                                  <option>
-                                    Level 4 Secretary
-                                  </option>
-                                  <option>
-                                    TM
-                                  </option>
-                                  <option>
-                                    Accounts
-                                  </option>
-                                  <option>
-                                    Library
-                                  </option>
-                                  <option>
-                                    IT
-                                  </option>
-                                  <option>
-                                    Search Clerk Level 3
-                                  </option>
-                                  <option>
-                                    Search Clerk Level 4
-                                  </option>
-                                  <option>
-                                    Legal Executive
-                                  </option>
-                                  <option>
-                                    Partner
-                                  </option>
-                                </select>
-                              </div>
-                            </div>
-                            <div className="col-md-6">
-                              <div className="form-group">
-                                <label htmlFor="gender">Gender</label>
-                                <select
-                                  className="form-control"
-                                  id="designation"
-                                  defaultValue={record.gender}
-                                  ref={select => this.gender = select}
-                                >
-                                  <option>{record.gender}</option>
-                                  <option>
-                                    Male
-                                  </option>
-                                  <option>
-                                    Female
-                                  </option>
-                                </select>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="row">
-                            <div className="col-md-6">
-                              <div className="form-group">
-                                <label htmlFor="annualLeave">
-                                  Annual leave
-                                </label>
-                                <input
-                                  type="number"
-                                  className="form-control"
-                                  defaultValue={record.annual}
-                                  ref={input => this.annual = input}
-                                />
-                              </div>
-                            </div>
-                            <div className="col-md-6">
-                              <div className="form-group">
-                                <label htmlFor="sickLeave">Sick leave</label>
-                                <input
-                                  type="number"
-                                  className="form-control"
-                                  defaultValue={record.sick}
-                                  ref={input => this.sick = input}
-                                />
-                              </div>
-                            </div>
-                          </div>
-                          <div className="row">
-                            <div className="col-md-6">
-                              <div className="form-group">
-                                <label htmlFor="christmasLeave">
-                                  Christmas leave
-                                </label>
-                                <input
-                                  type="number"
-                                  className="form-control"
-                                  defaultValue={record.christmas}
-                                  ref={input => this.christmas = input}
-                                />
-                              </div>
-                            </div>
-                            <div className="col-md-6">
-                              <div className="form-group">
-                                <label htmlFor="bereavementLeave">
-                                  Bereavement leave
-                                </label>
-                                <input
-                                  type="number"
-                                  className="form-control"
-                                  defaultValue={record.bereavement}
-                                  ref={input => this.bereavement = input}
-                                />
-                              </div>
-                            </div>
-                          </div>
-                          <div className="row">
-                            {
-                              record.gender.toLowerCase() === "female"
-                                ? <div className="col-md-6">
-                                  <div className="form-group">
-                                    <label htmlFor="Maternity leave">
-                                      Maternity leave
-                                    </label>
-                                    <input
-                                      type="number"
-                                      className="form-control"
-                                      defaultValue={record.maternity}
-                                      ref={input => this.maternity = input}
-                                    />
-                                  </div>
-                                </div>
-                                : <br />
-                            }
-                            <div className="col-md-6">
-                              <div className="form-group">
-                                <label htmlFor="dob">Date of birth</label>
-                                <input
-                                  type="hidden"
-                                  defaultValue={record.date_of_birth}
-                                  ref={input => this.dob = input}
-                                />
-                                <DatePicker
-                                  className="form-control"
-                                  dateFormat="DD/MM/YYYY"
-                                  openToDate={moment(dob)}
-                                  selected={this.state.dob}
-                                  showMonthDropdown
-                                  showYearDropdown
-                                  dropdownMode="select"
-                                  onChange={this.handleDateChange}
-                                  placeholderText={dateOfBirth}
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="modal-footer">
-                          <div className="form-group">
-                            <button
-                              type="button"
-                              className="btn btn-outline-primary"
-                              onClick={this.handleCloseModal1}
-                            >
-                              Close
-                            </button>
-                          </div>
-                          <div className="form-group">
-                            <button
-                              type="submit"
-                              className="btn btn-primary col"
-                            >
-                              Save changes
-                            </button>
-                          </div>
-                        </div>
-                      </form>
-                      <div className="text-primary text-center bp-2">
-                        {
-                          isFetching
-                            ? <Loader color="#0275d8" size="20px" />
-                            : <p className="lead">{message}</p>
-                        }
-                      </div>
-                      <div className="text-danger text-center pb-4">
-                        {
-                          this.state.errorMessage
-                            ? <div>{this.state.errorMessage}</div>
-                            : ""
-                        }
-                      </div>
-                    </div>
-                  </Modal>
-                </div>
-              );
-            })}
-          {staff_record
-            .filter(e => e.id === listID)
-            .map(record => (
+            return (
               <div key={record.id}>
                 <Modal
                   className="Modal__Bootstrap modal-dialog"
-                  isOpen={this.state.showModal2}
-                  onRequestClose={this.handleCloseModal2}
-                  contentLabel="Modal #2"
+                  isOpen={this.state.showModal1}
+                  onRequestClose={this.handleCloseModal1}
                   overlayClassName="Overlay"
+                  contentLabel="Modal 1"
                   style={customStyles}
                 >
                   <div className="modal-content">
                     <div className="modal-header">
-                      <h5 className="modal-title">
-                        Archive
+                      <h5 className="modal-title" id="editModalLabel">
+                        Edit
                       </h5>
                     </div>
                     <form
                       encType="multipart/form-data"
-                      onSubmit={this.handleArchiveSubmit}
+                      onSubmit={this.handleSubmit}
                     >
                       <div className="modal-body">
-                        <p>{record.othernames}{" "}{record.surname}</p>
+                        <div className="row">
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label htmlFor="surName">Surname</label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                defaultValue={record.surname}
+                                ref={input => this.surname = input}
+                              />
+                            </div>
+                          </div>
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label htmlFor="otherNames">
+                                Other Names
+                              </label>
+                              <input
+                                type="text"
+                                className="form-control"
+                                defaultValue={record.othernames}
+                                ref={input => this.othernames = input}
+                              />
+                            </div>
+                          </div>
+                        </div>
                         <div className="form-group">
-                          <label htmlFor="reason">Reason</label>
+                          <label htmlFor="staffEmail">
+                            Email address
+                          </label>
                           <input
-                            type="text"
+                            type="email"
                             className="form-control"
-                            placeholder="Enter reason"
-                            id="reason"
-                            ref={input => this.archiveReason = input}
+                            defaultValue={record.email}
+                            ref={input => this.email = input}
                           />
+                        </div>
+                        <div className="row">
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label htmlFor="designation">
+                                Designation
+                              </label>
+                              <select
+                                className="form-control"
+                                id="designation"
+                                defaultValue={record.designation}
+                                ref={select => this.designation = select}
+                              >
+                                <option>{record.designation}</option>
+                                <option>
+                                  Admin
+                                </option>
+                                <option>
+                                  Level 3 Lawyer
+                                </option>
+                                <option>
+                                  Level 4 Lawyer
+                                </option>
+                                <option>
+                                  Level 3 Secretary
+                                </option>
+                                <option>
+                                  Level 4 Secretary
+                                </option>
+                                <option>
+                                  TM
+                                </option>
+                                <option>
+                                  Accounts
+                                </option>
+                                <option>
+                                  Library
+                                </option>
+                                <option>
+                                  IT
+                                </option>
+                                <option>
+                                  Search Clerk Level 3
+                                </option>
+                                <option>
+                                  Search Clerk Level 4
+                                </option>
+                                <option>
+                                  Legal Executive
+                                </option>
+                                <option>
+                                  Partner
+                                </option>
+                              </select>
+                            </div>
+                          </div>
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label htmlFor="gender">Gender</label>
+                              <select
+                                className="form-control"
+                                id="designation"
+                                defaultValue={record.gender}
+                                ref={select => this.gender = select}
+                              >
+                                <option>{record.gender}</option>
+                                <option>
+                                  Male
+                                </option>
+                                <option>
+                                  Female
+                                </option>
+                              </select>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label htmlFor="annualLeave">
+                                Annual leave
+                              </label>
+                              <input
+                                type="number"
+                                className="form-control"
+                                defaultValue={record.annual}
+                                ref={input => this.annual = input}
+                              />
+                            </div>
+                          </div>
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label htmlFor="sickLeave">Sick leave</label>
+                              <input
+                                type="number"
+                                className="form-control"
+                                defaultValue={record.sick}
+                                ref={input => this.sick = input}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="row">
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label htmlFor="christmasLeave">
+                                Christmas leave
+                              </label>
+                              <input
+                                type="number"
+                                className="form-control"
+                                defaultValue={record.christmas}
+                                ref={input => this.christmas = input}
+                              />
+                            </div>
+                          </div>
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label htmlFor="bereavementLeave">
+                                Bereavement leave
+                              </label>
+                              <input
+                                type="number"
+                                className="form-control"
+                                defaultValue={record.bereavement}
+                                ref={input => this.bereavement = input}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="row">
+                          {record.gender.toLowerCase() === "female"
+                            ? <div className="col-md-6">
+                                <div className="form-group">
+                                  <label htmlFor="Maternity leave">
+                                    Maternity leave
+                                  </label>
+                                  <input
+                                    type="number"
+                                    className="form-control"
+                                    defaultValue={record.maternity}
+                                    ref={input => this.maternity = input}
+                                  />
+                                </div>
+                              </div>
+                            : <br />}
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label htmlFor="dob">Date of birth</label>
+                              <input
+                                type="hidden"
+                                defaultValue={record.date_of_birth}
+                                ref={input => this.dob = input}
+                              />
+                              <DatePicker
+                                className="form-control"
+                                dateFormat="DD/MM/YYYY"
+                                openToDate={moment(dob)}
+                                selected={this.state.dob}
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                onChange={this.handleDateChange}
+                                placeholderText={dateOfBirth}
+                              />
+                            </div>
+                          </div>
                         </div>
                       </div>
                       <div className="modal-footer">
-                        <button
-                          type="button"
-                          className="btn btn-outline-primary"
-                          onClick={this.handleCloseModal2}
-                        >
-                          Close
-                        </button>
-                        <button
-                          type="submit"
-                          className="btn btn-primary"
-                          id={record.id}
-                        >
-                          Save changes
-                        </button>
+                        <div className="form-group">
+                          <button
+                            type="button"
+                            className="btn btn-outline-primary"
+                            onClick={this.handleCloseModal1}
+                          >
+                            Close
+                          </button>
+                        </div>
+                        <div className="form-group">
+                          <button type="submit" className="btn btn-primary col">
+                            Save changes
+                          </button>
+                        </div>
                       </div>
                     </form>
                     <div className="text-primary text-center bp-2">
-                      {
-                        isArchiveFetching
-                          ? <Loader color="#0275d8" size="20px" />
-                          : <p className="lead">{archiveMessage}</p>
-                      }
+                      {isFetching
+                        ? <Loader color="#0275d8" size="20px" />
+                        : <p className="lead">{message}</p>}
                     </div>
                     <div className="text-danger text-center pb-4">
-                      {
-                        this.state.errorMessage
-                          ? <div>{this.state.errorMessage}</div>
-                          : ""
-                      }
+                      {this.state.errorMessage
+                        ? <div>{this.state.errorMessage}</div>
+                        : ""}
                     </div>
                   </div>
                 </Modal>
               </div>
-            ))}
+            );
+          })}
+          {staff_record.filter(e => e.id === listID).map(record => (
+            <div key={record.id}>
+              <Modal
+                className="Modal__Bootstrap modal-dialog"
+                isOpen={this.state.showModal2}
+                onRequestClose={this.handleCloseModal2}
+                contentLabel="Modal #2"
+                overlayClassName="Overlay"
+                style={customStyles}
+              >
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title">
+                      Archive
+                    </h5>
+                  </div>
+                  <form
+                    encType="multipart/form-data"
+                    onSubmit={this.handleArchiveSubmit}
+                  >
+                    <div className="modal-body">
+                      <p>{record.othernames}{" "}{record.surname}</p>
+                      <div className="form-group">
+                        <label htmlFor="reason">Reason</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter reason"
+                          id="reason"
+                          onChange={this.handleArchiveReason}
+                        />
+                      </div>
+                    </div>
+                    <div className="modal-footer">
+                      <button
+                        type="button"
+                        className="btn btn-outline-primary"
+                        onClick={this.handleCloseModal2}
+                      >
+                        Close
+                      </button>
+                      <button
+                        type="submit"
+                        className="btn btn-primary"
+                        id={record.id}
+                      >
+                        Save changes
+                      </button>
+                    </div>
+                  </form>
+                  <div className="text-primary text-center bp-2">
+                    {isArchiveFetching
+                      ? <Loader color="#0275d8" size="20px" />
+                      : <p className="lead">{archiveMessage}</p>}
+                  </div>
+                  <div className="text-danger text-center pb-4">
+                    {this.state.errorMessage
+                      ? <div>{this.state.errorMessage}</div>
+                      : ""}
+                  </div>
+                </div>
+              </Modal>
+            </div>
+          ))}
         </div>
       </div>
     );
