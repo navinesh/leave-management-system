@@ -5,8 +5,8 @@ export const ARCHIVE_USER_SUCCESS = "ARCHIVE_USER_SUCCESS";
 export const ARCHIVE_USER_FAILURE = "ARCHIVE_USER_FAILURE";
 export const CLEAR_ARCHIVE_MESSAGE = "CLEAR_ARCHIVE_MESSAGE";
 
-export function requestArchiveUser(modifyUserDetails) {
-  return { type: ARCHIVE_USER_REQUEST, modifyUserDetails };
+export function requestArchiveUser(archiveUser) {
+  return { type: ARCHIVE_USER_REQUEST, archiveUser };
 }
 
 export function successArchiveUser(data) {
