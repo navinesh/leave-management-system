@@ -123,15 +123,15 @@ export default class LeaveApplications extends Component {
     const dateRangeSet = new Set(dateRange);
     const weekendSet = new Set(weekend);
     const daysExcludingWeekendSet = new Set(
-      [ ...dateRangeSet ].filter(x => !weekendSet.has(x))
+      [...dateRangeSet].filter(x => !weekendSet.has(x))
     );
 
     // exclude public holidays
     // to-do get public holiday dates from db
-    const publicHolidays = [ "07, 09, 2016", "08, 09, 2016" ];
+    const publicHolidays = ["07, 09, 2016", "08, 09, 2016"];
     const publicHolidaysSet = new Set(publicHolidays);
     const daysExcludingHolidaysSet = new Set(
-      [ ...daysExcludingWeekendSet ].filter(x => !publicHolidaysSet.has(x))
+      [...daysExcludingWeekendSet].filter(x => !publicHolidaysSet.has(x))
     );
     const leaveDays = daysExcludingHolidaysSet.size;
 
@@ -288,16 +288,14 @@ export default class LeaveApplications extends Component {
                     {user_detail.christmas}
                   </span>
                 </li>
-                {
-                  gender === "female"
-                    ? <li className="list-group-item justify-content-between">
+                {gender === "female"
+                  ? <li className="list-group-item justify-content-between">
                       Maternity
                       <span className="badge badge-primary badge-pill">
                         {user_detail.maternity}
                       </span>
                     </li>
-                    : null
-                }
+                  : null}
               </ul>
             </div>
             <div className="col-md-5 mb-3">
@@ -321,11 +319,9 @@ export default class LeaveApplications extends Component {
                           <option>bereavement</option>
                           <option>christmas</option>
                           <option>birthday</option>
-                          {
-                            gender === "female"
-                              ? <option>maternity</option>
-                              : null
-                          }
+                          {gender === "female"
+                            ? <option>maternity</option>
+                            : null}
                           <option>lwop</option>
                           <option>other</option>
                         </select>
@@ -353,10 +349,13 @@ export default class LeaveApplications extends Component {
                         <label htmlFor="startDate">Start date</label>
                         <DatePicker
                           className="form-control"
+                          placeholderText="Click to select a date"
                           selected={this.state.startDate}
                           startDate={this.state.startDate}
                           endDate={this.state.endDate}
                           onChange={this.handleStartDateChange}
+                          showMonthDropdown
+                          dropdownMode="select"
                         />
                       </div>
                     </div>
@@ -365,10 +364,13 @@ export default class LeaveApplications extends Component {
                         <label htmlFor="endDate">End date</label>
                         <DatePicker
                           className="form-control"
+                          placeholderText="Click to select a date"
                           selected={this.state.endDate}
                           startDate={this.state.startDate}
                           endDate={this.state.endDate}
                           onChange={this.handleEndDateChange}
+                          showMonthDropdown
+                          dropdownMode="select"
                         />
                       </div>
                     </div>
@@ -424,18 +426,14 @@ export default class LeaveApplications extends Component {
                   </div>
                 </form>
                 <div className="text-danger text-center">
-                  {
-                    isFetching
-                      ? <Loader color="#0275d8" size="20px" />
-                      : message
-                  }
+                  {isFetching
+                    ? <Loader color="#0275d8" size="20px" />
+                    : message}
                 </div>
                 <div className="text-danger text-center pt-2">
-                  {
-                    this.state.errorMessage
-                      ? <div>{this.state.errorMessage}</div>
-                      : null
-                  }
+                  {this.state.errorMessage
+                    ? <div>{this.state.errorMessage}</div>
+                    : null}
                 </div>
               </div>
             </div>
