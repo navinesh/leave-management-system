@@ -539,7 +539,7 @@ class StaffRecordList extends Component {
                         </div>
                       </div>
                     </form>
-                    <div className="text-primary text-center bp-2">
+                    <div className=" text-center bp-2">
                       {isFetching
                         ? <Loader color="#0275d8" size="20px" />
                         : <p className="lead">{message}</p>}
@@ -595,23 +595,19 @@ class StaffRecordList extends Component {
                       >
                         Close
                       </button>
-                      <button
-                        type="submit"
-                        className="btn btn-primary"
-                        id={record.id}
-                      >
+                      <button type="submit" className="btn btn-primary">
                         Save changes
                       </button>
                     </div>
                   </form>
-                  <div className="text-primary text-center bp-2">
+                  <div className="text-primary text-center">
                     {isArchiveFetching
                       ? <Loader color="#0275d8" size="20px" />
-                      : <p className="lead">{archiveMessage}</p>}
+                      : <p className="lead pb-2">{archiveMessage}</p>}
                   </div>
-                  <div className="text-danger text-center pb-4">
+                  <div className="text-danger text-center">
                     {this.state.errorMessage
-                      ? <div>{this.state.errorMessage}</div>
+                      ? <div className="pb-4">{this.state.errorMessage}</div>
                       : ""}
                   </div>
                 </div>
