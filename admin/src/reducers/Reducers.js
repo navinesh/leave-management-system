@@ -75,6 +75,13 @@ import {
   CLEAR_ARCHIVE_MESSAGE
 } from "../actions/ArchiveUser";
 
+import {
+  UNARCHIVE_USER_REQUEST,
+  UNARCHIVE_USER_SUCCESS,
+  UNARCHIVE_USER_FAILURE,
+  CLEAR_UNARCHIVE_MESSAGE
+} from "../actions/UnArchiveUser";
+
 const adminAuth = (
   state = {
     isFetching: false,
@@ -325,6 +332,36 @@ const archiveUser = (
   }
 };
 
+const unArchiveUser = (
+  state = { isUnArchiveFetching: false, unArchiveMessage: "" },
+  action
+) => {
+  switch (action.type) {
+    case UNARCHIVE_USER_REQUEST:
+      return { ...state, isUnArchiveFetching: true };
+    case UNARCHIVE_USER_SUCCESS:
+      return {
+        ...state,
+        isUnArchiveFetching: false,
+        unArchiveMessage: action.message
+      };
+    case UNARCHIVE_USER_FAILURE:
+      return {
+        ...state,
+        isUnArchiveFetching: false,
+        unArchiveMessage: action.message
+      };
+    case CLEAR_UNARCHIVE_MESSAGE:
+      return {
+        ...state,
+        isUnArchiveFetching: false,
+        unArchiveMessage: ""
+      };
+    default:
+      return state;
+  }
+};
+
 const rootReducer = combineReducers({
   adminAuth,
   pendingLeave,
@@ -336,7 +373,8 @@ const rootReducer = combineReducers({
   sickSheet,
   addUser,
   modifyUser,
-  archiveUser
+  archiveUser,
+  unArchiveUser
 });
 
 export default rootReducer;
