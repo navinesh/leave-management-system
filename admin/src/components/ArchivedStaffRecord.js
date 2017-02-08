@@ -175,7 +175,7 @@ class ArchivedStaffRecordList extends Component {
                 className="Modal__Bootstrap modal-dialog"
                 isOpen={this.state.showModal}
                 onRequestClose={this.handleCloseModal}
-                contentLabel="Modal #2"
+                contentLabel="Modal #1"
                 overlayClassName="Overlay"
                 style={customStyles}
               >
