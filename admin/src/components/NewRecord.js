@@ -294,8 +294,8 @@ export default class NewRecordForm extends Component {
                 </div>
               </div>
               <div className="row">
-                {
-                  staffGender === "female" ? <div className="col-md-6">
+                {staffGender === "female"
+                  ? <div className="col-md-6">
                       <div className="form-group">
                         <label htmlFor="Maternity leave">Maternity leave</label>
                         <input
@@ -306,8 +306,8 @@ export default class NewRecordForm extends Component {
                           onChange={this.handleMaternityLeaveChange}
                         />
                       </div>
-                    </div> : null
-                }
+                    </div>
+                  : null}
                 <div className="col-md-6">
                   <div className="form-group">
                     <label htmlFor="dob">Date of birth</label>
@@ -334,11 +334,9 @@ export default class NewRecordForm extends Component {
               {isFetching ? <div>Loading...</div> : message}
             </div>
             <div className="text-danger text-center">
-              {
-                this.state.errorMessage
-                  ? <div>{this.state.errorMessage}</div>
-                  : ""
-              }
+              {this.state.errorMessage
+                ? <div>{this.state.errorMessage}</div>
+                : ""}
             </div>
           </div>
         </div>
