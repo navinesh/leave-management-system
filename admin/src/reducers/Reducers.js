@@ -82,6 +82,19 @@ import {
   CLEAR_UNARCHIVE_MESSAGE
 } from "../actions/UnArchiveUser";
 
+import {
+  REQUEST_PUBLIC_HOLIDAY,
+  RECEIVE_PUBLIC_HOLIDAY,
+  ERROR_PUBLIC_HOLIDAY
+} from "../actions/PublicHoliday";
+
+import {
+  ADD_PUBLIC_HOLIDAY_REQUEST,
+  ADD_PUBLIC_HOLIDAY_SUCCESS,
+  ADD_PUBLIC_HOLIDAY_FAILURE,
+  CLEAR_PUBLIC_MESSAGE
+} from "../actions/NewPublicHoliday";
+
 const adminAuth = (
   state = {
     isFetching: false,
@@ -362,6 +375,56 @@ const unArchiveUser = (
   }
 };
 
+const addPublicHoliday = (
+  state = { isPublicFetching: false, publicMessage: "" },
+  action
+) => {
+  switch (action.type) {
+    case ADD_PUBLIC_HOLIDAY_REQUEST:
+      return { ...state, isPublicFetching: true };
+    case ADD_PUBLIC_HOLIDAY_SUCCESS:
+      return {
+        ...state,
+        isPublicFetching: false,
+        publicMessage: action.message
+      };
+    case ADD_PUBLIC_HOLIDAY_FAILURE:
+      return {
+        ...state,
+        isPublicFetching: false,
+        publicMessage: action.message
+      };
+    case CLEAR_PUBLIC_MESSAGE:
+      return {
+        ...state,
+        isPublicFetching: false,
+        publicMessage: ""
+      };
+    default:
+      return state;
+  }
+};
+
+const publicHoliday = (
+  state = { isFetching: false, public_holiday: [] },
+  action
+) => {
+  switch (action.type) {
+    case REQUEST_PUBLIC_HOLIDAY:
+      return { ...state, isFetching: true };
+    case RECEIVE_PUBLIC_HOLIDAY:
+      return {
+        ...state,
+        isFetching: false,
+        public_holiday: action.public_holiday
+      };
+    case ERROR_PUBLIC_HOLIDAY:
+      return { ...state, isFetching: false };
+    default:
+      return state;
+  }
+};
+
 const rootReducer = combineReducers({
   adminAuth,
   pendingLeave,
@@ -374,7 +437,9 @@ const rootReducer = combineReducers({
   addUser,
   modifyUser,
   archiveUser,
-  unArchiveUser
+  unArchiveUser,
+  addPublicHoliday,
+  publicHoliday
 });
 
 export default rootReducer;
