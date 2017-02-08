@@ -14,6 +14,7 @@ import ArchivedStaffRecord from "./containers/ArchivedStaffRecord";
 import LeaveReport from "./containers/LeaveReport";
 import SickSheetRecord from "./containers/SickSheetRecord";
 import NewRecord from "./containers/NewRecord";
+import PublicHoliday from "./containers/PublicHoliday";
 import Error from "./components/Error";
 import {
   requestAdminLoginFromToken,
@@ -118,6 +119,11 @@ render(
           path="/newrecord"
           onEnter={requireAuthentication}
           component={NewRecord}
+        />
+        <Route
+          path="/publicholiday"
+          onEnter={requireAuthentication}
+          component={PublicHoliday}
         />
       </Route>
       <Route path="*" component={Error} />
