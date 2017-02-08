@@ -22,7 +22,7 @@ export default class Header extends Component {
             aria-expanded="false"
             aria-label="Toggle navigation"
           >
-            <span className="navbar-toggler-icon"></span>
+            <span className="navbar-toggler-icon" />
           </button>
           <Link className="navbar-brand" to="/">
             Leave management system
@@ -33,22 +33,25 @@ export default class Header extends Component {
           >
             <div className="navbar-nav">
               <Link className="nav-item nav-link" to="/staffrecord">
-                Staff record
+                Staff
               </Link>
               <Link className="nav-item nav-link" to="/approvedleave">
-                Leave calendar
+                Calendar
               </Link>
               <Link className="nav-item nav-link" to="/leavereport">
-                Leave report
+                Report
               </Link>
               <Link className="nav-item nav-link" to="/sicksheetrecord">
-                Sick sheet record
+                Sick sheet
               </Link>
               <Link className="nav-item nav-link" to="/newrecord">
-                New record
+                New
               </Link>
               <Link className="nav-item nav-link" to="/archivedstaffrecord">
-                Archived staff
+                Archived
+              </Link>
+              <Link className="nav-item nav-link" to="/publicholiday">
+                Public Holidays
               </Link>
               <button
                 onClick={this.adminLogout.bind(this)}
