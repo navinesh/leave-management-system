@@ -29,6 +29,14 @@ class PublicHolidays extends Component {
       this.setState({
         errorMessage: "One or more required fields are missing!"
       });
+
+      setTimeout(
+        () => {
+          this.setState({ errorMessage: "" });
+        },
+        8000
+      );
+
       return null;
     }
 
@@ -108,9 +116,12 @@ const AddPublicHoliday = props => (
         dateFormat="DD/MM/YYYY"
         selected={props.holidayDate}
         onChange={props.handleDateChange}
+        showMonthDropdown
+        showYearDropdown
+        dropdownMode="select"
         placeholderText="Click to select a date"
       />
-      <button type="submit" className="btn btn-primary ml-3">
+      <button type="submit" className="btn btn-primary btn-sm ml-3">
         Add
       </button>
     </div>
