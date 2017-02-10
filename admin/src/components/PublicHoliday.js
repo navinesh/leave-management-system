@@ -27,7 +27,7 @@ class PublicHolidays extends Component {
 
     if (!holidayDate) {
       this.setState({
-        errorMessage: "One or more required fields are missing!"
+        errorMessage: "You did not select any date!"
       });
 
       setTimeout(
@@ -56,11 +56,11 @@ class PublicHolidays extends Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="offset-md-2 col-md-8">
         <div className="card">
           <div className="card-block">
             <div className="row">
-              <div className="col-md-3">
+              <div className="col-md-6">
                 <h4 className="card-title">Public Holidays</h4>
                 <PublicHolidayList
                   public_holiday={this.props.public_holiday}
@@ -69,7 +69,7 @@ class PublicHolidays extends Component {
                   errorMessage={this.state.errorMessage}
                 />
               </div>
-              <div className="col-md-4">
+              <div className="col-md-6">
                 <AddPublicHoliday
                   holidayDate={this.state.holidayDate}
                   handleDateChange={this.handleDateChange}
@@ -99,13 +99,13 @@ class PublicHolidays extends Component {
 }
 
 const PublicHolidayList = props => {
-  return (
-    <ul>
-      {props.public_holiday.map(item => (
-        <li key={item.id}>{item.holiday_date}</li>
-      ))}
-    </ul>
-  );
+  const public_holidays = props.public_holiday.map(item => {
+    let hDate = new Date(item.holiday_date);
+    let holiday_date = moment(hDate).format("dddd, Do MMMM YYYY");
+    return <li key={item.id}>{holiday_date}</li>;
+  });
+
+  return <ul>{public_holidays}</ul>;
 };
 
 const AddPublicHoliday = props => (
