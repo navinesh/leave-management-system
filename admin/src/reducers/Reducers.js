@@ -92,8 +92,15 @@ import {
   ADD_PUBLIC_HOLIDAY_REQUEST,
   ADD_PUBLIC_HOLIDAY_SUCCESS,
   ADD_PUBLIC_HOLIDAY_FAILURE,
-  CLEAR_PUBLIC_MESSAGE
+  CLEAR_ADD_PUBLIC_MESSAGE
 } from "../actions/NewPublicHoliday";
+
+import {
+  DELETE_PUBLIC_HOLIDAY_REQUEST,
+  DELETE_PUBLIC_HOLIDAY_SUCCESS,
+  DELETE_PUBLIC_HOLIDAY_FAILURE,
+  CLEAR_DELETE_PUBLIC_MESSAGE
+} from "../actions/DeletePublicHoliday";
 
 const adminAuth = (
   state = {
@@ -375,36 +382,6 @@ const unArchiveUser = (
   }
 };
 
-const addPublicHoliday = (
-  state = { isPublicFetching: false, publicMessage: "" },
-  action
-) => {
-  switch (action.type) {
-    case ADD_PUBLIC_HOLIDAY_REQUEST:
-      return { ...state, isPublicFetching: true };
-    case ADD_PUBLIC_HOLIDAY_SUCCESS:
-      return {
-        ...state,
-        isPublicFetching: false,
-        publicMessage: action.message
-      };
-    case ADD_PUBLIC_HOLIDAY_FAILURE:
-      return {
-        ...state,
-        isPublicFetching: false,
-        publicMessage: action.message
-      };
-    case CLEAR_PUBLIC_MESSAGE:
-      return {
-        ...state,
-        isPublicFetching: false,
-        publicMessage: ""
-      };
-    default:
-      return state;
-  }
-};
-
 const publicHoliday = (
   state = { isFetching: false, public_holiday: [] },
   action
@@ -425,6 +402,66 @@ const publicHoliday = (
   }
 };
 
+const addPublicHoliday = (
+  state = { isAddPublicFetching: false, addPublicMessage: "" },
+  action
+) => {
+  switch (action.type) {
+    case ADD_PUBLIC_HOLIDAY_REQUEST:
+      return { ...state, isAddPublicFetching: true };
+    case ADD_PUBLIC_HOLIDAY_SUCCESS:
+      return {
+        ...state,
+        isAddPublicFetching: false,
+        addPublicMessage: action.message
+      };
+    case ADD_PUBLIC_HOLIDAY_FAILURE:
+      return {
+        ...state,
+        isAddPublicFetching: false,
+        addPublicMessage: action.message
+      };
+    case CLEAR_ADD_PUBLIC_MESSAGE:
+      return {
+        ...state,
+        isAddPublicFetching: false,
+        addPublicMessage: ""
+      };
+    default:
+      return state;
+  }
+};
+
+const deletePublicHoliday = (
+  state = { isDeletePublicFetching: false, deletePublicMessage: "" },
+  action
+) => {
+  switch (action.type) {
+    case DELETE_PUBLIC_HOLIDAY_REQUEST:
+      return { ...state, isDeletePublicFetching: true };
+    case DELETE_PUBLIC_HOLIDAY_SUCCESS:
+      return {
+        ...state,
+        isDeletePublicFetching: false,
+        deletePublicMessage: action.message
+      };
+    case DELETE_PUBLIC_HOLIDAY_FAILURE:
+      return {
+        ...state,
+        isDeletePublicFetching: false,
+        deletePublicMessage: action.message
+      };
+    case CLEAR_DELETE_PUBLIC_MESSAGE:
+      return {
+        ...state,
+        isDeletePublicFetching: false,
+        deletePublicMessage: ""
+      };
+    default:
+      return state;
+  }
+};
+
 const rootReducer = combineReducers({
   adminAuth,
   pendingLeave,
@@ -439,7 +476,8 @@ const rootReducer = combineReducers({
   archiveUser,
   unArchiveUser,
   addPublicHoliday,
-  publicHoliday
+  publicHoliday,
+  deletePublicHoliday
 });
 
 export default rootReducer;
