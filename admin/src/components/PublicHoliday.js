@@ -87,7 +87,7 @@ class PublicHolidays extends Component {
   }
 
   render() {
-    var list = this.props.public_holiday.sort(function(a, b) {
+    var list = this.props.public_holiday.sort((a, b) => {
       return b.id - a.id;
     });
 
