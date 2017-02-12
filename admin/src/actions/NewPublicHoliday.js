@@ -4,7 +4,7 @@ import { fetchPublicHoliday } from "../actions/PublicHoliday";
 export const ADD_PUBLIC_HOLIDAY_REQUEST = "ADD_PUBLIC_HOLIDAY_REQUEST";
 export const ADD_PUBLIC_HOLIDAY_SUCCESS = "ADD_PUBLIC_HOLIDAY_SUCCESS";
 export const ADD_PUBLIC_HOLIDAY_FAILURE = "ADD_PUBLIC_HOLIDAY_FAILURE";
-export const CLEAR_PUBLIC_MESSAGE = "CLEAR_PUBLIC_MESSAGE";
+export const CLEAR_ADD_PUBLIC_MESSAGE = "CLEAR_ADD_PUBLIC_MESSAGE";
 
 export function requestAddPublicHoliday(archiveUser) {
   return { type: ADD_PUBLIC_HOLIDAY_REQUEST, archiveUser };
@@ -18,7 +18,7 @@ export function failureAddPublicHoliday(data) {
   return { type: ADD_PUBLIC_HOLIDAY_FAILURE, message: data.message };
 }
 
-export const clearpublicMessage = () => ({ type: CLEAR_PUBLIC_MESSAGE });
+export const clearpublicMessage = () => ({ type: CLEAR_ADD_PUBLIC_MESSAGE });
 
 export function submitAddPublicHoliday(publicHolidayDate) {
   return dispatch => {
