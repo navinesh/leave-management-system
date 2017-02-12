@@ -10,9 +10,10 @@ var Loader = require("halogen/ClipLoader");
 class PublicHolidays extends Component {
   constructor() {
     super();
-    this.state = { holidayDate: "", errorMessage: "" };
+    this.state = { holidayDate: "", errorMessage: "", id: "" };
     this.handleDateChange = this.handleDateChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDeleteSubmit = this.handleDeleteSubmit.bind(this);
   }
 
   handleDateChange(e) {
@@ -36,7 +37,6 @@ class PublicHolidays extends Component {
         },
         8000
       );
-
       return null;
     }
 
@@ -48,40 +48,100 @@ class PublicHolidays extends Component {
 
     setTimeout(
       () => {
-        this.props.dispatch({ type: "CLEAR_PUBLIC_MESSAGE" });
+        this.props.dispatch({ type: "CLEAR_ADD_PUBLIC_MESSAGE" });
+      },
+      8000
+    );
+  }
+
+  handleDeleteSubmit(e) {
+    e.preventDefault();
+    const id = this.id.value ? this.id.value : null;
+
+    if (!id) {
+      this.setState({
+        errorMessage: "Valid ID is required!"
+      });
+
+      setTimeout(
+        () => {
+          this.setState({ errorMessage: "" });
+        },
+        8000
+      );
+      return null;
+    }
+
+    const deletePublicHolidayDate = {
+      id: id
+    };
+    this.props.onDeletePublicHolidaySubmit(deletePublicHolidayDate);
+    this.setState({ id: "", errorMessage: "" });
+
+    setTimeout(
+      () => {
+        this.props.dispatch({ type: "CLEAR_DELETE_PUBLIC_MESSAGE" });
       },
       8000
     );
   }
 
   render() {
+    var list = this.props.public_holiday.sort(function(a, b) {
+      return b.id - a.id;
+    });
+
+    const public_holidays = list.map(item => {
+      let hDate = new Date(item.holiday_date);
+      let holiday_date = moment(hDate).format("dddd, Do MMMM YYYY");
+      return (
+        <li key={item.id}>
+          {holiday_date}
+          <form
+            encType="multipart/form-data"
+            onSubmit={this.handleDeleteSubmit}
+          >
+            <input
+              type="hidden"
+              defaultValue={item.id}
+              ref={input => this.id = input}
+            />
+            <button type="submit" className="btn btn-link btn-sm">
+              <span className="text-danger">Delete</span>
+            </button>
+          </form>
+        </li>
+      );
+    });
     return (
-      <div className="offset-md-2 col-md-8">
+      <div className="offset-md-1 col-md-10">
         <div className="card">
           <div className="card-block">
             <div className="row">
-              <div className="col-md-6">
+              <div className="col">
                 <h4 className="card-title">Public Holidays</h4>
-                <PublicHolidayList
-                  public_holiday={this.props.public_holiday}
-                  isPublicFetching={this.props.isPublicFetching}
-                  publicMessage={this.props.publicMessage}
-                  errorMessage={this.state.errorMessage}
-                />
+                <ul>{public_holidays}</ul>
               </div>
-              <div className="col-md-6">
+              <div className="col">
                 <AddPublicHoliday
                   holidayDate={this.state.holidayDate}
                   handleDateChange={this.handleDateChange}
                   handleSubmit={this.handleSubmit}
                 />
                 <div>
-                  {this.props.isPublicFetching
+                  {this.props.isAddPublicFetching
                     ? <div className="text-center">
                         <Loader color="#0275d8" size="20px" />
                       </div>
                     : <p className="text-primary">
-                        {this.props.publicMessage}
+                        {this.props.addPublicMessage}
+                      </p>}
+                  {this.props.isDeletePublicFetching
+                    ? <div className="text-center">
+                        <Loader color="#0275d8" size="20px" />
+                      </div>
+                    : <p className="text-primary">
+                        {this.props.deletePublicMessage}
                       </p>}
                 </div>
                 <div className="text-danger">
@@ -97,16 +157,6 @@ class PublicHolidays extends Component {
     );
   }
 }
-
-const PublicHolidayList = props => {
-  const public_holidays = props.public_holiday.map(item => {
-    let hDate = new Date(item.holiday_date);
-    let holiday_date = moment(hDate).format("dddd, Do MMMM YYYY");
-    return <li key={item.id}>{holiday_date}</li>;
-  });
-
-  return <ul>{public_holidays}</ul>;
-};
 
 const AddPublicHoliday = props => (
   <form encType="multipart/form-data" onSubmit={props.handleSubmit}>
@@ -132,8 +182,11 @@ PublicHolidays.propTypes = {
   public_holiday: PropTypes.array.isRequired,
   dispatch: PropTypes.func.isRequired,
   onAddPublicHolidaySubmit: PropTypes.func.isRequired,
-  isPublicFetching: PropTypes.bool.isRequired,
-  publicMessage: PropTypes.string
+  onDeletePublicHolidaySubmit: PropTypes.func.isRequired,
+  isAddPublicFetching: PropTypes.bool.isRequired,
+  addPublicMessage: PropTypes.string,
+  isDeletePublicFetching: PropTypes.bool.isRequired,
+  deletePublicMessage: PropTypes.string
 };
 
 export default PublicHolidays;
