@@ -165,7 +165,7 @@ class DeletePublicHoliday extends Component {
 
   render() {
     let list = this.props.public_holiday.sort((a, b) => {
-      return b.id - a.id;
+      return new Date(a.holiday_date) - new Date(b.holiday_date);
     });
 
     const public_holidays = list.map(item => {
