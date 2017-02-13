@@ -14,7 +14,7 @@ const PublicHolidays = props => (
         <div className="row">
           <div className="col">
             <h4 className="card-title">Public Holidays</h4>
-            <DeletePublicHolidays
+            <DeletePublicHoliday
               public_holiday={props.public_holiday}
               dispatch={props.dispatch}
               onDeletePublicHolidaySubmit={props.onDeletePublicHolidaySubmit}
@@ -122,7 +122,7 @@ class AddPublicHoliday extends Component {
   }
 }
 
-class DeletePublicHolidays extends Component {
+class DeletePublicHoliday extends Component {
   constructor() {
     super();
     this.state = { errorMessage: "" };
