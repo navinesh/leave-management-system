@@ -126,12 +126,12 @@ class DeletePublicHoliday extends Component {
   constructor() {
     super();
     this.state = { errorMessage: "" };
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
-  handleSubmit(e) {
+  handleDelete(e) {
     e.preventDefault();
-    const id = this.id.value ? this.id.value : null;
+    const id = e.target.id ? e.target.id : null;
 
     if (!id) {
       this.setState({
@@ -172,16 +172,13 @@ class DeletePublicHoliday extends Component {
       return (
         <li key={item.id}>
           {holiday_date}
-          <form encType="multipart/form-data" onSubmit={this.handleSubmit}>
-            <input
-              type="hidden"
-              defaultValue={item.id}
-              ref={input => this.id = input}
-            />
-            <button type="submit" className="btn btn-link btn-sm">
-              <span className="text-danger">Delete</span>
-            </button>
-          </form>
+          <button
+            className="btn btn-link btn-sm text-danger"
+            onClick={this.handleDelete}
+            id={item.id}
+          >
+            Delete
+          </button>
         </li>
       );
     });
