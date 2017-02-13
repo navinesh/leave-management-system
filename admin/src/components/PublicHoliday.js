@@ -96,7 +96,7 @@ class AddPublicHoliday extends Component {
 
   render() {
     return (
-      <div>
+      <div className="AddPublicHoliday">
         <form encType="multipart/form-data" onSubmit={this.handleSubmit}>
           <div className="form-group">
             <DatePicker
