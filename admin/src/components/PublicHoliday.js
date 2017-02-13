@@ -7,13 +7,53 @@ const moment = require("moment");
 
 var Loader = require("halogen/ClipLoader");
 
-class PublicHolidays extends Component {
+const PublicHolidays = props => (
+  <div className="offset-md-1 col-md-10">
+    <div className="card">
+      <div className="card-block">
+        <div className="row">
+          <div className="col">
+            <h4 className="card-title">Public Holidays</h4>
+            <DeletePublicHolidays
+              public_holiday={props.public_holiday}
+              dispatch={props.dispatch}
+              onDeletePublicHolidaySubmit={props.onDeletePublicHolidaySubmit}
+            />
+          </div>
+          <div className="col">
+            <AddPublicHoliday
+              dispatch={props.dispatch}
+              onAddPublicHolidaySubmit={props.onAddPublicHolidaySubmit}
+            />
+            <div>
+              {props.isAddPublicFetching
+                ? <div className="text-center">
+                    <Loader color="#0275d8" size="20px" />
+                  </div>
+                : <p className="text-primary">
+                    {props.addPublicMessage}
+                  </p>}
+              {props.isDeletePublicFetching
+                ? <div className="text-center">
+                    <Loader color="#0275d8" size="20px" />
+                  </div>
+                : <p className="text-primary">
+                    {props.deletePublicMessage}
+                  </p>}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+class AddPublicHoliday extends Component {
   constructor() {
     super();
-    this.state = { holidayDate: "", errorMessage: "", id: "" };
+    this.state = { holidayDate: "", errorMessage: "" };
     this.handleDateChange = this.handleDateChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleDeleteSubmit = this.handleDeleteSubmit.bind(this);
   }
 
   handleDateChange(e) {
@@ -35,7 +75,7 @@ class PublicHolidays extends Component {
         () => {
           this.setState({ errorMessage: "" });
         },
-        8000
+        5000
       );
       return null;
     }
@@ -50,11 +90,46 @@ class PublicHolidays extends Component {
       () => {
         this.props.dispatch({ type: "CLEAR_ADD_PUBLIC_MESSAGE" });
       },
-      8000
+      5000
     );
   }
 
-  handleDeleteSubmit(e) {
+  render() {
+    return (
+      <div>
+        <form encType="multipart/form-data" onSubmit={this.handleSubmit}>
+          <div className="form-group">
+            <DatePicker
+              className="form-control"
+              dateFormat="DD/MM/YYYY"
+              selected={this.state.holidayDate}
+              onChange={this.handleDateChange}
+              showMonthDropdown
+              showYearDropdown
+              dropdownMode="select"
+              placeholderText="Click to select a date"
+            />
+            <button type="submit" className="btn btn-primary btn-sm ml-3">
+              Add
+            </button>
+          </div>
+        </form>
+        <div className="text-danger">
+          {this.state.errorMessage ? <div>{this.state.errorMessage}</div> : ""}
+        </div>
+      </div>
+    );
+  }
+}
+
+class DeletePublicHolidays extends Component {
+  constructor() {
+    super();
+    this.state = { errorMessage: "" };
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleSubmit(e) {
     e.preventDefault();
     const id = this.id.value ? this.id.value : null;
 
@@ -67,7 +142,7 @@ class PublicHolidays extends Component {
         () => {
           this.setState({ errorMessage: "" });
         },
-        8000
+        5000
       );
       return null;
     }
@@ -82,12 +157,12 @@ class PublicHolidays extends Component {
       () => {
         this.props.dispatch({ type: "CLEAR_DELETE_PUBLIC_MESSAGE" });
       },
-      8000
+      5000
     );
   }
 
   render() {
-    var list = this.props.public_holiday.sort((a, b) => {
+    let list = this.props.public_holiday.sort((a, b) => {
       return b.id - a.id;
     });
 
@@ -97,10 +172,7 @@ class PublicHolidays extends Component {
       return (
         <li key={item.id}>
           {holiday_date}
-          <form
-            encType="multipart/form-data"
-            onSubmit={this.handleDeleteSubmit}
-          >
+          <form encType="multipart/form-data" onSubmit={this.handleSubmit}>
             <input
               type="hidden"
               defaultValue={item.id}
@@ -114,69 +186,15 @@ class PublicHolidays extends Component {
       );
     });
     return (
-      <div className="offset-md-1 col-md-10">
-        <div className="card">
-          <div className="card-block">
-            <div className="row">
-              <div className="col">
-                <h4 className="card-title">Public Holidays</h4>
-                <ul>{public_holidays}</ul>
-              </div>
-              <div className="col">
-                <AddPublicHoliday
-                  holidayDate={this.state.holidayDate}
-                  handleDateChange={this.handleDateChange}
-                  handleSubmit={this.handleSubmit}
-                />
-                <div>
-                  {this.props.isAddPublicFetching
-                    ? <div className="text-center">
-                        <Loader color="#0275d8" size="20px" />
-                      </div>
-                    : <p className="text-primary">
-                        {this.props.addPublicMessage}
-                      </p>}
-                  {this.props.isDeletePublicFetching
-                    ? <div className="text-center">
-                        <Loader color="#0275d8" size="20px" />
-                      </div>
-                    : <p className="text-primary">
-                        {this.props.deletePublicMessage}
-                      </p>}
-                </div>
-                <div className="text-danger">
-                  {this.state.errorMessage
-                    ? <div>{this.state.errorMessage}</div>
-                    : ""}
-                </div>
-              </div>
-            </div>
-          </div>
+      <div className="DeletePublicHolidays">
+        <ul>{public_holidays}</ul>
+        <div className="text-danger">
+          {this.state.errorMessage ? <div>{this.state.errorMessage}</div> : ""}
         </div>
       </div>
     );
   }
 }
-
-const AddPublicHoliday = props => (
-  <form encType="multipart/form-data" onSubmit={props.handleSubmit}>
-    <div className="form-group">
-      <DatePicker
-        className="form-control"
-        dateFormat="DD/MM/YYYY"
-        selected={props.holidayDate}
-        onChange={props.handleDateChange}
-        showMonthDropdown
-        showYearDropdown
-        dropdownMode="select"
-        placeholderText="Click to select a date"
-      />
-      <button type="submit" className="btn btn-primary btn-sm ml-3">
-        Add
-      </button>
-    </div>
-  </form>
-);
 
 PublicHolidays.propTypes = {
   public_holiday: PropTypes.array.isRequired,
