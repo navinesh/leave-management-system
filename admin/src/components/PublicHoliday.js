@@ -83,6 +83,7 @@ class AddPublicHoliday extends Component {
     const publicHolidayDate = {
       holidayDate: holidayDate
     };
+
     this.props.onAddPublicHolidaySubmit(publicHolidayDate);
     this.setState({ holidayDate: "", errorMessage: "" });
 
@@ -150,6 +151,7 @@ class DeletePublicHoliday extends Component {
     const deletePublicHolidayDate = {
       id: id
     };
+
     this.props.onDeletePublicHolidaySubmit(deletePublicHolidayDate);
     this.setState({ id: "", errorMessage: "" });
 
