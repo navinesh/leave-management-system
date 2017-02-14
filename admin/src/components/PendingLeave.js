@@ -13,13 +13,19 @@ const PendingLeaveList = ({ pending_items }) => {
         <td>{record.leave_days}</td>
         <td>{record.leave_reason}</td>
         <td>
-          <Link to="/reset" className="btn btn-success btn-sm">Approve</Link>
+          <Link to="/reset" className="btn btn-link">
+            Approve
+          </Link>
         </td>
         <td>
-          <Link to="/reset" className="btn btn-warning btn-sm">Decline</Link>
+          <Link to="/reset" className="btn btn-link text-danger">
+            Decline
+          </Link>
         </td>
         <td>
-          <Link to="/reset" className="btn btn-info btn-sm">Edit</Link>
+          <Link to="/reset" className="btn btn-link">
+            Edit
+          </Link>
         </td>
       </tr>
     );
