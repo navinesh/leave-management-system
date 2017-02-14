@@ -63,7 +63,7 @@ export default class LeaveApplications extends Component {
     const user_id = user_detail.id;
     const annualDays = user_detail.annual;
     const sickDays = user_detail.sick;
-    const bereavmentDays = user_detail.bereavement;
+    const bereavementDays = user_detail.bereavement;
     const christmasDays = user_detail.christmas;
     const dateOfBirth = user_detail.date_of_birth;
     const maternityDays = user_detail.maternity ? user_detail.maternity : null;
@@ -153,7 +153,7 @@ export default class LeaveApplications extends Component {
             : sickDays - myLeaveDays;
         },
         bereavement: () => {
-          return bereavmentDays - myLeaveDays;
+          return bereavementDays - myLeaveDays;
         },
         christmas: () => {
           return christmasDays - myLeaveDays;
