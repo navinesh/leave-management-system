@@ -37,42 +37,43 @@ const ApprovedRecordList = ({ approved_items }) => {
           <td>{data.end_date}</td>
           <td>{data.leave_days}</td>
           <td>
-            <Link to="/reset" className="btn btn-info btn-sm">Edit</Link>
+            <Link to="/reset" className="btn btn-link">Edit</Link>
           </td>
           <td>
-            <Link to="/reset" className="btn btn-danger btn-sm">Delete</Link>
+            <Link to="/reset" className="btn btn-link text-danger">
+              Delete
+            </Link>
           </td>
         </tr>
       );
     });
 
-  return items.length > 0 ? <div className="table-responsive">
-      <table
-        className="table table-bordered table-hover"
-        style={{ backgroundColor: "#FFFFFF" }}
-      >
-        <thead className="thead-default">
-          <tr>
-            <th>Name</th>
-            <th>Leave</th>
-            <th>Type</th>
-            <th>Start date</th>
-            <th>End date</th>
-            <th>Leave days</th>
-            <th>Edit</th>
-            <th>Delete</th>
-          </tr>
-        </thead>
-        <tbody>
-          {items}
-        </tbody>
-      </table>
-    </div> : <div
-      className="container text-center"
-      style={{ paddingTop: "100px" }}
-    >
-      <h1 className="display-3">There are no approved leave record.</h1>
-    </div>;
+  return items.length > 0
+    ? <div className="table-responsive">
+        <table
+          className="table table-bordered table-hover"
+          style={{ backgroundColor: "#FFFFFF" }}
+        >
+          <thead className="thead-default">
+            <tr>
+              <th>Name</th>
+              <th>Leave</th>
+              <th>Type</th>
+              <th>Start date</th>
+              <th>End date</th>
+              <th>Leave days</th>
+              <th>Edit</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody>
+            {items}
+          </tbody>
+        </table>
+      </div>
+    : <div className="container text-center" style={{ paddingTop: "100px" }}>
+        <h1 className="display-3">There are no approved leave record.</h1>
+      </div>;
 };
 
 const ApprovedLeaveList = ({ approved_items }) => (
