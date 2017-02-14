@@ -110,11 +110,12 @@ export const UserRecord = ({ user_detail, message }) => {
           <div className="row">
             <div className="col-md-12">
               <p className="display-4">
-                {user_detail.othernames} {user_detail.surname}
+                {user_detail.othernames}{" "}{user_detail.surname}
+                {" "}
+                <Link to="/changepassword" className="btn btn-outline-primary">
+                  Change password
+                </Link>
               </p>
-              <Link to="/changepassword" className="btn btn-primary">
-                Change password
-              </Link>
             </div>
             <div className="col-md-2 pt-3">
               <p className="lead">
@@ -149,14 +150,14 @@ export const UserRecord = ({ user_detail, message }) => {
               </p>
             </div>
             <div className="col-md-2 pt-3">
-              {
-                gender === "female" ? <p className="lead">
+              {gender === "female"
+                ? <p className="lead">
                     Maternity{" "}
                     <span className="badge badge-primary badge-pill">
                       {user_detail.maternity}
                     </span>
-                  </p> : null
-              }
+                  </p>
+                : null}
             </div>
           </div>
         </div>
