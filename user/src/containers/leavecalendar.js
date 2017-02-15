@@ -15,13 +15,11 @@ class LeaveCalendar extends Component {
     const { records, isFetching } = this.props;
     return (
       <div className="LeaveCalendar">
-        {
-          isFetching
-            ? <div className="text-center">
+        {isFetching
+          ? <div className="text-center">
               <BeatLoader color="#0275d8" size="12px" />
             </div>
-            : <Leaves records={records} />
-        }
+          : <Leaves records={records} />}
       </div>
     );
   }
