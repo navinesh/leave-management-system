@@ -166,16 +166,14 @@ export const UserRecord = ({ user_detail, message }) => {
   }
 };
 
-export const RecordList = ({ user_record }) => {
-  return (
-    <div className="container">
-      <div className="row">
-        <PendingRecordList user_record={user_record} />
-        <ApprovedRecordList user_record={user_record} />
-      </div>
+export const RecordList = ({ user_record }) => (
+  <div className="container">
+    <div className="row">
+      <PendingRecordList user_record={user_record} />
+      <ApprovedRecordList user_record={user_record} />
     </div>
-  );
-};
+  </div>
+);
 
 UserRecord.propTypes = {
   user_detail: PropTypes.object.isRequired,
