@@ -16,11 +16,12 @@ const RecordList = ({ records }) => {
       // check if current date and end date is same
       let isCurrentDate = todayDate === end_Date ? true : false;
 
-      // check if end date is same or greater than current date
+      // get end date and format it
       let eDate = moment(record.end_date, "DD/MM/YYYY").format("MM/DD/YYYY");
 
       let endDate = moment(new Date(eDate));
 
+      // check if end date is same as or falls after current date
       let isEndDate = endDate.isSameOrAfter(dateToday);
 
       // return true for current and future leaves
