@@ -1,4 +1,5 @@
 import axios from "axios";
+import { fetchUserRecord } from "../actions/userrecord";
 
 export const LEAVE_APPLICATION_REQUEST = "LEAVE_APPLICATION_REQUEST";
 export const LEAVE_APPLICATION_SUCCESS = "LEAVE_APPLICATION_SUCCESS";
@@ -17,7 +18,7 @@ export function leaveApplicationFailure(data) {
 }
 
 export function fetchLeaveApplication(applicationDetails) {
-  return dispatch => {
+  return (dispatch, getState) => {
     dispatch(requestLeaveApplication(applicationDetails));
     let data = new FormData();
     data.append("user_id", applicationDetails.user_id);
@@ -36,6 +37,7 @@ export function fetchLeaveApplication(applicationDetails) {
         dispatch(leaveApplicationFailure(response.data));
       } else {
         dispatch(receiveLeaveApplication());
+        dispatch(fetchUserRecord(getState().userAuth.auth_info.auth_token));
       }
     });
   };
