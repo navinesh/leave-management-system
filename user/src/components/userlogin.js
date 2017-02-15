@@ -59,11 +59,9 @@ export default class Login extends Component {
             </div>
           </form>
           <div className="text-danger text-center">
-            {
-              this.props.isFetching
-                ? <Loader color="#0275d8" size="20px" />
-                : this.props.message
-            }
+            {this.props.isFetching
+              ? <Loader color="#0275d8" size="20px" />
+              : this.props.message}
           </div>
         </div>
         <div className="card card-block mt-3">
