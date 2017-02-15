@@ -128,7 +128,13 @@ export default class LeaveApplications extends Component {
 
     // exclude public holidays
     // to-do get public holiday dates from db
-    const publicHolidays = ["07, 09, 2016", "08, 09, 2016"];
+    const publicHolidays = this.props.public_holiday.map(item => {
+      let hDate = new Date(item.holiday_date);
+      let holiday_date = moment(hDate).format("DD, MM, YYYY");
+      return holiday_date;
+    });
+
+    //const publicHolidays = ["07, 09, 2016", "08, 09, 2016"];
     const publicHolidaysSet = new Set(publicHolidays);
     const daysExcludingHolidaysSet = new Set(
       [...daysExcludingWeekendSet].filter(x => !publicHolidaysSet.has(x))
@@ -448,5 +454,6 @@ LeaveApplications.propTypes = {
   onLeaveApplicationClick: PropTypes.func.isRequired,
   message: PropTypes.string,
   isFetching: PropTypes.bool.isRequired,
-  user_detail: PropTypes.object.isRequired
+  user_detail: PropTypes.object.isRequired,
+  public_holiday: PropTypes.array.isRequired
 };
