@@ -127,19 +127,24 @@ export default class LeaveApplications extends Component {
     );
 
     // exclude public holidays
-    // to-do get public holiday dates from db
     const publicHolidays = this.props.public_holiday.map(item => {
       let hDate = new Date(item.holiday_date);
       let holiday_date = moment(hDate).format("DD, MM, YYYY");
       return holiday_date;
     });
 
-    //const publicHolidays = ["07, 09, 2016", "08, 09, 2016"];
     const publicHolidaysSet = new Set(publicHolidays);
     const daysExcludingHolidaysSet = new Set(
       [...daysExcludingWeekendSet].filter(x => !publicHolidaysSet.has(x))
     );
     const leaveDays = daysExcludingHolidaysSet.size;
+
+    if (leaveDays === 0) {
+      this.setState({
+        errorMessage: "The dates you selected fall on public holiday!"
+      });
+      return;
+    }
 
     // if half day then subtract 0.5
     const myLeaveDays = leaveType === "half day am" ||
