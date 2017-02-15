@@ -21,7 +21,7 @@ export default class UserChange extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-
+    this.setState({ errorMessage: "" });
     const { auth_info } = this.props;
     let auth_token = auth_info.auth_token;
     if (!auth_token) {
@@ -101,11 +101,9 @@ export default class UserChange extends Component {
           </div>
         </form>
         <div className="text-danger text-center">
-          {
-            this.props.isFetching
-              ? <Loader color="#0275d8" size="20px" />
-              : this.props.message
-          }
+          {this.props.isFetching
+            ? <Loader color="#0275d8" size="20px" />
+            : this.props.message}
         </div>
         <div className="text-danger text-center">
           {this.state.errorMessage ? <div>{this.state.errorMessage}</div> : ""}
