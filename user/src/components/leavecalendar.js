@@ -24,7 +24,7 @@ const RecordList = ({ records }) => {
       // check if end date is same as or falls after current date
       let isEndDate = endDate.isSameOrAfter(dateToday);
 
-      // return true for current and future leaves
+      // return true for current and future dates
       return isCurrentDate || isEndDate ? true : false;
     })
     .map(data => {
