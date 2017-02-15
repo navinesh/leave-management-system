@@ -64,11 +64,9 @@ const RecordList = ({ records }) => {
       </div>;
 };
 
-const Leaves = ({ records }) => {
-  return (
-    <div style={{ marginTop: "80px" }}><RecordList records={records} /></div>
-  );
-};
+const Leaves = ({ records }) => (
+  <div style={{ marginTop: "80px" }}><RecordList records={records} /></div>
+);
 
 Leaves.propTypes = { records: PropTypes.array.isRequired };
 
