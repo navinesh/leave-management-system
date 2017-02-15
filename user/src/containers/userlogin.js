@@ -3,22 +3,16 @@ import { connect } from "react-redux";
 import { fetchLogin } from "../actions/userlogin";
 import Login from "../components/userlogin";
 
-const UserLogin = ({ dispatch, message, isAuthenticated, isFetching }) => {
-  return (
-    <div className="UserLogin">
-      {
-        !isAuthenticated &&
-          (
-            <Login
-              isFetching={isFetching}
-              message={message}
-              onLoginClick={creds => dispatch(fetchLogin(creds))}
-            />
-          )
-      }
-    </div>
-  );
-};
+const UserLogin = ({ dispatch, message, isAuthenticated, isFetching }) => (
+  <div className="UserLogin">
+    {!isAuthenticated &&
+      <Login
+        isFetching={isFetching}
+        message={message}
+        onLoginClick={creds => dispatch(fetchLogin(creds))}
+      />}
+  </div>
+);
 
 const mapStateToProps = state => {
   const { userAuth } = state;
