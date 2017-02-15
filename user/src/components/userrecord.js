@@ -104,7 +104,7 @@ export const UserRecord = ({ user_detail, message }) => {
     return (
       <div
         className="jumbotron jumbotron-fluid"
-        style={{ backgroundColor: "#FFFFFF", paddingTop: "80px" }}
+        style={{ backgroundColor: "#FFFFFF", paddingTop: "90px" }}
       >
         <div className="container">
           <div className="row">
