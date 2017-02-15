@@ -34,16 +34,16 @@ class UserRecords extends Component {
 
     return (
       <div className="UserRecords">
-        {
-          isFetching ? <div className="text-center">
+        {isFetching
+          ? <div className="text-center">
               <BeatLoader color="#0275d8" size="12px" />
-            </div> : <UserRecord user_detail={user_detail} message={message} />
-        }
-        {
-          isRecordFetching ? <div className="text-center">
+            </div>
+          : <UserRecord user_detail={user_detail} message={message} />}
+        {isRecordFetching
+          ? <div className="text-center">
               <PulseLoader color="#0275d8" size="12px" />
-            </div> : <RecordList user_record={user_record} />
-        }
+            </div>
+          : <RecordList user_record={user_record} />}
       </div>
     );
   }
