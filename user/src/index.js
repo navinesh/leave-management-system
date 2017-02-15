@@ -25,8 +25,13 @@ import "./bootstrap.min.css";
 
 const store = configureStore();
 
-export const requireAuthentication = (nextState, replace, callback) => {
-  let auth_token = store.getState().userAuth.auth_info.auth_token;
+export const requireAuthentication = (
+  nextState,
+  replace,
+  callback,
+  getState
+) => {
+  let auth_token = getState().userAuth.auth_info.auth_token;
   if (auth_token) {
     store.dispatch(requestUserLoginFromToken(auth_token));
     axios
@@ -69,7 +74,7 @@ export const requireAuthentication = (nextState, replace, callback) => {
         });
     }
   }
-  let isAuthenticated = store.getState().userAuth.isAuthenticated;
+  let isAuthenticated = getState().userAuth.isAuthenticated;
   if (!isAuthenticated) {
     if (location.pathname !== "/") {
       replace("/");
