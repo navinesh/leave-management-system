@@ -91,15 +91,15 @@ export default class NewRecordForm extends Component {
     // verify data
     if (
       !surname ||
-        !othernames ||
-        !staffEmail ||
-        !designation ||
-        !annualDays ||
-        !sickDays ||
-        !bereavmentDays ||
-        !christmasDays ||
-        !dateOfBirth ||
-        gender
+      !othernames ||
+      !staffEmail ||
+      !designation ||
+      !annualDays ||
+      !sickDays ||
+      !bereavmentDays ||
+      !christmasDays ||
+      !dateOfBirth ||
+      gender
     ) {
       this.setState({
         errorMessage: "One or more required fields are missing!"
