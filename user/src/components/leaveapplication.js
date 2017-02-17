@@ -82,12 +82,12 @@ export default class LeaveApplications extends Component {
 
     if (
       !user_id ||
-        !leave ||
-        !leaveType ||
-        !startDate ||
-        !endDate ||
-        !supervisorEmail ||
-        !reason
+      !leave ||
+      !leaveType ||
+      !startDate ||
+      !endDate ||
+      !supervisorEmail ||
+      !reason
     ) {
       this.setState({
         errorMessage: "One or more required fields are missing!"
