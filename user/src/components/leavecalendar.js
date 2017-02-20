@@ -27,17 +27,15 @@ const RecordList = ({ records }) => {
       // return true for current and future dates
       return isCurrentDate || isEndDate ? true : false;
     })
-    .map(data => {
-      return (
-        <tr key={data.id}>
-          <td>{data.user.othernames} {data.user.surname}</td>
-          <td>{data.leave_name}</td>
-          <td>{data.start_date}</td>
-          <td>{data.end_date}</td>
-          <td>{data.leave_days}</td>
-        </tr>
-      );
-    });
+    .map(data => (
+      <tr key={data.id}>
+        <td>{data.user.othernames} {data.user.surname}</td>
+        <td>{data.leave_name}</td>
+        <td>{data.start_date}</td>
+        <td>{data.end_date}</td>
+        <td>{data.leave_days}</td>
+      </tr>
+    ));
 
   return itemNodes.length > 0
     ? <div className="table-responsive">
