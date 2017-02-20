@@ -4,17 +4,15 @@ import { Link } from "react-router";
 const PendingRecordList = ({ user_record }) => {
   const pendingList = user_record
     .filter(data => data.leave_status === "pending")
-    .map(record => {
-      return (
-        <tr key={record.id}>
-          <td>{record.leave_name}</td>
-          <td>{record.leave_days}</td>
-          <td>{record.start_date}</td>
-          <td>{record.end_date}</td>
-          <td>{record.leave_reason}</td>
-        </tr>
-      );
-    });
+    .map(record => (
+      <tr key={record.id}>
+        <td>{record.leave_name}</td>
+        <td>{record.leave_days}</td>
+        <td>{record.start_date}</td>
+        <td>{record.end_date}</td>
+        <td>{record.leave_reason}</td>
+      </tr>
+    ));
 
   if (pendingList.length > 0) {
     return (
@@ -47,17 +45,15 @@ const PendingRecordList = ({ user_record }) => {
 const ApprovedRecordList = ({ user_record }) => {
   const approvedList = user_record
     .filter(data => data.leave_status === "approved")
-    .map(record => {
-      return (
-        <tr key={record.id}>
-          <td>{record.leave_name}</td>
-          <td>{record.leave_days}</td>
-          <td>{record.start_date}</td>
-          <td>{record.end_date}</td>
-          <td>{record.leave_reason}</td>
-        </tr>
-      );
-    });
+    .map(record => (
+      <tr key={record.id}>
+        <td>{record.leave_name}</td>
+        <td>{record.leave_days}</td>
+        <td>{record.start_date}</td>
+        <td>{record.end_date}</td>
+        <td>{record.leave_reason}</td>
+      </tr>
+    ));
 
   if (approvedList.length > 0) {
     return (
@@ -150,14 +146,13 @@ export const UserRecord = ({ user_detail, message }) => {
               </p>
             </div>
             <div className="col-md-2 pt-3">
-              {gender === "female"
-                ? <p className="lead">
-                    Maternity{" "}
-                    <span className="badge badge-primary badge-pill">
-                      {user_detail.maternity}
-                    </span>
-                  </p>
-                : null}
+              {gender === "female" &&
+                <p className="lead">
+                  Maternity{" "}
+                  <span className="badge badge-primary badge-pill">
+                    {user_detail.maternity}
+                  </span>
+                </p>}
             </div>
           </div>
         </div>
