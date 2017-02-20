@@ -27,26 +27,24 @@ const ApprovedRecordList = ({ approved_items }) => {
       // return true for current and future leaves
       return isCurrentDate || isEndDate ? true : false;
     })
-    .map(data => {
-      return (
-        <tr key={data.id}>
-          <td>{data.user.othernames}{" "}{data.user.surname}</td>
-          <td>{data.leave_name}</td>
-          <td>{data.leave_type}</td>
-          <td>{data.start_date}</td>
-          <td>{data.end_date}</td>
-          <td>{data.leave_days}</td>
-          <td>
-            <Link to="/reset" className="btn btn-link">Edit</Link>
-          </td>
-          <td>
-            <Link to="/reset" className="btn btn-link text-danger">
-              Delete
-            </Link>
-          </td>
-        </tr>
-      );
-    });
+    .map(data => (
+      <tr key={data.id}>
+        <td>{data.user.othernames}{" "}{data.user.surname}</td>
+        <td>{data.leave_name}</td>
+        <td>{data.leave_type}</td>
+        <td>{data.start_date}</td>
+        <td>{data.end_date}</td>
+        <td>{data.leave_days}</td>
+        <td>
+          <Link to="/reset" className="btn btn-link">Edit</Link>
+        </td>
+        <td>
+          <Link to="/reset" className="btn btn-link text-danger">
+            Delete
+          </Link>
+        </td>
+      </tr>
+    ));
 
   return items.length > 0
     ? <div className="table-responsive">
