@@ -484,21 +484,20 @@ class StaffRecordList extends Component {
                           </div>
                         </div>
                         <div className="row">
-                          {record.gender.toLowerCase() === "female"
-                            ? <div className="col-md-6">
-                                <div className="form-group">
-                                  <label htmlFor="Maternity leave">
-                                    Maternity leave
-                                  </label>
-                                  <input
-                                    type="number"
-                                    className="form-control"
-                                    defaultValue={record.maternity}
-                                    ref={input => this.maternity = input}
-                                  />
-                                </div>
+                          {record.gender.toLowerCase() === "female" &&
+                            <div className="col-md-6">
+                              <div className="form-group">
+                                <label htmlFor="Maternity leave">
+                                  Maternity leave
+                                </label>
+                                <input
+                                  type="number"
+                                  className="form-control"
+                                  defaultValue={record.maternity}
+                                  ref={input => this.maternity = input}
+                                />
                               </div>
-                            : <br />}
+                            </div>}
                           <div className="col-md-6">
                             <div className="form-group">
                               <label htmlFor="dob">Date of birth</label>
