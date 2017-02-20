@@ -127,16 +127,16 @@ class StaffRecordList extends Component {
     // verify data
     if (
       !id ||
-        !surname ||
-        !othernames ||
-        !staffEmail ||
-        !designation ||
-        !annualDays ||
-        !sickDays ||
-        !bereavmentDays ||
-        !christmasDays ||
-        !dateOfBirth ||
-        !gender
+      !surname ||
+      !othernames ||
+      !staffEmail ||
+      !designation ||
+      !annualDays ||
+      !sickDays ||
+      !bereavmentDays ||
+      !christmasDays ||
+      !dateOfBirth ||
+      !gender
     ) {
       this.setState({
         errorMessage: "One or more required fields are missing!"
@@ -203,7 +203,7 @@ class StaffRecordList extends Component {
       .filter(
         e =>
           e.othernames.toLowerCase().includes(searchTerm) ||
-            e.surname.toLowerCase().includes(searchTerm)
+          e.surname.toLowerCase().includes(searchTerm)
       )
       .map(record => {
         let dob = new Date(record.date_of_birth);
@@ -545,9 +545,7 @@ class StaffRecordList extends Component {
                         : <p className="lead">{message}</p>}
                     </div>
                     <div className="text-danger text-center pb-4">
-                      {this.state.errorMessage
-                        ? <div>{this.state.errorMessage}</div>
-                        : ""}
+                      <div>{this.state.errorMessage}</div>
                     </div>
                   </div>
                 </Modal>
@@ -606,9 +604,7 @@ class StaffRecordList extends Component {
                       : <p className="lead pb-2">{archiveMessage}</p>}
                   </div>
                   <div className="text-danger text-center">
-                    {this.state.errorMessage
-                      ? <div className="pb-4">{this.state.errorMessage}</div>
-                      : ""}
+                    <div className="pb-4">{this.state.errorMessage}</div>
                   </div>
                 </div>
               </Modal>
