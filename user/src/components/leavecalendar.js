@@ -2,7 +2,7 @@ import React, { PropTypes } from "react";
 
 const moment = require("moment");
 
-const RecordList = ({ records }) => {
+const Leaves = ({ records }) => {
   const itemNodes = records
     .filter(record => {
       // get current date and format it
@@ -38,7 +38,7 @@ const RecordList = ({ records }) => {
     ));
 
   return itemNodes.length > 0
-    ? <div className="table-responsive">
+    ? <div className="table-responsive" style={{ marginTop: "80px" }}>
         <table
           className="table table-bordered table-hover"
           style={{ backgroundColor: "#FFFFFF" }}
@@ -61,10 +61,6 @@ const RecordList = ({ records }) => {
         <h1 className="display-3">There are no approved leave record.</h1>
       </div>;
 };
-
-const Leaves = ({ records }) => (
-  <div style={{ marginTop: "80px" }}><RecordList records={records} /></div>
-);
 
 Leaves.propTypes = { records: PropTypes.array.isRequired };
 
