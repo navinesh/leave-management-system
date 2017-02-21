@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router";
+
 var Loader = require("halogen/ClipLoader");
 
 export default class Login extends Component {
