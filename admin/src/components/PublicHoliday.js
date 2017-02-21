@@ -116,7 +116,7 @@ class AddPublicHoliday extends Component {
           </div>
         </form>
         <div className="text-danger">
-          {this.state.errorMessage ? <div>{this.state.errorMessage}</div> : ""}
+          <div>{this.state.errorMessage}</div>
         </div>
       </div>
     );
