@@ -3,7 +3,7 @@ import { Link } from "react-router";
 
 const moment = require("moment");
 
-const ApprovedRecordList = ({ approved_items }) => {
+const ApprovedLeaveList = ({ approved_items }) => {
   const items = approved_items
     .filter(record => {
       // get current date and format it
@@ -73,10 +73,6 @@ const ApprovedRecordList = ({ approved_items }) => {
         <h1 className="display-3">There are no approved leave record.</h1>
       </div>;
 };
-
-const ApprovedLeaveList = ({ approved_items }) => (
-  <ApprovedRecordList approved_items={approved_items} />
-);
 
 ApprovedLeaveList.propTypes = { approved_items: PropTypes.array.isRequired };
 
