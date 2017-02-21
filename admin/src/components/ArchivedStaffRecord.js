@@ -86,7 +86,7 @@ class ArchivedStaffRecordList extends Component {
       .filter(
         e =>
           e.othernames.toLowerCase().includes(searchTerm) ||
-            e.surname.toLowerCase().includes(searchTerm)
+          e.surname.toLowerCase().includes(searchTerm)
       )
       .map(record => {
         let dob = new Date(record.date_of_birth);
@@ -223,9 +223,7 @@ class ArchivedStaffRecordList extends Component {
                         </p>}
                   </div>
                   <div className="text-danger text-center">
-                    {this.state.errorMessage
-                      ? <div className="pb-4">{this.state.errorMessage}</div>
-                      : ""}
+                    <div className="pb-4">{this.state.errorMessage}</div>
                   </div>
                 </div>
               </Modal>
