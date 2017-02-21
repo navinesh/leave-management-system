@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from "react";
+
 var Loader = require("halogen/ClipLoader");
 var DatePicker = require("react-datepicker");
+
 import "react-datepicker/dist/react-datepicker.css";
 import Moment from "moment";
 import { extendMoment } from "moment-range";
@@ -299,14 +301,13 @@ export default class LeaveApplications extends Component {
                     {user_detail.christmas}
                   </span>
                 </li>
-                {gender === "female"
-                  ? <li className="list-group-item justify-content-between">
-                      Maternity
-                      <span className="badge badge-primary badge-pill">
-                        {user_detail.maternity}
-                      </span>
-                    </li>
-                  : null}
+                {gender === "female" &&
+                  <li className="list-group-item justify-content-between">
+                    Maternity
+                    <span className="badge badge-primary badge-pill">
+                      {user_detail.maternity}
+                    </span>
+                  </li>}
               </ul>
             </div>
             <div className="col-md-5 mb-3">
@@ -330,9 +331,7 @@ export default class LeaveApplications extends Component {
                           <option>bereavement</option>
                           <option>christmas</option>
                           <option>birthday</option>
-                          {gender === "female"
-                            ? <option>maternity</option>
-                            : null}
+                          {gender === "female" && <option>maternity</option>}
                           <option>lwop</option>
                           <option>other</option>
                         </select>
@@ -442,9 +441,7 @@ export default class LeaveApplications extends Component {
                     : message}
                 </div>
                 <div className="text-danger text-center pt-2">
-                  {this.state.errorMessage
-                    ? <div>{this.state.errorMessage}</div>
-                    : null}
+                  <div>{this.state.errorMessage}</div>
                 </div>
               </div>
             </div>
