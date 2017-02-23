@@ -102,6 +102,12 @@ import {
   CLEAR_DELETE_PUBLIC_MESSAGE
 } from "../actions/DeletePublicHoliday";
 
+import {
+  APPROVE_LEAVE_REQUEST,
+  APPROVE_LEAVE_SUCCESS,
+  APPROVE_LEAVE_ERROR
+} from "../actions/ApproveLeave";
+
 const adminAuth = (
   state = {
     isFetching: false,
@@ -462,6 +468,30 @@ const deletePublicHoliday = (
   }
 };
 
+const approveLeave = (
+  state = { isApproveLeaveFetching: false, message: "" },
+  action
+) => {
+  switch (action.type) {
+    case APPROVE_LEAVE_REQUEST:
+      return { ...state, isApproveLeaveFetching: true };
+    case APPROVE_LEAVE_SUCCESS:
+      return {
+        ...state,
+        isApproveLeaveFetching: false,
+        message: action.message
+      };
+    case APPROVE_LEAVE_ERROR:
+      return {
+        ...state,
+        isApproveLeaveFetching: false,
+        message: action.message
+      };
+    default:
+      return state;
+  }
+};
+
 const rootReducer = combineReducers({
   adminAuth,
   pendingLeave,
@@ -477,7 +507,8 @@ const rootReducer = combineReducers({
   unArchiveUser,
   addPublicHoliday,
   publicHoliday,
-  deletePublicHoliday
+  deletePublicHoliday,
+  approveLeave
 });
 
 export default rootReducer;
