@@ -23,11 +23,11 @@ export const errorApproveLeave = data => ({
 export function submitApproveLeave(approveLeaveData) {
   return dispatch => {
     dispatch(requestApproveLeave(approveLeaveData));
-    let data = new FormData();
-    data.append("leave_id", approveLeaveData.leaveID);
-    data.append("LeaveStatus", approveLeaveData.LeaveStatus);
     axios
-      .post("http://localhost:8080/approveleave", data)
+      .post("http://localhost:8080/approveleave", {
+        leave_id: approveLeaveData.leaveID,
+        LeaveStatus: approveLeaveData.LeaveStatus
+      })
       .then(response => {
         if (response.status === 200) {
           dispatch(errorApproveLeave(response.data));
