@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchPendingLeave } from "../actions/PendingLeave";
 import { fetchPublicHoliday } from "../actions/PublicHoliday";
+import { submitApproveLeave } from "../actions/ApproveLeave";
 import PendingLeaveList from "../components/PendingLeave";
 
 const BeatLoader = require("halogen/BeatLoader");
@@ -18,8 +19,10 @@ class PendingLeave extends Component {
       isFetching,
       pending_items,
       isAuthenticated,
-      public_holiday
+      public_holiday,
+      dispatch
     } = this.props;
+
     return (
       <div className="container">
         {isAuthenticated &&
@@ -30,6 +33,9 @@ class PendingLeave extends Component {
             : <PendingLeaveList
                 pending_items={pending_items}
                 public_holiday={public_holiday}
+                dispatch={dispatch}
+                onApproveLeaveSubmit={approveLeaveData =>
+                  dispatch(submitApproveLeave(approveLeaveData))}
               />)}
       </div>
     );
@@ -42,7 +48,12 @@ const mapStateToProps = state => {
   const { isAuthenticated } = adminAuth;
   const { public_holiday } = publicHoliday;
 
-  return { isFetching, pending_items, isAuthenticated, public_holiday };
+  return {
+    isFetching,
+    pending_items,
+    isAuthenticated,
+    public_holiday
+  };
 };
 
 export default connect(mapStateToProps)(PendingLeave);
