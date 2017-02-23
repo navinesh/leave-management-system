@@ -100,7 +100,7 @@ class PendingLeaveList extends Component {
       });
       return;
     }
-    console.log(leaveID);
+
     const approveLeaveData = {
       leaveID: leaveID,
       LeaveStatus: LeaveStatus
@@ -121,6 +121,9 @@ class PendingLeaveList extends Component {
       });
       return;
     }
+
+    //to-do
+    //add a dispatch func to handle decline action
   }
 
   handleEditSubmit(e) {
@@ -266,8 +269,9 @@ class PendingLeaveList extends Component {
 
     const sDate = moment(startDate).format("DD/MM/YYYY");
     const eDate = moment(endDate).format("DD/MM/YYYY");
-    console.log(sDate);
-    console.log(eDate);
+
+    // to-do
+    // add a dispatch func to modify leave record
   }
 
   render() {
