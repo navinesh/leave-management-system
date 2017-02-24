@@ -89,6 +89,10 @@ class PendingLeaveList extends Component {
     this.setState({ declineReason: e.target.value });
   }
 
+  handleEditReason(e) {
+    this.setState({ editReason: e.target.value });
+  }
+
   handleApproveLeave(e) {
     const leaveID = e.target.id ? e.target.id : null;
     const LeaveStatus = "approved";
@@ -108,12 +112,9 @@ class PendingLeaveList extends Component {
     this.props.onApproveLeaveSubmit(approveLeaveData);
   }
 
-  handleEditReason(e) {
-    this.setState({ editReason: e.target.value });
-  }
-
   handleDeclineSubmit(e) {
     e.preventDefault();
+    const listID = this.state.listID;
     const reason = this.state.declineReason
       ? this.state.declineReason.trim()
       : null;
@@ -124,6 +125,11 @@ class PendingLeaveList extends Component {
       });
       return;
     }
+
+    const declineLeaveData = {
+      leaveID: listID,
+      reason: reason
+    };
 
     //to-do
     //add a dispatch func to handle decline action
@@ -154,8 +160,7 @@ class PendingLeaveList extends Component {
       obj["date_of_birth"] = record.user.date_of_birth;
       return null;
     });
-    console.log(pending_items);
-    console.log(startDate, endDate);
+
     const annualDays = obj.annual;
     const sickDays = obj.sick;
     const bereavementDays = obj.bereavement;
