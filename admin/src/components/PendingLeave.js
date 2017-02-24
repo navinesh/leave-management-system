@@ -134,13 +134,12 @@ class PendingLeaveList extends Component {
     const { pending_items } = this.props;
 
     const leave_id = parseInt(this.state.listID, 10);
-
-    const startDate = this.startDate.value
-      ? moment(this.startDate.value, "DD/MM/YYYY")
-      : null;
-    const endDate = this.endDate.value
-      ? moment(this.endDate.value, "DD/MM/YYYY")
-      : null;
+    const startDate = this.state.startDate
+      ? this.state.startDate
+      : moment(this.startDate.value, "DD/MM/YYYY");
+    const endDate = this.state.endDate
+      ? this.state.endDate
+      : moment(this.endDate.value, "DD/MM/YYYY");
     const leave = this.leave_name.value;
     const leaveType = this.leave_type.value;
     const reason = this.state.editReason ? this.state.editReason.trim() : null;
@@ -152,14 +151,17 @@ class PendingLeaveList extends Component {
       obj["bereavement"] = record.user.bereavement;
       obj["christmas"] = record.user.christmas;
       obj["maternity"] = record.user.maternity;
+      obj["date_of_birth"] = record.user.date_of_birth;
       return null;
     });
-
+    console.log(pending_items);
+    console.log(startDate, endDate);
     const annualDays = obj.annual;
     const sickDays = obj.sick;
     const bereavementDays = obj.bereavement;
     const christmasDays = obj.christmas;
     const maternityDays = obj.maternity ? obj.maternity : null;
+    const dateOfBirth = obj.date_of_birth;
 
     if (
       !leave_id || !leave || !leaveType || !startDate || !endDate || !reason
@@ -245,6 +247,17 @@ class PendingLeaveList extends Component {
         christmas: () => {
           return christmasDays - myLeaveDays;
         },
+        birthday: () => {
+          // create date
+          const dOB = new Date(dateOfBirth);
+          dOB.setHours(dOB.getHours() - 12);
+          const birthDate = moment.utc(dOB);
+          // check date of birth
+          return moment(startDate).isSame(birthDate) &&
+            moment(endDate).isSame(birthDate)
+            ? myLeaveDays
+            : undefined;
+        },
         maternity: () => {
           return maternityDays - myLeaveDays;
         },
@@ -261,7 +274,7 @@ class PendingLeaveList extends Component {
     const applicationDays = getLeaveDays(leave);
 
     if (applicationDays < 0) {
-      this.setState({ errorMessage: "Your leave balance cannot be negative!" });
+      this.setState({ errorMessage: "Leave balance cannot be negative!" });
       return;
     }
 
@@ -281,7 +294,7 @@ class PendingLeaveList extends Component {
 
     if (applicationDays === undefined) {
       this.setState({
-        errorMessage: "The date you selected as your date of birth does not match our record!"
+        errorMessage: "The date you selected as date of birth does not match our record!"
       });
       return;
     }
