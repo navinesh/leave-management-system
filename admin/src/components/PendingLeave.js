@@ -37,9 +37,7 @@ class PendingLeaveList extends Component {
     this.state = {
       errorMessage: null,
       declineReason: null,
-      startDate: null,
-      endDate: null,
-      numDays: null,
+      editReason: null,
       showModal1: false,
       showModal2: false
     };
@@ -50,6 +48,7 @@ class PendingLeaveList extends Component {
     this.handleApproveLeave = this.handleApproveLeave.bind(this);
     this.handleDeclineReason = this.handleDeclineReason.bind(this);
     this.handleDeclineSubmit = this.handleDeclineSubmit.bind(this);
+    this.handleEditReason = this.handleEditReason.bind(this);
     this.handleEditSubmit = this.handleEditSubmit.bind(this);
     this.handleStartDateChange = this.handleStartDateChange.bind(this);
     this.handleEndDateChange = this.handleEndDateChange.bind(this);
@@ -83,7 +82,7 @@ class PendingLeaveList extends Component {
   }
 
   handleEndDateChange(e) {
-    this.setState({ endDate: e.target.value });
+    this.setState({ endDate: e });
   }
 
   handleDeclineReason(e) {
@@ -109,6 +108,10 @@ class PendingLeaveList extends Component {
     this.props.onApproveLeaveSubmit(approveLeaveData);
   }
 
+  handleEditReason(e) {
+    this.setState({ editReason: e.target.value });
+  }
+
   handleDeclineSubmit(e) {
     e.preventDefault();
     const reason = this.state.declineReason
@@ -128,16 +131,45 @@ class PendingLeaveList extends Component {
 
   handleEditSubmit(e) {
     e.preventDefault();
-    const startDate = this.state.startDate ? this.state.startDate : null;
-    const endDate = this.state.endDate ? this.state.endDate : null;
-    const leave = this.state.leave;
-    const leaveType = this.state.leaveType;
-    const annualDays = this.state.annual;
-    const sickDays = this.state.sick;
-    const bereavementDays = this.state.bereavement;
-    const christmasDays = this.state.christmas;
-    const dateOfBirth = this.state.date_of_birth;
-    const maternityDays = this.state.maternity ? this.state.maternity : null;
+    const { pending_items } = this.props;
+
+    const leave_id = parseInt(this.state.listID, 10);
+
+    const startDate = this.startDate.value
+      ? moment(this.startDate.value, "DD/MM/YYYY")
+      : null;
+    const endDate = this.endDate.value
+      ? moment(this.endDate.value, "DD/MM/YYYY")
+      : null;
+    const leave = this.leave_name.value;
+    const leaveType = this.leave_type.value;
+    const reason = this.state.editReason ? this.state.editReason.trim() : null;
+
+    const obj = {};
+    pending_items.filter(e => e.id === leave_id).map(record => {
+      obj["annual"] = record.user.annual;
+      obj["sick"] = record.user.sick;
+      obj["bereavement"] = record.user.bereavement;
+      obj["christmas"] = record.user.christmas;
+      obj["maternity"] = record.user.maternity;
+      return null;
+    });
+
+    const annualDays = obj.annual;
+    const sickDays = obj.sick;
+    const bereavementDays = obj.bereavement;
+    const christmasDays = obj.christmas;
+    const maternityDays = obj.maternity ? obj.maternity : null;
+
+    if (
+      !leave_id || !leave || !leaveType || !startDate || !endDate || !reason
+    ) {
+      this.setState({
+        errorMessage: "One or more required fields are missing!"
+      });
+
+      return;
+    }
 
     // get date range from user selection
     const leaveRangeDays = endDate.diff(startDate, "days") + 1;
@@ -213,17 +245,6 @@ class PendingLeaveList extends Component {
         christmas: () => {
           return christmasDays - myLeaveDays;
         },
-        birthday: () => {
-          // create date
-          const dOB = new Date(dateOfBirth);
-          dOB.setHours(dOB.getHours() - 12);
-          const birthDate = moment.utc(dOB);
-          // check date of birth
-          return moment(startDate).isSame(birthDate) &&
-            moment(endDate).isSame(birthDate)
-            ? myLeaveDays
-            : undefined;
-        },
         maternity: () => {
           return maternityDays - myLeaveDays;
         },
@@ -243,8 +264,6 @@ class PendingLeaveList extends Component {
       this.setState({ errorMessage: "Your leave balance cannot be negative!" });
       return;
     }
-
-    this.setState({ numDays: applicationDays });
 
     if (applicationDays === false) {
       this.setState({
@@ -269,6 +288,20 @@ class PendingLeaveList extends Component {
 
     const sDate = moment(startDate).format("DD/MM/YYYY");
     const eDate = moment(endDate).format("DD/MM/YYYY");
+
+    this.setState({ errorMessage: "" });
+    this.setState({ successMessage: "Your application has been submitted." });
+
+    const editApplicationDetails = {
+      leave_id: leave_id,
+      leave: leave,
+      leaveType: leaveType,
+      startDate: sDate,
+      endDate: eDate,
+      reason: reason,
+      leaveDays: myLeaveDays,
+      applicationDays: applicationDays
+    };
 
     // to-do
     // add a dispatch func to modify leave record
@@ -467,6 +500,11 @@ class PendingLeaveList extends Component {
                         <div className="col-md-6">
                           <div className="form-group">
                             <label htmlFor="startDate">Start date</label>
+                            <input
+                              type="hidden"
+                              defaultValue={record.start_date}
+                              ref={input => this.startDate = input}
+                            />
                             <DatePicker
                               className="form-control"
                               placeholderText="Click to select a date"
@@ -482,6 +520,11 @@ class PendingLeaveList extends Component {
                         <div className="col-md-6">
                           <div className="form-group">
                             <label htmlFor="endDate">End date</label>
+                            <input
+                              type="hidden"
+                              defaultValue={record.end_date}
+                              ref={input => this.endDate = input}
+                            />
                             <DatePicker
                               className="form-control"
                               placeholderText="Click to select a date"
@@ -497,11 +540,16 @@ class PendingLeaveList extends Component {
                       </div>
                       <div className="row">
                         <div className="col">
-                          {this.state.numDays
-                            ? <p>
-                                You selected {this.state.numDays} day(s)
-                              </p>
-                            : null}
+                          <div className="form-group">
+                            <label htmlFor="reason">Reason</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              placeholder="Enter reason"
+                              id="reason"
+                              onChange={this.handleEditReason}
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -522,8 +570,10 @@ class PendingLeaveList extends Component {
                       </div>
                     </div>
                   </form>
+                  <div className="text-danger text-center">
+                    <div className="pb-4">{this.state.errorMessage}</div>
+                  </div>
                   <div className="text-primary text-center" />
-                  <div className="text-danger text-center" />
                 </div>
               </Modal>
             </div>
