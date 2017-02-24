@@ -165,7 +165,7 @@ class PendingLeaveList extends Component {
       !leave_id || !leave || !leaveType || !startDate || !endDate || !reason
     ) {
       this.setState({
-        errorMessage: "One or more required fields are missing!"
+        errorMessage: "Reason field is mandatory!"
       });
 
       return;
