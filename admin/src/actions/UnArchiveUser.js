@@ -22,11 +22,11 @@ export const clearUnArchiveMessage = () => ({ type: CLEAR_UNARCHIVE_MESSAGE });
 export function submitUnArchiveUser(unArchiveUser) {
   return dispatch => {
     dispatch(requestUnArchiveUser(unArchiveUser));
-    let data = new FormData();
-    data.append("user_id", unArchiveUser.id);
-    data.append("isArchived", unArchiveUser.isArchived);
     axios
-      .post("http://localhost:8080/unarchiveuser", data)
+      .post("http://localhost:8080/unarchiveuser", {
+        user_id: unArchiveUser.id,
+        isArchived: unArchiveUser.isArchived
+      })
       .then(response => {
         if (response.status === 200) {
           dispatch(failureUnArchiveUser(response.data));
