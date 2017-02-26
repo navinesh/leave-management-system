@@ -23,10 +23,10 @@ export const clearpublicMessage = () => ({ type: CLEAR_ADD_PUBLIC_MESSAGE });
 export function submitAddPublicHoliday(publicHolidayDate) {
   return dispatch => {
     dispatch(requestAddPublicHoliday(publicHolidayDate));
-    let data = new FormData();
-    data.append("holidayDate", publicHolidayDate.holidayDate);
     axios
-      .post("http://localhost:8080/addpublicholiday", data)
+      .post("http://localhost:8080/addpublicholiday", {
+        holidayDate: publicHolidayDate.holidayDate
+      })
       .then(response => {
         if (response.status === 200) {
           dispatch(failureAddPublicHoliday(response.data));
