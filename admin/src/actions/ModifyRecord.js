@@ -23,21 +23,21 @@ export const clearAModifyUser = () => ({ type: CLEAR_MODIFY_USER_MESSAGE });
 export function submitModifyUserRecord(modifyUserDetails) {
   return dispatch => {
     dispatch(requestModifyUserRecord(modifyUserDetails));
-    let data = new FormData();
-    data.append("user_id", modifyUserDetails.id);
-    data.append("surname", modifyUserDetails.surname);
-    data.append("othernames", modifyUserDetails.othernames);
-    data.append("email", modifyUserDetails.staffEmail);
-    data.append("designation", modifyUserDetails.designation);
-    data.append("annual", modifyUserDetails.annualDays);
-    data.append("sick", modifyUserDetails.sickDays);
-    data.append("bereavement", modifyUserDetails.bereavmentDays);
-    data.append("christmas", modifyUserDetails.christmasDays);
-    data.append("date_of_birth", modifyUserDetails.dateOfBirth);
-    data.append("maternity", modifyUserDetails.maternityDays);
-    data.append("gender", modifyUserDetails.gender);
     axios
-      .post("http://localhost:8080/modifyuser", data)
+      .post("http://localhost:8080/modifyuser", {
+        user_id: modifyUserDetails.id,
+        surname: modifyUserDetails.surname,
+        othernames: modifyUserDetails.othernames,
+        email: modifyUserDetails.staffEmail,
+        designation: modifyUserDetails.designation,
+        annual: modifyUserDetails.annualDays,
+        sick: modifyUserDetails.sickDays,
+        bereavement: modifyUserDetails.bereavmentDays,
+        christmas: modifyUserDetails.christmasDays,
+        date_of_birth: modifyUserDetails.dateOfBirth,
+        maternity: modifyUserDetails.maternityDays,
+        gender: modifyUserDetails.gender
+      })
       .then(response => {
         if (response.status === 200) {
           dispatch(failureModifyUserRecord(response.data));
