@@ -22,12 +22,12 @@ export const clearArchiveMessage = () => ({ type: CLEAR_ARCHIVE_MESSAGE });
 export function submitArchiveUser(archiveUser) {
   return dispatch => {
     dispatch(requestArchiveUser(archiveUser));
-    let data = new FormData();
-    data.append("user_id", archiveUser.id);
-    data.append("isArchived", archiveUser.isArchived);
-    data.append("archiveReason", archiveUser.archiveReason);
     axios
-      .post("http://localhost:8080/archiveuser", data)
+      .post("http://localhost:8080/archiveuser", {
+        user_id: archiveUser.id,
+        isArchived: archiveUser.isArchived,
+        archiveReason: archiveUser.archiveReason
+      })
       .then(response => {
         if (response.status === 200) {
           dispatch(failureArchiveUser(response.data));
