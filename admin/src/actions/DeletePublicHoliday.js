@@ -23,10 +23,10 @@ export const clearpublicMessage = () => ({ type: CLEAR_DELETE_PUBLIC_MESSAGE });
 export function submitDeletePublicHoliday(deletePublicHolidayDate) {
   return dispatch => {
     dispatch(requestDeletePublicHoliday(deletePublicHolidayDate));
-    let data = new FormData();
-    data.append("id", deletePublicHolidayDate.id);
     axios
-      .post("http://localhost:8080/deletepublicholiday", data)
+      .post("http://localhost:8080/deletepublicholiday", {
+        id: deletePublicHolidayDate.id
+      })
       .then(response => {
         if (response.status === 200) {
           dispatch(failureDeletePublicHoliday(response.data));
