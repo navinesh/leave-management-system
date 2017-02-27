@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { fetchPendingLeave } from "../actions/PendingLeave";
 import { fetchPublicHoliday } from "../actions/PublicHoliday";
 import { submitApproveLeave } from "../actions/ApproveLeave";
+import { submitDeclineLeave } from "../actions/DeclineLeave";
 import PendingLeaveList from "../components/PendingLeave";
 
 const BeatLoader = require("halogen/BeatLoader");
@@ -36,6 +37,8 @@ class PendingLeave extends Component {
                 dispatch={dispatch}
                 onApproveLeaveSubmit={approveLeaveData =>
                   dispatch(submitApproveLeave(approveLeaveData))}
+                onDeclineLeaveSubmit={declineLeaveData =>
+                  dispatch(submitDeclineLeave(declineLeaveData))}
               />)}
       </div>
     );
