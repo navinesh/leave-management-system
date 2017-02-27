@@ -323,8 +323,7 @@ class PendingLeaveList extends Component {
       applicationDays: applicationDays
     };
 
-    // to-do
-    // add a dispatch func to modify leave record
+    this.props.onEditLeaveSubmit(editApplicationDetails);
   }
 
   render() {
@@ -609,7 +608,8 @@ PendingLeaveList.propTypes = {
   pending_items: PropTypes.array.isRequired,
   public_holiday: PropTypes.array.isRequired,
   onApproveLeaveSubmit: PropTypes.func.isRequired,
-  onDeclineLeaveSubmit: PropTypes.func.isRequired
+  onDeclineLeaveSubmit: PropTypes.func.isRequired,
+  onEditLeaveSubmit: PropTypes.func.isRequired
 };
 
 export default PendingLeaveList;
