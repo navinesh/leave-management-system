@@ -18,7 +18,7 @@ export function failureModifyUserRecord(data) {
   return { type: MODIFY_USER_RECORD_FAILURE, message: data.message };
 }
 
-export const clearAModifyUser = () => ({ type: CLEAR_MODIFY_USER_MESSAGE });
+export const clearModifyUser = () => ({ type: CLEAR_MODIFY_USER_MESSAGE });
 
 export function submitModifyUserRecord(modifyUserDetails) {
   return dispatch => {
