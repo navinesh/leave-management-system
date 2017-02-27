@@ -7,13 +7,11 @@ import { submitUnArchiveUser } from "../actions/UnArchiveUser";
 
 class ArchivedStaffRecord extends Component {
   componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch(fetchArchivedStaffRecord());
+    this.props.dispatch(fetchArchivedStaffRecord());
   }
 
   componentWillUnmount() {
-    const { dispatch } = this.props;
-    dispatch(clearSearchStaffRecord());
+    this.props.dispatch(clearSearchStaffRecord());
   }
 
   render() {
@@ -25,6 +23,7 @@ class ArchivedStaffRecord extends Component {
       isUnArchiveFetching,
       unArchiveMessage
     } = this.props;
+
     return (
       <div className="container">
         {isAuthenticated &&
@@ -49,6 +48,7 @@ const mapStateToProps = state => {
     adminAuth,
     unArchiveUser
   } = state;
+
   const { archived_staff_record } = archivedStaffRecord;
   const { isAuthenticated } = adminAuth;
   const { searchTerm } = searchStaffRecord;

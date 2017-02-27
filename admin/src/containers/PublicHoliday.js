@@ -8,8 +8,7 @@ import { submitDeletePublicHoliday } from "../actions/DeletePublicHoliday";
 
 class PublicHoliday extends Component {
   componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch(fetchPublicHoliday());
+    this.props.dispatch(fetchPublicHoliday());
   }
 
   render() {

@@ -7,9 +7,7 @@ const BeatLoader = require("halogen/BeatLoader");
 
 class ApprovedLeave extends Component {
   componentDidMount() {
-    const { dispatch } = this.props;
-
-    dispatch(fetchApprovedLeave());
+    this.props.dispatch(fetchApprovedLeave());
   }
 
   render() {
@@ -17,11 +15,12 @@ class ApprovedLeave extends Component {
 
     return (
       <div className="container">
-        {isAuthenticated && (isFetching ? (
-                <div className="text-center">
-                  <BeatLoader color="#0275d8" size="12px" />
-                </div>
-              ) : <ApprovedLeaveList approved_items={approved_items} />)}
+        {isAuthenticated &&
+          (isFetching
+            ? <div className="text-center">
+                <BeatLoader color="#0275d8" size="12px" />
+              </div>
+            : <ApprovedLeaveList approved_items={approved_items} />)}
       </div>
     );
   }
@@ -35,4 +34,4 @@ const mapStateToProps = state => {
   return { approved_items, isFetching, isAuthenticated };
 };
 
-export default connect(mapStateToProps)(ApprovedLeave)
+export default connect(mapStateToProps)(ApprovedLeave);

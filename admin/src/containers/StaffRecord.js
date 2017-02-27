@@ -10,13 +10,11 @@ import { submitArchiveUser } from "../actions/ArchiveUser";
 
 class StaffRecord extends Component {
   componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch(fetchStaffRecord());
+    this.props.dispatch(fetchStaffRecord());
   }
 
   componentWillUnmount() {
-    const { dispatch } = this.props;
-    dispatch(clearSearchStaffRecord());
+    this.props.dispatch(clearSearchStaffRecord());
   }
 
   render() {
@@ -60,6 +58,7 @@ const mapStateToProps = state => {
     modifyUser,
     archiveUser
   } = state;
+
   const { staff_record } = staffRecord;
   const { isAuthenticated } = adminAuth;
   const { searchTerm } = searchStaffRecord;

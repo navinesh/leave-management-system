@@ -11,9 +11,8 @@ const BeatLoader = require("halogen/BeatLoader");
 
 class PendingLeave extends Component {
   componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch(fetchPendingLeave());
-    dispatch(fetchPublicHoliday());
+    this.props.dispatch(fetchPendingLeave());
+    this.props.dispatch(fetchPublicHoliday());
   }
 
   render() {

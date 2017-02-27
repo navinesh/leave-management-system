@@ -7,8 +7,7 @@ const BeatLoader = require("halogen/BeatLoader");
 
 class SickSheetRecord extends Component {
   componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch(fetchSickSheetRecord());
+    this.props.dispatch(fetchSickSheetRecord());
   }
 
   render() {
@@ -16,11 +15,12 @@ class SickSheetRecord extends Component {
 
     return (
       <div className="container">
-        {isAuthenticated && (isFetching ? (
-                <div className="text-center">
-                  <BeatLoader color="#0275d8" size="12px" />
-                </div>
-              ) : <SickSheetList sickSheet_items={sickSheet_items} />)}
+        {isAuthenticated &&
+          (isFetching
+            ? <div className="text-center">
+                <BeatLoader color="#0275d8" size="12px" />
+              </div>
+            : <SickSheetList sickSheet_items={sickSheet_items} />)}
       </div>
     );
   }
@@ -34,4 +34,4 @@ const mapStateToProps = state => {
   return { isFetching, sickSheet_items, isAuthenticated };
 };
 
-export default connect(mapStateToProps)(SickSheetRecord)
+export default connect(mapStateToProps)(SickSheetRecord);
