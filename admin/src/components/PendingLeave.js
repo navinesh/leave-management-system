@@ -1,6 +1,8 @@
 import React, { PropTypes, Component } from "react";
 import Modal from "react-modal";
 
+import { fetchPendingLeave } from "../actions/PendingLeave";
+
 var DatePicker = require("react-datepicker");
 require("react-datepicker/dist/react-datepicker.css");
 
@@ -54,29 +56,6 @@ class PendingLeaveList extends Component {
     this.handleEndDateChange = this.handleEndDateChange.bind(this);
   }
 
-  handleOpenModal1(e) {
-    this.setState({ showModal1: true });
-    this.setState({ listID: e.target.id });
-  }
-
-  handleOpenModal2(e) {
-    this.setState({ showModal2: true });
-    this.setState({ listID: e.target.id });
-  }
-
-  handleCloseModal1() {
-    this.setState({ showModal1: false, errorMessage: null });
-    //this.setState({ showModal1: false, errorMessage: "", dob: "" });
-    //this.props.dispatch({ type: "CLEAR_MODIFY_USER_MESSAGE" });
-  }
-
-  handleCloseModal2() {
-    this.setState({ showModal2: false, errorMessage: null });
-    //if (this.state.archiveReason) {
-    //this.props.dispatch(fetchStaffRecord());
-    //this.props.dispatch({ type: "CLEAR_ARCHIVE_MESSAGE" });
-  }
-
   handleStartDateChange(e) {
     this.setState({ startDate: e });
   }
@@ -91,6 +70,30 @@ class PendingLeaveList extends Component {
 
   handleEditReason(e) {
     this.setState({ editReason: e.target.value });
+  }
+
+  handleOpenModal1(e) {
+    this.setState({ showModal1: true });
+    this.setState({ listID: e.target.id });
+  }
+
+  handleOpenModal2(e) {
+    this.setState({ showModal2: true });
+    this.setState({ listID: e.target.id });
+  }
+
+  handleCloseModal1() {
+    this.setState({ showModal1: false, errorMessage: null });
+    if (this.state.declineReason) {
+      this.props.dispatch(fetchPendingLeave());
+    }
+  }
+
+  handleCloseModal2() {
+    this.setState({ showModal2: false, errorMessage: null });
+    if (this.state.editReason) {
+      this.props.dispatch(fetchPendingLeave());
+    }
   }
 
   handleApproveLeave(e) {
@@ -131,8 +134,7 @@ class PendingLeaveList extends Component {
       reason: reason
     };
 
-    //to-do
-    //add a dispatch func to handle decline action
+    this.props.onDeclineLeaveSubmit(declineLeaveData);
   }
 
   handleEditSubmit(e) {
@@ -606,7 +608,8 @@ class PendingLeaveList extends Component {
 PendingLeaveList.propTypes = {
   pending_items: PropTypes.array.isRequired,
   public_holiday: PropTypes.array.isRequired,
-  onApproveLeaveSubmit: PropTypes.func.isRequired
+  onApproveLeaveSubmit: PropTypes.func.isRequired,
+  onDeclineLeaveSubmit: PropTypes.func.isRequired
 };
 
 export default PendingLeaveList;
