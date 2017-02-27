@@ -4,6 +4,7 @@ import { fetchPendingLeave } from "../actions/PendingLeave";
 import { fetchPublicHoliday } from "../actions/PublicHoliday";
 import { submitApproveLeave } from "../actions/ApproveLeave";
 import { submitDeclineLeave } from "../actions/DeclineLeave";
+import { submitEditLeave } from "../actions/EditLeave";
 import PendingLeaveList from "../components/PendingLeave";
 
 const BeatLoader = require("halogen/BeatLoader");
@@ -39,6 +40,8 @@ class PendingLeave extends Component {
                   dispatch(submitApproveLeave(approveLeaveData))}
                 onDeclineLeaveSubmit={declineLeaveData =>
                   dispatch(submitDeclineLeave(declineLeaveData))}
+                onEditLeaveSubmit={editApplicationDetails =>
+                  dispatch(submitEditLeave(editApplicationDetails))}
               />)}
       </div>
     );
