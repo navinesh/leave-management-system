@@ -6,21 +6,16 @@ import { submitNewUserRecord } from "../actions/NewRecord";
 class NewRecord extends Component {
   render() {
     const { dispatch, message, isAuthenticated, isFetching } = this.props;
+
     return (
       <div className="NewRecord">
-        {
-          isAuthenticated &&
-            (
-              <NewRecordForm
-                isFetching={isFetching}
-                message={message}
-                onNewUserRecordSubmit={
-                  newUserDetails =>
-                    dispatch(submitNewUserRecord(newUserDetails))
-                }
-              />
-            )
-        }
+        {isAuthenticated &&
+          <NewRecordForm
+            isFetching={isFetching}
+            message={message}
+            onNewUserRecordSubmit={newUserDetails =>
+              dispatch(submitNewUserRecord(newUserDetails))}
+          />}
       </div>
     );
   }
@@ -34,4 +29,4 @@ const mapStateToProps = state => {
   return { isAuthenticated, isFetching, message };
 };
 
-export default connect(mapStateToProps)(NewRecord)
+export default connect(mapStateToProps)(NewRecord);

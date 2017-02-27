@@ -5,16 +5,12 @@ import Login from "../components/AdminLogin";
 
 const AdminLogin = ({ dispatch, message, isAuthenticated, isFetching }) => (
   <div className="AdminLogin">
-    {
-      !isAuthenticated &&
-        (
-          <Login
-            isFetching={isFetching}
-            message={message}
-            onLoginClick={creds => dispatch(fetchLogin(creds))}
-          />
-        )
-    }
+    {!isAuthenticated &&
+      <Login
+        isFetching={isFetching}
+        message={message}
+        onLoginClick={creds => dispatch(fetchLogin(creds))}
+      />}
   </div>
 );
 
@@ -25,4 +21,4 @@ const mapStateToProps = state => {
   return { message, isAuthenticated, isFetching };
 };
 
-export default connect(mapStateToProps)(AdminLogin)
+export default connect(mapStateToProps)(AdminLogin);

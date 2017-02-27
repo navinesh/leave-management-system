@@ -15,4 +15,4 @@ const mapStateToProps = state => {
   return { isAuthenticated };
 };
 
-export default connect(mapStateToProps)(AdminSidebar)
+export default connect(mapStateToProps)(AdminSidebar);
