@@ -39,8 +39,8 @@ class PendingLeave extends Component {
                   dispatch(submitApproveLeave(approveLeaveData))}
                 onDeclineLeaveSubmit={declineLeaveData =>
                   dispatch(submitDeclineLeave(declineLeaveData))}
-                onEditLeaveSubmit={editApplicationDetails =>
-                  dispatch(submitEditLeave(editApplicationDetails))}
+                onEditLeaveSubmit={editLeaveData =>
+                  dispatch(submitEditLeave(editLeaveData))}
               />)}
       </div>
     );
