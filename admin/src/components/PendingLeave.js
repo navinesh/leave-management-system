@@ -312,7 +312,7 @@ class PendingLeaveList extends Component {
     this.setState({ errorMessage: "" });
     this.setState({ successMessage: "Your application has been submitted." });
 
-    const editApplicationDetails = {
+    const editLeaveData = {
       leave_id: leave_id,
       leave: leave,
       leaveType: leaveType,
@@ -323,7 +323,7 @@ class PendingLeaveList extends Component {
       applicationDays: applicationDays
     };
 
-    this.props.onEditLeaveSubmit(editApplicationDetails);
+    this.props.onEditLeaveSubmit(editLeaveData);
   }
 
   render() {
