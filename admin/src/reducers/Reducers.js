@@ -108,6 +108,12 @@ import {
   APPROVE_LEAVE_ERROR
 } from "../actions/ApproveLeave";
 
+import {
+  DECLINE_LEAVE_REQUEST,
+  DECLINE_LEAVE_SUCCESS,
+  DECLINE_LEAVE_ERROR
+} from "../actions/DeclineLeave";
+
 const adminAuth = (
   state = {
     isFetching: false,
@@ -492,6 +498,30 @@ const approveLeave = (
   }
 };
 
+const declineLeave = (
+  state = { isDeclineLeaveFetching: false, message: "" },
+  action
+) => {
+  switch (action.type) {
+    case DECLINE_LEAVE_REQUEST:
+      return { ...state, isApproveLeaveFetching: true };
+    case DECLINE_LEAVE_SUCCESS:
+      return {
+        ...state,
+        isDeclineLeaveFetching: false,
+        message: action.message
+      };
+    case DECLINE_LEAVE_ERROR:
+      return {
+        ...state,
+        isDeclineLeaveFetching: false,
+        message: action.message
+      };
+    default:
+      return state;
+  }
+};
+
 const rootReducer = combineReducers({
   adminAuth,
   pendingLeave,
@@ -508,7 +538,8 @@ const rootReducer = combineReducers({
   addPublicHoliday,
   publicHoliday,
   deletePublicHoliday,
-  approveLeave
+  approveLeave,
+  declineLeave
 });
 
 export default rootReducer;
