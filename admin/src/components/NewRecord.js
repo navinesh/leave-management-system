@@ -126,6 +126,13 @@ export default class NewRecordForm extends Component {
     };
 
     this.props.onNewUserRecordSubmit(newUserDetails);
+
+    setTimeout(
+      () => {
+        this.props.dispatch({ type: "CLEAR_NEW_USER_RECORD" });
+      },
+      5000
+    );
   }
 
   render() {
@@ -334,7 +341,7 @@ export default class NewRecordForm extends Component {
                 </button>
               </div>
             </form>
-            <div className="text-danger text-center">
+            <div className="text-primary text-center">
               {isFetching ? <Loader color="#0275d8" size="20px" /> : message}
             </div>
             <div className="text-danger text-center">
@@ -348,6 +355,7 @@ export default class NewRecordForm extends Component {
 }
 
 NewRecordForm.propTypes = {
+  dispatch: PropTypes.func.isRequired,
   onNewUserRecordSubmit: PropTypes.func.isRequired,
   message: PropTypes.string,
   isFetching: PropTypes.bool.isRequired
