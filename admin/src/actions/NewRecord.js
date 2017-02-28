@@ -28,7 +28,7 @@ export function submitNewUserRecord(newUserDetails) {
   return dispatch => {
     dispatch(requestNewUserRecord(newUserDetails));
     axios
-      .post("adduser", {
+      .post("http://localhost:8080/adduser", {
         surname: newUserDetails.surname,
         othernames: newUserDetails.othernames,
         email: newUserDetails.staffEmail,
