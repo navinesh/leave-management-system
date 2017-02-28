@@ -58,7 +58,8 @@ import {
 import {
   NEW_USER_RECORD_REQUEST,
   NEW_USER_RECORD_SUCCESS,
-  NEW_USER_RECORD_FAILURE
+  NEW_USER_RECORD_FAILURE,
+  CLEAR_NEW_USER_RECORD
 } from "../actions/NewRecord";
 
 import {
@@ -321,6 +322,8 @@ const addUser = (state = { isFetching: false, message: "" }, action) => {
       return { ...state, isFetching: false, message: action.message };
     case NEW_USER_RECORD_FAILURE:
       return { ...state, isFetching: false, message: action.message };
+    case CLEAR_NEW_USER_RECORD:
+      return { ...state, isFetching: false, message: "" };
     default:
       return state;
   }
