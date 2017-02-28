@@ -3,6 +3,7 @@ import axios from "axios";
 export const NEW_USER_RECORD_REQUEST = "NEW_USER_RECORD_REQUEST";
 export const NEW_USER_RECORD_SUCCESS = "NEW_USER_RECORD_SUCCESS";
 export const NEW_USER_RECORD_FAILURE = "NEW_USER_RECORD_FAILURE";
+export const CLEAR_NEW_USER_RECORD = "CLEAR_NEW_USER_RECORD";
 
 export function requestNewUserRecord(newUserDetails) {
   return {
@@ -24,6 +25,12 @@ export function failureNewUserRecord(data) {
     message: data.message
   };
 }
+
+export const clearNewUserRecord = () => {
+  return {
+    type: CLEAR_NEW_USER_RECORD
+  };
+};
 
 export function submitNewUserRecord(newUserDetails) {
   return dispatch => {
