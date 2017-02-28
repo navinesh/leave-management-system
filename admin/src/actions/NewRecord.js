@@ -11,9 +11,10 @@ export function requestNewUserRecord(newUserDetails) {
   };
 }
 
-export function successNewUserRecord() {
+export function successNewUserRecord(data) {
   return {
-    type: NEW_USER_RECORD_SUCCESS
+    type: NEW_USER_RECORD_SUCCESS,
+    message: data.message
   };
 }
 
@@ -45,7 +46,7 @@ export function submitNewUserRecord(newUserDetails) {
         if (response.status === 200) {
           dispatch(failureNewUserRecord(response.data));
         } else {
-          dispatch(successNewUserRecord());
+          dispatch(successNewUserRecord(response.data));
         }
       })
       .catch(error => {
