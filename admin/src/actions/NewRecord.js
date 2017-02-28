@@ -35,7 +35,7 @@ export function submitNewUserRecord(newUserDetails) {
         designation: newUserDetails.designation,
         annual: newUserDetails.annualDays,
         sick: newUserDetails.sickDays,
-        bereavement: newUserDetails.bereavmentDays,
+        bereavement: newUserDetails.bereavementDays,
         christmas: newUserDetails.christmasDays,
         date_of_birth: newUserDetails.dateOfBirth,
         maternity: newUserDetails.maternityDays,
