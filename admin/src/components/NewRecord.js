@@ -5,6 +5,8 @@ require("react-datepicker/dist/react-datepicker.css");
 
 const moment = require("moment");
 
+var Loader = require("halogen/ClipLoader");
+
 export default class NewRecordForm extends Component {
   constructor() {
     super();
@@ -58,7 +60,7 @@ export default class NewRecordForm extends Component {
   }
 
   handleChristmasLeaveChange(e) {
-    this.setState({ christmasLeave: e.target.files[0] });
+    this.setState({ christmasLeave: e.target.value });
   }
 
   handleBereavementLeaveChange(e) {
@@ -82,12 +84,13 @@ export default class NewRecordForm extends Component {
     const gender = this.state.gender;
     const annualDays = this.state.annualLeave;
     const sickDays = this.state.sickLeave;
-    const bereavmentDays = this.state.bereavementLeave;
+    const bereavementDays = this.state.bereavementLeave;
     const christmasDays = this.state.christmasLeave;
     const maternityDays = this.state.maternityLeave
       ? this.state.maternityLeave
       : null;
     const dateOfBirth = moment(this.state.dob).format("MM DD YYYY");
+
     // verify data
     if (
       !surname ||
@@ -96,10 +99,10 @@ export default class NewRecordForm extends Component {
       !designation ||
       !annualDays ||
       !sickDays ||
-      !bereavmentDays ||
+      !bereavementDays ||
       !christmasDays ||
       !dateOfBirth ||
-      gender
+      !gender
     ) {
       this.setState({
         errorMessage: "One or more required fields are missing!"
@@ -114,12 +117,13 @@ export default class NewRecordForm extends Component {
       designation: designation,
       annualDays: annualDays,
       sickDays: sickDays,
-      bereavmentDays: bereavmentDays,
+      bereavementDays: bereavementDays,
       christmasDays: christmasDays,
       dateOfBirth: dateOfBirth,
       maternityDays: maternityDays,
       gender: gender
     };
+
     this.props.onNewUserRecordSubmit(newUserDetails);
   }
 
@@ -330,7 +334,7 @@ export default class NewRecordForm extends Component {
               </div>
             </form>
             <div className="text-danger text-center">
-              {isFetching ? <div>Loading...</div> : message}
+              {isFetching ? <Loader color="#0275d8" size="20px" /> : message}
             </div>
             <div className="text-danger text-center">
               <div>{this.state.errorMessage}</div>
