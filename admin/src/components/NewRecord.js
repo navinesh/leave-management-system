@@ -109,6 +109,7 @@ export default class NewRecordForm extends Component {
       });
       return null;
     }
+
     // prepare data to post to database
     const newUserDetails = {
       surname: surname,
