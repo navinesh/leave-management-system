@@ -114,6 +114,13 @@ import {
   DECLINE_LEAVE_ERROR
 } from "../actions/DeclineLeave";
 
+import {
+  EDIT_LEAVE_REQUEST,
+  EDIT_LEAVE_SUCCESS,
+  EDIT_LEAVE_FAILURE,
+  CLEAR_EDIT_LEAVE
+} from "../actions/EditLeave";
+
 const adminAuth = (
   state = {
     isFetching: false,
@@ -522,6 +529,36 @@ const declineLeave = (
   }
 };
 
+const editLeave = (
+  state = { isEditLeaveFetching: false, editLeaveMessage: "" },
+  action
+) => {
+  switch (action.type) {
+    case EDIT_LEAVE_REQUEST:
+      return { ...state, isEditLeaveFetching: true };
+    case EDIT_LEAVE_SUCCESS:
+      return {
+        ...state,
+        isEditLeaveFetching: false,
+        editLeaveMessage: action.message
+      };
+    case EDIT_LEAVE_FAILURE:
+      return {
+        ...state,
+        isEditLeaveFetching: false,
+        editLeaveMessage: action.message
+      };
+    case CLEAR_EDIT_LEAVE:
+      return {
+        ...state,
+        isEditLeaveFetching: false,
+        editLeaveMessage: ""
+      };
+    default:
+      return state;
+  }
+};
+
 const rootReducer = combineReducers({
   adminAuth,
   pendingLeave,
@@ -539,7 +576,8 @@ const rootReducer = combineReducers({
   publicHoliday,
   deletePublicHoliday,
   approveLeave,
-  declineLeave
+  declineLeave,
+  editLeave
 });
 
 export default rootReducer;
