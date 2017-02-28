@@ -10,6 +10,8 @@ import Moment from "moment";
 import { extendMoment } from "moment-range";
 const moment = extendMoment(Moment);
 
+var Loader = require("halogen/ClipLoader");
+
 const customStyles = {
   overlay: {
     position: "fixed",
@@ -93,6 +95,7 @@ class PendingLeaveList extends Component {
     this.setState({ showModal2: false, errorMessage: null });
     if (this.state.editReason) {
       this.props.dispatch(fetchPendingLeave());
+      this.props.dispatch({ type: "CLEAR_EDIT_LEAVE" });
     }
   }
 
@@ -244,9 +247,7 @@ class PendingLeaveList extends Component {
           return annualDays - myLeaveDays;
         },
         sick: () => {
-          return myLeaveDays >= 2 || sickDays <= 6
-            ? null
-            : sickDays - myLeaveDays;
+          return sickDays - myLeaveDays;
         },
         bereavement: () => {
           return bereavementDays - myLeaveDays;
@@ -285,20 +286,6 @@ class PendingLeaveList extends Component {
       return;
     }
 
-    if (applicationDays === false) {
-      this.setState({
-        errorMessage: "A medical certificate is required for maternity leave!"
-      });
-      return;
-    }
-
-    if (applicationDays === null) {
-      this.setState({
-        errorMessage: "A medical certificate is required for absence of two consecutive days or more and after four single day absences!"
-      });
-      return;
-    }
-
     if (applicationDays === undefined) {
       this.setState({
         errorMessage: "The date you selected as date of birth does not match our record!"
@@ -310,7 +297,6 @@ class PendingLeaveList extends Component {
     const eDate = moment(endDate).format("DD/MM/YYYY");
 
     this.setState({ errorMessage: "" });
-    this.setState({ successMessage: "Your application has been submitted." });
 
     const editLeaveData = {
       leave_id: leave_id,
@@ -589,10 +575,16 @@ class PendingLeaveList extends Component {
                       </div>
                     </div>
                   </form>
-                  <div className="text-danger text-center">
-                    <div className="pb-4">{this.state.errorMessage}</div>
+                  <div className="text-primary text-center">
+                    {this.props.isEditLeaveFetching
+                      ? <Loader color="#0275d8" size="20px" />
+                      : <p className="lead pb-2">
+                          {this.props.editLeaveMessage}
+                        </p>}
                   </div>
-                  <div className="text-primary text-center" />
+                  <div className="text-danger text-center">
+                    <div className="pb-5">{this.state.errorMessage}</div>
+                  </div>
                 </div>
               </Modal>
             </div>
@@ -609,7 +601,9 @@ PendingLeaveList.propTypes = {
   public_holiday: PropTypes.array.isRequired,
   onApproveLeaveSubmit: PropTypes.func.isRequired,
   onDeclineLeaveSubmit: PropTypes.func.isRequired,
-  onEditLeaveSubmit: PropTypes.func.isRequired
+  onEditLeaveSubmit: PropTypes.func.isRequired,
+  isEditLeaveFetching: PropTypes.bool.isRequired,
+  editLeaveMessage: PropTypes.string
 };
 
 export default PendingLeaveList;
