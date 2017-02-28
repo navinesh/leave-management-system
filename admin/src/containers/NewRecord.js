@@ -1,11 +1,20 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import NewRecordForm from "../components/NewRecord";
-import { submitNewUserRecord } from "../actions/NewRecord";
+import { submitNewUserRecord, clearNewUserRecord } from "../actions/NewRecord";
 
 class NewRecord extends Component {
+  componentWillUnmount() {
+    this.props.dispatch(clearNewUserRecord());
+  }
+
   render() {
-    const { dispatch, message, isAuthenticated, isFetching } = this.props;
+    const {
+      dispatch,
+      message,
+      isAuthenticated,
+      isFetching
+    } = this.props;
 
     return (
       <div className="NewRecord">
@@ -13,6 +22,7 @@ class NewRecord extends Component {
           <NewRecordForm
             isFetching={isFetching}
             message={message}
+            dispatch={dispatch}
             onNewUserRecordSubmit={newUserDetails =>
               dispatch(submitNewUserRecord(newUserDetails))}
           />}
