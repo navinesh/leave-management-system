@@ -28,27 +28,24 @@ export default class Navs extends Component {
           <Link className="navbar-brand" to="/">
             Leave management system
           </Link>
-          {
-            isAuthenticated && (
-                <div
-                  className="collapse navbar-collapse justify-content-end"
-                  id="navbarNav"
-                >
-                  <Link className="nav-item nav-link" to="/leaveapplication">
-                    Leave application
-                  </Link>
-                  <Link className="nav-item nav-link" to="/leavecalendar">
-                    Leave calendar
-                  </Link>
-                  <button
-                    onClick={this.userLogout.bind(this)}
-                    className="btn btn-primary ml-2"
-                  >
-                    Sign out
-                  </button>
-                </div>
-              )
-          }
+          {isAuthenticated &&
+            <div
+              className="collapse navbar-collapse justify-content-end"
+              id="navbarNav"
+            >
+              <Link className="nav-item nav-link" to="/leaveapplication">
+                Leave application
+              </Link>
+              <Link className="nav-item nav-link" to="/leavecalendar">
+                Leave calendar
+              </Link>
+              <button
+                onClick={this.userLogout.bind(this)}
+                className="btn btn-primary ml-2"
+              >
+                Sign out
+              </button>
+            </div>}
         </div>
       </nav>
     );
