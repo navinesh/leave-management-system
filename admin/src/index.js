@@ -27,7 +27,7 @@ import "./bootstrap.min.css";
 
 const store = configureStore();
 
-export const requireAuthentication = (nextState, replace, callback) => {
+const requireAuthentication = (nextState, replace, callback) => {
   let admin_token = store.getState().adminAuth.auth_info.admin_token;
   if (admin_token) {
     store.dispatch(requestAdminLoginFromToken(admin_token));
