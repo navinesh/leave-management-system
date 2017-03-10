@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
+
 import {
   fetchStaffRecord,
   clearSearchStaffRecord
@@ -19,8 +21,8 @@ class StaffRecord extends Component {
 
   render() {
     const {
-      staff_record,
       isAuthenticated,
+      staff_record,
       searchTerm,
       dispatch,
       isFetching,
@@ -31,20 +33,21 @@ class StaffRecord extends Component {
 
     return (
       <div className="container">
-        {isAuthenticated &&
-          <StaffRecordList
-            staff_record={staff_record}
-            searchTerm={searchTerm}
-            dispatch={dispatch}
-            isFetching={isFetching}
-            message={message}
-            isArchiveFetching={isArchiveFetching}
-            archiveMessage={archiveMessage}
-            onModifyUserRecordSubmit={modifyUserDetails =>
-              dispatch(submitModifyUserRecord(modifyUserDetails))}
-            onArchiveUserSubmit={archiveUser =>
-              dispatch(submitArchiveUser(archiveUser))}
-          />}
+        {isAuthenticated
+          ? <StaffRecordList
+              staff_record={staff_record}
+              searchTerm={searchTerm}
+              dispatch={dispatch}
+              isFetching={isFetching}
+              message={message}
+              isArchiveFetching={isArchiveFetching}
+              archiveMessage={archiveMessage}
+              onModifyUserRecordSubmit={modifyUserDetails =>
+                dispatch(submitModifyUserRecord(modifyUserDetails))}
+              onArchiveUserSubmit={archiveUser =>
+                dispatch(submitArchiveUser(archiveUser))}
+            />
+          : <Redirect to="/" />}
       </div>
     );
   }
@@ -52,22 +55,23 @@ class StaffRecord extends Component {
 
 const mapStateToProps = state => {
   const {
+    adminAuth,
     staffRecord,
     searchStaffRecord,
-    adminAuth,
     modifyUser,
     archiveUser
   } = state;
 
+  const { isAuthenticated, auth_info } = adminAuth;
   const { staff_record } = staffRecord;
-  const { isAuthenticated } = adminAuth;
   const { searchTerm } = searchStaffRecord;
   const { isFetching, message } = modifyUser;
   const { isArchiveFetching, archiveMessage } = archiveUser;
 
   return {
-    staff_record,
+    auth_info,
     isAuthenticated,
+    staff_record,
     searchTerm,
     isFetching,
     message,
