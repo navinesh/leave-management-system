@@ -1,10 +1,19 @@
 import React from "react";
 import { render } from "react-dom";
-import { Provider } from "react-redux";
-import { Router, Route, browserHistory, IndexRoute } from "react-router";
-import axios from "axios";
 
+import { Provider } from "react-redux";
 import configureStore from "./stores/ConfigureStore";
+const store = configureStore();
+
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect
+} from "react-router-dom";
+
+import "./index.css";
+import "./bootstrap.min.css";
 
 import AdminHeader from "./containers/AdminHeader";
 import PendingLeave from "./containers/PendingLeave";
@@ -16,18 +25,8 @@ import SickSheetRecord from "./containers/SickSheetRecord";
 import NewRecord from "./containers/NewRecord";
 import PublicHoliday from "./containers/PublicHoliday";
 import Error from "./components/Error";
-import {
-  requestAdminLoginFromToken,
-  loginAdminErrorFromToken,
-  receiveAdminLoginFromToken
-} from "./actions/AdminLogin";
 
-import "./index.css";
-import "./bootstrap.min.css";
-
-const store = configureStore();
-
-const requireAuthentication = (nextState, replace, callback) => {
+/*const requireAuthentication = (nextState, replace, callback) => {
   let admin_token = store.getState().adminAuth.auth_info.admin_token;
   if (admin_token) {
     store.dispatch(requestAdminLoginFromToken(admin_token));
@@ -78,56 +77,48 @@ const requireAuthentication = (nextState, replace, callback) => {
     }
     callback();
   }
-};
+};*/
 
-render(
-  <Provider store={store}>
-    <Router history={browserHistory}>
-      <Route path="/" component={AdminHeader}>
-        <IndexRoute onEnter={requireAuthentication} component={PendingLeave} />
-        <Route
-          path="/staffrecord"
-          onEnter={requireAuthentication}
-          component={StaffRecord}
-        />
-        <Route
-          path="/approvedleave"
-          onEnter={requireAuthentication}
-          component={ApprovedLeave}
-        />
-        <Route
-          path="/leavereport"
-          onEnter={requireAuthentication}
-          component={LeaveReport}
-        />
-        <Route
-          path="/sicksheetrecord"
-          onEnter={requireAuthentication}
-          component={SickSheetRecord}
-        />
-        <Route
-          path="/sicksheetrecord/:fileId"
-          onEnter={requireAuthentication}
-          component={SickSheetRecord}
-        />
-        <Route
-          path="/archivedstaffrecord"
-          onEnter={requireAuthentication}
-          component={ArchivedStaffRecord}
-        />
-        <Route
-          path="/newrecord"
-          onEnter={requireAuthentication}
-          component={NewRecord}
-        />
-        <Route
-          path="/publicholiday"
-          onEnter={requireAuthentication}
-          component={PublicHoliday}
-        />
-      </Route>
-      <Route path="*" component={Error} />
-    </Router>
-  </Provider>,
-  document.getElementById("root")
+const PrivateRoute = ({ component, ...rest }) => (
+  <Route
+    {...rest}
+    render={props => store.getState().adminAuth.isAuthenticated
+      ? React.createElement(component, props)
+      : <Redirect
+          to={{
+            pathname: "/",
+            state: { from: props.location }
+          }}
+        />}
+  />
 );
+
+const App = () => (
+  <Provider store={store}>
+    <Router>
+      <div>
+        <AdminHeader />
+        <Switch>
+          <Route exact path="/" component={PendingLeave} />
+          <PrivateRoute path="/staffrecord" component={StaffRecord} />
+          <PrivateRoute path="/approvedleave" component={ApprovedLeave} />
+          <PrivateRoute path="/leavereport" component={LeaveReport} />
+          <PrivateRoute path="/sicksheetrecord" component={SickSheetRecord} />
+          <PrivateRoute
+            path="/sicksheetrecord/:fileId"
+            component={SickSheetRecord}
+          />
+          <PrivateRoute
+            path="/archivedstaffrecord"
+            component={ArchivedStaffRecord}
+          />
+          <PrivateRoute path="/newrecord" component={NewRecord} />
+          <PrivateRoute path="/publicholiday" component={PublicHoliday} />
+          <Route component={Error} />
+        </Switch>
+      </div>
+    </Router>
+  </Provider>
+);
+
+render(<App />, document.getElementById("root"));
