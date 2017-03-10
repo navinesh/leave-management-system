@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
+
 import NewRecordForm from "../components/NewRecord";
 import { submitNewUserRecord, clearNewUserRecord } from "../actions/NewRecord";
 
@@ -10,22 +12,23 @@ class NewRecord extends Component {
 
   render() {
     const {
+      isAuthenticated,
       dispatch,
       message,
-      isAuthenticated,
       isFetching
     } = this.props;
 
     return (
       <div className="NewRecord">
-        {isAuthenticated &&
-          <NewRecordForm
-            isFetching={isFetching}
-            message={message}
-            dispatch={dispatch}
-            onNewUserRecordSubmit={newUserDetails =>
-              dispatch(submitNewUserRecord(newUserDetails))}
-          />}
+        {isAuthenticated
+          ? <NewRecordForm
+              isFetching={isFetching}
+              message={message}
+              dispatch={dispatch}
+              onNewUserRecordSubmit={newUserDetails =>
+                dispatch(submitNewUserRecord(newUserDetails))}
+            />
+          : <Redirect to="/" />}
       </div>
     );
   }
@@ -33,10 +36,10 @@ class NewRecord extends Component {
 
 const mapStateToProps = state => {
   const { adminAuth, addUser } = state;
-  const { isAuthenticated } = adminAuth;
+  const { isAuthenticated, auth_info } = adminAuth;
   const { isFetching, message } = addUser;
 
-  return { isAuthenticated, isFetching, message };
+  return { isAuthenticated, auth_info, isFetching, message };
 };
 
 export default connect(mapStateToProps)(NewRecord);
