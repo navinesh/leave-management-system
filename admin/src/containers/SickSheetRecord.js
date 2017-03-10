@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
+
 import { fetchSickSheetRecord } from "../actions/SickSheetRecord";
 import SickSheetList from "../components/SickSheetRecord";
 
@@ -11,27 +13,28 @@ class SickSheetRecord extends Component {
   }
 
   render() {
-    const { isFetching, sickSheet_items, isAuthenticated } = this.props;
+    const { isAuthenticated, isFetching, sickSheet_items } = this.props;
 
     return (
       <div className="container">
-        {isAuthenticated &&
-          (isFetching
-            ? <div className="text-center">
-                <BeatLoader color="#0275d8" size="12px" />
-              </div>
-            : <SickSheetList sickSheet_items={sickSheet_items} />)}
+        {isAuthenticated
+          ? isFetching
+              ? <div className="text-center">
+                  <BeatLoader color="#0275d8" size="12px" />
+                </div>
+              : <SickSheetList sickSheet_items={sickSheet_items} />
+          : <Redirect to="/" />}
       </div>
     );
   }
 }
 
 const mapStateToProps = state => {
-  const { sickSheet, adminAuth } = state;
-  const { isFetching, sickSheet_items } = sickSheet;
+  const { adminAuth, sickSheet } = state;
   const { isAuthenticated } = adminAuth;
+  const { isFetching, sickSheet_items } = sickSheet;
 
-  return { isFetching, sickSheet_items, isAuthenticated };
+  return { isAuthenticated, isFetching, sickSheet_items };
 };
 
 export default connect(mapStateToProps)(SickSheetRecord);
