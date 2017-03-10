@@ -1,12 +1,11 @@
 import React, { PropTypes, Component } from "react";
-import { Link, browserHistory } from "react-router";
+import { Link } from "react-router-dom";
 import { logoutAdmin } from "../actions/AdminLogout";
 
 export default class Header extends Component {
   adminLogout(e) {
     e.preventDefault();
     this.props.dispatch(logoutAdmin());
-    browserHistory.push("/");
   }
 
   render() {
