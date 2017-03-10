@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
+
 import { fetchArchivedStaffRecord } from "../actions/ArchivedStaffRecord";
 import { clearSearchStaffRecord } from "../actions/StaffRecord";
 import ArchivedStaffRecordList from "../components/ArchivedStaffRecord";
@@ -16,8 +18,8 @@ class ArchivedStaffRecord extends Component {
 
   render() {
     const {
-      archived_staff_record,
       isAuthenticated,
+      archived_staff_record,
       searchTerm,
       dispatch,
       isUnArchiveFetching,
@@ -26,16 +28,17 @@ class ArchivedStaffRecord extends Component {
 
     return (
       <div className="container">
-        {isAuthenticated &&
-          <ArchivedStaffRecordList
-            archived_staff_record={archived_staff_record}
-            searchTerm={searchTerm}
-            dispatch={dispatch}
-            isUnArchiveFetching={isUnArchiveFetching}
-            unArchiveMessage={unArchiveMessage}
-            onUnArchiveUserSubmit={unArchiveUser =>
-              dispatch(submitUnArchiveUser(unArchiveUser))}
-          />}
+        {isAuthenticated
+          ? <ArchivedStaffRecordList
+              archived_staff_record={archived_staff_record}
+              searchTerm={searchTerm}
+              dispatch={dispatch}
+              isUnArchiveFetching={isUnArchiveFetching}
+              unArchiveMessage={unArchiveMessage}
+              onUnArchiveUserSubmit={unArchiveUser =>
+                dispatch(submitUnArchiveUser(unArchiveUser))}
+            />
+          : <Redirect to="/" />}
       </div>
     );
   }
@@ -43,20 +46,20 @@ class ArchivedStaffRecord extends Component {
 
 const mapStateToProps = state => {
   const {
+    adminAuth,
     archivedStaffRecord,
     searchStaffRecord,
-    adminAuth,
     unArchiveUser
   } = state;
 
-  const { archived_staff_record } = archivedStaffRecord;
   const { isAuthenticated } = adminAuth;
+  const { archived_staff_record } = archivedStaffRecord;
   const { searchTerm } = searchStaffRecord;
   const { isUnArchiveFetching, unArchiveMessage } = unArchiveUser;
 
   return {
-    archived_staff_record,
     isAuthenticated,
+    archived_staff_record,
     searchTerm,
     isUnArchiveFetching,
     unArchiveMessage
