@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+
 import { fetchPendingLeave } from "../actions/PendingLeave";
 import { fetchPublicHoliday } from "../actions/PublicHoliday";
 import { submitApproveLeave } from "../actions/ApproveLeave";
@@ -17,9 +18,9 @@ class PendingLeave extends Component {
 
   render() {
     const {
+      isAuthenticated,
       isFetching,
       pending_items,
-      isAuthenticated,
       public_holiday,
       dispatch,
       isEditLeaveFetching,
@@ -52,16 +53,16 @@ class PendingLeave extends Component {
 }
 
 const mapStateToProps = state => {
-  const { pendingLeave, adminAuth, publicHoliday, editLeave } = state;
-  const { isFetching, pending_items } = pendingLeave;
+  const { adminAuth, pendingLeave, publicHoliday, editLeave } = state;
   const { isAuthenticated } = adminAuth;
+  const { isFetching, pending_items } = pendingLeave;
   const { public_holiday } = publicHoliday;
   const { isEditLeaveFetching, editLeaveMessage } = editLeave;
 
   return {
+    isAuthenticated,
     isFetching,
     pending_items,
-    isAuthenticated,
     public_holiday,
     isEditLeaveFetching,
     editLeaveMessage
