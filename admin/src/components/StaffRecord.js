@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from "react";
+
 import { searchStaffRecord, fetchStaffRecord } from "../actions/StaffRecord";
 
 import Modal from "react-modal";
