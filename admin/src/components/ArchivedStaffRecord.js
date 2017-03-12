@@ -1,4 +1,5 @@
 import React, { PropTypes, Component } from "react";
+
 import { searchStaffRecord } from "../actions/StaffRecord";
 import { fetchArchivedStaffRecord } from "../actions/ArchivedStaffRecord";
 
