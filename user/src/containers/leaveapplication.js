@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
 
 import { fetchUserDetailsIfNeeded } from "../actions/userdetails";
 import { fetchLeaveApplication } from "../actions/leaveapplication";
@@ -33,15 +34,16 @@ class LeaveApplication extends Component {
 
     return (
       <div className="LeaveApplication">
-        {isAuthenticated &&
-          <LeaveApplications
-            isFetching={isFetching}
-            message={message}
-            user_detail={user_detail}
-            public_holiday={public_holiday}
-            onLeaveApplicationClick={applicationDetails =>
-              dispatch(fetchLeaveApplication(applicationDetails))}
-          />}
+        {isAuthenticated
+          ? <LeaveApplications
+              isFetching={isFetching}
+              message={message}
+              user_detail={user_detail}
+              public_holiday={public_holiday}
+              onLeaveApplicationClick={applicationDetails =>
+                dispatch(fetchLeaveApplication(applicationDetails))}
+            />
+          : <Redirect to="/" />}
       </div>
     );
   }
