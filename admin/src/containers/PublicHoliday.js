@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 
+import { fetchLoginFromToken } from "../actions/AdminLogin";
 import PublicHolidays from "../components/PublicHoliday";
 import { fetchPublicHoliday } from "../actions/PublicHoliday";
 import { submitAddPublicHoliday } from "../actions/NewPublicHoliday";
@@ -9,7 +10,14 @@ import { submitDeletePublicHoliday } from "../actions/DeletePublicHoliday";
 
 class PublicHoliday extends Component {
   componentDidMount() {
-    this.props.dispatch(fetchPublicHoliday());
+    const { dispatch, auth_info } = this.props;
+    let admin_token = auth_info.admin_token
+      ? auth_info.admin_token
+      : localStorage.getItem("admin_token");
+
+    if (admin_token) {
+      dispatch(fetchLoginFromToken(admin_token, fetchPublicHoliday));
+    }
   }
 
   render() {
@@ -52,12 +60,13 @@ const mapStateToProps = state => {
     deletePublicHoliday
   } = state;
 
-  const { isAuthenticated } = adminAuth;
+  const { auth_info, isAuthenticated } = adminAuth;
   const { public_holiday } = publicHoliday;
   const { isAddPublicFetching, addPublicMessage } = addPublicHoliday;
   const { isDeletePublicFetching, deletePublicMessage } = deletePublicHoliday;
 
   return {
+    auth_info,
     isAuthenticated,
     public_holiday,
     isAddPublicFetching,

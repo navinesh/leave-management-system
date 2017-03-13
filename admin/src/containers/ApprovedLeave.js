@@ -2,14 +2,22 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 
+const BeatLoader = require("halogen/BeatLoader");
+
+import { fetchLoginFromToken } from "../actions/AdminLogin";
 import { fetchApprovedLeave } from "../actions/ApprovedLeave";
 import ApprovedLeaveList from "../components/ApprovedLeave";
 
-const BeatLoader = require("halogen/BeatLoader");
-
 class ApprovedLeave extends Component {
   componentDidMount() {
-    this.props.dispatch(fetchApprovedLeave());
+    const { dispatch, auth_info } = this.props;
+    let admin_token = auth_info.admin_token
+      ? auth_info.admin_token
+      : localStorage.getItem("admin_token");
+
+    if (admin_token) {
+      dispatch(fetchLoginFromToken(admin_token, fetchApprovedLeave));
+    }
   }
 
   render() {
@@ -31,10 +39,10 @@ class ApprovedLeave extends Component {
 
 const mapStateToProps = state => {
   const { adminAuth, approvedLeave } = state;
-  const { isAuthenticated } = adminAuth;
+  const { auth_info, isAuthenticated } = adminAuth;
   const { isFetching, approved_items } = approvedLeave;
 
-  return { isAuthenticated, approved_items, isFetching };
+  return { auth_info, isAuthenticated, approved_items, isFetching };
 };
 
 export default connect(mapStateToProps)(ApprovedLeave);

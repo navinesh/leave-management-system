@@ -2,14 +2,22 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 
+const BeatLoader = require("halogen/BeatLoader");
+
+import { fetchLoginFromToken } from "../actions/AdminLogin";
 import { fetchSickSheetRecord } from "../actions/SickSheetRecord";
 import SickSheetList from "../components/SickSheetRecord";
 
-const BeatLoader = require("halogen/BeatLoader");
-
 class SickSheetRecord extends Component {
   componentDidMount() {
-    this.props.dispatch(fetchSickSheetRecord());
+    const { dispatch, auth_info } = this.props;
+    let admin_token = auth_info.admin_token
+      ? auth_info.admin_token
+      : localStorage.getItem("admin_token");
+
+    if (admin_token) {
+      dispatch(fetchLoginFromToken(admin_token, fetchSickSheetRecord));
+    }
   }
 
   render() {
@@ -31,10 +39,10 @@ class SickSheetRecord extends Component {
 
 const mapStateToProps = state => {
   const { adminAuth, sickSheet } = state;
-  const { isAuthenticated } = adminAuth;
+  const { auth_info, isAuthenticated } = adminAuth;
   const { isFetching, sickSheet_items } = sickSheet;
 
-  return { isAuthenticated, isFetching, sickSheet_items };
+  return { auth_info, isAuthenticated, isFetching, sickSheet_items };
 };
 
 export default connect(mapStateToProps)(SickSheetRecord);

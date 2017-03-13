@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
+const BeatLoader = require("halogen/BeatLoader");
+
 import AdminLogin from "./AdminLogin";
 import { fetchPendingLeave } from "../actions/PendingLeave";
 import { fetchPublicHoliday } from "../actions/PublicHoliday";
@@ -8,8 +10,6 @@ import { submitApproveLeave } from "../actions/ApproveLeave";
 import { submitDeclineLeave } from "../actions/DeclineLeave";
 import { submitEditLeave } from "../actions/EditLeave";
 import PendingLeaveList from "../components/PendingLeave";
-
-const BeatLoader = require("halogen/BeatLoader");
 
 class PendingLeave extends Component {
   componentDidMount() {

@@ -2,14 +2,22 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 
+const BeatLoader = require("halogen/BeatLoader");
+
+import { fetchLoginFromToken } from "../actions/AdminLogin";
 import { fetchLeaveRecord } from "../actions/LeaveReport";
 import LeaveReportList from "../components/LeaveReport";
 
-const BeatLoader = require("halogen/BeatLoader");
-
 class LeaveReport extends Component {
   componentDidMount() {
-    this.props.dispatch(fetchLeaveRecord());
+    const { dispatch, auth_info } = this.props;
+    let admin_token = auth_info.admin_token
+      ? auth_info.admin_token
+      : localStorage.getItem("admin_token");
+
+    if (admin_token) {
+      dispatch(fetchLoginFromToken(admin_token, fetchLeaveRecord));
+    }
   }
 
   render() {
@@ -31,10 +39,10 @@ class LeaveReport extends Component {
 
 const mapStateToProps = state => {
   const { adminAuth, leaveReport } = state;
-  const { isAuthenticated } = adminAuth;
+  const { auth_info, isAuthenticated } = adminAuth;
   const { isFetching, leave_record } = leaveReport;
 
-  return { isAuthenticated, isFetching, leave_record };
+  return { auth_info, isAuthenticated, isFetching, leave_record };
 };
 
 export default connect(mapStateToProps)(LeaveReport);
