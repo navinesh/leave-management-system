@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+
 import UserResetPassword from "../components/resetpassword";
 import { resetPassword } from "../actions/resetpassword";
 
