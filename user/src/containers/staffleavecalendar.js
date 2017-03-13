@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchLeaveIfNeeded } from "../actions/leavecalendar";
-import Leaves from "../components/leavecalendar";
 
 const BeatLoader = require("halogen/BeatLoader");
+
+import { fetchLeaveIfNeeded } from "../actions/leavecalendar";
+import Leaves from "../components/leavecalendar";
 
 class LeaveCalendar extends Component {
   componentDidMount() {
