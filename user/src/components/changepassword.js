@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from "react";
+
 var Loader = require("halogen/ClipLoader");
 
 export default class UserChange extends Component {
