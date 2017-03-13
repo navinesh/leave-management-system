@@ -62,14 +62,13 @@ const mapStateToProps = state => {
     archiveUser
   } = state;
 
-  const { isAuthenticated, auth_info } = adminAuth;
+  const { isAuthenticated } = adminAuth;
   const { staff_record } = staffRecord;
   const { searchTerm } = searchStaffRecord;
   const { isFetching, message } = modifyUser;
   const { isArchiveFetching, archiveMessage } = archiveUser;
 
   return {
-    auth_info,
     isAuthenticated,
     staff_record,
     searchTerm,

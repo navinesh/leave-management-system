@@ -36,10 +36,10 @@ class NewRecord extends Component {
 
 const mapStateToProps = state => {
   const { adminAuth, addUser } = state;
-  const { isAuthenticated, auth_info } = adminAuth;
+  const { isAuthenticated } = adminAuth;
   const { isFetching, message } = addUser;
 
-  return { isAuthenticated, auth_info, isFetching, message };
+  return { isAuthenticated, isFetching, message };
 };
 
 export default connect(mapStateToProps)(NewRecord);
