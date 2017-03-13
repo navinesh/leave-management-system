@@ -1,11 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
+
 import Navs from "../components/header";
 
-const Header = ({ isAuthenticated, dispatch, children }) => (
+const Header = ({ isAuthenticated, dispatch }) => (
   <div className="Header">
     <Navs isAuthenticated={isAuthenticated} dispatch={dispatch} />
-    {children}
   </div>
 );
 
