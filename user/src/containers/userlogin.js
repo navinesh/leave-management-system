@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+
 import { fetchLogin } from "../actions/userlogin";
 import Login from "../components/userlogin";
 
@@ -18,7 +19,7 @@ const mapStateToProps = state => {
   const { userAuth } = state;
   const { isAuthenticated, message, isFetching } = userAuth;
 
-  return { message, isAuthenticated, isFetching };
+  return { isAuthenticated, message, isFetching };
 };
 
 export default connect(mapStateToProps)(UserLogin);
