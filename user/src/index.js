@@ -1,11 +1,22 @@
 import React from "react";
 import { render } from "react-dom";
+
 import { Provider } from "react-redux";
-import { Router, Route, browserHistory, IndexRoute } from "react-router";
+import configureStore from "./stores/configureStore";
+const store = configureStore();
+
+import { BrowserRouter, Switch, Route } from "react-router-dom";
+
 import axios from "axios";
 
-import configureStore from "./stores/configureStore";
+import "./index.css";
+import "./bootstrap.min.css";
 
+import {
+  requestUserLoginFromToken,
+  loginUserErrorFromToken,
+  receiveUserLoginFromToken
+} from "./actions/userlogin";
 import Header from "./containers/header";
 import Main from "./containers/main";
 import StaffLeaveCalendar from "./containers/staffleavecalendar";
@@ -13,17 +24,6 @@ import ResetPassword from "./containers/resetpassword";
 import UserChangePassword from "./containers/changepassword";
 import UserError from "./components/usererror";
 import LeaveApplication from "./containers/leaveapplication";
-
-import {
-  requestUserLoginFromToken,
-  loginUserErrorFromToken,
-  receiveUserLoginFromToken
-} from "./actions/userlogin";
-
-import "./index.css";
-import "./bootstrap.min.css";
-
-const store = configureStore();
 
 export const requireAuthentication = (nextState, replace, callback) => {
   let auth_token = store.getState().userAuth.auth_info.auth_token;
@@ -78,26 +78,22 @@ export const requireAuthentication = (nextState, replace, callback) => {
   }
 };
 
-render(
+const App = () => (
   <Provider store={store}>
-    <Router history={browserHistory}>
-      <Route path="/" component={Header}>
-        <IndexRoute component={Main} />
-        <Route path="/leavecalendar" component={StaffLeaveCalendar} />
-        <Route path="/reset" component={ResetPassword} />
-        <Route
-          path="/leaveapplication"
-          onEnter={requireAuthentication}
-          component={LeaveApplication}
-        />
-        <Route
-          path="/changepassword"
-          onEnter={requireAuthentication}
-          component={UserChangePassword}
-        />
-      </Route>
-      <Route path="*" component={UserError} />
-    </Router>
-  </Provider>,
-  document.getElementById("root")
+    <BrowserRouter>
+      <div>
+        <Header />
+        <Switch>
+          <Route exact path="/" component={Main} />
+          <Route path="/leavecalendar" component={StaffLeaveCalendar} />
+          <Route path="/reset" component={ResetPassword} />
+          <Route path="/leaveapplication" component={LeaveApplication} />
+          <Route path="/changepassword" component={UserChangePassword} />
+          <Route component={UserError} />
+        </Switch>
+      </div>
+    </BrowserRouter>
+  </Provider>
 );
+
+render(<App />, document.getElementById("root"));
