@@ -1,12 +1,12 @@
 import React, { PropTypes, Component } from "react";
-import { Link, browserHistory } from "react-router";
+import { Link } from "react-router-dom";
+
 import { logoutUser } from "../actions/userlogout";
 
 export default class Navs extends Component {
   userLogout(e) {
     e.preventDefault();
     this.props.dispatch(logoutUser());
-    browserHistory.push("/");
   }
 
   render() {
