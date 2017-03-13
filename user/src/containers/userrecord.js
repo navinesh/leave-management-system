@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchUserDetailsIfNeeded } from "../actions/userdetails";
-import { fetchUserRecordIfNeeded } from "../actions/userrecord";
-import { UserRecord, RecordList } from "../components/userrecord";
 
 const BeatLoader = require("halogen/BeatLoader");
 const PulseLoader = require("halogen/PulseLoader");
+
+import { fetchUserDetailsIfNeeded } from "../actions/userdetails";
+import { fetchUserRecordIfNeeded } from "../actions/userrecord";
+import { UserRecord, RecordList } from "../components/userrecord";
 
 class UserRecords extends Component {
   componentDidMount() {
