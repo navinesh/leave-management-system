@@ -1,5 +1,5 @@
 import React, { PropTypes } from "react";
-import { Link } from "react-router";
+import { Link } from "react-router-dom";
 
 const PendingRecordList = ({ user_record }) => {
   const pendingList = user_record
