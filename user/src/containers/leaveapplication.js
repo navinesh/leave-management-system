@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+
 import { fetchUserDetailsIfNeeded } from "../actions/userdetails";
 import { fetchLeaveApplication } from "../actions/leaveapplication";
 import LeaveApplications from "../components/leaveapplication";
@@ -23,8 +24,8 @@ class LeaveApplication extends Component {
   render() {
     const {
       dispatch,
-      message,
       isAuthenticated,
+      message,
       isFetching,
       user_detail,
       public_holiday
@@ -54,8 +55,8 @@ const mapStateToProps = state => {
   const { public_holiday } = publicHoliday;
 
   return {
-    message,
     isAuthenticated,
+    message,
     isFetching,
     auth_info,
     user_detail,
