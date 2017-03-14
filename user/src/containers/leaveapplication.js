@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 
+import { fetchLoginFromToken } from "../actions/userlogin";
 import { fetchUserDetailsIfNeeded } from "../actions/userdetails";
 import { fetchLeaveApplication } from "../actions/leaveapplication";
 import LeaveApplications from "../components/leaveapplication";
@@ -10,16 +11,15 @@ import { fetchPublicHoliday } from "../actions/publicholiday";
 class LeaveApplication extends Component {
   componentDidMount() {
     const { dispatch, auth_info } = this.props;
-    let auth_token = auth_info.auth_token;
+    let auth_token = auth_info.auth_token
+      ? auth_info.auth_token
+      : localStorage.getItem("auth_token");
+
     if (auth_token) {
+      dispatch(fetchLoginFromToken(auth_token));
       dispatch(fetchUserDetailsIfNeeded(auth_token));
-    } else {
-      auth_token = localStorage.getItem("auth_token");
-      if (auth_token) {
-        dispatch(fetchUserDetailsIfNeeded(auth_token));
-      }
+      dispatch(fetchPublicHoliday());
     }
-    dispatch(fetchPublicHoliday());
   }
 
   render() {
