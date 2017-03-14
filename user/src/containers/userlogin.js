@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import { fetchLogin } from "../actions/userlogin";
 import Login from "../components/userlogin";
 
-const UserLogin = ({ dispatch, message, isAuthenticated, isFetching }) => (
+const UserLogin = ({ dispatch, isAuthenticated, message, isFetching }) => (
   <div className="UserLogin">
     {!isAuthenticated &&
       <Login

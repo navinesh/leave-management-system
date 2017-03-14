@@ -51,16 +51,16 @@ class LeaveApplication extends Component {
 
 const mapStateToProps = state => {
   const { userAuth, leaveApplication, userDetails, publicHoliday } = state;
-  const { isAuthenticated, auth_info } = userAuth;
+  const { auth_info, isAuthenticated } = userAuth;
   const { isFetching, message } = leaveApplication;
   const { userDetail: user_detail } = userDetails;
   const { public_holiday } = publicHoliday;
 
   return {
+    auth_info,
     isAuthenticated,
     message,
     isFetching,
-    auth_info,
     user_detail,
     public_holiday
   };

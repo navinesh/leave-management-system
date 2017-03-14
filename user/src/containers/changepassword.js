@@ -41,10 +41,10 @@ class UserChangePassword extends Component {
 const mapStateToProps = state => {
   const { changePassword } = state;
   const { userAuth } = state;
-  const { isAuthenticated, auth_info } = userAuth;
+  const { auth_info, isAuthenticated } = userAuth;
   const { isFetching, message } = changePassword;
 
-  return { isAuthenticated, auth_info, isFetching, message };
+  return { auth_info, isAuthenticated, isFetching, message };
 };
 
 export default connect(mapStateToProps)(UserChangePassword);
