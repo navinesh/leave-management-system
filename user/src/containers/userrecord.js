@@ -60,11 +60,11 @@ const mapStateToProps = state => {
   } = userRecords;
 
   return {
+    auth_info,
     isFetching,
     isRecordFetching,
     user_record,
     message,
-    auth_info,
     user_detail
   };
 };
