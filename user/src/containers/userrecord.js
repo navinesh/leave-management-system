@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 const BeatLoader = require("halogen/BeatLoader");
 const PulseLoader = require("halogen/PulseLoader");
 
-import { fetchLoginFromToken } from "../actions/userlogin";
 import { fetchUserDetailsIfNeeded } from "../actions/userdetails";
 import { fetchUserRecordIfNeeded } from "../actions/userrecord";
 import { UserRecord, RecordList } from "../components/userrecord";
@@ -17,7 +16,6 @@ class UserRecords extends Component {
       : localStorage.getItem("auth_token");
 
     if (auth_token) {
-      dispatch(fetchLoginFromToken(auth_token));
       dispatch(fetchUserDetailsIfNeeded(auth_token));
       dispatch(fetchUserRecordIfNeeded(auth_token));
     }
