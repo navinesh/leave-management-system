@@ -7,6 +7,10 @@ export default class Login extends Component {
   constructor() {
     super();
     this.state = { errorMessage: "" };
+
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleEmailChange = this.handleEmailChange.bind(this);
+    this.handlePasswordChange = this.handlePasswordChange.bind(this);
   }
 
   handleEmailChange(e) {
@@ -37,10 +41,12 @@ export default class Login extends Component {
   }
 
   render() {
+    const { isFetching, message } = this.props;
+
     return (
       <div className="col-md-4 offset-md-4">
         <div className="card card-block">
-          <form onSubmit={this.handleSubmit.bind(this)}>
+          <form onSubmit={this.handleSubmit}>
             <div className="form-group">
               <label htmlFor="email">Email address</label>
               <input
@@ -48,7 +54,7 @@ export default class Login extends Component {
                 className="form-control"
                 placeholder="Enter email"
                 id="email"
-                onChange={this.handleEmailChange.bind(this)}
+                onChange={this.handleEmailChange}
               />
             </div>
             <div className="form-group">
@@ -58,7 +64,7 @@ export default class Login extends Component {
                 className="form-control"
                 placeholder="Password"
                 id="password"
-                onChange={this.handlePasswordChange.bind(this)}
+                onChange={this.handlePasswordChange}
               />
             </div>
             <div className="form-group">
@@ -68,9 +74,7 @@ export default class Login extends Component {
             </div>
           </form>
           <div className="text-danger text-center">
-            {this.props.isFetching
-              ? <Loader color="#0275d8" size="20px" />
-              : this.props.message}
+            {isFetching ? <Loader color="#0275d8" size="20px" /> : message}
           </div>
           <div className="text-danger text-center">
             <div>{this.state.errorMessage}</div>
