@@ -7,7 +7,18 @@ const moment = require("moment");
 
 var Loader = require("halogen/ClipLoader");
 
-const PublicHolidays = props => (
+const PublicHolidays = (
+  {
+    dispatch,
+    public_holiday,
+    onDeletePublicHolidaySubmit,
+    onAddPublicHolidaySubmit,
+    isAddPublicFetching,
+    addPublicMessage,
+    isDeletePublicFetching,
+    deletePublicMessage
+  }
+) => (
   <div className="offset-md-1 col-md-10">
     <div className="card">
       <div className="card-block">
@@ -15,30 +26,30 @@ const PublicHolidays = props => (
           <div className="col">
             <h4 className="card-title">Public Holidays</h4>
             <DeletePublicHoliday
-              public_holiday={props.public_holiday}
-              dispatch={props.dispatch}
-              onDeletePublicHolidaySubmit={props.onDeletePublicHolidaySubmit}
+              public_holiday={public_holiday}
+              dispatch={dispatch}
+              onDeletePublicHolidaySubmit={onDeletePublicHolidaySubmit}
             />
           </div>
           <div className="col">
             <AddPublicHoliday
-              dispatch={props.dispatch}
-              onAddPublicHolidaySubmit={props.onAddPublicHolidaySubmit}
+              dispatch={dispatch}
+              onAddPublicHolidaySubmit={onAddPublicHolidaySubmit}
             />
             <div>
-              {props.isAddPublicFetching
+              {isAddPublicFetching
                 ? <div className="text-center">
                     <Loader color="#0275d8" size="20px" />
                   </div>
                 : <p className="text-primary">
-                    {props.addPublicMessage}
+                    {addPublicMessage}
                   </p>}
-              {props.isDeletePublicFetching
+              {isDeletePublicFetching
                 ? <div className="text-center">
                     <Loader color="#0275d8" size="20px" />
                   </div>
                 : <p className="text-primary">
-                    {props.deletePublicMessage}
+                    {deletePublicMessage}
                   </p>}
             </div>
           </div>
