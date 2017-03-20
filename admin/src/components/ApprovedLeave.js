@@ -1,5 +1,6 @@
 import React, { PropTypes, Component } from "react";
 import { Link } from "react-router-dom";
+import Modal from "react-modal";
 
 var DatePicker = require("react-datepicker");
 require("react-datepicker/dist/react-datepicker.css");
@@ -7,6 +8,8 @@ require("react-datepicker/dist/react-datepicker.css");
 import Moment from "moment";
 import { extendMoment } from "moment-range";
 const moment = extendMoment(Moment);
+
+var Loader = require("halogen/ClipLoader");
 
 import customStyles from "../Styles";
 
@@ -21,8 +24,21 @@ class ApprovedLeaveList extends Component {
     };
   }
 
+  handleOpenModal1(e) {
+    this.setState({ showModal1: true });
+    this.setState({ listID: e.target.id });
+  }
+
+  handleCloseModal1() {
+    this.setState({ showModal1: false, errorMessage: null });
+    if (this.state.deleteReason) {
+      this.props.dispatch(this.props.fetchApprovedLeave());
+    }
+  }
+
   render() {
     const { approved_items } = this.props;
+    const listID = parseInt(this.state.listID, 10);
 
     const items = approved_items
       .filter(record => {
@@ -69,27 +85,188 @@ class ApprovedLeaveList extends Component {
       ));
 
     return items.length > 0
-      ? <div className="table-responsive">
-          <table
-            className="table table-bordered table-hover"
-            style={{ backgroundColor: "#FFFFFF" }}
-          >
-            <thead className="thead-default">
-              <tr>
-                <th>Name</th>
-                <th>Leave</th>
-                <th>Type</th>
-                <th>Start date</th>
-                <th>End date</th>
-                <th>Leave days</th>
-                <th>Edit</th>
-                <th>Delete</th>
-              </tr>
-            </thead>
-            <tbody>
-              {items}
-            </tbody>
-          </table>
+      ? <div>
+          <div className="table-responsive">
+            <table
+              className="table table-bordered table-hover"
+              style={{ backgroundColor: "#FFFFFF" }}
+            >
+              <thead className="thead-default">
+                <tr>
+                  <th>Name</th>
+                  <th>Leave</th>
+                  <th>Type</th>
+                  <th>Start date</th>
+                  <th>End date</th>
+                  <th>Leave days</th>
+                  <th>Edit</th>
+                  <th>Delete</th>
+                </tr>
+              </thead>
+              <tbody>
+                {items}
+              </tbody>
+            </table>
+          </div>
+          {approved_items.filter(e => e.id === listID).map(record => (
+            <div key={record.id}>
+              <Modal
+                className="Modal__Bootstrap modal-dialog"
+                isOpen={this.state.showModal2}
+                onRequestClose={this.handleCloseModal2}
+                contentLabel="Modal #2"
+                overlayClassName="Overlay"
+                style={customStyles}
+              >
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title">
+                      Edit
+                    </h5>
+                  </div>
+                  <form
+                    encType="multipart/form-data"
+                    onSubmit={this.handleEditSubmit}
+                  >
+                    <div className="modal-body">
+                      <div className="row">
+                        <div className="col">
+                          <p className="h5">
+                            {record.user.othernames}{" "}{record.user.surname}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="leave">
+                              Leave
+                            </label>
+                            <select
+                              className="form-control"
+                              id="leave"
+                              defaultValue={record.leave_name}
+                              ref={select => this.leave_name = select}
+                            >
+                              <option>{record.leave_name}</option>
+                              <option>annual</option>
+                              <option>sick</option>
+                              <option>bereavement</option>
+                              <option>christmas</option>
+                              <option>birthday</option>
+                              {record.user.gender === "female"
+                                ? <option>maternity</option>
+                                : null}
+                              <option>lwop</option>
+                              <option>other</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="leave type">Leave type</label>
+                            <select
+                              className="form-control"
+                              id="leave type"
+                              defaultValue={record.leave_type}
+                              ref={select => this.leave_type = select}
+                            >
+                              <option>{record.leave_type}</option>
+                              <option>full</option>
+                              <option>half day am</option>
+                              <option>half day pm</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="startDate">Start date</label>
+                            <input
+                              type="hidden"
+                              defaultValue={record.start_date}
+                              ref={input => this.startDate = input}
+                            />
+                            <DatePicker
+                              className="form-control"
+                              placeholderText="Click to select a date"
+                              selected={this.state.startDate}
+                              startDate={this.state.startDate}
+                              endDate={this.state.endDate}
+                              onChange={this.handleStartDateChange}
+                              showMonthDropdown
+                              dropdownMode="select"
+                            />
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="endDate">End date</label>
+                            <input
+                              type="hidden"
+                              defaultValue={record.end_date}
+                              ref={input => this.endDate = input}
+                            />
+                            <DatePicker
+                              className="form-control"
+                              placeholderText="Click to select a date"
+                              selected={this.state.endDate}
+                              startDate={this.state.startDate}
+                              endDate={this.state.endDate}
+                              onChange={this.handleEndDateChange}
+                              showMonthDropdown
+                              dropdownMode="select"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col">
+                          <div className="form-group">
+                            <label htmlFor="reason">Reason</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              placeholder="Enter reason"
+                              id="reason"
+                              onChange={this.handleEditReason}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="modal-footer">
+                      <div className="form-group">
+                        <button
+                          type="button"
+                          className="btn btn-outline-primary"
+                          onClick={this.handleCloseModal2}
+                        >
+                          Close
+                        </button>
+                      </div>
+                      <div className="form-group">
+                        <button type="submit" className="btn btn-primary col">
+                          Save changes
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                  <div className="text-primary text-center">
+                    {this.props.isEditLeaveFetching
+                      ? <Loader color="#0275d8" size="20px" />
+                      : <p className="lead pb-2">
+                          {this.props.editLeaveMessage}
+                        </p>}
+                  </div>
+                  <div className="text-danger text-center">
+                    <div className="pb-5">{this.state.errorMessage}</div>
+                  </div>
+                </div>
+              </Modal>
+            </div>
+          ))}
         </div>
       : <div className="container text-center" style={{ paddingTop: "100px" }}>
           <h1 className="display-4">There are no approved leave record.</h1>
@@ -97,6 +274,9 @@ class ApprovedLeaveList extends Component {
   }
 }
 
-ApprovedLeaveList.propTypes = { approved_items: PropTypes.array.isRequired };
+ApprovedLeaveList.propTypes = {
+  approved_items: PropTypes.array.isRequired,
+  fetchApprovedLeave: PropTypes.func.isRequired
+};
 
 export default ApprovedLeaveList;
