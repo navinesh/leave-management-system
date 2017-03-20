@@ -2,15 +2,21 @@ import React, { Component, PropTypes } from "react";
 var Loader = require("halogen/ClipLoader");
 
 export default class UserResetPassword extends Component {
+  constructor() {
+    super();
+    this.state = { errorMessage: null };
+  }
+
   handleEmailChange(e) {
     this.setState({ email: e.target.value });
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    const email = this.state.email.trim();
+    const email = this.state.email ? this.state.email.trim() : null;
 
     if (!email) {
+      this.setState({ errorMessage: "Enter a valid email address!" });
       return;
     }
 
@@ -41,6 +47,7 @@ export default class UserResetPassword extends Component {
           {this.props.isFetching
             ? <Loader color="#0275d8" size="20px" />
             : this.props.message}
+          {this.state.errorMessage}
         </div>
       </div>
     );
