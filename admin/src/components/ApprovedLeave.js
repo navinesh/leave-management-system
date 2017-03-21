@@ -23,19 +23,27 @@ class ApprovedLeaveList extends Component {
       showModal1: false
     };
     this.handleOpenModal1 = this.handleOpenModal1.bind(this);
-    this.handleCloseModal1 = this.handleCloseModal1.bind(this);
+    this.handleStartDateChange = this.handleStartDateChange.bind(this);
+    this.handleEndDateChange = this.handleEndDateChange.bind(this);
+    this.handleEditReason = this.handleEditReason.bind(this);
     this.handleEditSubmit = this.handleEditSubmit.bind(this);
+    this.handleCloseModal1 = this.handleCloseModal1.bind(this);
   }
 
   handleOpenModal1(e) {
     this.setState({ showModal1: true, listID: e.target.id });
   }
 
-  handleCloseModal1() {
-    this.setState({ showModal1: false, errorMessage: null });
-    if (this.state.editReason) {
-      this.props.dispatch(this.props.fetchApprovedLeave());
-    }
+  handleStartDateChange(e) {
+    this.setState({ startDate: e });
+  }
+
+  handleEndDateChange(e) {
+    this.setState({ endDate: e });
+  }
+
+  handleEditReason(e) {
+    this.setState({ editReason: e.target.value });
   }
 
   handleEditSubmit(e) {
@@ -210,6 +218,13 @@ class ApprovedLeaveList extends Component {
     onEditLeaveSubmit(editLeaveData);
   }
 
+  handleCloseModal1() {
+    this.setState({ showModal1: false, errorMessage: null });
+    if (this.state.editReason) {
+      this.props.dispatch(this.props.fetchApprovedLeave());
+    }
+  }
+
   render() {
     const { approved_items } = this.props;
     const listID = parseInt(this.state.listID, 10);
@@ -370,7 +385,7 @@ class ApprovedLeaveList extends Component {
                             />
                             <DatePicker
                               className="form-control"
-                              placeholderText="Click to select a date"
+                              placeholderText={record.start_date}
                               selected={this.state.startDate}
                               startDate={this.state.startDate}
                               endDate={this.state.endDate}
