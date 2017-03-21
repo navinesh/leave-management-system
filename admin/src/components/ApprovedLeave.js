@@ -18,20 +18,21 @@ class ApprovedLeaveList extends Component {
     super();
     this.state = {
       errorMessage: null,
-      deleteReason: null,
       editReason: null,
+      deleteReason: null,
       showModal1: false
     };
+    this.handleOpenModal1 = this.handleOpenModal1.bind(this);
+    this.handleCloseModal1 = this.handleCloseModal1.bind(this);
   }
 
   handleOpenModal1(e) {
-    this.setState({ showModal1: true });
-    this.setState({ listID: e.target.id });
+    this.setState({ showModal1: true, listID: e.target.id });
   }
 
   handleCloseModal1() {
     this.setState({ showModal1: false, errorMessage: null });
-    if (this.state.deleteReason) {
+    if (this.state.editReason) {
       this.props.dispatch(this.props.fetchApprovedLeave());
     }
   }
@@ -74,7 +75,13 @@ class ApprovedLeaveList extends Component {
           <td>{data.end_date}</td>
           <td>{data.leave_days}</td>
           <td>
-            <Link to="/reset" className="btn btn-link">Edit</Link>
+            <button
+              className="btn btn-link text-primary"
+              onClick={this.handleOpenModal1}
+              id={data.id}
+            >
+              Edit
+            </button>
           </td>
           <td>
             <Link to="/reset" className="btn btn-link text-danger">
@@ -112,9 +119,9 @@ class ApprovedLeaveList extends Component {
             <div key={record.id}>
               <Modal
                 className="Modal__Bootstrap modal-dialog"
-                isOpen={this.state.showModal2}
-                onRequestClose={this.handleCloseModal2}
-                contentLabel="Modal #2"
+                isOpen={this.state.showModal1}
+                onRequestClose={this.handleCloseModal1}
+                contentLabel="Modal #1"
                 overlayClassName="Overlay"
                 style={customStyles}
               >
@@ -241,7 +248,7 @@ class ApprovedLeaveList extends Component {
                         <button
                           type="button"
                           className="btn btn-outline-primary"
-                          onClick={this.handleCloseModal2}
+                          onClick={this.handleCloseModal1}
                         >
                           Close
                         </button>
