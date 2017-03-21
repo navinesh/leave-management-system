@@ -6,6 +6,7 @@ const BeatLoader = require("halogen/BeatLoader");
 
 import { fetchLoginFromToken } from "../actions/AdminLogin";
 import { fetchApprovedLeave } from "../actions/ApprovedLeave";
+import { submitEditLeave } from "../actions/EditLeave";
 import ApprovedLeaveList from "../components/ApprovedLeave";
 
 class ApprovedLeave extends Component {
@@ -21,7 +22,14 @@ class ApprovedLeave extends Component {
   }
 
   render() {
-    const { isAuthenticated, approved_items, isFetching } = this.props;
+    const {
+      isAuthenticated,
+      approved_items,
+      isFetching,
+      dispatch,
+      isEditLeaveFetching,
+      editLeaveMessage
+    } = this.props;
 
     return (
       <div className="container">
@@ -32,7 +40,11 @@ class ApprovedLeave extends Component {
                 </div>
               : <ApprovedLeaveList
                   approved_items={approved_items}
+                  isEditLeaveFetching={isEditLeaveFetching}
+                  editLeaveMessage={editLeaveMessage}
                   fetchApprovedLeave={fetchApprovedLeave()}
+                  onEditLeaveSubmit={editLeaveData =>
+                    dispatch(submitEditLeave(editLeaveData))}
                 />
           : <Redirect to="/" />}
       </div>
@@ -41,11 +53,19 @@ class ApprovedLeave extends Component {
 }
 
 const mapStateToProps = state => {
-  const { adminAuth, approvedLeave } = state;
+  const { adminAuth, approvedLeave, editLeave } = state;
   const { auth_info, isAuthenticated } = adminAuth;
   const { isFetching, approved_items } = approvedLeave;
+  const { isEditLeaveFetching, editLeaveMessage } = editLeave;
 
-  return { auth_info, isAuthenticated, approved_items, isFetching };
+  return {
+    auth_info,
+    isAuthenticated,
+    approved_items,
+    isFetching,
+    isEditLeaveFetching,
+    editLeaveMessage
+  };
 };
 
 export default connect(mapStateToProps)(ApprovedLeave);
