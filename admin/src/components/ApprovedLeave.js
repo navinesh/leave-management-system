@@ -440,6 +440,7 @@ class ApprovedLeaveList extends Component {
                           {this.props.editLeaveMessage}
                         </p>}
                   </div>
+                  <div className="text-danger text-center mb-4">
                     {this.state.errorMessage}
                   </div>
                 </div>
