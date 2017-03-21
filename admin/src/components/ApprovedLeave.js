@@ -24,6 +24,7 @@ class ApprovedLeaveList extends Component {
     };
     this.handleOpenModal1 = this.handleOpenModal1.bind(this);
     this.handleCloseModal1 = this.handleCloseModal1.bind(this);
+    this.handleEditSubmit = this.handleEditSubmit.bind(this);
   }
 
   handleOpenModal1(e) {
@@ -35,6 +36,178 @@ class ApprovedLeaveList extends Component {
     if (this.state.editReason) {
       this.props.dispatch(this.props.fetchApprovedLeave());
     }
+  }
+
+  handleEditSubmit(e) {
+    e.preventDefault();
+    const { approved_items, onEditLeaveSubmit } = this.props;
+
+    const leave_id = parseInt(this.state.listID, 10);
+    const startDate = this.state.startDate
+      ? this.state.startDate
+      : moment(this.startDate.value, "DD/MM/YYYY");
+    const endDate = this.state.endDate
+      ? this.state.endDate
+      : moment(this.endDate.value, "DD/MM/YYYY");
+    const leave = this.leave_name.value;
+    const leaveType = this.leave_type.value;
+    const reason = this.state.editReason ? this.state.editReason.trim() : null;
+
+    const obj = {};
+    approved_items.filter(e => e.id === leave_id).map(record => {
+      obj["annual"] = record.user.annual;
+      obj["sick"] = record.user.sick;
+      obj["bereavement"] = record.user.bereavement;
+      obj["christmas"] = record.user.christmas;
+      obj["maternity"] = record.user.maternity;
+      obj["date_of_birth"] = record.user.date_of_birth;
+      return null;
+    });
+
+    const annualDays = obj.annual;
+    const sickDays = obj.sick;
+    const bereavementDays = obj.bereavement;
+    const christmasDays = obj.christmas;
+    const maternityDays = obj.maternity ? obj.maternity : null;
+    const dateOfBirth = obj.date_of_birth;
+
+    if (
+      !leave_id || !leave || !leaveType || !startDate || !endDate || !reason
+    ) {
+      this.setState({
+        errorMessage: "Reason field is mandatory!"
+      });
+
+      return;
+    }
+
+    // get date range from user selection
+    const leaveRangeDays = endDate.diff(startDate, "days") + 1;
+
+    // check user data range selection
+    if (leaveRangeDays <= 0) {
+      this.setState({ errorMessage: "The dates you selected are invalid!" });
+      return;
+    }
+
+    // create date range
+    const range = moment.range(startDate, endDate);
+
+    const dateRange = [];
+    for (let numDays of range.by("days")) {
+      dateRange.push(numDays.format("DD, MM, YYYY"));
+    }
+
+    const weekend = [];
+    for (let numWeekends of range.by("days")) {
+      if (numWeekends.isoWeekday() === 6 || numWeekends.isoWeekday() === 7) {
+        weekend.push(numWeekends.format("DD, MM, YYYY"));
+      }
+    }
+
+    // exclude weekends
+    const dateRangeSet = new Set(dateRange);
+    const weekendSet = new Set(weekend);
+    const daysExcludingWeekendSet = new Set(
+      [...dateRangeSet].filter(x => !weekendSet.has(x))
+    );
+
+    // exclude public holidays
+    const publicHolidays = this.props.public_holiday.map(item => {
+      let hDate = new Date(item.holiday_date);
+      let holiday_date = moment(hDate).format("DD, MM, YYYY");
+      return holiday_date;
+    });
+
+    const publicHolidaysSet = new Set(publicHolidays);
+    const daysExcludingHolidaysSet = new Set(
+      [...daysExcludingWeekendSet].filter(x => !publicHolidaysSet.has(x))
+    );
+    const leaveDays = daysExcludingHolidaysSet.size;
+
+    if (leaveDays === 0) {
+      this.setState({
+        errorMessage: "The dates you selected fall on public holiday!"
+      });
+      return;
+    }
+
+    // if half day then subtract 0.5
+    const myLeaveDays = leaveType === "half day am" ||
+      leaveType === "half day pm"
+      ? leaveDays - 0.5
+      : leaveDays;
+
+    // calculate total leave days
+    const getLeaveDays = type => {
+      const totalDays = {
+        annual: () => {
+          return annualDays - myLeaveDays;
+        },
+        sick: () => {
+          return sickDays - myLeaveDays;
+        },
+        bereavement: () => {
+          return bereavementDays - myLeaveDays;
+        },
+        christmas: () => {
+          return christmasDays - myLeaveDays;
+        },
+        birthday: () => {
+          // create date
+          const dOB = new Date(dateOfBirth);
+          dOB.setHours(dOB.getHours() - 12);
+          const birthDate = moment.utc(dOB);
+          // check date of birth
+          return moment(startDate).isSame(birthDate) &&
+            moment(endDate).isSame(birthDate)
+            ? myLeaveDays
+            : undefined;
+        },
+        maternity: () => {
+          return maternityDays - myLeaveDays;
+        },
+        lwop: () => {
+          return myLeaveDays;
+        },
+        other: () => {
+          return myLeaveDays;
+        }
+      };
+      return totalDays[type]();
+    };
+
+    const applicationDays = getLeaveDays(leave);
+
+    if (applicationDays < 0) {
+      this.setState({ errorMessage: "Leave balance cannot be negative!" });
+      return;
+    }
+
+    if (applicationDays === undefined) {
+      this.setState({
+        errorMessage: "The date you selected as date of birth does not match our record!"
+      });
+      return;
+    }
+
+    const sDate = moment(startDate).format("DD/MM/YYYY");
+    const eDate = moment(endDate).format("DD/MM/YYYY");
+
+    this.setState({ errorMessage: "" });
+
+    const editLeaveData = {
+      leave_id: leave_id,
+      leave: leave,
+      leaveType: leaveType,
+      startDate: sDate,
+      endDate: eDate,
+      reason: reason,
+      leaveDays: myLeaveDays,
+      applicationDays: applicationDays
+    };
+
+    onEditLeaveSubmit(editLeaveData);
   }
 
   render() {
@@ -263,12 +436,11 @@ class ApprovedLeaveList extends Component {
                   <div className="text-primary text-center">
                     {this.props.isEditLeaveFetching
                       ? <Loader color="#0275d8" size="20px" />
-                      : <p className="lead pb-2">
+                      : <p className="lead mb-2">
                           {this.props.editLeaveMessage}
                         </p>}
                   </div>
-                  <div className="text-danger text-center">
-                    <div className="pb-5">{this.state.errorMessage}</div>
+                    {this.state.errorMessage}
                   </div>
                 </div>
               </Modal>
@@ -283,7 +455,10 @@ class ApprovedLeaveList extends Component {
 
 ApprovedLeaveList.propTypes = {
   approved_items: PropTypes.array.isRequired,
-  fetchApprovedLeave: PropTypes.func.isRequired
+  fetchApprovedLeave: PropTypes.func.isRequired,
+  onEditLeaveSubmit: PropTypes.func.isRequired,
+  isEditLeaveFetching: PropTypes.bool.isRequired,
+  editLeaveMessage: PropTypes.string
 };
 
 export default ApprovedLeaveList;
