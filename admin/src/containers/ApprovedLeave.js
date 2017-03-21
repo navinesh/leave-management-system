@@ -30,7 +30,10 @@ class ApprovedLeave extends Component {
               ? <div className="text-center">
                   <BeatLoader color="#0275d8" size="12px" />
                 </div>
-              : <ApprovedLeaveList approved_items={approved_items} />
+              : <ApprovedLeaveList
+                  approved_items={approved_items}
+                  fetchApprovedLeave={fetchApprovedLeave()}
+                />
           : <Redirect to="/" />}
       </div>
     );
