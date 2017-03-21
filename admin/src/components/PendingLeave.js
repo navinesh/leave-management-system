@@ -54,13 +54,11 @@ class PendingLeaveList extends Component {
   }
 
   handleOpenModal1(e) {
-    this.setState({ showModal1: true });
-    this.setState({ listID: e.target.id });
+    this.setState({ showModal1: true, listID: e.target.id });
   }
 
   handleOpenModal2(e) {
-    this.setState({ showModal2: true });
-    this.setState({ listID: e.target.id });
+    this.setState({ showModal2: true, listID: e.target.id });
   }
 
   handleCloseModal1() {
