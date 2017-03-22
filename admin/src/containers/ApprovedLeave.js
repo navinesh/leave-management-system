@@ -40,9 +40,9 @@ class ApprovedLeave extends Component {
                 </div>
               : <ApprovedLeaveList
                   approved_items={approved_items}
+                  dispatch={dispatch}
                   isEditLeaveFetching={isEditLeaveFetching}
                   editLeaveMessage={editLeaveMessage}
-                  fetchApprovedLeave={fetchApprovedLeave()}
                   onEditLeaveSubmit={editLeaveData =>
                     dispatch(submitEditLeave(editLeaveData))}
                 />
