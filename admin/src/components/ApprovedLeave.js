@@ -13,6 +13,8 @@ var Loader = require("halogen/ClipLoader");
 
 import customStyles from "../Styles";
 
+import { fetchApprovedLeave } from "../actions/ApprovedLeave";
+
 class ApprovedLeaveList extends Component {
   constructor() {
     super();
@@ -219,9 +221,11 @@ class ApprovedLeaveList extends Component {
   }
 
   handleCloseModal1() {
+    const { dispatch } = this.props;
+
     this.setState({ showModal1: false, errorMessage: null });
     if (this.state.editReason) {
-      this.props.dispatch(this.props.fetchApprovedLeave());
+      dispatch(fetchApprovedLeave());
     }
   }
 
@@ -471,7 +475,7 @@ class ApprovedLeaveList extends Component {
 
 ApprovedLeaveList.propTypes = {
   approved_items: PropTypes.array.isRequired,
-  fetchApprovedLeave: PropTypes.func.isRequired,
+  dispatch: PropTypes.func.isRequired,
   onEditLeaveSubmit: PropTypes.func.isRequired,
   isEditLeaveFetching: PropTypes.bool.isRequired,
   editLeaveMessage: PropTypes.string
