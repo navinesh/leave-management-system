@@ -405,7 +405,7 @@ class ApprovedLeaveList extends Component {
                             />
                             <DatePicker
                               className="form-control"
-                              placeholderText="Click to select a date"
+                              placeholderText={record.end_date}
                               selected={this.state.endDate}
                               startDate={this.state.startDate}
                               endDate={this.state.endDate}
