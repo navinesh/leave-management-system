@@ -30,6 +30,8 @@ class ApprovedLeaveList extends Component {
     this.handleEditReason = this.handleEditReason.bind(this);
     this.handleEditSubmit = this.handleEditSubmit.bind(this);
     this.handleCloseModal1 = this.handleCloseModal1.bind(this);
+    this.handleOpenModal2 = this.handleOpenModal2.bind(this);
+    this.handleCloseModal2 = this.handleCloseModal2.bind(this);
   }
 
   handleOpenModal1(e) {
@@ -225,6 +227,19 @@ class ApprovedLeaveList extends Component {
 
     this.setState({ showModal1: false, errorMessage: null });
     if (this.state.editReason) {
+      dispatch(fetchApprovedLeave());
+    }
+  }
+
+  handleOpenModal2(e) {
+    this.setState({ showModal2: true, listID: e.target.id });
+  }
+
+  handleCloseModal2(e) {
+    const { dispatch } = this.props;
+
+    this.setState({ showModal2: false, errorMessage: null });
+    if (this.state.deleteReason) {
       dispatch(fetchApprovedLeave());
     }
   }
