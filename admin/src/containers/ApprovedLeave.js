@@ -7,6 +7,7 @@ const BeatLoader = require("halogen/BeatLoader");
 import { fetchLoginFromToken } from "../actions/AdminLogin";
 import { fetchApprovedLeave } from "../actions/ApprovedLeave";
 import { submitEditLeave } from "../actions/EditLeave";
+import { submitDeleteLeave } from "../actions/DeleteLeave";
 import ApprovedLeaveList from "../components/ApprovedLeave";
 
 class ApprovedLeave extends Component {
@@ -45,6 +46,8 @@ class ApprovedLeave extends Component {
                   editLeaveMessage={editLeaveMessage}
                   onEditLeaveSubmit={editLeaveData =>
                     dispatch(submitEditLeave(editLeaveData))}
+                  onDeleteLeaveSubmit={deleteLeaveData =>
+                    dispatch(submitDeleteLeave(deleteLeaveData))}
                 />
           : <Redirect to="/" />}
       </div>
