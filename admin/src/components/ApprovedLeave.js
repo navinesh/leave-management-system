@@ -235,6 +235,34 @@ class ApprovedLeaveList extends Component {
     this.setState({ showModal2: true, listID: e.target.id });
   }
 
+  handleDeleteReason(e) {
+    this.setState({ deleteReason: e.target.value });
+  }
+
+  handleDeleteSubmit(e) {
+    e.preventDefault();
+    const { onDeclineLeaveSubmit } = this.props;
+
+    const listID = this.state.listID;
+    const reason = this.state.deleteReason
+      ? this.state.deleteReason.trim()
+      : null;
+
+    if (!reason) {
+      this.setState({
+        errorMessage: "Reason field is mandatory!"
+      });
+      return;
+    }
+
+    const declineLeaveData = {
+      leaveID: listID,
+      reason: reason
+    };
+
+    onDeclineLeaveSubmit(declineLeaveData);
+  }
+
   handleCloseModal2(e) {
     const { dispatch } = this.props;
 
