@@ -1,5 +1,4 @@
 import React, { PropTypes, Component } from "react";
-import { Link } from "react-router-dom";
 import Modal from "react-modal";
 
 var DatePicker = require("react-datepicker");
@@ -31,6 +30,7 @@ class ApprovedLeaveList extends Component {
     this.handleEditSubmit = this.handleEditSubmit.bind(this);
     this.handleCloseModal1 = this.handleCloseModal1.bind(this);
     this.handleOpenModal2 = this.handleOpenModal2.bind(this);
+    this.handleDeleteSubmit = this.handleDeleteSubmit.bind(this);
     this.handleCloseModal2 = this.handleCloseModal2.bind(this);
   }
 
@@ -241,7 +241,7 @@ class ApprovedLeaveList extends Component {
 
   handleDeleteSubmit(e) {
     e.preventDefault();
-    const { onDeclineLeaveSubmit } = this.props;
+    const { onDeleteLeaveSubmit } = this.props;
 
     const listID = this.state.listID;
     const reason = this.state.deleteReason
@@ -255,12 +255,12 @@ class ApprovedLeaveList extends Component {
       return;
     }
 
-    const declineLeaveData = {
+    const deleteLeaveData = {
       leaveID: listID,
       reason: reason
     };
 
-    onDeclineLeaveSubmit(declineLeaveData);
+    onDeleteLeaveSubmit(deleteLeaveData);
   }
 
   handleCloseModal2(e) {
@@ -319,9 +319,13 @@ class ApprovedLeaveList extends Component {
             </button>
           </td>
           <td>
-            <Link to="/reset" className="btn btn-link text-danger">
+            <button
+              className="btn btn-link text-danger"
+              onClick={this.handleOpenModal2}
+              id={data.id}
+            >
               Delete
-            </Link>
+            </button>
           </td>
         </tr>
       ));
@@ -509,6 +513,56 @@ class ApprovedLeaveList extends Component {
               </Modal>
             </div>
           ))}
+          {approved_items.filter(e => e.id === listID).map(record => (
+            <div key={record.id}>
+              <Modal
+                className="Modal__Bootstrap modal-dialog"
+                isOpen={this.state.showModal2}
+                onRequestClose={this.handleCloseModal2}
+                contentLabel="Modal #2"
+                overlayClassName="Overlay"
+                style={customStyles}
+              >
+                <div className="modal-content">
+                  <div className="modal-header">
+                    <h5 className="modal-title">
+                      Delete
+                    </h5>
+                  </div>
+                  <form onSubmit={this.handleDeleteSubmit}>
+                    <div className="modal-body">
+                      <p>{record.user.othernames}{" "}{record.user.surname}</p>
+                      <div className="form-group">
+                        <label htmlFor="reason">Reason</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter reason"
+                          id="reason"
+                          onChange={this.handleDeleteReason}
+                        />
+                      </div>
+                    </div>
+                    <div className="modal-footer">
+                      <button
+                        type="button"
+                        className="btn btn-outline-primary"
+                        onClick={this.handleCloseModal2}
+                      >
+                        Close
+                      </button>
+                      <button type="submit" className="btn btn-primary">
+                        Decline
+                      </button>
+                    </div>
+                  </form>
+                  <div className="text-danger text-center">
+                    <div className="mb-4">{this.state.errorMessage}</div>
+                  </div>
+                </div>
+              </Modal>
+            </div>
+          ))}
         </div>
       : <div className="container text-center" style={{ paddingTop: "100px" }}>
           <h1 className="display-4">There are no approved leave record.</h1>
@@ -520,6 +574,7 @@ ApprovedLeaveList.propTypes = {
   approved_items: PropTypes.array.isRequired,
   dispatch: PropTypes.func.isRequired,
   onEditLeaveSubmit: PropTypes.func.isRequired,
+  onDeleteLeaveSubmit: PropTypes.func.isRequired,
   isEditLeaveFetching: PropTypes.bool.isRequired,
   editLeaveMessage: PropTypes.string
 };
