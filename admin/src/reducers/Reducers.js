@@ -122,6 +122,12 @@ import {
   CLEAR_EDIT_LEAVE
 } from "../actions/EditLeave";
 
+import {
+  DELETE_LEAVE_REQUEST,
+  DELETE_LEAVE_SUCCESS,
+  DELETE_LEAVE_ERROR
+} from "../actions/DeleteLeave";
+
 const adminAuth = (
   state = {
     isFetching: false,
@@ -562,6 +568,30 @@ const editLeave = (
   }
 };
 
+const deleteLeave = (
+  state = { isDeleteLeaveFetching: false, deleteLeaveMessage: "" },
+  action
+) => {
+  switch (action.type) {
+    case DELETE_LEAVE_REQUEST:
+      return { ...state, isDeleteLeaveFetching: true };
+    case DELETE_LEAVE_SUCCESS:
+      return {
+        ...state,
+        isDeleteLeaveFetching: false,
+        deleteLeaveMessage: action.message
+      };
+    case DELETE_LEAVE_ERROR:
+      return {
+        ...state,
+        isDeleteLeaveFetching: false,
+        deleteLeaveMessage: action.message
+      };
+    default:
+      return state;
+  }
+};
+
 const rootReducer = combineReducers({
   adminAuth,
   pendingLeave,
@@ -580,7 +610,8 @@ const rootReducer = combineReducers({
   deletePublicHoliday,
   approveLeave,
   declineLeave,
-  editLeave
+  editLeave,
+  deleteLeave
 });
 
 export default rootReducer;
