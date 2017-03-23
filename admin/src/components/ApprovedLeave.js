@@ -30,6 +30,7 @@ class ApprovedLeaveList extends Component {
     this.handleEditSubmit = this.handleEditSubmit.bind(this);
     this.handleCloseModal1 = this.handleCloseModal1.bind(this);
     this.handleOpenModal2 = this.handleOpenModal2.bind(this);
+    this.handleDeleteReason = this.handleDeleteReason.bind(this);
     this.handleDeleteSubmit = this.handleDeleteSubmit.bind(this);
     this.handleCloseModal2 = this.handleCloseModal2.bind(this);
   }
