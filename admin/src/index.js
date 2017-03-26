@@ -24,14 +24,15 @@ import Error from "./components/Error";
 const PrivateRoute = ({ component, ...rest }) => (
   <Route
     {...rest}
-    render={props => store.getState().adminAuth.isAuthenticated
-      ? React.createElement(component, props)
-      : <Redirect
-          to={{
-            pathname: "/",
-            state: { from: props.location }
-          }}
-        />}
+    render={props =>
+      store.getState().adminAuth.isAuthenticated
+        ? React.createElement(component, props)
+        : <Redirect
+            to={{
+              pathname: "/",
+              state: { from: props.location }
+            }}
+          />}
   />
 );
 
