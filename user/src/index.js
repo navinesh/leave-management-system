@@ -21,14 +21,15 @@ import LeaveApplication from "./containers/leaveapplication";
 const PrivateRoute = ({ component, ...rest }) => (
   <Route
     {...rest}
-    render={props => store.getState().userAuth.isAuthenticated
-      ? React.createElement(component, props)
-      : <Redirect
-          to={{
-            pathname: "/",
-            state: { from: props.location }
-          }}
-        />}
+    render={props =>
+      store.getState().userAuth.isAuthenticated
+        ? React.createElement(component, props)
+        : <Redirect
+            to={{
+              pathname: "/",
+              state: { from: props.location }
+            }}
+          />}
   />
 );
 
