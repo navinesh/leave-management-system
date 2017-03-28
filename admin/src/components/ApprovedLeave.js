@@ -437,6 +437,11 @@ class ApprovedLeaveList extends Component {
                             />
                             <DatePicker
                               className="form-control"
+                              dateFormat="DD/MM/YYYY"
+                              openToDate={moment(
+                                record.start_date,
+                                "DD-MM-YYYY"
+                              )}
                               placeholderText={record.start_date}
                               selected={this.state.startDate}
                               startDate={this.state.startDate}
@@ -457,6 +462,8 @@ class ApprovedLeaveList extends Component {
                             />
                             <DatePicker
                               className="form-control"
+                              dateFormat="DD/MM/YYYY"
+                              openToDate={moment(record.end_date, "DD-MM-YYYY")}
                               placeholderText={record.end_date}
                               selected={this.state.endDate}
                               startDate={this.state.startDate}
