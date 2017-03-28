@@ -2,3 +2,5 @@ node_modules
 admin/package.json
 user/package.json
 build
+admin/yarn.lock
+admin/debug.log
