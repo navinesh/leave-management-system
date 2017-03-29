@@ -26,6 +26,7 @@ class ApprovedLeave extends Component {
     const {
       isAuthenticated,
       approved_items,
+      public_holiday,
       isFetching,
       dispatch,
       isEditLeaveFetching,
@@ -41,6 +42,7 @@ class ApprovedLeave extends Component {
                 </div>
               : <ApprovedLeaveList
                   approved_items={approved_items}
+                  public_holiday={public_holiday}
                   dispatch={dispatch}
                   isEditLeaveFetching={isEditLeaveFetching}
                   editLeaveMessage={editLeaveMessage}
@@ -56,15 +58,17 @@ class ApprovedLeave extends Component {
 }
 
 const mapStateToProps = state => {
-  const { adminAuth, approvedLeave, editLeave } = state;
+  const { adminAuth, approvedLeave, publicHoliday, editLeave } = state;
   const { auth_info, isAuthenticated } = adminAuth;
   const { isFetching, approved_items } = approvedLeave;
+  const { public_holiday } = publicHoliday;
   const { isEditLeaveFetching, editLeaveMessage } = editLeave;
 
   return {
     auth_info,
     isAuthenticated,
     approved_items,
+    public_holiday,
     isFetching,
     isEditLeaveFetching,
     editLeaveMessage
