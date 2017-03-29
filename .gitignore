@@ -4,3 +4,4 @@ user/package.json
 build
 admin/yarn.lock
 admin/debug.log
+admin/.flowconfig
