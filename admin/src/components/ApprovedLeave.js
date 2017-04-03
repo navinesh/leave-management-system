@@ -243,7 +243,7 @@ class ApprovedLeaveList extends Component {
   handleCloseModal1() {
     const { dispatch } = this.props;
 
-    this.setState({ showModal1: false, errorMessage: null });
+    this.setState({ showModal1: false, errorMessage: "" });
     if (this.state.editReason) {
       dispatch(fetchApprovedLeave());
     }
