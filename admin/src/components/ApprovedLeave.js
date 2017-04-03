@@ -1,3 +1,4 @@
+// @flow
 import React, { PropTypes, Component } from "react";
 import Modal from "react-modal";
 
@@ -15,14 +16,30 @@ import customStyles from "../Styles";
 import { fetchApprovedLeave } from "../actions/ApprovedLeave";
 
 class ApprovedLeaveList extends Component {
+  state: {
+    errorMessage: string,
+    editReason: string,
+    deleteReason: string,
+    showModal1: boolean,
+    showModal2: boolean,
+    listID: number,
+    startDate: string,
+    endDate: string
+  };
+
   constructor() {
     super();
     this.state = {
-      errorMessage: null,
-      editReason: null,
-      deleteReason: null,
-      showModal1: false
+      errorMessage: "",
+      editReason: "",
+      deleteReason: "",
+      startDate: "",
+      endDate: "",
+      listID: 0,
+      showModal1: false,
+      showModal2: false
     };
+
     this.handleOpenModal1 = this.handleOpenModal1.bind(this);
     this.handleStartDateChange = this.handleStartDateChange.bind(this);
     this.handleEndDateChange = this.handleEndDateChange.bind(this);
@@ -267,7 +284,7 @@ class ApprovedLeaveList extends Component {
   handleCloseModal2(e) {
     const { dispatch } = this.props;
 
-    this.setState({ showModal2: false, errorMessage: null });
+    this.setState({ showModal2: false, errorMessage: "" });
     if (this.state.deleteReason) {
       dispatch(fetchApprovedLeave());
     }
@@ -580,6 +597,7 @@ class ApprovedLeaveList extends Component {
 
 ApprovedLeaveList.propTypes = {
   approved_items: PropTypes.array.isRequired,
+  public_holiday: PropTypes.array.isRequired,
   dispatch: PropTypes.func.isRequired,
   onEditLeaveSubmit: PropTypes.func.isRequired,
   onDeleteLeaveSubmit: PropTypes.func.isRequired,
