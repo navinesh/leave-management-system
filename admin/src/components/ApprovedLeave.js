@@ -52,23 +52,23 @@ class ApprovedLeaveList extends Component {
     this.handleCloseModal2 = this.handleCloseModal2.bind(this);
   }
 
-  handleOpenModal1(e) {
+  handleOpenModal1(e: Event) {
     this.setState({ showModal1: true, listID: e.target.id });
   }
 
-  handleStartDateChange(e) {
+  handleStartDateChange(e: Event) {
     this.setState({ startDate: e });
   }
 
-  handleEndDateChange(e) {
+  handleEndDateChange(e: Event) {
     this.setState({ endDate: e });
   }
 
-  handleEditReason(e) {
+  handleEditReason(e: Event) {
     this.setState({ editReason: e.target.value });
   }
 
-  handleEditSubmit(e) {
+  handleEditSubmit(e: Event) {
     e.preventDefault();
     const { approved_items, onEditLeaveSubmit } = this.props;
 
@@ -249,15 +249,15 @@ class ApprovedLeaveList extends Component {
     }
   }
 
-  handleOpenModal2(e) {
+  handleOpenModal2(e: Event) {
     this.setState({ showModal2: true, listID: e.target.id });
   }
 
-  handleDeleteReason(e) {
+  handleDeleteReason(e: Event) {
     this.setState({ deleteReason: e.target.value });
   }
 
-  handleDeleteSubmit(e) {
+  handleDeleteSubmit(e: Event) {
     e.preventDefault();
     const { onDeleteLeaveSubmit } = this.props;
 
