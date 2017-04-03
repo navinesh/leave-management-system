@@ -27,6 +27,22 @@ class ApprovedLeaveList extends Component {
     endDate: string
   };
 
+  handleOpenModal1: Function;
+  handleStartDateChange: Function;
+  handleEndDateChange: Function;
+  handleEditReason: Function;
+  handleEditSubmit: Function;
+  handleCloseModal1: Function;
+  handleOpenModal2: Function;
+  handleDeleteReason: Function;
+  handleDeleteSubmit: Function;
+  handleCloseModal2: Function;
+
+  leave_name: any;
+  leave_type: any;
+  startDate: any;
+  endDate: any;
+
   constructor() {
     super();
     this.state = {
@@ -281,7 +297,7 @@ class ApprovedLeaveList extends Component {
     onDeleteLeaveSubmit(deleteLeaveData);
   }
 
-  handleCloseModal2(e) {
+  handleCloseModal2(e: Event) {
     const { dispatch } = this.props;
 
     this.setState({ showModal2: false, errorMessage: "" });
