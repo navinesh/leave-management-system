@@ -24,8 +24,7 @@ class ApprovedLeaveList extends Component {
     showModal2: boolean,
     listID: string,
     startDate: any,
-    endDate: any,
-    value: string
+    endDate: any
   };
 
   handleOpenModal1: Function;
@@ -38,7 +37,6 @@ class ApprovedLeaveList extends Component {
   handleDeleteReason: Function;
   handleDeleteSubmit: Function;
   handleCloseModal2: Function;
-
   leave_name: HTMLInputElement;
   leave_type: HTMLInputElement;
   startDate: HTMLInputElement;
@@ -53,7 +51,6 @@ class ApprovedLeaveList extends Component {
       startDate: "",
       endDate: "",
       listID: "",
-      value: "",
       showModal1: false,
       showModal2: false
     };
@@ -272,8 +269,8 @@ class ApprovedLeaveList extends Component {
     this.setState({ showModal2: true, listID: e.currentTarget.id });
   }
 
-  handleDeleteReason(e: Event & { currentTarget: HTMLInputElement }) {
-    this.setState({ deleteReason: e.currentTarget.value });
+  handleDeleteReason(e: Event) {
+    this.setState({ deleteReason: e.target.value });
   }
 
   handleDeleteSubmit(e: Event) {
@@ -312,7 +309,7 @@ class ApprovedLeaveList extends Component {
   render() {
     const { approved_items } = this.props;
     const listID = parseInt(this.state.listID, 10);
-
+    console.log(this.state);
     const items = approved_items
       .filter(record => {
         // get current date and format it
@@ -581,8 +578,6 @@ class ApprovedLeaveList extends Component {
                           type="text"
                           className="form-control"
                           placeholder="Enter reason"
-                          id="reason"
-                          value={this.state.value}
                           onChange={this.handleDeleteReason}
                         />
                       </div>
