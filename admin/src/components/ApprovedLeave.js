@@ -24,7 +24,8 @@ class ApprovedLeaveList extends Component {
     showModal2: boolean,
     listID: number,
     startDate: string,
-    endDate: string
+    endDate: string,
+    value: string
   };
 
   handleOpenModal1: Function;
@@ -52,6 +53,7 @@ class ApprovedLeaveList extends Component {
       startDate: "",
       endDate: "",
       listID: 0,
+      value: "",
       showModal1: false,
       showModal2: false
     };
@@ -68,8 +70,8 @@ class ApprovedLeaveList extends Component {
     this.handleCloseModal2 = this.handleCloseModal2.bind(this);
   }
 
-  handleOpenModal1(e: Event) {
-    this.setState({ showModal1: true, listID: e.target.id });
+  handleOpenModal1(e: Event & { currentTarget: HTMLElement }) {
+    this.setState({ showModal1: true, listID: e.currentTarget.id });
   }
 
   handleStartDateChange(e: Event) {
@@ -80,8 +82,8 @@ class ApprovedLeaveList extends Component {
     this.setState({ endDate: e });
   }
 
-  handleEditReason(e: Event) {
-    this.setState({ editReason: e.target.value });
+  handleEditReason(e: Event & { currentTarget: HTMLInputElement }) {
+    this.setState({ editReason: e.currentTarget.value });
   }
 
   handleEditSubmit(e: Event) {
@@ -269,8 +271,8 @@ class ApprovedLeaveList extends Component {
     this.setState({ showModal2: true, listID: e.target.id });
   }
 
-  handleDeleteReason(e: Event) {
-    this.setState({ deleteReason: e.target.value });
+  handleDeleteReason(e: Event & { currentTarget: HTMLInputElement }) {
+    this.setState({ deleteReason: e.currentTarget.value });
   }
 
   handleDeleteSubmit(e: Event) {
@@ -517,6 +519,7 @@ class ApprovedLeaveList extends Component {
                               className="form-control"
                               placeholder="Enter reason"
                               id="reason"
+                              value={this.state.value}
                               onChange={this.handleEditReason}
                             />
                           </div>
@@ -580,6 +583,7 @@ class ApprovedLeaveList extends Component {
                           className="form-control"
                           placeholder="Enter reason"
                           id="reason"
+                          value={this.state.value}
                           onChange={this.handleDeleteReason}
                         />
                       </div>
