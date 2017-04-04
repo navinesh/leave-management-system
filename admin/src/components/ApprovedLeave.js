@@ -22,9 +22,9 @@ class ApprovedLeaveList extends Component {
     deleteReason: string,
     showModal1: boolean,
     showModal2: boolean,
-    listID: number,
-    startDate: string,
-    endDate: string,
+    listID: string,
+    startDate: any,
+    endDate: any,
     value: string
   };
 
@@ -52,7 +52,7 @@ class ApprovedLeaveList extends Component {
       deleteReason: "",
       startDate: "",
       endDate: "",
-      listID: 0,
+      listID: "",
       value: "",
       showModal1: false,
       showModal2: false
@@ -82,8 +82,8 @@ class ApprovedLeaveList extends Component {
     this.setState({ endDate: e });
   }
 
-  handleEditReason(e: Event & { currentTarget: HTMLInputElement }) {
-    this.setState({ editReason: e.currentTarget.value });
+  handleEditReason(e: Event) {
+    this.setState({ editReason: e.target.value });
   }
 
   handleEditSubmit(e: Event) {
@@ -116,7 +116,7 @@ class ApprovedLeaveList extends Component {
     const sickDays = obj.sick;
     const bereavementDays = obj.bereavement;
     const christmasDays = obj.christmas;
-    const maternityDays = obj.maternity ? obj.maternity : null;
+    const maternityDays = obj.maternity && obj.maternity;
     const dateOfBirth = obj.date_of_birth;
 
     if (
@@ -264,11 +264,12 @@ class ApprovedLeaveList extends Component {
     this.setState({ showModal1: false, errorMessage: "" });
     if (this.state.editReason) {
       dispatch(fetchApprovedLeave());
+      dispatch({ type: "CLEAR_EDIT_LEAVE" });
     }
   }
 
-  handleOpenModal2(e: Event) {
-    this.setState({ showModal2: true, listID: e.target.id });
+  handleOpenModal2(e: Event & { currentTarget: HTMLElement }) {
+    this.setState({ showModal2: true, listID: e.currentTarget.id });
   }
 
   handleDeleteReason(e: Event & { currentTarget: HTMLInputElement }) {
@@ -518,8 +519,6 @@ class ApprovedLeaveList extends Component {
                               type="text"
                               className="form-control"
                               placeholder="Enter reason"
-                              id="reason"
-                              value={this.state.value}
                               onChange={this.handleEditReason}
                             />
                           </div>
