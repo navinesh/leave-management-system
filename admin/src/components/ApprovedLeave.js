@@ -38,10 +38,10 @@ class ApprovedLeaveList extends Component {
   handleDeleteSubmit: Function;
   handleCloseModal2: Function;
 
-  leave_name: any;
-  leave_type: any;
-  startDate: any;
-  endDate: any;
+  leave_name: HTMLInputElement;
+  leave_type: HTMLInputElement;
+  startDate: HTMLInputElement;
+  endDate: HTMLInputElement;
 
   constructor() {
     super();
