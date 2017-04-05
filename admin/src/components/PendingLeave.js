@@ -1,3 +1,4 @@
+// @flow
 import React, { PropTypes, Component } from "react";
 import Modal from "react-modal";
 
@@ -15,15 +16,47 @@ var Loader = require("halogen/ClipLoader");
 import customStyles from "../Styles";
 
 class PendingLeaveList extends Component {
+  state: {
+    errorMessage: string,
+    declineReason: string,
+    editReason: string,
+    showModal1: boolean,
+    showModal2: boolean,
+    listID: string,
+    startDate: any,
+    endDate: any
+  };
+
+  handleOpenModal1: Function;
+  handleCloseModal1: Function;
+  handleOpenModal2: Function;
+  handleCloseModal2: Function;
+  handleApproveLeave: Function;
+  handleDeclineReason: Function;
+  handleDeclineSubmit: Function;
+  handleEditReason: Function;
+  handleEditSubmit: Function;
+  handleStartDateChange: Function;
+  handleEndDateChange: Function;
+
+  leave_name: HTMLInputElement;
+  leave_type: HTMLInputElement;
+  startDate: HTMLInputElement;
+  endDate: HTMLInputElement;
+
   constructor() {
     super();
     this.state = {
-      errorMessage: null,
-      declineReason: null,
-      editReason: null,
+      errorMessage: "",
+      declineReason: "",
+      editReason: "",
+      startDate: "",
+      endDate: "",
+      listID: "",
       showModal1: false,
       showModal2: false
     };
+
     this.handleOpenModal1 = this.handleOpenModal1.bind(this);
     this.handleCloseModal1 = this.handleCloseModal1.bind(this);
     this.handleOpenModal2 = this.handleOpenModal2.bind(this);
@@ -37,46 +70,50 @@ class PendingLeaveList extends Component {
     this.handleEndDateChange = this.handleEndDateChange.bind(this);
   }
 
-  handleStartDateChange(e) {
+  handleStartDateChange(e: Event) {
     this.setState({ startDate: e });
   }
 
-  handleEndDateChange(e) {
+  handleEndDateChange(e: Event) {
     this.setState({ endDate: e });
   }
 
-  handleDeclineReason(e) {
+  handleDeclineReason(e: Event) {
     this.setState({ declineReason: e.target.value });
   }
 
-  handleEditReason(e) {
+  handleEditReason(e: Event) {
     this.setState({ editReason: e.target.value });
   }
 
-  handleOpenModal1(e) {
-    this.setState({ showModal1: true, listID: e.target.id });
+  handleOpenModal1(e: Event & { currentTarget: HTMLElement }) {
+    this.setState({ showModal1: true, listID: e.currentTarget.id });
   }
 
-  handleOpenModal2(e) {
-    this.setState({ showModal2: true, listID: e.target.id });
+  handleOpenModal2(e: Event & { currentTarget: HTMLElement }) {
+    this.setState({ showModal2: true, listID: e.currentTarget.id });
   }
 
   handleCloseModal1() {
-    this.setState({ showModal1: false, errorMessage: null });
+    const { dispatch } = this.props;
+
+    this.setState({ showModal1: false, errorMessage: "" });
     if (this.state.declineReason) {
-      this.props.dispatch(fetchPendingLeave());
+      dispatch(fetchPendingLeave());
     }
   }
 
   handleCloseModal2() {
-    this.setState({ showModal2: false, errorMessage: null });
+    const { dispatch } = this.props;
+
+    this.setState({ showModal2: false, errorMessage: "" });
     if (this.state.editReason) {
-      this.props.dispatch(fetchPendingLeave());
-      this.props.dispatch({ type: "CLEAR_EDIT_LEAVE" });
+      dispatch(fetchPendingLeave());
+      dispatch({ type: "CLEAR_EDIT_LEAVE" });
     }
   }
 
-  handleApproveLeave(e) {
+  handleApproveLeave(e: Event) {
     const leaveID = e.target.id ? e.target.id : null;
     const LeaveStatus = "approved";
 
@@ -95,7 +132,7 @@ class PendingLeaveList extends Component {
     this.props.onApproveLeaveSubmit(approveLeaveData);
   }
 
-  handleDeclineSubmit(e) {
+  handleDeclineSubmit(e: Event) {
     e.preventDefault();
     const listID = this.state.listID;
     const reason = this.state.declineReason
@@ -117,7 +154,7 @@ class PendingLeaveList extends Component {
     this.props.onDeclineLeaveSubmit(declineLeaveData);
   }
 
-  handleEditSubmit(e) {
+  handleEditSubmit(e: Event) {
     e.preventDefault();
     const { pending_items } = this.props;
 
@@ -147,7 +184,7 @@ class PendingLeaveList extends Component {
     const sickDays = obj.sick;
     const bereavementDays = obj.bereavement;
     const christmasDays = obj.christmas;
-    const maternityDays = obj.maternity ? obj.maternity : null;
+    const maternityDays = obj.maternity && obj.maternity;
     const dateOfBirth = obj.date_of_birth;
 
     if (
