@@ -37,6 +37,7 @@ class ApprovedLeaveList extends Component {
   handleDeleteReason: Function;
   handleDeleteSubmit: Function;
   handleCloseModal2: Function;
+
   leave_name: HTMLInputElement;
   leave_type: HTMLInputElement;
   startDate: HTMLInputElement;
