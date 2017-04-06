@@ -107,7 +107,7 @@ export const UserRecord = ({ user_detail, message }) => {
             <div className="col-md-12">
               <p className="display-4">
                 {user_detail.othernames}{" "}{user_detail.surname}
-                {" "}
+                <br />
                 <Link to="/changepassword" className="btn btn-outline-primary">
                   Change password
                 </Link>
