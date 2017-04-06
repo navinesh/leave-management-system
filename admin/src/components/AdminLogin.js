@@ -1,27 +1,34 @@
+// @flow
 import React, { Component, PropTypes } from "react";
 import { Link } from "react-router-dom";
 
 var Loader = require("halogen/ClipLoader");
 
 export default class Login extends Component {
+  state: { errorMessage: string, email: string, password: string };
+
+  handleSubmit: Function;
+  handleEmailChange: Function;
+  handlePasswordChange: Function;
+
   constructor() {
     super();
-    this.state = { errorMessage: "" };
+    this.state = { errorMessage: "", email: "", password: "" };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
   }
 
-  handleEmailChange(e) {
+  handleEmailChange(e: Event) {
     this.setState({ email: e.target.value });
   }
 
-  handlePasswordChange(e) {
+  handlePasswordChange(e: Event) {
     this.setState({ password: e.target.value });
   }
 
-  handleSubmit(e) {
+  handleSubmit(e: Event) {
     e.preventDefault();
     const email = this.state.email ? this.state.email.trim() : null;
     const password = this.state.password ? this.state.password.trim() : null;
