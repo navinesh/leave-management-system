@@ -170,8 +170,7 @@ def apply_for_leave():
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], new_file_name))
     else:
         new_file_name = None
-    print file
-    print new_file_name
+
     leaverecord = Leaverecord(
         user_id=user_id,
         leave_name=leave_name,
