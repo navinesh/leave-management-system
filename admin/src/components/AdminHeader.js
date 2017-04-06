@@ -1,10 +1,11 @@
+// @flow
 import React, { PropTypes, Component } from "react";
 import { Link } from "react-router-dom";
 
 import { logoutAdmin } from "../actions/AdminLogout";
 
 export default class Header extends Component {
-  adminLogout(e) {
+  adminLogout(e: Event) {
     e.preventDefault();
     this.props.dispatch(logoutAdmin());
   }
@@ -24,8 +25,8 @@ export default class Header extends Component {
           >
             <span className="navbar-toggler-icon" />
           </button>
-          <Link className="navbar-brand" to="/">
-            Leave management system
+          <Link className="navbar-brand" to="/" style={{ color: "#707070" }}>
+            Leave Management System
           </Link>
           <div
             className="collapse navbar-collapse justify-content-end"
