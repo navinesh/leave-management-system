@@ -25,8 +25,8 @@ export default class Navs extends Component {
           >
             <span className="navbar-toggler-icon" />
           </button>
-          <Link className="navbar-brand" to="/">
-            Leave management system
+          <Link className="navbar-brand" to="/" style={{ color: "#707070" }}>
+            Leave Management System
           </Link>
           {isAuthenticated &&
             <div
