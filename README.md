@@ -1,8 +1,8 @@
-#Leave management system
+**Leave management system**
 
 A web application to manage employee leave records. There are two modules; user and admin. User module is for the employees to login and check their leave balance and apply for leave. Admin module is for HR. HR can approve/decline leave, manage employee record, create/archive/unarchive staff record. 
 
-##Required Libraries and Dependencies
+**Required Libraries and Dependencies**
 
 * ReactJS
 * Redux
@@ -22,11 +22,13 @@ User
 
 Admin
 
-##How to Run the Project
+Server
+
+**How to Run the Project**
 
 to-do
 
-##Creator
+**Creator**
 Navinesh Chand
 * https://twitter.com/navinesh
 * https://github.com/navinesh
