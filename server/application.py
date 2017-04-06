@@ -67,7 +67,7 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 
-# user
+# User
 @app.route('/')
 @app.route('/reset')
 @app.route('/changepassword')
@@ -78,6 +78,7 @@ def show_user_home():
     return render_template('userhome.html')
 
 
+# User login
 @app.route('/userlogin', methods=['POST'])
 @cross_origin()
 def validate_user():
@@ -103,6 +104,7 @@ def validate_user():
     return jsonify(auth_info), 201
 
 
+# Verify user token
 @app.route('/usertoken', methods=['POST'])
 @cross_origin()
 def validate_user_token():
@@ -123,6 +125,7 @@ def validate_user_token():
             abort(401)
 
 
+# Change password
 @app.route('/change-password.api', methods=['POST'])
 @auth.login_required
 @cross_origin()
@@ -151,6 +154,7 @@ def change_user_password():
     }), 201
 
 
+# Apply leave
 @app.route('/applyforleave', methods=['POST'])
 @cross_origin()
 def apply_for_leave():
@@ -193,7 +197,7 @@ def apply_for_leave():
     return jsonify({'message': 'Your application has been submitted.'}), 201
 
 
-# admin
+# Admin
 @app.route('/admin')
 @app.route('/adminreset')
 @app.route('/staffrecord')
@@ -207,7 +211,7 @@ def show_admin_home():
     return render_template('index.html')
 
 
-# add admin user
+# Add admin user
 @app.route('/addadminuser', methods=['POST'])
 def new_admin_user():
     email = request.json.get('email')
@@ -229,7 +233,7 @@ def new_admin_user():
     return jsonify({'email': admin.email}), 201
 
 
-# admin login
+# Admin login
 @app.route('/adminlogin', methods=['POST'])
 @cross_origin()  # allow all origins all methods.
 def validate_admin():
@@ -258,7 +262,7 @@ def validate_admin():
     return jsonify(auth_info), 201
 
 
-# admin token
+# Admin token
 @app.route('/admintoken', methods=['POST'])
 @cross_origin()  # allow all origins all methods.
 def validate_admin_token():
@@ -277,7 +281,7 @@ def validate_admin_token():
             abort(401)
 
 
-# Image functions
+# Image function
 @app.route('/<filename>')
 @app.route('/sicksheetrecord/<filename>')
 @cross_origin()
@@ -289,6 +293,7 @@ def show_image_home(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 
+# Add user
 @app.route('/adduser', methods=['POST'])
 @cross_origin()
 def new_user():
@@ -331,6 +336,7 @@ def new_user():
     return jsonify({'message': 'User has been successfully added.'}), 201
 
 
+# Modify user
 @app.route('/modifyuser', methods=['POST'])
 @cross_origin()
 def modify_user():
@@ -368,6 +374,7 @@ def modify_user():
     return jsonify({'message': 'User record has been updated.'}), 201
 
 
+# Archive user
 @app.route('/archiveuser', methods=['POST'])
 @cross_origin()
 def archive_user():
@@ -387,6 +394,7 @@ def archive_user():
     return jsonify({'message': 'User record has been archived.'}), 201
 
 
+# Unarchive user
 @app.route('/unarchiveuser', methods=['POST'])
 @cross_origin()
 def un_archive_user():
@@ -404,6 +412,7 @@ def un_archive_user():
     return jsonify({'message': 'User record has been unarchived.'}), 201
 
 
+# JSON API to view public holiday
 @app.route('/public-holiday.api/')
 @cross_origin()
 def public_holiday_JSON():
@@ -415,6 +424,7 @@ def public_holiday_JSON():
         public_holiday=[record.serialize for record in public_holiday_record])
 
 
+# Add public holiday
 @app.route('/addpublicholiday', methods=['POST'])
 @cross_origin()
 def add_public_holiday():
@@ -436,6 +446,7 @@ def add_public_holiday():
     return jsonify({'message': 'Public holiday date has been added.'}), 201
 
 
+# Delete public holiday
 @app.route('/deletepublicholiday', methods=['POST'])
 @cross_origin()
 def delete_public_holiday():
@@ -459,7 +470,7 @@ def delete_public_holiday():
     return jsonify({'message': 'Public holiday date has been deleted.'}), 201
 
 
-# approve leave
+# Approve leave
 @app.route('/approveleave', methods=['POST'])
 @cross_origin()
 def approve_leave():
@@ -482,7 +493,7 @@ def approve_leave():
     return jsonify({'message': 'Leave has been approved.'}), 201
 
 
-# decline leave
+# Decline leave
 @app.route('/declineleave', methods=['POST'])
 @cross_origin()
 def decline_leave():
@@ -507,7 +518,7 @@ def decline_leave():
     return jsonify({'message': 'Leave has been declined.'}), 201
 
 
-# edit leave
+# Edit leave
 @app.route('/editleave', methods=['POST'])
 @cross_origin()
 def edit_leave():
@@ -580,6 +591,21 @@ def user_record_JSON():
     return jsonify(user_record=[x.serialize for x in leaveRecord]), 201
 
 
+# JSON API to leave calendar
+@app.route('/leave-record.api')
+@cross_origin()
+def leaverecordJSON():
+    leave_records = session.query(Leaverecord).all()
+    leave_list = []
+    for x in leave_records:
+        leave_record = x.serialize
+        user = session.query(User).filter_by(id=x.user_id).one()
+        leave_record['user'] = user.serialize
+        leave_list.append(leave_record)
+
+    return jsonify(leave_record=leave_list)
+
+
 @app.route('/leave.api')
 @cross_origin()
 def leaveJSON():
@@ -593,6 +619,21 @@ def leaveJSON():
         leave_record['user'] = user.serialize
         leave_list.append(leave_record)
     return jsonify(leave_records=leave_list)
+
+
+# JSON API to leave record
+@app.route('/leave-record.api')
+@cross_origin()
+def leaverecordJSON():
+    leave_records = session.query(Leaverecord).all()
+    leave_list = []
+    for x in leave_records:
+        leave_record = x.serialize
+        user = session.query(User).filter_by(id=x.user_id).one()
+        leave_record['user'] = user.serialize
+        leave_list.append(leave_record)
+
+    return jsonify(leave_record=leave_list)
 
 
 # JSON API to view pending leaves
@@ -613,6 +654,7 @@ def pending_leave_record_JSON():
     return jsonify(pending_leave_records=leave_list)
 
 
+# JSON API to view approved leave record
 @app.route('/approved-leave.api')
 @cross_origin()
 def approved_leave_record_JSON():
@@ -629,6 +671,7 @@ def approved_leave_record_JSON():
     return jsonify(approved_leave_records=leave_list)
 
 
+# JSON API to staff record
 @app.route('/staff-record.api')
 @cross_origin()
 def staff__record_JSON():
@@ -637,6 +680,7 @@ def staff__record_JSON():
     return jsonify(staff_record=[u.serialize for u in user])
 
 
+# JSON API to archived staff record
 @app.route('/archived-staff-record.api')
 @cross_origin()
 def archived_staff__record_JSON():
@@ -645,21 +689,7 @@ def archived_staff__record_JSON():
     return jsonify(archived_staff_record=[u.serialize for u in user])
 
 
-# JSON API to leave record
-@app.route('/leave-record.api')
-@cross_origin()
-def leaverecordJSON():
-    leave_records = session.query(Leaverecord).all()
-    leave_list = []
-    for x in leave_records:
-        leave_record = x.serialize
-        user = session.query(User).filter_by(id=x.user_id).one()
-        leave_record['user'] = user.serialize
-        leave_list.append(leave_record)
-
-    return jsonify(leave_record=leave_list)
-
-
+# JSON API to sicksheet record
 @app.route('/sicksheet-record.api')
 @cross_origin()
 def sick_sheet_record_JSON():
