@@ -61,6 +61,12 @@ def verify_password(email_or_token, password):
     return True
 
 
+def allowed_file(filename):
+    """Check if an image extension is allowed."""
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
+
 # user
 @app.route('/')
 @app.route('/reset')
@@ -193,7 +199,7 @@ def apply_for_leave():
 @app.route('/staffrecord')
 @app.route('/approvedleave')
 @app.route('/leavereport')
-@app.route('/sicksheetrecord/')
+@app.route('/sicksheetrecord')
 @app.route('/newrecord')
 @app.route('/archivedstaffrecord')
 @app.route('/publicholiday')
@@ -271,15 +277,9 @@ def validate_admin_token():
             abort(401)
 
 
-# Views
-def allowed_file(filename):
-    """Check if an image extension is allowed."""
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
-
-
-@app.route('/<filename>/')
-@app.route('/sicksheetrecord/<filename>/')
+# Image functions
+@app.route('/<filename>')
+@app.route('/sicksheetrecord/<filename>')
 @cross_origin()
 def show_image_home(filename):
     """Serves uploaded sick sheets for page view.
