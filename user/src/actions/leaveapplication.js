@@ -20,27 +20,26 @@ export function leaveApplicationFailure(data) {
 export function fetchLeaveApplication(applicationDetails) {
   return (dispatch, getState) => {
     dispatch(requestLeaveApplication(applicationDetails));
-    axios
-      .post("http://localhost:8080/applyforleave", {
-        user_id: applicationDetails.user_id,
-        leave: applicationDetails.leave,
-        leaveType: applicationDetails.leaveType,
-        startDate: applicationDetails.startDate,
-        endDate: applicationDetails.endDate,
-        supervisorEmail: applicationDetails.supervisorEmail,
-        secretaryEmail: applicationDetails.secretaryEmail,
-        leaveDays: applicationDetails.leaveDays,
-        applicationDays: applicationDetails.applicationDays,
-        reason: applicationDetails.reason,
-        sickSheet: applicationDetails.sickSheet
-      })
-      .then(response => {
-        if (response.status === 200) {
-          dispatch(leaveApplicationFailure(response.data));
-        } else {
-          dispatch(receiveLeaveApplication());
-          dispatch(fetchUserRecord(getState().userAuth.auth_info.auth_token));
-        }
-      });
+
+    let data = new FormData();
+    data.append("user_id", applicationDetails.user_id);
+    data.append("leave", applicationDetails.leave);
+    data.append("leaveType", applicationDetails.leaveType);
+    data.append("startDate", applicationDetails.startDate);
+    data.append("endDate", applicationDetails.endDate);
+    data.append("supervisorEmail", applicationDetails.supervisorEmail);
+    data.append("secretaryEmail", applicationDetails.secretaryEmail);
+    data.append("leaveDays", applicationDetails.leaveDays);
+    data.append("applicationDays", applicationDetails.applicationDays);
+    data.append("reason", applicationDetails.reason);
+    data.append("sickSheet", applicationDetails.sickSheet);
+    axios.post("http://localhost:8080/applyforleave", data).then(response => {
+      if (response.status === 200) {
+        dispatch(leaveApplicationFailure(response.data));
+      } else {
+        dispatch(receiveLeaveApplication());
+        dispatch(fetchUserRecord(getState().userAuth.auth_info.auth_token));
+      }
+    });
   };
 }
