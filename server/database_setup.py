@@ -5,13 +5,13 @@ from sqlalchemy import create_engine
 from passlib.apps import custom_app_context as pwd_context
 import random
 import string
-from itsdangerous import(
-    TimedJSONWebSignatureSerializer as Serializer, BadSignature, SignatureExpired)
+from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer,
+                          BadSignature, SignatureExpired)
 
 Base = declarative_base()
 
-secret_key = ''.join(random.choice(
-    string.ascii_uppercase + string.digits) for x in xrange(32))
+secret_key = ''.join(
+    random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
 
 
 class User(Base):
@@ -78,33 +78,6 @@ class User(Base):
         }
 
 
-'''class Leavebalance(Base):
-    __tablename__ = 'leavebalance'  # representation of table inside database
-
-    id = Column(Integer, primary_key=True)
-    annual = Column(Numeric)
-    sick = Column(Numeric)
-    bereavement = Column(Numeric)
-    christmas = Column(Numeric)
-    maternity = Column(Numeric)
-    user = relationship(
-        User, backref=backref("leavebalance", cascade="all, delete-orphan"))
-    user_id = Column(Integer, ForeignKey('user.id'))
-
-    @property
-    def serialize(self):
-        """Return data in serializeable format"""
-        return {
-            'id': self.id,
-            'annual': self.annual,
-            'sick': self.sick,
-            'bereavement': self.bereavement,
-            'christmas': self.christmas,
-            'maternity': self.maternity,
-            'user_id': self.user_id,
-        }'''
-
-
 class Leaverecord(Base):
     __tablename__ = 'leaverecord'  # representation of table inside database
 
@@ -143,9 +116,10 @@ class Leaverecord(Base):
             'user_id': self.user_id
         }
 
-''' admin db '''
-admin_secret_key = ''.join(random.choice(
-    string.ascii_uppercase + string.digits) for x in xrange(32))
+
+""" admin db """
+admin_secret_key = ''.join(
+    random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
 
 
 class Adminuser(Base):
@@ -200,10 +174,8 @@ class Publicholiday(Base):
     @property
     def serialize(self):
         """Return data in serializeable format"""
-        return {
-            'id': self.id,
-            'holiday_date': self.holiday_date
-        }
+        return {'id': self.id, 'holiday_date': self.holiday_date}
+
 
 engine = create_engine('postgresql:///leavedb')
 
