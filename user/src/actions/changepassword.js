@@ -26,7 +26,7 @@ export function changePassword(creds) {
     dispatch(requestPasswordChange(creds));
     axios({
       method: "post",
-      url: "http://localhost:8080/change-password.api",
+      url: "http://localhost:8080/change-password",
       auth: { username: creds.auth_token },
       data: {
         oldPassword: creds.currentPassword,
