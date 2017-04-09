@@ -9,7 +9,6 @@ import random
 import json
 from httplib2 import Http
 import string
-# import requests
 from database_setup import Base, User, Leaverecord, Adminuser, Publicholiday
 from sqlalchemy import create_engine
 from sqlalchemy.orm import relationship, sessionmaker, join
@@ -20,7 +19,7 @@ from datetime import datetime
 # https://pypi.python.org/pypi/Flask-Cors/1.10.3
 from flask_cors import cross_origin
 
-# from flask import session as login_session - benefits?
+# from flask import session as login_session
 from flask_seasurf import SeaSurf
 from flask_httpauth import HTTPBasicAuth
 auth = HTTPBasicAuth()
@@ -126,7 +125,7 @@ def validate_user_token():
 
 
 # Change password
-@app.route('/change-password.api', methods=['POST'])
+@app.route('/change-password', methods=['POST'])
 @auth.login_required
 @cross_origin()
 def change_user_password():
