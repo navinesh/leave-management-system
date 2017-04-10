@@ -58,7 +58,7 @@ class ArchivedStaffRecordList extends Component {
 
     if (!id) {
       this.setState({
-        errorMessage: "One or more required fields are missing!"
+        errorMessage: "Could not fetch ID!"
       });
       return null;
     }
