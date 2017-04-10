@@ -1,5 +1,6 @@
 // @flow
-import React, { PropTypes, Component } from "react";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import Modal from "react-modal";
 
 import { fetchPendingLeave } from "../actions/PendingLeave";

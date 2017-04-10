@@ -1,4 +1,5 @@
-import React, { PropTypes } from "react";
+import React from "react";
+import PropTypes from "prop-types";
 
 const LeaveReportList = ({ leave_record }) => {
   const itemNodes = leave_record.map(record => (
