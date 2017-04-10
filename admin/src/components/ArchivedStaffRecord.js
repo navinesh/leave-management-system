@@ -35,8 +35,8 @@ class ArchivedStaffRecordList extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleSearchChange(e: Event) {
-    this.props.dispatch(searchStaffRecord(e.target.value.toLowerCase()));
+  handleSearchChange({ target }: SyntheticInputEvent) {
+    this.props.dispatch(searchStaffRecord(target.value.toLowerCase()));
   }
 
   handleOpenModal(e: Event & { currentTarget: HTMLElement }) {
