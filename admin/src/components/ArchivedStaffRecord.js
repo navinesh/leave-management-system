@@ -83,7 +83,6 @@ class ArchivedStaffRecordList extends Component {
       )
       .map(record => {
         let dob = new Date(record.date_of_birth);
-
         let dateOfBirth = moment(dob).format("DD/MM/YYYY");
 
         return (
@@ -192,7 +191,6 @@ class ArchivedStaffRecordList extends Component {
                         </span>
                         ?
                       </p>
-
                     </div>
                     <div className="modal-footer">
                       <button
@@ -207,7 +205,6 @@ class ArchivedStaffRecordList extends Component {
                       </button>
                     </div>
                   </form>
-
                   <div className="text-primary text-center">
                     {this.props.isUnArchiveFetching
                       ? <Loader color="#0275d8" size="20px" />
