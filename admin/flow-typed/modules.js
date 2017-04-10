@@ -34,3 +34,7 @@ declare module "halogen/ClipLoader" {
 declare module "halogen/BeatLoader" {
   declare var exports: any;
 }
+
+declare module "prop-types" {
+  declare var exports: any;
+}
