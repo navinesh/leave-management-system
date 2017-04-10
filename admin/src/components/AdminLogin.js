@@ -20,12 +20,12 @@ export default class Login extends Component {
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
   }
 
-  handleEmailChange(e: Event) {
-    this.setState({ email: e.target.value });
+  handleEmailChange({ target }: SyntheticInputEvent) {
+    this.setState({ email: target.value });
   }
 
-  handlePasswordChange(e: Event) {
-    this.setState({ password: e.target.value });
+  handlePasswordChange({ target }: SyntheticInputEvent) {
+    this.setState({ password: target.value });
   }
 
   handleSubmit(e: Event) {
