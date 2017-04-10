@@ -11,6 +11,17 @@ var Loader = require("halogen/ClipLoader");
 import customStyles from "../Styles";
 
 class ArchivedStaffRecordList extends Component {
+  state: {
+    errorMessage: string,
+    showModal: boolean,
+    listID: string
+  };
+
+  handleSearchChange: Function;
+  handleOpenModal: Function;
+  handleCloseModal: Function;
+  handleSubmit: Function;
+
   constructor() {
     super();
     this.state = {
@@ -24,22 +35,23 @@ class ArchivedStaffRecordList extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleSearchChange(e) {
+  handleSearchChange(e: Event) {
     this.props.dispatch(searchStaffRecord(e.target.value.toLowerCase()));
   }
 
-  handleOpenModal(e) {
-    this.setState({ showModal: true });
-    this.setState({ listID: e.target.id });
+  handleOpenModal(e: Event & { currentTarget: HTMLElement }) {
+    this.setState({ showModal: true, listID: e.currentTarget.id });
   }
 
-  handleCloseModal() {
+  handleCloseModal(e: Event) {
+    const { dispatch } = this.props;
+
     this.setState({ showModal: false, errorMessage: "" });
-    this.props.dispatch(fetchArchivedStaffRecord());
-    this.props.dispatch({ type: "CLEAR_UNARCHIVE_MESSAGE" });
+    dispatch(fetchArchivedStaffRecord());
+    dispatch({ type: "CLEAR_UNARCHIVE_MESSAGE" });
   }
 
-  handleSubmit(e) {
+  handleSubmit(e: Event) {
     e.preventDefault();
     const id = this.state.listID;
     const isArchived = false;
