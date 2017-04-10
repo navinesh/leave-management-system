@@ -78,12 +78,12 @@ class PendingLeaveList extends Component {
     this.setState({ endDate: e });
   }
 
-  handleDeclineReason(e: Event) {
-    this.setState({ declineReason: e.target.value });
+  handleDeclineReason({ target }: SyntheticInputEvent) {
+    this.setState({ declineReason: target.value });
   }
 
-  handleEditReason(e: Event) {
-    this.setState({ editReason: e.target.value });
+  handleEditReason({ target }: SyntheticInputEvent) {
+    this.setState({ editReason: target.value });
   }
 
   handleOpenModal1(e: Event & { currentTarget: HTMLElement }) {
