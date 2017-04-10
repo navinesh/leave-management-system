@@ -80,8 +80,8 @@ class ApprovedLeaveList extends Component {
     this.setState({ endDate: e });
   }
 
-  handleEditReason(e: Event) {
-    this.setState({ editReason: e.target.value });
+  handleEditReason({ target }: SyntheticInputEvent) {
+    this.setState({ editReason: target.value });
   }
 
   handleEditSubmit(e: Event) {
@@ -270,8 +270,8 @@ class ApprovedLeaveList extends Component {
     this.setState({ showModal2: true, listID: e.currentTarget.id });
   }
 
-  handleDeleteReason(e: Event) {
-    this.setState({ deleteReason: e.target.value });
+  handleDeleteReason({ target }: SyntheticInputEvent) {
+    this.setState({ deleteReason: target.value });
   }
 
   handleDeleteSubmit(e: Event) {
