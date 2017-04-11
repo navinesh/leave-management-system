@@ -1,11 +1,12 @@
 // @flow
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 import { logoutAdmin } from "../actions/AdminLogout";
 
 export default class Header extends Component {
+  props: { dispatch: Function };
+
   adminLogout(e: Event) {
     e.preventDefault();
     this.props.dispatch(logoutAdmin());
@@ -68,5 +69,3 @@ export default class Header extends Component {
     );
   }
 }
-
-Header.propTypes = { dispatch: PropTypes.func.isRequired };
