@@ -1,5 +1,6 @@
 import React from "react";
-import PropTypes from "prop-types";
+
+export type props = { leave_record: any };
 
 const LeaveReportList = ({ leave_record }) => {
   const itemNodes = leave_record.map(record => (
@@ -42,7 +43,5 @@ const LeaveReportList = ({ leave_record }) => {
     </div>
   );
 };
-
-LeaveReportList.propTypes = { leave_record: PropTypes.array.isRequired };
 
 export default LeaveReportList;
