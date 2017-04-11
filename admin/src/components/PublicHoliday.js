@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from "react";
 
 var DatePicker = require("react-datepicker");
@@ -7,27 +8,16 @@ const moment = require("moment");
 
 var Loader = require("halogen/ClipLoader");
 
-export type props = {
-  public_holiday: any,
-  dispatch: Function,
-  onAddPublicHolidaySubmit: Function,
-  onDeletePublicHolidaySubmit: Function,
-  isAddPublicFetching: boolean,
-  addPublicMessage: string,
-  isDeletePublicFetching: boolean,
-  deletePublicMessage: string
-};
-
 const PublicHolidays = (
-  {
-    dispatch,
-    public_holiday,
-    onDeletePublicHolidaySubmit,
-    onAddPublicHolidaySubmit,
-    isAddPublicFetching,
-    addPublicMessage,
-    isDeletePublicFetching,
-    deletePublicMessage
+  props: {
+    public_holiday: Array<any>,
+    dispatch: Function,
+    onAddPublicHolidaySubmit: Function,
+    onDeletePublicHolidaySubmit: Function,
+    isAddPublicFetching: boolean,
+    addPublicMessage: string,
+    isDeletePublicFetching: boolean,
+    deletePublicMessage: string
   }
 ) => (
   <div className="offset-md-1 col-md-10">
@@ -37,30 +27,30 @@ const PublicHolidays = (
           <div className="col">
             <h4 className="card-title">Public Holidays</h4>
             <DeletePublicHoliday
-              public_holiday={public_holiday}
-              dispatch={dispatch}
-              onDeletePublicHolidaySubmit={onDeletePublicHolidaySubmit}
+              public_holiday={props.public_holiday}
+              dispatch={props.dispatch}
+              onDeletePublicHolidaySubmit={props.onDeletePublicHolidaySubmit}
             />
           </div>
           <div className="col">
             <AddPublicHoliday
-              dispatch={dispatch}
-              onAddPublicHolidaySubmit={onAddPublicHolidaySubmit}
+              dispatch={props.dispatch}
+              onAddPublicHolidaySubmit={props.onAddPublicHolidaySubmit}
             />
             <div>
-              {isAddPublicFetching
+              {props.isAddPublicFetching
                 ? <div className="text-center">
                     <Loader color="#0275d8" size="20px" />
                   </div>
                 : <p className="text-primary">
-                    {addPublicMessage}
+                    {props.addPublicMessage}
                   </p>}
-              {isDeletePublicFetching
+              {props.isDeletePublicFetching
                 ? <div className="text-center">
                     <Loader color="#0275d8" size="20px" />
                   </div>
                 : <p className="text-primary">
-                    {deletePublicMessage}
+                    {props.deletePublicMessage}
                   </p>}
             </div>
           </div>
@@ -71,6 +61,9 @@ const PublicHolidays = (
 );
 
 class AddPublicHoliday extends Component {
+  handleDateChange: Function;
+  handleSubmit: Function;
+
   constructor() {
     super();
     this.state = { holidayDate: "", errorMessage: "" };
@@ -146,6 +139,8 @@ class AddPublicHoliday extends Component {
 }
 
 class DeletePublicHoliday extends Component {
+  handleDelete: Function;
+
   constructor() {
     super();
     this.state = { errorMessage: "" };
