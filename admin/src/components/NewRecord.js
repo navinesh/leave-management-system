@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 
 var DatePicker = require("react-datepicker");
 require("react-datepicker/dist/react-datepicker.css");
@@ -9,6 +8,13 @@ const moment = require("moment");
 var Loader = require("halogen/ClipLoader");
 
 export default class NewRecordForm extends Component {
+  props: {
+    dispatch: Function,
+    onNewUserRecordSubmit: Function,
+    message: string,
+    isFetching: boolean
+  };
+
   constructor() {
     super();
     this.state = { errorMessage: "", successMessage: "" };
@@ -354,10 +360,3 @@ export default class NewRecordForm extends Component {
     );
   }
 }
-
-NewRecordForm.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  onNewUserRecordSubmit: PropTypes.func.isRequired,
-  message: PropTypes.string,
-  isFetching: PropTypes.bool.isRequired
-};
