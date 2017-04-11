@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from "react";
 
 var DatePicker = require("react-datepicker");
@@ -15,9 +16,54 @@ export default class NewRecordForm extends Component {
     isFetching: boolean
   };
 
+  state: {
+    errorMessage: string,
+    successMessage: string,
+    surname: string,
+    otherNames: string,
+    annualLeave: string,
+    staffEmail: string,
+    designation: string,
+    gender: string,
+    annualLeave: string,
+    sickLeave: string,
+    bereavementLeave: string,
+    christmasLeave: string,
+    maternityLeave: string,
+    dob: any
+  };
+
+  handleSurnameChange: Function;
+  handleOtherNamesChange: Function;
+  handleStaffEmailChange: Function;
+  handleDesignationChange: Function;
+  handleGenderChange: Function;
+  handleDOBChange: Function;
+  handleAnnualLeaveChange: Function;
+  handleSickLeaveChange: Function;
+  handleChristmasLeaveChange: Function;
+  handleBereavementLeaveChange: Function;
+  handleMaternityLeaveChange: Function;
+  handleSubmit: Function;
+
   constructor() {
     super();
-    this.state = { errorMessage: "", successMessage: "" };
+    this.state = {
+      errorMessage: "",
+      successMessage: "",
+      surname: "",
+      otherNames: "",
+      annualLeave: "",
+      staffEmail: "",
+      designation: "",
+      gender: "",
+      sickLeave: "",
+      bereavementLeave: "",
+      christmasLeave: "",
+      maternityLeave: "",
+      dob: ""
+    };
+
     this.handleSurnameChange = this.handleSurnameChange.bind(this);
     this.handleOtherNamesChange = this.handleOtherNamesChange.bind(this);
     this.handleStaffEmailChange = this.handleStaffEmailChange.bind(this);
@@ -38,51 +84,51 @@ export default class NewRecordForm extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleSurnameChange(e) {
-    this.setState({ surname: e.target.value });
+  handleSurnameChange({ target }: SyntheticInputEvent) {
+    this.setState({ surname: target.value });
   }
 
-  handleOtherNamesChange(e) {
-    this.setState({ otherNames: e.target.value });
+  handleOtherNamesChange({ target }: SyntheticInputEvent) {
+    this.setState({ otherNames: target.value });
   }
 
-  handleStaffEmailChange(e) {
-    this.setState({ staffEmail: e.target.value });
+  handleStaffEmailChange({ target }: SyntheticInputEvent) {
+    this.setState({ staffEmail: target.value });
   }
 
-  handleDesignationChange(e) {
-    this.setState({ designation: e.target.value });
+  handleDesignationChange({ target }: SyntheticInputEvent) {
+    this.setState({ designation: target.value });
   }
 
-  handleGenderChange(e) {
-    this.setState({ gender: e.target.value });
+  handleGenderChange({ target }: SyntheticInputEvent) {
+    this.setState({ gender: target.value });
   }
 
-  handleAnnualLeaveChange(e) {
-    this.setState({ annualLeave: e.target.value });
+  handleAnnualLeaveChange({ target }: SyntheticInputEvent) {
+    this.setState({ annualLeave: target.value });
   }
 
-  handleSickLeaveChange(e) {
-    this.setState({ sickLeave: e.target.value });
+  handleSickLeaveChange({ target }: SyntheticInputEvent) {
+    this.setState({ sickLeave: target.value });
   }
 
-  handleChristmasLeaveChange(e) {
-    this.setState({ christmasLeave: e.target.value });
+  handleChristmasLeaveChange({ target }: SyntheticInputEvent) {
+    this.setState({ christmasLeave: target.value });
   }
 
-  handleBereavementLeaveChange(e) {
-    this.setState({ bereavementLeave: e.target.value });
+  handleBereavementLeaveChange({ target }: SyntheticInputEvent) {
+    this.setState({ bereavementLeave: target.value });
   }
 
-  handleMaternityLeaveChange(e) {
-    this.setState({ maternityLeave: e.target.value });
+  handleMaternityLeaveChange({ target }: SyntheticInputEvent) {
+    this.setState({ maternityLeave: target.value });
   }
 
-  handleDOBChange(e) {
+  handleDOBChange(e: Event) {
     this.setState({ dob: e });
   }
 
-  handleSubmit(e) {
+  handleSubmit(e: Event) {
     e.preventDefault();
     const surname = this.state.surname;
     const othernames = this.state.otherNames;
