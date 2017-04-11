@@ -17,8 +17,8 @@ import { fetchApprovedLeave } from "../actions/ApprovedLeave";
 
 class ApprovedLeaveList extends Component {
   props: {
-    approved_items: any,
-    public_holiday: any,
+    approved_items: Array<any>,
+    public_holiday: Array<any>,
     dispatch: Function,
     onEditLeaveSubmit: Function,
     onDeleteLeaveSubmit: Function,
