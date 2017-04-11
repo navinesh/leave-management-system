@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 
 var DatePicker = require("react-datepicker");
 require("react-datepicker/dist/react-datepicker.css");
@@ -7,6 +6,17 @@ require("react-datepicker/dist/react-datepicker.css");
 const moment = require("moment");
 
 var Loader = require("halogen/ClipLoader");
+
+export type props = {
+  public_holiday: any,
+  dispatch: Function,
+  onAddPublicHolidaySubmit: Function,
+  onDeletePublicHolidaySubmit: Function,
+  isAddPublicFetching: boolean,
+  addPublicMessage: string,
+  isDeletePublicFetching: boolean,
+  deletePublicMessage: string
+};
 
 const PublicHolidays = (
   {
@@ -206,16 +216,5 @@ class DeletePublicHoliday extends Component {
     );
   }
 }
-
-PublicHolidays.propTypes = {
-  public_holiday: PropTypes.array.isRequired,
-  dispatch: PropTypes.func.isRequired,
-  onAddPublicHolidaySubmit: PropTypes.func.isRequired,
-  onDeletePublicHolidaySubmit: PropTypes.func.isRequired,
-  isAddPublicFetching: PropTypes.bool.isRequired,
-  addPublicMessage: PropTypes.string,
-  isDeletePublicFetching: PropTypes.bool.isRequired,
-  deletePublicMessage: PropTypes.string
-};
 
 export default PublicHolidays;
