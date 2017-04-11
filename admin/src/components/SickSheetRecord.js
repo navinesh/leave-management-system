@@ -1,10 +1,9 @@
+// @flow
 import React from "react";
 import { Link } from "react-router-dom";
 
-export type props = { sickSheet_items: any };
-
-const SickSheetList = ({ sickSheet_items }) => {
-  const itemNodes = sickSheet_items.map(record => (
+const SickSheetList = (props: { sickSheet_items: Array<any> }) => {
+  const itemNodes = props.sickSheet_items.map(record => (
     <tr key={record.id}>
       <td>{record.user.othernames}{" "}{record.user.surname}</td>
       <td>{record.start_date}</td>
