@@ -1,6 +1,5 @@
 // @flow
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import Modal from "react-modal";
 
 var DatePicker = require("react-datepicker");
@@ -17,6 +16,16 @@ import customStyles from "../Styles";
 import { fetchApprovedLeave } from "../actions/ApprovedLeave";
 
 class ApprovedLeaveList extends Component {
+  props: {
+    approved_items: any,
+    public_holiday: any,
+    dispatch: Function,
+    onEditLeaveSubmit: Function,
+    onDeleteLeaveSubmit: Function,
+    isEditLeaveFetching: boolean,
+    editLeaveMessage: string
+  };
+
   state: {
     errorMessage: string,
     editReason: string,
@@ -610,15 +619,5 @@ class ApprovedLeaveList extends Component {
         </div>;
   }
 }
-
-ApprovedLeaveList.propTypes = {
-  approved_items: PropTypes.array.isRequired,
-  public_holiday: PropTypes.array.isRequired,
-  dispatch: PropTypes.func.isRequired,
-  onEditLeaveSubmit: PropTypes.func.isRequired,
-  onDeleteLeaveSubmit: PropTypes.func.isRequired,
-  isEditLeaveFetching: PropTypes.bool.isRequired,
-  editLeaveMessage: PropTypes.string
-};
 
 export default ApprovedLeaveList;
