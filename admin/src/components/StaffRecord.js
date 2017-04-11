@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 
 import { searchStaffRecord, fetchStaffRecord } from "../actions/StaffRecord";
 
@@ -15,6 +14,18 @@ var Loader = require("halogen/ClipLoader");
 import customStyles from "../Styles";
 
 class StaffRecordList extends Component {
+  props: {
+    staff_record: any,
+    searchTerm: string,
+    dispatch: Function,
+    onModifyUserRecordSubmit: Function,
+    onArchiveUserSubmit: Function,
+    message: string,
+    isFetching: boolean,
+    isArchiveFetching: boolean,
+    archiveMessage: string
+  };
+
   constructor() {
     super();
     this.state = {
@@ -595,17 +606,5 @@ class StaffRecordList extends Component {
     );
   }
 }
-
-StaffRecordList.propTypes = {
-  staff_record: PropTypes.array.isRequired,
-  searchTerm: React.PropTypes.string,
-  dispatch: PropTypes.func.isRequired,
-  onModifyUserRecordSubmit: PropTypes.func.isRequired,
-  onArchiveUserSubmit: PropTypes.func.isRequired,
-  message: PropTypes.string,
-  isFetching: PropTypes.bool.isRequired,
-  isArchiveFetching: PropTypes.bool.isRequired,
-  archiveMessage: PropTypes.string
-};
 
 export default StaffRecordList;
