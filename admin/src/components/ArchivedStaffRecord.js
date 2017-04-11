@@ -1,6 +1,5 @@
 // @flow
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 
 import { searchStaffRecord } from "../actions/StaffRecord";
 import { fetchArchivedStaffRecord } from "../actions/ArchivedStaffRecord";
@@ -12,6 +11,15 @@ var Loader = require("halogen/ClipLoader");
 import customStyles from "../Styles";
 
 class ArchivedStaffRecordList extends Component {
+  props: {
+    archived_staff_record: any,
+    searchTerm: string,
+    onUnArchiveUserSubmit: Function,
+    dispatch: Function,
+    isUnArchiveFetching: boolean,
+    unArchiveMessage: string
+  };
+
   state: {
     errorMessage: string,
     showModal: boolean,
@@ -225,14 +233,5 @@ class ArchivedStaffRecordList extends Component {
     );
   }
 }
-
-ArchivedStaffRecordList.propTypes = {
-  archived_staff_record: PropTypes.array.isRequired,
-  searchTerm: React.PropTypes.string,
-  onUnArchiveUserSubmit: PropTypes.func.isRequired,
-  dispatch: PropTypes.func.isRequired,
-  isUnArchiveFetching: PropTypes.bool,
-  unArchiveMessage: PropTypes.string
-};
 
 export default ArchivedStaffRecordList;
