@@ -1,18 +1,19 @@
 // @flow
 import React, { Component } from "react";
 
-import { searchStaffRecord } from "../actions/StaffRecord";
-import { fetchArchivedStaffRecord } from "../actions/ArchivedStaffRecord";
+import Modal from "react-modal";
 
 const moment = require("moment");
-import Modal from "react-modal";
 var Loader = require("halogen/ClipLoader");
 
 import customStyles from "../Styles";
 
+import { searchStaffRecord } from "../actions/StaffRecord";
+import { fetchArchivedStaffRecord } from "../actions/ArchivedStaffRecord";
+
 class ArchivedStaffRecordList extends Component {
   props: {
-    archived_staff_record: any,
+    archived_staff_record: Array<any>,
     searchTerm: string,
     onUnArchiveUserSubmit: Function,
     dispatch: Function,
