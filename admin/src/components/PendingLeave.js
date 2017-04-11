@@ -1,6 +1,5 @@
 // @flow
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import Modal from "react-modal";
 
 import { fetchPendingLeave } from "../actions/PendingLeave";
@@ -17,6 +16,17 @@ var Loader = require("halogen/ClipLoader");
 import customStyles from "../Styles";
 
 class PendingLeaveList extends Component {
+  props: {
+    pending_items: any,
+    public_holiday: any,
+    onApproveLeaveSubmit: Function,
+    onDeclineLeaveSubmit: Function,
+    onEditLeaveSubmit: Function,
+    isEditLeaveFetching: boolean,
+    editLeaveMessage: string,
+    dispatch: Function
+  };
+
   state: {
     errorMessage: string,
     declineReason: string,
@@ -610,15 +620,5 @@ class PendingLeaveList extends Component {
         </div>;
   }
 }
-
-PendingLeaveList.propTypes = {
-  pending_items: PropTypes.array.isRequired,
-  public_holiday: PropTypes.array.isRequired,
-  onApproveLeaveSubmit: PropTypes.func.isRequired,
-  onDeclineLeaveSubmit: PropTypes.func.isRequired,
-  onEditLeaveSubmit: PropTypes.func.isRequired,
-  isEditLeaveFetching: PropTypes.bool.isRequired,
-  editLeaveMessage: PropTypes.string
-};
 
 export default PendingLeaveList;
