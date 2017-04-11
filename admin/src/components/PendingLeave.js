@@ -17,8 +17,8 @@ import customStyles from "../Styles";
 
 class PendingLeaveList extends Component {
   props: {
-    pending_items: any,
-    public_holiday: any,
+    pending_items: Array<any>,
+    public_holiday: Array<any>,
     onApproveLeaveSubmit: Function,
     onDeclineLeaveSubmit: Function,
     onEditLeaveSubmit: Function,
