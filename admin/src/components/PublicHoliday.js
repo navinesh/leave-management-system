@@ -61,6 +61,8 @@ const PublicHolidays = (
 );
 
 class AddPublicHoliday extends Component {
+  state: { holidayDate: string, errorMessage: string };
+
   handleDateChange: Function;
   handleSubmit: Function;
 
@@ -71,11 +73,11 @@ class AddPublicHoliday extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleDateChange(e) {
+  handleDateChange(e: Event) {
     this.setState({ holidayDate: e });
   }
 
-  handleSubmit(e) {
+  handleSubmit(e: Event) {
     e.preventDefault();
     const holidayDate = this.state.holidayDate
       ? moment(this.state.holidayDate).format("MM DD YYYY")
@@ -139,6 +141,8 @@ class AddPublicHoliday extends Component {
 }
 
 class DeletePublicHoliday extends Component {
+  state: { errorMessage: string };
+
   handleDelete: Function;
 
   constructor() {
@@ -147,7 +151,7 @@ class DeletePublicHoliday extends Component {
     this.handleDelete = this.handleDelete.bind(this);
   }
 
-  handleDelete(e) {
+  handleDelete(e: Event) {
     e.preventDefault();
     const id = e.target.id ? e.target.id : null;
 
