@@ -1,12 +1,12 @@
-#Leave management system
+**Leave management system**
 
-##ReactJS
+**ReactJS**
 
 This repo contains admin files
 
 to-do
 
-##Required Libraries and Dependencies
+**Required Libraries and Dependencies**
 
 to-do
 
@@ -15,11 +15,13 @@ to-do
 Within the download you will find the following directory and files.
 
 to-do
-##How to Run the Project
+
+**How to Run the Project**
 
 to-do
 
-##Creator
+**Creator**
+
 Navinesh Chand
 * https://twitter.com/navinesh
 * https://github.com/navinesh
