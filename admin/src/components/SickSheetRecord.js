@@ -1,6 +1,7 @@
 import React from "react";
-import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+
+export type props = { sickSheet_items: any };
 
 const SickSheetList = ({ sickSheet_items }) => {
   const itemNodes = sickSheet_items.map(record => (
@@ -48,7 +49,5 @@ const SickSheetList = ({ sickSheet_items }) => {
         </h1>
       </div>;
 };
-
-SickSheetList.propTypes = { sickSheet_items: PropTypes.array.isRequired };
 
 export default SickSheetList;
