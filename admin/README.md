@@ -15,7 +15,8 @@ to-do
 Within the download you will find the following directory and files.
 
 to-do
-##How to Run the Project
+
+**How to Run the Project**
 
 to-do
 
