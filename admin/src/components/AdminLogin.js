@@ -1,11 +1,16 @@
 // @flow
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 
 var Loader = require("halogen/ClipLoader");
 
 export default class Login extends Component {
+  props: {
+    onLoginClick: Function,
+    message: string,
+    isFetching: boolean
+  };
+
   state: { errorMessage: string, email: string, password: string };
 
   handleSubmit: Function;
@@ -95,9 +100,3 @@ export default class Login extends Component {
     );
   }
 }
-
-Login.propTypes = {
-  onLoginClick: PropTypes.func.isRequired,
-  message: PropTypes.string,
-  isFetching: PropTypes.bool.isRequired
-};
