@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from "react";
 
 import { searchStaffRecord, fetchStaffRecord } from "../actions/StaffRecord";
@@ -15,7 +16,7 @@ import customStyles from "../Styles";
 
 class StaffRecordList extends Component {
   props: {
-    staff_record: any,
+    staff_record: Array<any>,
     searchTerm: string,
     dispatch: Function,
     onModifyUserRecordSubmit: Function,
@@ -25,6 +26,36 @@ class StaffRecordList extends Component {
     isArchiveFetching: boolean,
     archiveMessage: string
   };
+
+  state: {
+    errorMessage: string,
+    listID: string,
+    dob: any,
+    archiveReason: string,
+    showModal1: boolean,
+    showModal2: boolean
+  };
+
+  handleDateChange: Function;
+  handleSubmit: Function;
+  handleArchiveReason: Function;
+  handleArchiveSubmit: Function;
+  handleOpenModal1: Function;
+  handleCloseModal1: Function;
+  handleOpenModal2: Function;
+  handleCloseModal2: Function;
+
+  surname: HTMLInputElement;
+  othernames: HTMLInputElement;
+  designation: HTMLInputElement;
+  email: HTMLInputElement;
+  annual: HTMLInputElement;
+  sick: HTMLInputElement;
+  bereavement: HTMLInputElement;
+  christmas: HTMLInputElement;
+  gender: HTMLInputElement;
+  dob: HTMLInputElement;
+  maternity: HTMLInputElement;
 
   constructor() {
     super();
@@ -36,6 +67,7 @@ class StaffRecordList extends Component {
       showModal1: false,
       showModal2: false
     };
+
     this.handleDateChange = this.handleDateChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleArchiveReason = this.handleArchiveReason.bind(this);
@@ -46,26 +78,24 @@ class StaffRecordList extends Component {
     this.handleCloseModal2 = this.handleCloseModal2.bind(this);
   }
 
-  handleSearchChange(e) {
-    this.props.dispatch(searchStaffRecord(e.target.value.toLowerCase()));
+  handleSearchChange({ target }: SyntheticInputEvent) {
+    this.props.dispatch(searchStaffRecord(target.value.toLowerCase()));
   }
 
-  handleDateChange(e) {
+  handleDateChange(e: Event) {
     this.setState({ dob: e });
   }
 
-  handleArchiveReason(e) {
-    this.setState({ archiveReason: e.target.value });
+  handleArchiveReason({ target }: SyntheticInputEvent) {
+    this.setState({ archiveReason: target.value });
   }
 
-  handleOpenModal1(e) {
-    this.setState({ showModal1: true });
-    this.setState({ listID: e.target.id });
+  handleOpenModal1(e: Event & { currentTarget: HTMLElement }) {
+    this.setState({ showModal1: true, listID: e.currentTarget.id });
   }
 
-  handleOpenModal2(e) {
-    this.setState({ showModal2: true });
-    this.setState({ listID: e.target.id });
+  handleOpenModal2(e: Event & { currentTarget: HTMLElement }) {
+    this.setState({ showModal2: true, listID: e.currentTarget.id });
   }
 
   handleCloseModal1() {
@@ -87,7 +117,7 @@ class StaffRecordList extends Component {
     });
   }
 
-  handleSubmit(e) {
+  handleSubmit(e: Event) {
     e.preventDefault();
     const id = this.state.listID;
     const surname = this.surname.value;
@@ -155,7 +185,7 @@ class StaffRecordList extends Component {
     this.props.onModifyUserRecordSubmit(modifyUserDetails);
   }
 
-  handleArchiveSubmit(e) {
+  handleArchiveSubmit(e: Event) {
     e.preventDefault();
     const id = this.state.listID;
     const isArchived = true;
