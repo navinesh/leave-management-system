@@ -11,7 +11,7 @@ import customStyles from "../Styles";
 import { searchStaffRecord } from "../actions/StaffRecord";
 import { fetchArchivedStaffRecord } from "../actions/ArchivedStaffRecord";
 
-class ArchivedStaffRecordList extends Component {
+export default class ArchivedStaffRecordList extends Component {
   props: {
     archived_staff_record: Array<any>,
     searchTerm: string,
@@ -234,5 +234,3 @@ class ArchivedStaffRecordList extends Component {
     );
   }
 }
-
-export default ArchivedStaffRecordList;
