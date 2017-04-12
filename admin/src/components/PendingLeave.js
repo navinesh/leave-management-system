@@ -15,7 +15,7 @@ var Loader = require("halogen/ClipLoader");
 
 import customStyles from "../Styles";
 
-class PendingLeaveList extends Component {
+export default class PendingLeaveList extends Component {
   props: {
     pending_items: Array<any>,
     public_holiday: Array<any>,
@@ -620,5 +620,3 @@ class PendingLeaveList extends Component {
         </div>;
   }
 }
-
-export default PendingLeaveList;
