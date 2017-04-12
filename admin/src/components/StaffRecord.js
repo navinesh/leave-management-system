@@ -14,7 +14,7 @@ var Loader = require("halogen/ClipLoader");
 
 import customStyles from "../Styles";
 
-class StaffRecordList extends Component {
+export default class StaffRecordList extends Component {
   props: {
     staff_record: Array<any>,
     searchTerm: string,
@@ -636,5 +636,3 @@ class StaffRecordList extends Component {
     );
   }
 }
-
-export default StaffRecordList;
