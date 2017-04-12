@@ -7,12 +7,14 @@ A web application to manage employee leave records. There are two modules; user 
 * ReactJS
 * Redux
 * React-Router
+* Flow
 * React-Modal
 * MomentJS
 * React-datepicker
 * Moment-range
 * Axios
 * Bootstrap
+* Redux-thunk
 
 **What's included**
 
