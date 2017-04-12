@@ -34,7 +34,7 @@ You can create an app using this tool and replace the src folder with the folder
 
 Install required libraries and dependencies.
 
-And then run your project using npm start or yarn start.
+And then run your project using ```npm start``` or ```yarn start```.
 
 **Creator**
 Navinesh Chand
