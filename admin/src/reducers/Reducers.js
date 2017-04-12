@@ -1,3 +1,4 @@
+// @flow
 import { combineReducers } from "redux";
 
 import {
@@ -128,8 +129,15 @@ import {
   DELETE_LEAVE_ERROR
 } from "../actions/DeleteLeave";
 
+type adminState = {
+  isFetching: boolean,
+  isAuthenticated: boolean,
+  message: string,
+  auth_info: Object
+};
+
 const adminAuth = (
-  state = {
+  state: adminState = {
     isFetching: false,
     isAuthenticated: localStorage.getItem("admin_token") ? true : false,
     message: "",
@@ -186,8 +194,13 @@ const adminAuth = (
   }
 };
 
+type pendingLeaveState = {
+  isFetching: boolean,
+  pending_items: Array<any>
+};
+
 const pendingLeave = (
-  state = { isFetching: false, pending_items: [] },
+  state: pendingLeaveState = { isFetching: false, pending_items: [] },
   action
 ) => {
   switch (action.type) {
@@ -206,8 +219,13 @@ const pendingLeave = (
   }
 };
 
+type approvedLeaveState = {
+  isFetching: boolean,
+  approved_items: Array<any>
+};
+
 const approvedLeave = (
-  state = { isFetching: false, approved_items: [] },
+  state: approvedLeaveState = { isFetching: false, approved_items: [] },
   action
 ) => {
   switch (action.type) {
@@ -226,8 +244,13 @@ const approvedLeave = (
   }
 };
 
+type staffRecordState = {
+  isFetching: boolean,
+  staff_record: Array<any>
+};
+
 const staffRecord = (
-  state = { isFetching: false, staff_record: [] },
+  state: staffRecordState = { isFetching: false, staff_record: [] },
   action
 ) => {
   switch (action.type) {
@@ -246,8 +269,13 @@ const staffRecord = (
   }
 };
 
+type archivedRecordState = {
+  isFetching: boolean,
+  archived_staff_record: Array<any>
+};
+
 const archivedStaffRecord = (
-  state = { isFetching: false, archived_staff_record: [] },
+  state: archivedRecordState = { isFetching: false, archived_staff_record: [] },
   action
 ) => {
   switch (action.type) {
@@ -266,8 +294,13 @@ const archivedStaffRecord = (
   }
 };
 
+type searchStaffRecordState = {
+  isSearching: boolean,
+  searchTerm: string
+};
+
 const searchStaffRecord = (
-  state = { isSearching: false, searchTerm: "" },
+  state: searchStaffRecordState = { isSearching: false, searchTerm: "" },
   action
 ) => {
   switch (action.type) {
@@ -280,8 +313,13 @@ const searchStaffRecord = (
   }
 };
 
+type leaveReportState = {
+  isFetching: boolean,
+  leave_record: Array<any>
+};
+
 const leaveReport = (
-  state = { isFetching: false, leave_record: [] },
+  state: leaveReportState = { isFetching: false, leave_record: [] },
   action
 ) => {
   switch (action.type) {
@@ -300,8 +338,13 @@ const leaveReport = (
   }
 };
 
+type sickSheetState = {
+  isFetching: boolean,
+  sickSheet_items: Array<any>
+};
+
 const sickSheet = (
-  state = { isFetching: false, sickSheet_items: [] },
+  state: sickSheetState = { isFetching: false, sickSheet_items: [] },
   action
 ) => {
   switch (action.type) {
@@ -320,7 +363,15 @@ const sickSheet = (
   }
 };
 
-const addUser = (state = { isFetching: false, message: "" }, action) => {
+type addUserState = {
+  isFetching: boolean,
+  message: string
+};
+
+const addUser = (
+  state: addUserState = { isFetching: false, message: "" },
+  action
+) => {
   switch (action.type) {
     case NEW_USER_RECORD_REQUEST:
       return { ...state, isFetching: true };
@@ -335,7 +386,15 @@ const addUser = (state = { isFetching: false, message: "" }, action) => {
   }
 };
 
-const modifyUser = (state = { isFetching: false, message: "" }, action) => {
+type modifyUserState = {
+  isFetching: boolean,
+  message: string
+};
+
+const modifyUser = (
+  state: modifyUserState = { isFetching: false, message: "" },
+  action
+) => {
   switch (action.type) {
     case MODIFY_USER_RECORD_REQUEST:
       return { ...state, isFetching: true };
@@ -350,8 +409,13 @@ const modifyUser = (state = { isFetching: false, message: "" }, action) => {
   }
 };
 
+type archivedUserState = {
+  isArchiveFetching: boolean,
+  archiveMessage: string
+};
+
 const archiveUser = (
-  state = { isArchiveFetching: false, archiveMessage: "" },
+  state: archivedUserState = { isArchiveFetching: false, archiveMessage: "" },
   action
 ) => {
   switch (action.type) {
@@ -380,8 +444,16 @@ const archiveUser = (
   }
 };
 
+type unArchivedUserState = {
+  isUnArchiveFetching: boolean,
+  unArchiveMessage: string
+};
+
 const unArchiveUser = (
-  state = { isUnArchiveFetching: false, unArchiveMessage: "" },
+  state: unArchivedUserState = {
+    isUnArchiveFetching: false,
+    unArchiveMessage: ""
+  },
   action
 ) => {
   switch (action.type) {
@@ -410,8 +482,13 @@ const unArchiveUser = (
   }
 };
 
+type publicHolidayState = {
+  isFetching: boolean,
+  public_holiday: Array<any>
+};
+
 const publicHoliday = (
-  state = { isFetching: false, public_holiday: [] },
+  state: publicHolidayState = { isFetching: false, public_holiday: [] },
   action
 ) => {
   switch (action.type) {
@@ -430,8 +507,16 @@ const publicHoliday = (
   }
 };
 
+type addPublicHolidayState = {
+  isAddPublicFetching: boolean,
+  addPublicMessage: string
+};
+
 const addPublicHoliday = (
-  state = { isAddPublicFetching: false, addPublicMessage: "" },
+  state: addPublicHolidayState = {
+    isAddPublicFetching: false,
+    addPublicMessage: ""
+  },
   action
 ) => {
   switch (action.type) {
@@ -460,8 +545,16 @@ const addPublicHoliday = (
   }
 };
 
+type deletePublicHolidayState = {
+  isDeletePublicFetching: boolean,
+  deletePublicMessage: string
+};
+
 const deletePublicHoliday = (
-  state = { isDeletePublicFetching: false, deletePublicMessage: "" },
+  state: deletePublicHolidayState = {
+    isDeletePublicFetching: false,
+    deletePublicMessage: ""
+  },
   action
 ) => {
   switch (action.type) {
@@ -490,8 +583,13 @@ const deletePublicHoliday = (
   }
 };
 
+type approveLeaveState = {
+  isApproveLeaveFetching: boolean,
+  message: string
+};
+
 const approveLeave = (
-  state = { isApproveLeaveFetching: false, message: "" },
+  state: approveLeaveState = { isApproveLeaveFetching: false, message: "" },
   action
 ) => {
   switch (action.type) {
@@ -514,8 +612,13 @@ const approveLeave = (
   }
 };
 
+type declineLeaveState = {
+  isDeclineLeaveFetching: boolean,
+  message: string
+};
+
 const declineLeave = (
-  state = { isDeclineLeaveFetching: false, message: "" },
+  state: declineLeaveState = { isDeclineLeaveFetching: false, message: "" },
   action
 ) => {
   switch (action.type) {
@@ -538,8 +641,13 @@ const declineLeave = (
   }
 };
 
+type editLeaveState = {
+  isEditLeaveFetching: boolean,
+  editLeaveMessage: string
+};
+
 const editLeave = (
-  state = { isEditLeaveFetching: false, editLeaveMessage: "" },
+  state: editLeaveState = { isEditLeaveFetching: false, editLeaveMessage: "" },
   action
 ) => {
   switch (action.type) {
@@ -568,8 +676,16 @@ const editLeave = (
   }
 };
 
+type deleteLeaveState = {
+  isDeleteLeaveFetching: boolean,
+  deleteLeaveMessage: string
+};
+
 const deleteLeave = (
-  state = { isDeleteLeaveFetching: false, deleteLeaveMessage: "" },
+  state: deleteLeaveState = {
+    isDeleteLeaveFetching: false,
+    deleteLeaveMessage: ""
+  },
   action
 ) => {
   switch (action.type) {
