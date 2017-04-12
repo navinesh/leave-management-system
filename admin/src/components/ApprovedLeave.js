@@ -15,7 +15,7 @@ import customStyles from "../Styles";
 
 import { fetchApprovedLeave } from "../actions/ApprovedLeave";
 
-class ApprovedLeaveList extends Component {
+export default class ApprovedLeaveList extends Component {
   props: {
     approved_items: Array<any>,
     public_holiday: Array<any>,
@@ -619,5 +619,3 @@ class ApprovedLeaveList extends Component {
         </div>;
   }
 }
-
-export default ApprovedLeaveList;
