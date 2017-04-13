@@ -38,3 +38,7 @@ declare module "halogen/ClipLoader" {
 declare module "halogen/BeatLoader" {
   declare var exports: any;
 }
+
+declare module "axios" {
+  declare var exports: any;
+}
