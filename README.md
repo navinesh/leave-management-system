@@ -7,12 +7,14 @@ A web application to manage employee leave records. There are two modules; user 
 * ReactJS
 * Redux
 * React-Router
+* Flow
 * React-Modal
 * MomentJS
 * React-datepicker
 * Moment-range
 * Axios
 * Bootstrap
+* Redux-thunk
 
 **What's included**
 
@@ -26,7 +28,13 @@ Server
 
 **How to Run the Project**
 
-to-do
+Admin and User module is developed using Create React App tool https://github.com/facebookincubator/create-react-app 
+
+You can create an app using this tool and replace the src folder with the folder in admin and user modules.
+
+Install required libraries and dependencies.
+
+And then run your project using ```npm start``` or ```yarn start```.
 
 **Creator**
 Navinesh Chand
