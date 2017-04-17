@@ -1,3 +1,4 @@
+// @flow
 export const REQUEST_LEAVE_RECORD = "REQUEST_LEAVE_RECORD";
 export const RECEIVE_LEAVE_RECORD = "RECEIVE_LEAVE_RECORD";
 export const ERROR_LEAVE_RECORD = "ERROR_LEAVE_RECORD";
@@ -6,7 +7,7 @@ export const requestLeaveRecord = () => ({
   type: REQUEST_LEAVE_RECORD
 });
 
-export const receiveLeaveRecord = json => ({
+export const receiveLeaveRecord = (json: Object) => ({
   type: RECEIVE_LEAVE_RECORD,
   leave_record: json.leave_record,
   receivedAt: Date.now()
@@ -17,7 +18,7 @@ export const errorLeaveRecord = () => ({
 });
 
 export const fetchLeaveRecord = () => {
-  return dispatch => {
+  return (dispatch: Function) => {
     dispatch(requestLeaveRecord());
     return fetch(`http://localhost:8080/leave-record.api`)
       .then(response => response.json())
