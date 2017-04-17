@@ -1,3 +1,4 @@
+// @flow
 import axios from "axios";
 
 export const DECLINE_LEAVE_REQUEST = "DECLINE_LEAVE_REQUEST";
@@ -8,18 +9,18 @@ export const requestDeclineLeave = () => ({
   type: DECLINE_LEAVE_REQUEST
 });
 
-export const receiveDeclineLeave = data => ({
+export const receiveDeclineLeave = (data: Object) => ({
   type: DECLINE_LEAVE_SUCCESS,
   message: data.message
 });
 
-export const errorDeclineLeave = data => ({
+export const errorDeclineLeave = (data: Object) => ({
   type: DECLINE_LEAVE_ERROR,
   message: data.message
 });
 
-export function submitDeclineLeave(declineLeaveData) {
-  return dispatch => {
+export function submitDeclineLeave(declineLeaveData: Object) {
+  return (dispatch: Function) => {
     dispatch(requestDeclineLeave(declineLeaveData));
     axios
       .post("http://localhost:8080/declineleave", {
