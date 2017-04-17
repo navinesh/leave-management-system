@@ -1,3 +1,4 @@
+// @flow
 import axios from "axios";
 
 export const DELETE_LEAVE_REQUEST = "DELETE_LEAVE_REQUEST";
@@ -8,18 +9,18 @@ export const requestDeleteLeave = () => ({
   type: DELETE_LEAVE_REQUEST
 });
 
-export const receiveDeleteLeave = data => ({
+export const receiveDeleteLeave = (data: Object) => ({
   type: DELETE_LEAVE_SUCCESS,
   message: data.message
 });
 
-export const errorDeleteLeave = data => ({
+export const errorDeleteLeave = (data: Object) => ({
   type: DELETE_LEAVE_ERROR,
   message: data.message
 });
 
-export function submitDeleteLeave(deleteLeaveData) {
-  return dispatch => {
+export function submitDeleteLeave(deleteLeaveData: Object) {
+  return (dispatch: Function) => {
     dispatch(requestDeleteLeave(deleteLeaveData));
     axios
       .post("http://localhost:8080/deleteleave", {
