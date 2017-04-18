@@ -4,7 +4,6 @@ import React, { Component } from "react";
 import Modal from "react-modal";
 
 const moment = require("moment");
-var Loader = require("halogen/ClipLoader");
 
 import customStyles from "../Styles";
 
@@ -217,7 +216,7 @@ export default class ArchivedStaffRecordList extends Component {
                   </form>
                   <div className="text-primary text-center">
                     {this.props.isUnArchiveFetching
-                      ? <Loader color="#0275d8" size="20px" />
+                      ? <div>Loading...</div>
                       : <p className="lead pb-2">
                           {this.props.unArchiveMessage}
                         </p>}
