@@ -1,3 +1,4 @@
+// @flow
 import axios from "axios";
 
 export const NEW_USER_RECORD_REQUEST = "NEW_USER_RECORD_REQUEST";
@@ -5,21 +6,21 @@ export const NEW_USER_RECORD_SUCCESS = "NEW_USER_RECORD_SUCCESS";
 export const NEW_USER_RECORD_FAILURE = "NEW_USER_RECORD_FAILURE";
 export const CLEAR_NEW_USER_RECORD = "CLEAR_NEW_USER_RECORD";
 
-export function requestNewUserRecord(newUserDetails) {
+export function requestNewUserRecord(newUserDetails: Object) {
   return {
     type: NEW_USER_RECORD_REQUEST,
     newUserDetails
   };
 }
 
-export function successNewUserRecord(data) {
+export function successNewUserRecord(data: Object) {
   return {
     type: NEW_USER_RECORD_SUCCESS,
     message: data.message
   };
 }
 
-export function failureNewUserRecord(data) {
+export function failureNewUserRecord(data: Object) {
   return {
     type: NEW_USER_RECORD_FAILURE,
     message: data.message
@@ -32,8 +33,8 @@ export const clearNewUserRecord = () => {
   };
 };
 
-export function submitNewUserRecord(newUserDetails) {
-  return dispatch => {
+export function submitNewUserRecord(newUserDetails: Object) {
+  return (dispatch: Function) => {
     dispatch(requestNewUserRecord(newUserDetails));
     axios
       .post("http://localhost:8080/adduser", {
