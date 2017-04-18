@@ -2,8 +2,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-const BeatLoader = require("halogen/BeatLoader");
-
 import { fetchLoginFromToken } from "../actions/AdminLogin";
 import { fetchPendingLeave } from "../actions/PendingLeave";
 import { fetchPublicHoliday } from "../actions/PublicHoliday";
@@ -46,7 +44,7 @@ class PendingLeave extends Component {
         {isAuthenticated
           ? isFetching
               ? <div className="text-center">
-                  <BeatLoader color="#0275d8" size="12px" />
+                  <div>Loading...</div>
                 </div>
               : <PendingLeaveList
                   pending_items={pending_items}
