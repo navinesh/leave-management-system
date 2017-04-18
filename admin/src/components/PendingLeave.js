@@ -4,14 +4,12 @@ import Modal from "react-modal";
 
 import { fetchPendingLeave } from "../actions/PendingLeave";
 
-var DatePicker = require("react-datepicker");
-require("react-datepicker/dist/react-datepicker.css");
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 import Moment from "moment";
 import { extendMoment } from "moment-range";
 const moment = extendMoment(Moment);
-
-var Loader = require("halogen/ClipLoader");
 
 import customStyles from "../Styles";
 
@@ -602,7 +600,7 @@ export default class PendingLeaveList extends Component {
                   </form>
                   <div className="text-primary text-center">
                     {this.props.isEditLeaveFetching
-                      ? <Loader color="#0275d8" size="20px" />
+                      ? <div>Loading...</div>
                       : <p className="lead pb-2">
                           {this.props.editLeaveMessage}
                         </p>}
