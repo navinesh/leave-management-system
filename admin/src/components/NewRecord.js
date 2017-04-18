@@ -1,12 +1,10 @@
 // @flow
 import React, { Component } from "react";
 
-var DatePicker = require("react-datepicker");
-require("react-datepicker/dist/react-datepicker.css");
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const moment = require("moment");
-
-var Loader = require("halogen/ClipLoader");
 
 export default class NewRecordForm extends Component {
   props: {
@@ -180,12 +178,9 @@ export default class NewRecordForm extends Component {
 
     this.props.onNewUserRecordSubmit(newUserDetails);
 
-    setTimeout(
-      () => {
-        this.props.dispatch({ type: "CLEAR_NEW_USER_RECORD" });
-      },
-      5000
-    );
+    setTimeout(() => {
+      this.props.dispatch({ type: "CLEAR_NEW_USER_RECORD" });
+    }, 5000);
   }
 
   render() {
@@ -395,7 +390,7 @@ export default class NewRecordForm extends Component {
               </div>
             </form>
             <div className="text-primary text-center">
-              {isFetching ? <Loader color="#0275d8" size="20px" /> : message}
+              {isFetching ? <div>Loading...</div> : message}
             </div>
             <div className="text-danger text-center">
               <div>{this.state.errorMessage}</div>
