@@ -2,8 +2,6 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-var Loader = require("halogen/ClipLoader");
-
 export default class Login extends Component {
   props: {
     onLoginClick: Function,
@@ -87,7 +85,7 @@ export default class Login extends Component {
             </div>
           </form>
           <div className="text-danger text-center">
-            {isFetching ? <Loader color="#0275d8" size="20px" /> : message}
+            {isFetching ? <div>Authenticating...</div> : message}
           </div>
           <div className="text-danger text-center">
             <div>{this.state.errorMessage}</div>
