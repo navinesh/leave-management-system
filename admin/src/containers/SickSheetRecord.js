@@ -3,8 +3,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 
-const BeatLoader = require("halogen/BeatLoader");
-
 import { fetchLoginFromToken } from "../actions/AdminLogin";
 import { fetchSickSheetRecord } from "../actions/SickSheetRecord";
 import SickSheetList from "../components/SickSheetRecord";
@@ -29,7 +27,7 @@ class SickSheetRecord extends Component {
         {isAuthenticated
           ? isFetching
               ? <div className="text-center">
-                  <BeatLoader color="#0275d8" size="12px" />
+                  <div>Loading...</div>
                 </div>
               : <SickSheetList sickSheet_items={sickSheet_items} />
           : <Redirect to="/" />}
