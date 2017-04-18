@@ -3,8 +3,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 
-const BeatLoader = require("halogen/BeatLoader");
-
 import { fetchLoginFromToken } from "../actions/AdminLogin";
 import { fetchApprovedLeave } from "../actions/ApprovedLeave";
 import { submitEditLeave } from "../actions/EditLeave";
@@ -39,7 +37,7 @@ class ApprovedLeave extends Component {
         {isAuthenticated
           ? isFetching
               ? <div className="text-center">
-                  <BeatLoader color="#0275d8" size="12px" />
+                  <div>Loading...</div>
                 </div>
               : <ApprovedLeaveList
                   approved_items={approved_items}
