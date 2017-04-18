@@ -5,12 +5,10 @@ import { searchStaffRecord, fetchStaffRecord } from "../actions/StaffRecord";
 
 import Modal from "react-modal";
 
-var DatePicker = require("react-datepicker");
-require("react-datepicker/dist/react-datepicker.css");
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const moment = require("moment");
-
-var Loader = require("halogen/ClipLoader");
 
 import customStyles from "../Styles";
 
@@ -562,7 +560,7 @@ export default class StaffRecordList extends Component {
                     </form>
                     <div className=" text-center bp-2">
                       {isFetching
-                        ? <Loader color="#0275d8" size="20px" />
+                        ? <div>Loading...</div>
                         : <p className="lead">{message}</p>}
                     </div>
                     <div className="text-danger text-center pb-4">
@@ -621,7 +619,7 @@ export default class StaffRecordList extends Component {
                   </form>
                   <div className="text-primary text-center">
                     {isArchiveFetching
-                      ? <Loader color="#0275d8" size="20px" />
+                      ? <div>Loading...</div>
                       : <p className="lead pb-2">{archiveMessage}</p>}
                   </div>
                   <div className="text-danger text-center">
