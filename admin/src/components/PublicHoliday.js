@@ -1,12 +1,10 @@
 // @flow
 import React, { Component } from "react";
 
-var DatePicker = require("react-datepicker");
-require("react-datepicker/dist/react-datepicker.css");
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 const moment = require("moment");
-
-var Loader = require("halogen/ClipLoader");
 
 const PublicHolidays = (
   props: {
@@ -40,14 +38,14 @@ const PublicHolidays = (
             <div>
               {props.isAddPublicFetching
                 ? <div className="text-center">
-                    <Loader color="#0275d8" size="20px" />
+                    <div>Loading...</div>
                   </div>
                 : <p className="text-primary">
                     {props.addPublicMessage}
                   </p>}
               {props.isDeletePublicFetching
                 ? <div className="text-center">
-                    <Loader color="#0275d8" size="20px" />
+                    <div>Loading...</div>
                   </div>
                 : <p className="text-primary">
                     {props.deletePublicMessage}
@@ -88,12 +86,9 @@ class AddPublicHoliday extends Component {
         errorMessage: "You did not select any date!"
       });
 
-      setTimeout(
-        () => {
-          this.setState({ errorMessage: "" });
-        },
-        5000
-      );
+      setTimeout(() => {
+        this.setState({ errorMessage: "" });
+      }, 5000);
       return null;
     }
 
@@ -104,12 +99,9 @@ class AddPublicHoliday extends Component {
     this.props.onAddPublicHolidaySubmit(publicHolidayDate);
     this.setState({ holidayDate: "", errorMessage: "" });
 
-    setTimeout(
-      () => {
-        this.props.dispatch({ type: "CLEAR_ADD_PUBLIC_MESSAGE" });
-      },
-      5000
-    );
+    setTimeout(() => {
+      this.props.dispatch({ type: "CLEAR_ADD_PUBLIC_MESSAGE" });
+    }, 5000);
   }
 
   render() {
@@ -160,12 +152,9 @@ class DeletePublicHoliday extends Component {
         errorMessage: "Valid ID is required!"
       });
 
-      setTimeout(
-        () => {
-          this.setState({ errorMessage: "" });
-        },
-        5000
-      );
+      setTimeout(() => {
+        this.setState({ errorMessage: "" });
+      }, 5000);
       return null;
     }
 
@@ -176,12 +165,9 @@ class DeletePublicHoliday extends Component {
     this.props.onDeletePublicHolidaySubmit(deletePublicHolidayDate);
     this.setState({ id: "", errorMessage: "" });
 
-    setTimeout(
-      () => {
-        this.props.dispatch({ type: "CLEAR_DELETE_PUBLIC_MESSAGE" });
-      },
-      5000
-    );
+    setTimeout(() => {
+      this.props.dispatch({ type: "CLEAR_DELETE_PUBLIC_MESSAGE" });
+    }, 5000);
   }
 
   render() {
