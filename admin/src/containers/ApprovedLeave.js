@@ -3,6 +3,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 
+import "../spinners.css";
+
 import { fetchLoginFromToken } from "../actions/AdminLogin";
 import { fetchApprovedLeave } from "../actions/ApprovedLeave";
 import { submitEditLeave } from "../actions/EditLeave";
@@ -37,7 +39,7 @@ class ApprovedLeave extends Component {
         {isAuthenticated
           ? isFetching
               ? <div className="text-center">
-                  <div>Loading...</div>
+                  <div className="loader1" />
                 </div>
               : <ApprovedLeaveList
                   approved_items={approved_items}
