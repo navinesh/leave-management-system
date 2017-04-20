@@ -2,8 +2,6 @@
 import React, { Component } from "react";
 import Modal from "react-modal";
 
-import { fetchPendingLeave } from "../actions/PendingLeave";
-
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -12,6 +10,9 @@ import { extendMoment } from "moment-range";
 const moment = extendMoment(Moment);
 
 import customStyles from "../Styles";
+import "../spinners.css";
+
+import { fetchPendingLeave } from "../actions/PendingLeave";
 
 export default class PendingLeaveList extends Component {
   props: {
@@ -600,7 +601,7 @@ export default class PendingLeaveList extends Component {
                   </form>
                   <div className="text-primary text-center">
                     {this.props.isEditLeaveFetching
-                      ? <div>Loading...</div>
+                      ? <div className="loader1" />
                       : <p className="lead pb-2">
                           {this.props.editLeaveMessage}
                         </p>}
