@@ -3,6 +3,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 
+import "../spinners.css";
+
 import { fetchLoginFromToken } from "../actions/AdminLogin";
 import { fetchLeaveRecord } from "../actions/LeaveReport";
 import LeaveReportList from "../components/LeaveReport";
@@ -27,7 +29,7 @@ class LeaveReport extends Component {
         {isAuthenticated
           ? isFetching
               ? <div className="text-center">
-                  <div>Loading...</div>
+                  <div className="loader1" />
                 </div>
               : <LeaveReportList leave_record={leave_record} />
           : <Redirect to="/" />}
