@@ -2,6 +2,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
+import "../spinners.css";
+
 import { fetchLoginFromToken } from "../actions/AdminLogin";
 import { fetchPendingLeave } from "../actions/PendingLeave";
 import { fetchPublicHoliday } from "../actions/PublicHoliday";
@@ -44,7 +46,7 @@ class PendingLeave extends Component {
         {isAuthenticated
           ? isFetching
               ? <div className="text-center">
-                  <div>Loading...</div>
+                  <div className="loader1" />
                 </div>
               : <PendingLeaveList
                   pending_items={pending_items}
