@@ -11,6 +11,7 @@ import "react-datepicker/dist/react-datepicker.css";
 const moment = require("moment");
 
 import customStyles from "../Styles";
+import "../spinners.css";
 
 export default class StaffRecordList extends Component {
   props: {
@@ -560,7 +561,7 @@ export default class StaffRecordList extends Component {
                     </form>
                     <div className=" text-center bp-2">
                       {isFetching
-                        ? <div>Loading...</div>
+                        ? <div className="loader1" />
                         : <p className="lead">{message}</p>}
                     </div>
                     <div className="text-danger text-center pb-4">
@@ -619,7 +620,7 @@ export default class StaffRecordList extends Component {
                   </form>
                   <div className="text-primary text-center">
                     {isArchiveFetching
-                      ? <div>Loading...</div>
+                      ? <div className="loader1" />
                       : <p className="lead pb-2">{archiveMessage}</p>}
                   </div>
                   <div className="text-danger text-center">
