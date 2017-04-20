@@ -1,18 +1,18 @@
 // @flow
-import React, { Component } from "react";
-import Modal from "react-modal";
+import React, { Component } from 'react';
+import Modal from 'react-modal';
 
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
-import Moment from "moment";
-import { extendMoment } from "moment-range";
+import Moment from 'moment';
+import { extendMoment } from 'moment-range';
 const moment = extendMoment(Moment);
 
-import customStyles from "../Styles";
-import "../spinners.css";
+import customStyles from '../Styles';
+import '../spinners.css';
 
-import { fetchPendingLeave } from "../actions/PendingLeave";
+import { fetchPendingLeave } from '../actions/PendingLeave';
 
 export default class PendingLeaveList extends Component {
   props: {
@@ -57,12 +57,12 @@ export default class PendingLeaveList extends Component {
   constructor() {
     super();
     this.state = {
-      errorMessage: "",
-      declineReason: "",
-      editReason: "",
-      startDate: "",
-      endDate: "",
-      listID: "",
+      errorMessage: '',
+      declineReason: '',
+      editReason: '',
+      startDate: '',
+      endDate: '',
+      listID: '',
       showModal1: false,
       showModal2: false
     };
@@ -107,7 +107,7 @@ export default class PendingLeaveList extends Component {
   handleCloseModal1() {
     const { dispatch } = this.props;
 
-    this.setState({ showModal1: false, errorMessage: "" });
+    this.setState({ showModal1: false, errorMessage: '' });
     if (this.state.declineReason) {
       dispatch(fetchPendingLeave());
     }
@@ -116,20 +116,20 @@ export default class PendingLeaveList extends Component {
   handleCloseModal2() {
     const { dispatch } = this.props;
 
-    this.setState({ showModal2: false, errorMessage: "" });
+    this.setState({ showModal2: false, errorMessage: '' });
     if (this.state.editReason) {
       dispatch(fetchPendingLeave());
-      dispatch({ type: "CLEAR_EDIT_LEAVE" });
+      dispatch({ type: 'CLEAR_EDIT_LEAVE' });
     }
   }
 
   handleApproveLeave(e: Event) {
     const leaveID = e.target.id ? e.target.id : null;
-    const LeaveStatus = "approved";
+    const LeaveStatus = 'approved';
 
     if (!leaveID) {
       this.setState({
-        errorMessage: "Could not get leave id!"
+        errorMessage: 'Could not get leave id!'
       });
       return;
     }
@@ -151,7 +151,7 @@ export default class PendingLeaveList extends Component {
 
     if (!reason) {
       this.setState({
-        errorMessage: "Reason field is mandatory!"
+        errorMessage: 'Reason field is mandatory!'
       });
       return;
     }
@@ -171,22 +171,22 @@ export default class PendingLeaveList extends Component {
     const leave_id = parseInt(this.state.listID, 10);
     const startDate = this.state.startDate
       ? this.state.startDate
-      : moment(this.startDate.value, "DD/MM/YYYY");
+      : moment(this.startDate.value, 'DD/MM/YYYY');
     const endDate = this.state.endDate
       ? this.state.endDate
-      : moment(this.endDate.value, "DD/MM/YYYY");
+      : moment(this.endDate.value, 'DD/MM/YYYY');
     const leave = this.leave_name.value;
     const leaveType = this.leave_type.value;
     const reason = this.state.editReason ? this.state.editReason.trim() : null;
 
     const obj = {};
     pending_items.filter(e => e.id === leave_id).map(record => {
-      obj["annual"] = record.user.annual;
-      obj["sick"] = record.user.sick;
-      obj["bereavement"] = record.user.bereavement;
-      obj["christmas"] = record.user.christmas;
-      obj["maternity"] = record.user.maternity;
-      obj["date_of_birth"] = record.user.date_of_birth;
+      obj['annual'] = record.user.annual;
+      obj['sick'] = record.user.sick;
+      obj['bereavement'] = record.user.bereavement;
+      obj['christmas'] = record.user.christmas;
+      obj['maternity'] = record.user.maternity;
+      obj['date_of_birth'] = record.user.date_of_birth;
       return null;
     });
 
@@ -201,18 +201,18 @@ export default class PendingLeaveList extends Component {
       !leave_id || !leave || !leaveType || !startDate || !endDate || !reason
     ) {
       this.setState({
-        errorMessage: "Reason field is mandatory!"
+        errorMessage: 'Reason field is mandatory!'
       });
 
       return;
     }
 
     // get date range from user selection
-    const leaveRangeDays = endDate.diff(startDate, "days") + 1;
+    const leaveRangeDays = endDate.diff(startDate, 'days') + 1;
 
     // check user data range selection
     if (leaveRangeDays <= 0) {
-      this.setState({ errorMessage: "The dates you selected are invalid!" });
+      this.setState({ errorMessage: 'The dates you selected are invalid!' });
       return;
     }
 
@@ -220,14 +220,14 @@ export default class PendingLeaveList extends Component {
     const range = moment.range(startDate, endDate);
 
     const dateRange = [];
-    for (let numDays of range.by("days")) {
-      dateRange.push(numDays.format("DD, MM, YYYY"));
+    for (let numDays of range.by('days')) {
+      dateRange.push(numDays.format('DD, MM, YYYY'));
     }
 
     const weekend = [];
-    for (let numWeekends of range.by("days")) {
+    for (let numWeekends of range.by('days')) {
       if (numWeekends.isoWeekday() === 6 || numWeekends.isoWeekday() === 7) {
-        weekend.push(numWeekends.format("DD, MM, YYYY"));
+        weekend.push(numWeekends.format('DD, MM, YYYY'));
       }
     }
 
@@ -241,7 +241,7 @@ export default class PendingLeaveList extends Component {
     // exclude public holidays
     const publicHolidays = this.props.public_holiday.map(item => {
       let hDate = new Date(item.holiday_date);
-      let holiday_date = moment(hDate).format("DD, MM, YYYY");
+      let holiday_date = moment(hDate).format('DD, MM, YYYY');
       return holiday_date;
     });
 
@@ -253,14 +253,14 @@ export default class PendingLeaveList extends Component {
 
     if (leaveDays === 0) {
       this.setState({
-        errorMessage: "The dates you selected fall on public holiday!"
+        errorMessage: 'The dates you selected fall on public holiday!'
       });
       return;
     }
 
     // if half day then subtract 0.5
-    const myLeaveDays = leaveType === "half day am" ||
-      leaveType === "half day pm"
+    const myLeaveDays = leaveType === 'half day am' ||
+      leaveType === 'half day pm'
       ? leaveDays - 0.5
       : leaveDays;
 
@@ -306,21 +306,21 @@ export default class PendingLeaveList extends Component {
     const applicationDays = getLeaveDays(leave);
 
     if (applicationDays < 0) {
-      this.setState({ errorMessage: "Leave balance cannot be negative!" });
+      this.setState({ errorMessage: 'Leave balance cannot be negative!' });
       return;
     }
 
     if (applicationDays === undefined) {
       this.setState({
-        errorMessage: "The date you selected as date of birth does not match our record!"
+        errorMessage: 'The date you selected as date of birth does not match our record!'
       });
       return;
     }
 
-    const sDate = moment(startDate).format("DD/MM/YYYY");
-    const eDate = moment(endDate).format("DD/MM/YYYY");
+    const sDate = moment(startDate).format('DD/MM/YYYY');
+    const eDate = moment(endDate).format('DD/MM/YYYY');
 
-    this.setState({ errorMessage: "" });
+    this.setState({ errorMessage: '' });
 
     const editLeaveData = {
       leave_id: leave_id,
@@ -341,7 +341,7 @@ export default class PendingLeaveList extends Component {
 
     const itemNodes = this.props.pending_items.map(record => (
       <tr key={record.id}>
-        <td>{record.user.othernames}{" "}{record.user.surname}</td>
+        <td>{record.user.othernames}{' '}{record.user.surname}</td>
         <td>{record.leave_name}</td>
         <td>{record.leave_type}</td>
         <td>{record.start_date}</td>
@@ -383,7 +383,7 @@ export default class PendingLeaveList extends Component {
           <div className="table-responsive">
             <table
               className="table table-bordered table-hover"
-              style={{ backgroundColor: "#FFFFFF" }}
+              style={{ backgroundColor: '#FFFFFF' }}
             >
               <thead className="thead-default">
                 <tr>
@@ -422,7 +422,7 @@ export default class PendingLeaveList extends Component {
                   </div>
                   <form onSubmit={this.handleDeclineSubmit}>
                     <div className="modal-body">
-                      <p>{record.user.othernames}{" "}{record.user.surname}</p>
+                      <p>{record.user.othernames}{' '}{record.user.surname}</p>
                       <div className="form-group">
                         <label htmlFor="reason">Reason</label>
                         <input
@@ -478,7 +478,7 @@ export default class PendingLeaveList extends Component {
                       <div className="row">
                         <div className="col">
                           <p className="h5">
-                            {record.user.othernames}{" "}{record.user.surname}
+                            {record.user.othernames}{' '}{record.user.surname}
                           </p>
                         </div>
                       </div>
@@ -500,7 +500,7 @@ export default class PendingLeaveList extends Component {
                               <option>bereavement</option>
                               <option>christmas</option>
                               <option>birthday</option>
-                              {record.user.gender === "female"
+                              {record.user.gender === 'female'
                                 ? <option>maternity</option>
                                 : null}
                               <option>lwop</option>
@@ -614,7 +614,7 @@ export default class PendingLeaveList extends Component {
             </div>
           ))}
         </div>
-      : <div className="text-center" style={{ paddingTop: "40px" }}>
+      : <div className="text-center" style={{ paddingTop: '40px' }}>
           <h1 className="display-4">There are no pending leave record.</h1>
         </div>;
   }
