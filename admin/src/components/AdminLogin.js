@@ -2,6 +2,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
+import "../spinners.css";
+
 export default class Login extends Component {
   props: {
     onLoginClick: Function,
@@ -85,7 +87,7 @@ export default class Login extends Component {
             </div>
           </form>
           <div className="text-danger text-center">
-            {isFetching ? <div>Authenticating...</div> : message}
+            {isFetching ? <div className="loader" /> : message}
           </div>
           <div className="text-danger text-center">
             <div>{this.state.errorMessage}</div>
