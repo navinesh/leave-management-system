@@ -3,6 +3,8 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 
+import "../spinners.css";
+
 import { fetchLoginFromToken } from "../actions/AdminLogin";
 import { fetchSickSheetRecord } from "../actions/SickSheetRecord";
 import SickSheetList from "../components/SickSheetRecord";
@@ -27,7 +29,7 @@ class SickSheetRecord extends Component {
         {isAuthenticated
           ? isFetching
               ? <div className="text-center">
-                  <div>Loading...</div>
+                  <div className="loader1" />
                 </div>
               : <SickSheetList sickSheet_items={sickSheet_items} />
           : <Redirect to="/" />}
