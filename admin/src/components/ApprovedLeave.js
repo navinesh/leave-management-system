@@ -10,6 +10,7 @@ import { extendMoment } from "moment-range";
 const moment = extendMoment(Moment);
 
 import customStyles from "../Styles";
+import "../spinners.css";
 
 import { fetchApprovedLeave } from "../actions/ApprovedLeave";
 
@@ -550,7 +551,7 @@ export default class ApprovedLeaveList extends Component {
                   </form>
                   <div className="text-primary text-center">
                     {this.props.isEditLeaveFetching
-                      ? <div>Loading...</div>
+                      ? <div className="loader1" />
                       : <p className="lead mb-2">
                           {this.props.editLeaveMessage}
                         </p>}
