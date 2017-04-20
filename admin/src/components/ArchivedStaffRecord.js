@@ -6,6 +6,7 @@ import Modal from "react-modal";
 const moment = require("moment");
 
 import customStyles from "../Styles";
+import "../spinners.css";
 
 import { searchStaffRecord } from "../actions/StaffRecord";
 import { fetchArchivedStaffRecord } from "../actions/ArchivedStaffRecord";
@@ -216,7 +217,7 @@ export default class ArchivedStaffRecordList extends Component {
                   </form>
                   <div className="text-primary text-center">
                     {this.props.isUnArchiveFetching
-                      ? <div>Loading...</div>
+                      ? <div className="loader1" />
                       : <p className="lead pb-2">
                           {this.props.unArchiveMessage}
                         </p>}
