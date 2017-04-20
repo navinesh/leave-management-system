@@ -6,6 +6,8 @@ import "react-datepicker/dist/react-datepicker.css";
 
 const moment = require("moment");
 
+import "../spinners.css";
+
 const PublicHolidays = (
   props: {
     public_holiday: Array<any>,
@@ -38,14 +40,14 @@ const PublicHolidays = (
             <div>
               {props.isAddPublicFetching
                 ? <div className="text-center">
-                    <div>Loading...</div>
+                    <div className="loader1" />
                   </div>
                 : <p className="text-primary">
                     {props.addPublicMessage}
                   </p>}
               {props.isDeletePublicFetching
                 ? <div className="text-center">
-                    <div>Loading...</div>
+                    <div className="loader1" />
                   </div>
                 : <p className="text-primary">
                     {props.deletePublicMessage}
