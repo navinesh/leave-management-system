@@ -1,11 +1,11 @@
 //@ flow
-import axios from "axios";
+import axios from 'axios';
 
-import { fetchPendingLeave } from "../actions/PendingLeave";
+import { fetchPendingLeave } from '../actions/PendingLeave';
 
-export const APPROVE_LEAVE_REQUEST = "APPROVE_LEAVE_REQUEST";
-export const APPROVE_LEAVE_SUCCESS = "APPROVE_LEAVE_SUCCESS";
-export const APPROVE_LEAVE_ERROR = "APPROVE_LEAVE_ERROR";
+export const APPROVE_LEAVE_REQUEST = 'APPROVE_LEAVE_REQUEST';
+export const APPROVE_LEAVE_SUCCESS = 'APPROVE_LEAVE_SUCCESS';
+export const APPROVE_LEAVE_ERROR = 'APPROVE_LEAVE_ERROR';
 
 export const requestApproveLeave = () => ({
   type: APPROVE_LEAVE_REQUEST
@@ -25,7 +25,7 @@ export function submitApproveLeave(approveLeaveData) {
   return dispatch => {
     dispatch(requestApproveLeave(approveLeaveData));
     axios
-      .post("http://localhost:8080/approveleave", {
+      .post('http://localhost:8080/approveleave', {
         leave_id: approveLeaveData.leaveID,
         LeaveStatus: approveLeaveData.LeaveStatus
       })
