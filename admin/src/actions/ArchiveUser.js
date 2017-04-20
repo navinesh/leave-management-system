@@ -1,10 +1,10 @@
 // @flow
-import axios from "axios";
+import axios from 'axios';
 
-export const ARCHIVE_USER_REQUEST = "ARCHIVE_USER_REQUEST";
-export const ARCHIVE_USER_SUCCESS = "ARCHIVE_USER_SUCCESS";
-export const ARCHIVE_USER_FAILURE = "ARCHIVE_USER_FAILURE";
-export const CLEAR_ARCHIVE_MESSAGE = "CLEAR_ARCHIVE_MESSAGE";
+export const ARCHIVE_USER_REQUEST = 'ARCHIVE_USER_REQUEST';
+export const ARCHIVE_USER_SUCCESS = 'ARCHIVE_USER_SUCCESS';
+export const ARCHIVE_USER_FAILURE = 'ARCHIVE_USER_FAILURE';
+export const CLEAR_ARCHIVE_MESSAGE = 'CLEAR_ARCHIVE_MESSAGE';
 
 export function requestArchiveUser(archiveUser: Object) {
   return { type: ARCHIVE_USER_REQUEST, archiveUser };
@@ -24,7 +24,7 @@ export function submitArchiveUser(archiveUser: Object) {
   return (dispatch: Function) => {
     dispatch(requestArchiveUser(archiveUser));
     axios
-      .post("http://localhost:8080/archiveuser", {
+      .post('http://localhost:8080/archiveuser', {
         user_id: archiveUser.id,
         isArchived: archiveUser.isArchived,
         archiveReason: archiveUser.archiveReason
