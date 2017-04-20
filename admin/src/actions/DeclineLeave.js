@@ -1,9 +1,9 @@
 // @flow
-import axios from "axios";
+import axios from 'axios';
 
-export const DECLINE_LEAVE_REQUEST = "DECLINE_LEAVE_REQUEST";
-export const DECLINE_LEAVE_SUCCESS = "DECLINE_LEAVE_SUCCESS";
-export const DECLINE_LEAVE_ERROR = "DECLINE_LEAVE_ERROR";
+export const DECLINE_LEAVE_REQUEST = 'DECLINE_LEAVE_REQUEST';
+export const DECLINE_LEAVE_SUCCESS = 'DECLINE_LEAVE_SUCCESS';
+export const DECLINE_LEAVE_ERROR = 'DECLINE_LEAVE_ERROR';
 
 export const requestDeclineLeave = () => ({
   type: DECLINE_LEAVE_REQUEST
@@ -23,7 +23,7 @@ export function submitDeclineLeave(declineLeaveData: Object) {
   return (dispatch: Function) => {
     dispatch(requestDeclineLeave(declineLeaveData));
     axios
-      .post("http://localhost:8080/declineleave", {
+      .post('http://localhost:8080/declineleave', {
         leave_id: declineLeaveData.leaveID,
         LeaveStatus: declineLeaveData.LeaveStatus,
         DeclineReason: declineLeaveData.DeclineReason
