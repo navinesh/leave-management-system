@@ -1,11 +1,11 @@
 // @flow
-import axios from "axios";
-import { fetchPublicHoliday } from "../actions/PublicHoliday";
+import axios from 'axios';
+import { fetchPublicHoliday } from '../actions/PublicHoliday';
 
-export const ADD_PUBLIC_HOLIDAY_REQUEST = "ADD_PUBLIC_HOLIDAY_REQUEST";
-export const ADD_PUBLIC_HOLIDAY_SUCCESS = "ADD_PUBLIC_HOLIDAY_SUCCESS";
-export const ADD_PUBLIC_HOLIDAY_FAILURE = "ADD_PUBLIC_HOLIDAY_FAILURE";
-export const CLEAR_ADD_PUBLIC_MESSAGE = "CLEAR_ADD_PUBLIC_MESSAGE";
+export const ADD_PUBLIC_HOLIDAY_REQUEST = 'ADD_PUBLIC_HOLIDAY_REQUEST';
+export const ADD_PUBLIC_HOLIDAY_SUCCESS = 'ADD_PUBLIC_HOLIDAY_SUCCESS';
+export const ADD_PUBLIC_HOLIDAY_FAILURE = 'ADD_PUBLIC_HOLIDAY_FAILURE';
+export const CLEAR_ADD_PUBLIC_MESSAGE = 'CLEAR_ADD_PUBLIC_MESSAGE';
 
 export function requestAddPublicHoliday(archiveUser: Object) {
   return { type: ADD_PUBLIC_HOLIDAY_REQUEST, archiveUser };
@@ -25,7 +25,7 @@ export function submitAddPublicHoliday(publicHolidayDate: Object) {
   return (dispatch: Function) => {
     dispatch(requestAddPublicHoliday(publicHolidayDate));
     axios
-      .post("http://localhost:8080/addpublicholiday", {
+      .post('http://localhost:8080/addpublicholiday', {
         holidayDate: publicHolidayDate.holidayDate
       })
       .then(response => {
