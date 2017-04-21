@@ -1,10 +1,10 @@
 // @flow
-import axios from "axios";
+import axios from 'axios';
 
-export const EDIT_LEAVE_REQUEST = "EDIT_LEAVE_REQUEST";
-export const EDIT_LEAVE_SUCCESS = "EDIT_LEAVE_SUCCESS";
-export const EDIT_LEAVE_FAILURE = "EDIT_LEAVE_FAILURE";
-export const CLEAR_EDIT_LEAVE = "CLEAR_EDIT_LEAVE";
+export const EDIT_LEAVE_REQUEST = 'EDIT_LEAVE_REQUEST';
+export const EDIT_LEAVE_SUCCESS = 'EDIT_LEAVE_SUCCESS';
+export const EDIT_LEAVE_FAILURE = 'EDIT_LEAVE_FAILURE';
+export const CLEAR_EDIT_LEAVE = 'CLEAR_EDIT_LEAVE';
 
 export function requestEditLeave(editLeaveData: Object) {
   return { type: EDIT_LEAVE_REQUEST, editLeaveData };
@@ -24,7 +24,7 @@ export function submitEditLeave(editLeaveData: Object) {
   return (dispatch: Function) => {
     dispatch(requestEditLeave(editLeaveData));
     axios
-      .post("http://localhost:8080/editleave", {
+      .post('http://localhost:8080/editleave', {
         leave_id: editLeaveData.leave_id,
         leave: editLeaveData.leave,
         leaveType: editLeaveData.leaveType,
