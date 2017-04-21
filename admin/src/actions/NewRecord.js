@@ -1,10 +1,10 @@
 // @flow
-import axios from "axios";
+import axios from 'axios';
 
-export const NEW_USER_RECORD_REQUEST = "NEW_USER_RECORD_REQUEST";
-export const NEW_USER_RECORD_SUCCESS = "NEW_USER_RECORD_SUCCESS";
-export const NEW_USER_RECORD_FAILURE = "NEW_USER_RECORD_FAILURE";
-export const CLEAR_NEW_USER_RECORD = "CLEAR_NEW_USER_RECORD";
+export const NEW_USER_RECORD_REQUEST = 'NEW_USER_RECORD_REQUEST';
+export const NEW_USER_RECORD_SUCCESS = 'NEW_USER_RECORD_SUCCESS';
+export const NEW_USER_RECORD_FAILURE = 'NEW_USER_RECORD_FAILURE';
+export const CLEAR_NEW_USER_RECORD = 'CLEAR_NEW_USER_RECORD';
 
 export function requestNewUserRecord(newUserDetails: Object) {
   return {
@@ -37,7 +37,7 @@ export function submitNewUserRecord(newUserDetails: Object) {
   return (dispatch: Function) => {
     dispatch(requestNewUserRecord(newUserDetails));
     axios
-      .post("http://localhost:8080/adduser", {
+      .post('http://localhost:8080/adduser', {
         surname: newUserDetails.surname,
         othernames: newUserDetails.othernames,
         email: newUserDetails.staffEmail,
