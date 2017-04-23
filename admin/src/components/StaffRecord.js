@@ -1,17 +1,17 @@
 // @flow
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import { searchStaffRecord, fetchStaffRecord } from "../actions/StaffRecord";
+import { searchStaffRecord, fetchStaffRecord } from '../actions/StaffRecord';
 
-import Modal from "react-modal";
+import Modal from 'react-modal';
 
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
-const moment = require("moment");
+const moment = require('moment');
 
-import customStyles from "../Styles";
-import "../spinners.css";
+import customStyles from '../Styles';
+import '../spinners.css';
 
 export default class StaffRecordList extends Component {
   props: {
@@ -59,10 +59,10 @@ export default class StaffRecordList extends Component {
   constructor() {
     super();
     this.state = {
-      errorMessage: "",
-      listID: "",
-      dob: "",
-      archiveReason: "",
+      errorMessage: '',
+      listID: '',
+      dob: '',
+      archiveReason: '',
       showModal1: false,
       showModal2: false
     };
@@ -98,21 +98,21 @@ export default class StaffRecordList extends Component {
   }
 
   handleCloseModal1() {
-    this.setState({ showModal1: false, errorMessage: "", dob: "" });
-    this.props.dispatch({ type: "CLEAR_MODIFY_USER_MESSAGE" });
+    this.setState({ showModal1: false, errorMessage: '', dob: '' });
+    this.props.dispatch({ type: 'CLEAR_MODIFY_USER_MESSAGE' });
   }
 
   handleCloseModal2() {
     if (this.state.archiveReason) {
       this.props.dispatch(fetchStaffRecord());
-      this.props.dispatch({ type: "CLEAR_ARCHIVE_MESSAGE" });
+      this.props.dispatch({ type: 'CLEAR_ARCHIVE_MESSAGE' });
     }
 
     this.setState({
       showModal2: false,
-      errorMessage: "",
-      dob: "",
-      archiveReason: ""
+      errorMessage: '',
+      dob: '',
+      archiveReason: ''
     });
   }
 
@@ -130,14 +130,14 @@ export default class StaffRecordList extends Component {
     const gender = this.gender.value;
 
     let dobDate = new Date(this.dob.value);
-    let dob = moment(dobDate).format("MM DD YYYY");
+    let dob = moment(dobDate).format('MM DD YYYY');
 
     const dateOfBirth = this.state.dob
-      ? moment(this.state.dob).format("MM DD YYYY")
+      ? moment(this.state.dob).format('MM DD YYYY')
       : dob;
 
     const mDays = gender => {
-      if (gender.toLowerCase() === "female") {
+      if (gender.toLowerCase() === 'female') {
         return this.maternity.value ? this.maternity.value : 0;
       } else {
         return 0;
@@ -160,7 +160,7 @@ export default class StaffRecordList extends Component {
       !gender
     ) {
       this.setState({
-        errorMessage: "One or more required fields are missing!"
+        errorMessage: 'One or more required fields are missing!'
       });
       return null;
     }
@@ -192,12 +192,12 @@ export default class StaffRecordList extends Component {
 
     if (!id || !isArchived || !archiveReason) {
       this.setState({
-        errorMessage: "One or more required fields are missing!"
+        errorMessage: 'One or more required fields are missing!'
       });
       return null;
     }
 
-    this.setState({ errorMessage: "" });
+    this.setState({ errorMessage: '' });
 
     const archiveUser = {
       id: id,
@@ -228,14 +228,14 @@ export default class StaffRecordList extends Component {
       )
       .map(record => {
         let dob = new Date(record.date_of_birth);
-        let dateOfBirth = moment(dob).format("DD/MM/YYYY");
+        let dateOfBirth = moment(dob).format('DD/MM/YYYY');
 
         return (
           <div className="col-md-3" key={record.id}>
             <div className="card mb-3">
               <ul className="list-group list-group-flush">
                 <li className="list-group-item">
-                  <p className="h5">{record.othernames}{" "}{record.surname}</p>
+                  <p className="h5">{record.othernames}{' '}{record.surname}</p>
                 </li>
                 <li className="list-group-item justify-content-between">
                   Annual
@@ -267,7 +267,7 @@ export default class StaffRecordList extends Component {
                     {dateOfBirth}
                   </span>
                 </li>
-                {record.gender.toLowerCase() === "female"
+                {record.gender.toLowerCase() === 'female'
                   ? <li className="list-group-item justify-content-between">
                       Maternity
                       <span className="badge badge-primary badge-pill ">
@@ -315,7 +315,7 @@ export default class StaffRecordList extends Component {
           {filteredElements}
           {staff_record.filter(e => e.id === listID).map(record => {
             let dob = new Date(record.date_of_birth);
-            let dateOfBirth = moment(dob).format("DD/MM/YYYY");
+            let dateOfBirth = moment(dob).format('DD/MM/YYYY');
 
             return (
               <div key={record.id}>
@@ -505,7 +505,7 @@ export default class StaffRecordList extends Component {
                           </div>
                         </div>
                         <div className="row">
-                          {record.gender.toLowerCase() === "female" &&
+                          {record.gender.toLowerCase() === 'female' &&
                             <div className="col-md-6">
                               <div className="form-group">
                                 <label htmlFor="Maternity leave">
@@ -593,7 +593,7 @@ export default class StaffRecordList extends Component {
                     onSubmit={this.handleArchiveSubmit}
                   >
                     <div className="modal-body">
-                      <p>{record.othernames}{" "}{record.surname}</p>
+                      <p>{record.othernames}{' '}{record.surname}</p>
                       <div className="form-group">
                         <label htmlFor="reason">Reason</label>
                         <input
