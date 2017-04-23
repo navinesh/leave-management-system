@@ -1,15 +1,15 @@
 // @flow
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import Modal from "react-modal";
+import Modal from 'react-modal';
 
-const moment = require("moment");
+const moment = require('moment');
 
-import customStyles from "../Styles";
-import "../spinners.css";
+import customStyles from '../Styles';
+import '../spinners.css';
 
-import { searchStaffRecord } from "../actions/StaffRecord";
-import { fetchArchivedStaffRecord } from "../actions/ArchivedStaffRecord";
+import { searchStaffRecord } from '../actions/StaffRecord';
+import { fetchArchivedStaffRecord } from '../actions/ArchivedStaffRecord';
 
 export default class ArchivedStaffRecordList extends Component {
   props: {
@@ -35,8 +35,8 @@ export default class ArchivedStaffRecordList extends Component {
   constructor() {
     super();
     this.state = {
-      errorMessage: "",
-      listID: "",
+      errorMessage: '',
+      listID: '',
       showModal: false
     };
 
@@ -56,9 +56,9 @@ export default class ArchivedStaffRecordList extends Component {
   handleCloseModal(e: Event) {
     const { dispatch } = this.props;
 
-    this.setState({ showModal: false, errorMessage: "" });
+    this.setState({ showModal: false, errorMessage: '' });
     dispatch(fetchArchivedStaffRecord());
-    dispatch({ type: "CLEAR_UNARCHIVE_MESSAGE" });
+    dispatch({ type: 'CLEAR_UNARCHIVE_MESSAGE' });
   }
 
   handleSubmit(e: Event) {
@@ -68,7 +68,7 @@ export default class ArchivedStaffRecordList extends Component {
 
     if (!id) {
       this.setState({
-        errorMessage: "Could not fetch ID!"
+        errorMessage: 'Could not fetch ID!'
       });
       return null;
     }
@@ -93,14 +93,14 @@ export default class ArchivedStaffRecordList extends Component {
       )
       .map(record => {
         let dob = new Date(record.date_of_birth);
-        let dateOfBirth = moment(dob).format("DD/MM/YYYY");
+        let dateOfBirth = moment(dob).format('DD/MM/YYYY');
 
         return (
           <div className="col-md-3" key={record.id}>
             <div className="card mb-3">
               <ul className="list-group list-group-flush">
                 <li className="list-group-item">
-                  <p className="h5">{record.othernames}{" "}{record.surname}</p>
+                  <p className="h5">{record.othernames}{' '}{record.surname}</p>
                 </li>
                 <li className="list-group-item justify-content-between">
                   Annual
@@ -132,7 +132,7 @@ export default class ArchivedStaffRecordList extends Component {
                     {dateOfBirth}
                   </span>
                 </li>
-                {record.gender.toLowerCase() === "female"
+                {record.gender.toLowerCase() === 'female'
                   ? <li className="list-group-item justify-content-between">
                       Maternity
                       <span className="badge badge-primary badge-pill">
@@ -193,10 +193,10 @@ export default class ArchivedStaffRecordList extends Component {
                   >
                     <div className="modal-body">
                       <p>
-                        Are you sure you want to unarchive{" "}
+                        Are you sure you want to unarchive{' '}
                         <span className="h5">
                           {record.othernames}
-                          {" "}
+                          {' '}
                           {record.surname}
                         </span>
                         ?
