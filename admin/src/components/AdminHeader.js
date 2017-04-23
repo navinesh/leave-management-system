@@ -1,8 +1,8 @@
 // @flow
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
-import { logoutAdmin } from "../actions/AdminLogout";
+import { logoutAdmin } from '../actions/AdminLogout';
 
 export default class Header extends Component {
   props: { dispatch: Function };
@@ -27,7 +27,7 @@ export default class Header extends Component {
           >
             <span className="navbar-toggler-icon" />
           </button>
-          <Link className="navbar-brand" to="/" style={{ color: "#707070" }}>
+          <Link className="navbar-brand" to="/" style={{ color: '#707070' }}>
             Leave Management System
           </Link>
           <div
