@@ -1,10 +1,10 @@
 // @flow
-import React from "react";
+import React from 'react';
 
 const LeaveReportList = (props: { leave_record: Array<any> }) => {
   const itemNodes = props.leave_record.map(record => (
     <tr key={record.id}>
-      <td>{record.user.othernames}{" "}{record.user.surname}</td>
+      <td>{record.user.othernames}{' '}{record.user.surname}</td>
       <td>{record.leave_name}</td>
       <td>{record.leave_type}</td>
       <td>{record.start_date}</td>
@@ -20,7 +20,7 @@ const LeaveReportList = (props: { leave_record: Array<any> }) => {
     <div className="table-responsive">
       <table
         className="table table-bordered table-hover"
-        style={{ backgroundColor: "#FFFFFF" }}
+        style={{ backgroundColor: '#FFFFFF' }}
       >
         <thead className="thead-default">
           <tr>
