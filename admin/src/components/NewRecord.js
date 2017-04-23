@@ -1,12 +1,12 @@
 // @flow
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
-const moment = require("moment");
+const moment = require('moment');
 
-import "../spinners.css";
+import '../spinners.css';
 
 export default class NewRecordForm extends Component {
   props: {
@@ -49,19 +49,19 @@ export default class NewRecordForm extends Component {
   constructor() {
     super();
     this.state = {
-      errorMessage: "",
-      successMessage: "",
-      surname: "",
-      otherNames: "",
-      annualLeave: "",
-      staffEmail: "",
-      designation: "",
-      gender: "",
-      sickLeave: "",
-      bereavementLeave: "",
-      christmasLeave: "",
-      maternityLeave: "",
-      dob: ""
+      errorMessage: '',
+      successMessage: '',
+      surname: '',
+      otherNames: '',
+      annualLeave: '',
+      staffEmail: '',
+      designation: '',
+      gender: '',
+      sickLeave: '',
+      bereavementLeave: '',
+      christmasLeave: '',
+      maternityLeave: '',
+      dob: ''
     };
 
     this.handleSurnameChange = this.handleSurnameChange.bind(this);
@@ -142,7 +142,7 @@ export default class NewRecordForm extends Component {
     const maternityDays = this.state.maternityLeave
       ? this.state.maternityLeave
       : null;
-    const dateOfBirth = moment(this.state.dob).format("MM DD YYYY");
+    const dateOfBirth = moment(this.state.dob).format('MM DD YYYY');
 
     // verify data
     if (
@@ -158,7 +158,7 @@ export default class NewRecordForm extends Component {
       !gender
     ) {
       this.setState({
-        errorMessage: "One or more required fields are missing!"
+        errorMessage: 'One or more required fields are missing!'
       });
       return null;
     }
@@ -181,14 +181,14 @@ export default class NewRecordForm extends Component {
     this.props.onNewUserRecordSubmit(newUserDetails);
 
     setTimeout(() => {
-      this.props.dispatch({ type: "CLEAR_NEW_USER_RECORD" });
+      this.props.dispatch({ type: 'CLEAR_NEW_USER_RECORD' });
     }, 5000);
   }
 
   render() {
     let staffGender = this.state.gender
       ? this.state.gender.toLowerCase()
-      : "female";
+      : 'female';
     const { isFetching, message } = this.props;
 
     return (
@@ -356,7 +356,7 @@ export default class NewRecordForm extends Component {
                 </div>
               </div>
               <div className="row">
-                {staffGender === "female" &&
+                {staffGender === 'female' &&
                   <div className="col-md-6">
                     <div className="form-group">
                       <label htmlFor="Maternity leave">Maternity leave</label>
