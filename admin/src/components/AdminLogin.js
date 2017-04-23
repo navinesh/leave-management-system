@@ -1,8 +1,8 @@
 // @flow
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
-import "../spinners.css";
+import '../spinners.css';
 
 export default class Login extends Component {
   props: {
@@ -19,7 +19,7 @@ export default class Login extends Component {
 
   constructor() {
     super();
-    this.state = { errorMessage: "", email: "", password: "" };
+    this.state = { errorMessage: '', email: '', password: '' };
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleEmailChange = this.handleEmailChange.bind(this);
@@ -41,13 +41,13 @@ export default class Login extends Component {
 
     if (!email || !password) {
       this.setState({
-        errorMessage: "One or more required fields are missing!"
+        errorMessage: 'One or more required fields are missing!'
       });
 
       return;
     }
 
-    this.setState({ errorMessage: "" });
+    this.setState({ errorMessage: '' });
 
     const creds = { email: email, password: password };
     this.props.onLoginClick(creds);
