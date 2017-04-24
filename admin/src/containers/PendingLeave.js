@@ -1,24 +1,24 @@
 // @flow
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-import "../spinners.css";
+import '../spinners.css';
 
-import { fetchLoginFromToken } from "../actions/AdminLogin";
-import { fetchPendingLeave } from "../actions/PendingLeave";
-import { fetchPublicHoliday } from "../actions/PublicHoliday";
-import { submitApproveLeave } from "../actions/ApproveLeave";
-import { submitDeclineLeave } from "../actions/DeclineLeave";
-import { submitEditLeave } from "../actions/EditLeave";
-import AdminLogin from "./AdminLogin";
-import PendingLeaveList from "../components/PendingLeave";
+import { fetchLoginFromToken } from '../actions/AdminLogin';
+import { fetchPendingLeave } from '../actions/PendingLeave';
+import { fetchPublicHoliday } from '../actions/PublicHoliday';
+import { submitApproveLeave } from '../actions/ApproveLeave';
+import { submitDeclineLeave } from '../actions/DeclineLeave';
+import { submitEditLeave } from '../actions/EditLeave';
+import AdminLogin from './AdminLogin';
+import PendingLeaveList from '../components/PendingLeave';
 
 class PendingLeave extends Component {
   componentDidMount() {
     const { dispatch, auth_info } = this.props;
     let admin_token = auth_info.admin_token
       ? auth_info.admin_token
-      : localStorage.getItem("admin_token");
+      : localStorage.getItem('admin_token');
 
     if (admin_token) {
       dispatch(
