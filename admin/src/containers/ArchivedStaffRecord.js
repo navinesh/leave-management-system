@@ -1,20 +1,20 @@
 // @flow
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
-import { fetchLoginFromToken } from "../actions/AdminLogin";
-import { fetchArchivedStaffRecord } from "../actions/ArchivedStaffRecord";
-import { clearSearchStaffRecord } from "../actions/StaffRecord";
-import ArchivedStaffRecordList from "../components/ArchivedStaffRecord";
-import { submitUnArchiveUser } from "../actions/UnArchiveUser";
+import { fetchLoginFromToken } from '../actions/AdminLogin';
+import { fetchArchivedStaffRecord } from '../actions/ArchivedStaffRecord';
+import { clearSearchStaffRecord } from '../actions/StaffRecord';
+import ArchivedStaffRecordList from '../components/ArchivedStaffRecord';
+import { submitUnArchiveUser } from '../actions/UnArchiveUser';
 
 class ArchivedStaffRecord extends Component {
   componentDidMount() {
     const { dispatch, auth_info } = this.props;
     let admin_token = auth_info.admin_token
       ? auth_info.admin_token
-      : localStorage.getItem("admin_token");
+      : localStorage.getItem('admin_token');
 
     if (admin_token) {
       dispatch(fetchLoginFromToken(admin_token, fetchArchivedStaffRecord));
