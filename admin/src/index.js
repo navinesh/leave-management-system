@@ -1,39 +1,39 @@
 // @flow
-import React from "react";
-import { render } from "react-dom";
+import React from 'react';
+import { render } from 'react-dom';
 
-import { Provider } from "react-redux";
-import configureStore from "./stores/ConfigureStore";
+import { Provider } from 'react-redux';
+import configureStore from './stores/ConfigureStore';
 const store = configureStore();
 
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
-import "./index.css";
-import "./bootstrap.min.css";
+import './index.css';
+import './bootstrap.min.css';
 
-import AdminHeader from "./containers/AdminHeader";
-import PendingLeave from "./containers/PendingLeave";
-import ApprovedLeave from "./containers/ApprovedLeave";
-import StaffRecord from "./containers/StaffRecord";
-import ArchivedStaffRecord from "./containers/ArchivedStaffRecord";
-import LeaveReport from "./containers/LeaveReport";
-import SickSheetRecord from "./containers/SickSheetRecord";
-import NewRecord from "./containers/NewRecord";
-import PublicHoliday from "./containers/PublicHoliday";
-import Error from "./components/Error";
+import AdminHeader from './containers/AdminHeader';
+import PendingLeave from './containers/PendingLeave';
+import ApprovedLeave from './containers/ApprovedLeave';
+import StaffRecord from './containers/StaffRecord';
+import ArchivedStaffRecord from './containers/ArchivedStaffRecord';
+import LeaveReport from './containers/LeaveReport';
+import SickSheetRecord from './containers/SickSheetRecord';
+import NewRecord from './containers/NewRecord';
+import PublicHoliday from './containers/PublicHoliday';
+import Error from './components/Error';
 
 const PrivateRoute = ({ component, ...rest }) => (
   <Route
     {...rest}
     render={props =>
-      store.getState().adminAuth.isAuthenticated
+      (store.getState().adminAuth.isAuthenticated
         ? React.createElement(component, props)
         : <Redirect
             to={{
-              pathname: "/",
+              pathname: '/',
               state: { from: props.location }
             }}
-          />}
+          />)}
   />
 );
 
@@ -65,4 +65,4 @@ const App = () => (
   </Provider>
 );
 
-render(<App />, document.getElementById("root"));
+render(<App />, document.getElementById('root'));
