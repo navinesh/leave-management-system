@@ -1,8 +1,8 @@
 // @flow
-import React from "react";
-import { connect } from "react-redux";
+import React from 'react';
+import { connect } from 'react-redux';
 
-import Header from "../components/AdminHeader";
+import Header from '../components/AdminHeader';
 
 const AdminHeader = ({ isAuthenticated, dispatch }) => (
   <div className="AdminHeader">
