@@ -1,20 +1,20 @@
 // @flow
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Redirect } from "react-router-dom";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
-import "../spinners.css";
+import '../spinners.css';
 
-import { fetchLoginFromToken } from "../actions/AdminLogin";
-import { fetchSickSheetRecord } from "../actions/SickSheetRecord";
-import SickSheetList from "../components/SickSheetRecord";
+import { fetchLoginFromToken } from '../actions/AdminLogin';
+import { fetchSickSheetRecord } from '../actions/SickSheetRecord';
+import SickSheetList from '../components/SickSheetRecord';
 
 class SickSheetRecord extends Component {
   componentDidMount() {
     const { dispatch, auth_info } = this.props;
     let admin_token = auth_info.admin_token
       ? auth_info.admin_token
-      : localStorage.getItem("admin_token");
+      : localStorage.getItem('admin_token');
 
     if (admin_token) {
       dispatch(fetchLoginFromToken(admin_token, fetchSickSheetRecord));
