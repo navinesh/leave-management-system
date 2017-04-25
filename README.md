@@ -1,8 +1,8 @@
-**Leave management system**
+# Leave management system
 
 A web application to manage employee leave records. There are two modules; user and admin. User module is for the employees to login and check their leave balance and apply for leave. Admin module is for HR. HR can approve/decline leave, manage employee record, create/archive/unarchive staff record. 
 
-**Required Libraries and Dependencies**
+### Required Libraries and Dependencies
 
 * ReactJS
 * Redux
@@ -16,7 +16,7 @@ A web application to manage employee leave records. There are two modules; user 
 * Redux-thunk
 * Bootstrap CSS
 
-**What's included**
+### What's included
 
 Within the download you will find the following directory and files.
 
@@ -26,7 +26,7 @@ Admin
 
 Server
 
-**How to Run the Project**
+### How to Run the Project
 
 ***For Admin and User modules:***
 
@@ -42,7 +42,7 @@ And then run your project using ```npm start``` or ```yarn start```.
 
 Server has been developed in Python and PostgreSQL database using flask web framework.
 
-**Creator**
+## Creator
 Navinesh Chand
 * https://twitter.com/navinesh
 * https://github.com/navinesh
