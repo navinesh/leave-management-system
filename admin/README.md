@@ -1,8 +1,8 @@
 # Leave management system
 
-## ReactJS
+ReactJS web application.
 
-## Required Libraries and Dependencies
+### Required Libraries and Dependencies
 
 * ReactJS
 * Redux
@@ -16,13 +16,13 @@
 * Redux-thunk
 * Bootstrap CSS
 
-## How to Run the Project
+### How to Run the Project
 
 Close the repo and do ```npm install``` or ```yarn install```.
 
 And then run your project using ```npm start``` or ```yarn start```.
 
-OR
+**OR**
 
 Admin module is developed using Create React App tool https://github.com/facebookincubator/create-react-app
 
