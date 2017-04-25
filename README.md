@@ -13,8 +13,8 @@ A web application to manage employee leave records. There are two modules; user 
 * React-datepicker
 * Moment-range
 * Axios
-* Bootstrap
 * Redux-thunk
+* Bootstrap CSS
 
 **What's included**
 
