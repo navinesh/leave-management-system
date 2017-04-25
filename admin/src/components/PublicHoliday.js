@@ -145,9 +145,9 @@ class DeletePublicHoliday extends Component {
     this.handleDelete = this.handleDelete.bind(this);
   }
 
-  handleDelete(e: Event) {
+  handleDelete(e: Event & { currentTarget: HTMLElement }) {
     e.preventDefault();
-    const id = e.target.id ? e.target.id : null;
+    const id = e.currentTarget.id ? e.currentTarget.id : null;
 
     if (!id) {
       this.setState({
