@@ -1,26 +1,38 @@
-**Leave management system**
+# Leave management system
 
-**ReactJS**
+ReactJS web application.
 
-This repo contains admin files
+### Required Libraries and Dependencies
 
-to-do
+* ReactJS
+* Redux
+* React-Router
+* Flow
+* React-Modal
+* MomentJS
+* React-datepicker
+* Moment-range
+* Axios
+* Redux-thunk
+* Bootstrap CSS
 
-**Required Libraries and Dependencies**
+### How to Run the Project
 
-to-do
+Close the repo and do ```npm install``` or ```yarn install```.
 
-**What's included**
+And then run your project using ```npm start``` or ```yarn start```.
 
-Within the download you will find the following directory and files.
+**OR**
 
-to-do
+Admin module is developed using Create React App tool https://github.com/facebookincubator/create-react-app
 
-**How to Run the Project**
+You can create an app using this tool and replace the src folder with the folder in admin module.
 
-to-do
+Install required libraries and dependencies.
 
-**Creator**
+And then run your project using ```npm start``` or ```yarn start```.
+
+## Creator
 
 Navinesh Chand
 * https://twitter.com/navinesh
