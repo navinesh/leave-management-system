@@ -1,12 +1,22 @@
-**Leave management system**
+# Leave management system
 
-**ReactJS**
+## ReactJS
 
-**Required Libraries and Dependencies**
+## Required Libraries and Dependencies
 
-to-do
+* ReactJS
+* Redux
+* React-Router
+* Flow
+* React-Modal
+* MomentJS
+* React-datepicker
+* Moment-range
+* Axios
+* Redux-thunk
+* Bootstrap CSS
 
-**How to Run the Project**
+## How to Run the Project
 
 Close the repo and do ```npm install``` or ```yarn install```.
 
@@ -22,7 +32,7 @@ Install required libraries and dependencies.
 
 And then run your project using ```npm start``` or ```yarn start```.
 
-**Creator**
+## Creator
 
 Navinesh Chand
 * https://twitter.com/navinesh
