@@ -1,6 +1,4 @@
 node_modules
-user/package.json
 build
-admin/yarn.lock
-admin/debug.log
 admin/.flowconfig
+user/.flowconfig
