@@ -1,18 +1,16 @@
 // @flow
 import React, { Component } from 'react';
-import Modal from 'react-modal';
 
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import { fetchPendingLeave } from '../actions/PendingLeave';
+
+import { DateRangePicker } from 'react-dates';
+import 'react-dates/lib/css/_datepicker.css';
 
 import Moment from 'moment';
 import { extendMoment } from 'moment-range';
 const moment = extendMoment(Moment);
 
-import customStyles from '../Styles';
 import '../spinners.css';
-
-import { fetchPendingLeave } from '../actions/PendingLeave';
 
 export default class PendingLeaveList extends Component {
   props: {
@@ -30,24 +28,23 @@ export default class PendingLeaveList extends Component {
     errorMessage: string,
     declineReason: string,
     editReason: string,
-    showModal1: boolean,
-    showModal2: boolean,
     listID: string,
     startDate: any,
-    endDate: any
+    endDate: any,
+    isEditing: boolean,
+    focusedInput: ?boolean,
+    isDecline: boolean
   };
 
-  handleOpenModal1: Function;
-  handleCloseModal1: Function;
-  handleOpenModal2: Function;
-  handleCloseModal2: Function;
+  handleOpenToggleEdit: Function;
+  handleCloseToggleEdit: Function;
+  handleOpenToggleDecline: Function;
+  handleCloseToggleDecline: Function;
   handleApproveLeave: Function;
   handleDeclineReason: Function;
   handleDeclineSubmit: Function;
   handleEditReason: Function;
   handleEditSubmit: Function;
-  handleStartDateChange: Function;
-  handleEndDateChange: Function;
 
   leave_name: HTMLInputElement;
   leave_type: HTMLInputElement;
@@ -60,32 +57,46 @@ export default class PendingLeaveList extends Component {
       errorMessage: '',
       declineReason: '',
       editReason: '',
-      startDate: '',
-      endDate: '',
+      startDate: null,
+      endDate: null,
       listID: '',
-      showModal1: false,
-      showModal2: false
+      isEditing: false,
+      focusedInput: null,
+      isDecline: false
     };
 
-    this.handleOpenModal1 = this.handleOpenModal1.bind(this);
-    this.handleCloseModal1 = this.handleCloseModal1.bind(this);
-    this.handleOpenModal2 = this.handleOpenModal2.bind(this);
-    this.handleCloseModal2 = this.handleCloseModal2.bind(this);
+    this.handleOpenToggleEdit = this.handleOpenToggleEdit.bind(this);
+    this.handleCloseToggleEdit = this.handleCloseToggleEdit.bind(this);
+    this.handleOpenToggleDecline = this.handleOpenToggleDecline.bind(this);
+    this.handleCloseToggleDecline = this.handleCloseToggleDecline.bind(this);
     this.handleApproveLeave = this.handleApproveLeave.bind(this);
     this.handleDeclineReason = this.handleDeclineReason.bind(this);
     this.handleDeclineSubmit = this.handleDeclineSubmit.bind(this);
     this.handleEditReason = this.handleEditReason.bind(this);
     this.handleEditSubmit = this.handleEditSubmit.bind(this);
-    this.handleStartDateChange = this.handleStartDateChange.bind(this);
-    this.handleEndDateChange = this.handleEndDateChange.bind(this);
   }
 
-  handleStartDateChange(e: Event) {
-    this.setState({ startDate: e });
+  handleOpenToggleEdit(e: Event & { currentTarget: HTMLElement }) {
+    this.setState({
+      isEditing: !this.state.isEditing,
+      listID: e.currentTarget.id
+    });
   }
 
-  handleEndDateChange(e: Event) {
-    this.setState({ endDate: e });
+  handleCloseToggleEdit() {
+    const { dispatch } = this.props;
+
+    this.setState({
+      isEditing: !this.state.isEditing,
+      errorMessage: '',
+      startDate: null,
+      endDate: null
+    });
+
+    if (this.state.editReason) {
+      dispatch(fetchPendingLeave());
+      dispatch({ type: 'CLEAR_EDIT_LEAVE' });
+    }
   }
 
   handleDeclineReason({ target }: SyntheticInputEvent) {
@@ -96,28 +107,19 @@ export default class PendingLeaveList extends Component {
     this.setState({ editReason: target.value });
   }
 
-  handleOpenModal1(e: Event & { currentTarget: HTMLElement }) {
-    this.setState({ showModal1: true, listID: e.currentTarget.id });
+  handleOpenToggleDecline(e: Event & { currentTarget: HTMLElement }) {
+    this.setState({
+      isDecline: !this.state.isDecline,
+      listID: e.currentTarget.id
+    });
   }
 
-  handleOpenModal2(e: Event & { currentTarget: HTMLElement }) {
-    this.setState({ showModal2: true, listID: e.currentTarget.id });
-  }
-
-  handleCloseModal1() {
+  handleCloseToggleDecline() {
     const { dispatch } = this.props;
 
-    this.setState({ showModal1: false, errorMessage: '' });
+    this.setState({ isDecline: !this.state.isDecline, errorMessage: '' });
+
     if (this.state.declineReason) {
-      dispatch(fetchPendingLeave());
-    }
-  }
-
-  handleCloseModal2() {
-    const { dispatch } = this.props;
-
-    this.setState({ showModal2: false, errorMessage: '' });
-    if (this.state.editReason) {
       dispatch(fetchPendingLeave());
       dispatch({ type: 'CLEAR_EDIT_LEAVE' });
     }
@@ -167,7 +169,6 @@ export default class PendingLeaveList extends Component {
   handleEditSubmit(e: Event) {
     e.preventDefault();
     const { pending_items } = this.props;
-
     const leave_id = parseInt(this.state.listID, 10);
     const startDate = this.state.startDate
       ? this.state.startDate
@@ -198,7 +199,12 @@ export default class PendingLeaveList extends Component {
     const dateOfBirth = obj.date_of_birth;
 
     if (
-      !leave_id || !leave || !leaveType || !startDate || !endDate || !reason
+      !leave_id ||
+      !leave ||
+      !leaveType ||
+      !startDate ||
+      !endDate ||
+      !reason
     ) {
       this.setState({
         errorMessage: 'Reason field is mandatory!'
@@ -339,147 +345,23 @@ export default class PendingLeaveList extends Component {
   render() {
     const listID = parseInt(this.state.listID, 10);
 
-    const itemNodes = this.props.pending_items.map(record => (
-      <tr key={record.id}>
-        <td>{record.user.othernames}{' '}{record.user.surname}</td>
-        <td>{record.leave_name}</td>
-        <td>{record.leave_type}</td>
-        <td>{record.start_date}</td>
-        <td>{record.end_date}</td>
-        <td>{record.leave_days}</td>
-        <td>{record.leave_reason}</td>
-        <td>
-          <button
-            className="btn btn-link"
-            onClick={this.handleApproveLeave}
-            id={record.id}
-          >
-            Approve
-          </button>
-        </td>
-        <td>
-          <button
-            className="btn btn-link text-danger"
-            onClick={this.handleOpenModal1}
-            id={record.id}
-          >
-            Decline
-          </button>
-        </td>
-        <td>
-          <button
-            className="btn btn-link"
-            onClick={this.handleOpenModal2}
-            id={record.id}
-          >
-            Edit
-          </button>
-        </td>
-      </tr>
-    ));
-
-    return itemNodes.length > 0
-      ? <div className="row">
-          <div className="table-responsive">
-            <table
-              className="table table-bordered table-hover"
-              style={{ backgroundColor: '#FFFFFF' }}
-            >
-              <thead className="thead-default">
-                <tr>
-                  <th>Name</th>
-                  <th>Leave</th>
-                  <th>Type</th>
-                  <th>Start date</th>
-                  <th>End date</th>
-                  <th>Leave days</th>
-                  <th>Reason</th>
-                  <th>Approve</th>
-                  <th>Decline</th>
-                  <th>Edit</th>
-                </tr>
-              </thead>
-              <tbody>
-                {itemNodes}
-              </tbody>
-            </table>
-          </div>
+    if (this.state.isEditing) {
+      return (
+        <div>
           {this.props.pending_items.filter(e => e.id === listID).map(record => (
             <div key={record.id}>
-              <Modal
-                className="Modal__Bootstrap modal-dialog"
-                isOpen={this.state.showModal1}
-                onRequestClose={this.handleCloseModal1}
-                contentLabel="Modal #1"
-                overlayClassName="Overlay"
-                style={customStyles}
-              >
-                <div className="modal-content">
-                  <div className="modal-header">
-                    <h5 className="modal-title">
-                      Decline
-                    </h5>
-                  </div>
-                  <form onSubmit={this.handleDeclineSubmit}>
-                    <div className="modal-body">
-                      <p>{record.user.othernames}{' '}{record.user.surname}</p>
-                      <div className="form-group">
-                        <label htmlFor="reason">Reason</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="Enter reason"
-                          id="reason"
-                          onChange={this.handleDeclineReason}
-                        />
-                      </div>
-                    </div>
-                    <div className="modal-footer">
-                      <button
-                        type="button"
-                        className="btn btn-outline-primary"
-                        onClick={this.handleCloseModal1}
-                      >
-                        Close
-                      </button>
-                      <button type="submit" className="btn btn-primary">
-                        Decline
-                      </button>
-                    </div>
-                  </form>
-                  <div className="text-danger text-center">
-                    <div className="pb-4">{this.state.errorMessage}</div>
-                  </div>
-                </div>
-              </Modal>
-            </div>
-          ))}
-          {this.props.pending_items.filter(e => e.id === listID).map(record => (
-            <div key={record.id}>
-              <Modal
-                className="Modal__Bootstrap modal-dialog"
-                isOpen={this.state.showModal2}
-                onRequestClose={this.handleCloseModal2}
-                contentLabel="Modal #2"
-                overlayClassName="Overlay"
-                style={customStyles}
-              >
-                <div className="modal-content">
-                  <div className="modal-header">
-                    <h5 className="modal-title">
-                      Edit
-                    </h5>
-                  </div>
+              <div className="container">
+                <div className="card card-block">
                   <form
                     encType="multipart/form-data"
                     onSubmit={this.handleEditSubmit}
                   >
-                    <div className="modal-body">
+                    <div className="col-md-5 offset-md-3">
                       <div className="row">
                         <div className="col">
-                          <p className="h5">
+                          <h2>
                             {record.user.othernames}{' '}{record.user.surname}
-                          </p>
+                          </h2>
                         </div>
                       </div>
                       <div className="row">
@@ -492,7 +374,7 @@ export default class PendingLeaveList extends Component {
                               className="form-control"
                               id="leave"
                               defaultValue={record.leave_name}
-                              ref={select => this.leave_name = select}
+                              ref={select => (this.leave_name = select)}
                             >
                               <option>{record.leave_name}</option>
                               <option>annual</option>
@@ -515,7 +397,7 @@ export default class PendingLeaveList extends Component {
                               className="form-control"
                               id="leave type"
                               defaultValue={record.leave_type}
-                              ref={select => this.leave_type = select}
+                              ref={select => (this.leave_type = select)}
                             >
                               <option>{record.leave_type}</option>
                               <option>full</option>
@@ -526,43 +408,39 @@ export default class PendingLeaveList extends Component {
                         </div>
                       </div>
                       <div className="row">
-                        <div className="col-md-6">
+                        <div className="col">
                           <div className="form-group">
-                            <label htmlFor="startDate">Start date</label>
+                            <label htmlFor="startDate-endDate">
+                              Start date - End date
+                            </label>
                             <input
                               type="hidden"
                               defaultValue={record.start_date}
-                              ref={input => this.startDate = input}
+                              ref={input => (this.startDate = input)}
                             />
-                            <DatePicker
-                              className="form-control"
-                              placeholderText="Click to select a date"
-                              selected={this.state.startDate}
-                              startDate={this.state.startDate}
-                              endDate={this.state.endDate}
-                              onChange={this.handleStartDateChange}
-                              showMonthDropdown
-                              dropdownMode="select"
-                            />
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label htmlFor="endDate">End date</label>
                             <input
                               type="hidden"
                               defaultValue={record.end_date}
-                              ref={input => this.endDate = input}
+                              ref={input => (this.endDate = input)}
                             />
-                            <DatePicker
-                              className="form-control"
-                              placeholderText="Click to select a date"
-                              selected={this.state.endDate}
+                            <DateRangePicker
                               startDate={this.state.startDate}
                               endDate={this.state.endDate}
-                              onChange={this.handleEndDateChange}
-                              showMonthDropdown
-                              dropdownMode="select"
+                              onDatesChange={({ startDate, endDate }) =>
+                                this.setState({ startDate, endDate })}
+                              focusedInput={this.state.focusedInput}
+                              onFocusChange={focusedInput =>
+                                this.setState({ focusedInput })}
+                              isOutsideRange={() => false}
+                              minimumNights={0}
+                              showDefaultInputIcon
+                              showClearDates
+                              withPortal
+                              renderCalendarInfo={() => (
+                                <p className="text-center">
+                                  To select a single day click on the date twice.
+                                </p>
+                              )}
                             />
                           </div>
                         </div>
@@ -581,19 +459,15 @@ export default class PendingLeaveList extends Component {
                           </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="modal-footer">
-                      <div className="form-group">
+                      <div className="modal-footer">
                         <button
                           type="button"
                           className="btn btn-outline-primary"
-                          onClick={this.handleCloseModal2}
+                          onClick={this.handleCloseToggleEdit}
                         >
                           Close
                         </button>
-                      </div>
-                      <div className="form-group">
-                        <button type="submit" className="btn btn-primary col">
+                        <button type="submit" className="btn btn-primary">
                           Save changes
                         </button>
                       </div>
@@ -607,12 +481,127 @@ export default class PendingLeaveList extends Component {
                         </p>}
                   </div>
                   <div className="text-danger text-center">
-                    <div className="pb-5">{this.state.errorMessage}</div>
+                    <div className="pb-4">{this.state.errorMessage}</div>
                   </div>
                 </div>
-              </Modal>
+              </div>
             </div>
           ))}
+        </div>
+      );
+    }
+
+    if (this.state.isDecline) {
+      return (
+        <div>
+          {this.props.pending_items.filter(e => e.id === listID).map(record => (
+            <div key={record.id}>
+              <div className="container">
+                <div className="card card-block">
+                  <form onSubmit={this.handleDeclineSubmit}>
+                    <div className="col-md-5 offset-md-3">
+                      <h2>
+                        {record.user.othernames}{' '}{record.user.surname}
+                      </h2>
+                      <div className="form-group">
+                        <label htmlFor="reason">Decline reason</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          placeholder="Enter reason"
+                          id="reason"
+                          onChange={this.handleDeclineReason}
+                        />
+                      </div>
+
+                      <div className="modal-footer">
+                        <button
+                          type="button"
+                          className="btn btn-outline-primary"
+                          onClick={this.handleCloseToggleDecline}
+                        >
+                          Close
+                        </button>
+                        <button type="submit" className="btn btn-primary">
+                          Decline
+                        </button>
+                      </div>
+                    </div>
+                  </form>
+                  <div className="text-danger text-center">
+                    <div className="pb-4">{this.state.errorMessage}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    const itemNodes = this.props.pending_items.map(record => (
+      <tr key={record.id}>
+        <td>{record.user.othernames}{' '}{record.user.surname}</td>
+        <td>{record.leave_name}</td>
+        <td>{record.leave_type}</td>
+        <td>{record.start_date}</td>
+        <td>{record.end_date}</td>
+        <td>{record.leave_days}</td>
+        <td>{record.leave_reason}</td>
+        <td>
+          <button
+            className="btn btn-link"
+            onClick={this.handleApproveLeave}
+            id={record.id}
+          >
+            Approve
+          </button>
+        </td>
+        <td>
+          <button
+            className="btn btn-link text-danger"
+            onClick={this.handleOpenToggleDecline}
+            id={record.id}
+          >
+            Decline
+          </button>
+        </td>
+        <td>
+          <button
+            className="btn btn-link"
+            onClick={this.handleOpenToggleEdit}
+            id={record.id}
+          >
+            Edit
+          </button>
+        </td>
+      </tr>
+    ));
+
+    return itemNodes.length > 0
+      ? <div className="table-responsive">
+          <table
+            className="table table-bordered table-hover"
+            style={{ backgroundColor: '#FFFFFF' }}
+          >
+            <thead className="thead-default">
+              <tr>
+                <th>Name</th>
+                <th>Leave</th>
+                <th>Type</th>
+                <th>Start date</th>
+                <th>End date</th>
+                <th>Leave days</th>
+                <th>Reason</th>
+                <th>Approve</th>
+                <th>Decline</th>
+                <th>Edit</th>
+              </tr>
+            </thead>
+            <tbody>
+              {itemNodes}
+            </tbody>
+          </table>
         </div>
       : <div className="text-center" style={{ paddingTop: '40px' }}>
           <h1 className="display-4">There are no pending leave record.</h1>
