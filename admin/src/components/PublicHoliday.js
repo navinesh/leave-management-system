@@ -21,39 +21,35 @@ const PublicHolidays = (
   }
 ) => (
   <div className="container">
-    <div className="card">
-      <div className="card-block">
-        <div className="row">
-          <div className="col">
-            <h4 className="card-title">Public Holidays</h4>
-            <DeletePublicHoliday
-              public_holiday={props.public_holiday}
-              dispatch={props.dispatch}
-              onDeletePublicHolidaySubmit={props.onDeletePublicHolidaySubmit}
-            />
-          </div>
-          <div className="col">
-            <AddPublicHoliday
-              dispatch={props.dispatch}
-              onAddPublicHolidaySubmit={props.onAddPublicHolidaySubmit}
-            />
-            <div>
-              {props.isAddPublicFetching
-                ? <div className="text-center">
-                    <div className="loader1" />
-                  </div>
-                : <p className="text-primary">
-                    {props.addPublicMessage}
-                  </p>}
-              {props.isDeletePublicFetching
-                ? <div className="text-center">
-                    <div className="loader1" />
-                  </div>
-                : <p className="text-primary">
-                    {props.deletePublicMessage}
-                  </p>}
-            </div>
-          </div>
+    <div className="row">
+      <div className="col">
+        <h4>Public Holidays</h4>
+        <DeletePublicHoliday
+          public_holiday={props.public_holiday}
+          dispatch={props.dispatch}
+          onDeletePublicHolidaySubmit={props.onDeletePublicHolidaySubmit}
+        />
+      </div>
+      <div className="col">
+        <AddPublicHoliday
+          dispatch={props.dispatch}
+          onAddPublicHolidaySubmit={props.onAddPublicHolidaySubmit}
+        />
+        <div>
+          {props.isAddPublicFetching
+            ? <div className="text-center">
+                <div className="loader1" />
+              </div>
+            : <p className="text-primary">
+                {props.addPublicMessage}
+              </p>}
+          {props.isDeletePublicFetching
+            ? <div className="text-center">
+                <div className="loader1" />
+              </div>
+            : <p className="text-primary">
+                {props.deletePublicMessage}
+              </p>}
         </div>
       </div>
     </div>
@@ -110,7 +106,7 @@ class AddPublicHoliday extends Component {
 
     setTimeout(() => {
       this.props.dispatch({ type: 'CLEAR_ADD_PUBLIC_MESSAGE' });
-    }, 5000);
+    }, 3000);
   }
 
   render() {
