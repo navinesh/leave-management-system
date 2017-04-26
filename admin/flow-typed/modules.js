@@ -34,3 +34,10 @@ declare module 'react-datepicker/dist/react-datepicker.css' {
 declare module 'axios' {
   declare var exports: any;
 }
+
+declare module 'react-dates' {
+  declare var exports: any;
+}
+declare module 'react-dates/lib/css/_datepicker.css' {
+  declare var exports: any;
+}
