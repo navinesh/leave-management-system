@@ -1,10 +1,10 @@
 // @flow
 import React, { Component } from 'react';
 
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-
 const moment = require('moment');
+
+import { SingleDatePicker } from 'react-dates';
+import 'react-dates/lib/css/_datepicker.css';
 
 import '../spinners.css';
 
@@ -20,7 +20,7 @@ const PublicHolidays = (
     deletePublicMessage: string
   }
 ) => (
-  <div className="offset-md-1 col-md-10">
+  <div className="container">
     <div className="card">
       <div className="card-block">
         <div className="row">
@@ -61,26 +61,33 @@ const PublicHolidays = (
 );
 
 class AddPublicHoliday extends Component {
-  state: { holidayDate: string, errorMessage: string };
+  state: { date: any, errorMessage: string, focused: boolean };
 
-  handleDateChange: Function;
   handleSubmit: Function;
+  onDateChange: Function;
+  onFocusChange: Function;
 
   constructor() {
     super();
-    this.state = { holidayDate: '', errorMessage: '' };
-    this.handleDateChange = this.handleDateChange.bind(this);
+    this.state = { date: null, errorMessage: '', focused: false };
+
+    this.onDateChange = this.onDateChange.bind(this);
+    this.onFocusChange = this.onFocusChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleDateChange(e: Event) {
-    this.setState({ holidayDate: e });
+  onDateChange(e: Event) {
+    this.setState({ date: e });
+  }
+
+  onFocusChange(e: Event & { focused: HTMLElement }) {
+    this.setState({ focused: e.focused });
   }
 
   handleSubmit(e: Event) {
     e.preventDefault();
-    const holidayDate = this.state.holidayDate
-      ? moment(this.state.holidayDate).format('MM DD YYYY')
+    const holidayDate = this.state.date
+      ? moment(this.state.date).format('MM DD YYYY')
       : null;
 
     if (!holidayDate) {
@@ -99,7 +106,7 @@ class AddPublicHoliday extends Component {
     };
 
     this.props.onAddPublicHolidaySubmit(publicHolidayDate);
-    this.setState({ holidayDate: '', errorMessage: '' });
+    this.setState({ date: null, holidayDate: '', errorMessage: '' });
 
     setTimeout(() => {
       this.props.dispatch({ type: 'CLEAR_ADD_PUBLIC_MESSAGE' });
@@ -111,15 +118,15 @@ class AddPublicHoliday extends Component {
       <div className="AddPublicHoliday">
         <form encType="multipart/form-data" onSubmit={this.handleSubmit}>
           <div className="form-group">
-            <DatePicker
-              className="form-control"
-              dateFormat="DD/MM/YYYY"
-              selected={this.state.holidayDate}
-              onChange={this.handleDateChange}
-              showMonthDropdown
-              showYearDropdown
-              dropdownMode="select"
-              placeholderText="Click to select a date"
+            <SingleDatePicker
+              date={this.state.date}
+              onDateChange={this.onDateChange}
+              focused={this.state.focused}
+              onFocusChange={this.onFocusChange}
+              numberOfMonths={1}
+              isOutsideRange={() => false}
+              showClearDate
+              withPortal
             />
             <button type="submit" className="btn btn-primary btn-sm ml-3">
               Add
