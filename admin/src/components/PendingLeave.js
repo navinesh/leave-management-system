@@ -36,10 +36,10 @@ export default class PendingLeaveList extends Component {
     isDecline: boolean
   };
 
-  handleOpenToggleEdit: Function;
-  handleCloseToggleEdit: Function;
-  handleOpenToggleDecline: Function;
-  handleCloseToggleDecline: Function;
+  handleOpenEdit: Function;
+  handleCloseEdit: Function;
+  handleOpenDecline: Function;
+  handleCloseDecline: Function;
   handleApproveLeave: Function;
   handleDeclineReason: Function;
   handleDeclineSubmit: Function;
@@ -65,10 +65,10 @@ export default class PendingLeaveList extends Component {
       isDecline: false
     };
 
-    this.handleOpenToggleEdit = this.handleOpenToggleEdit.bind(this);
-    this.handleCloseToggleEdit = this.handleCloseToggleEdit.bind(this);
-    this.handleOpenToggleDecline = this.handleOpenToggleDecline.bind(this);
-    this.handleCloseToggleDecline = this.handleCloseToggleDecline.bind(this);
+    this.handleOpenEdit = this.handleOpenEdit.bind(this);
+    this.handleCloseEdit = this.handleCloseEdit.bind(this);
+    this.handleOpenDecline = this.handleOpenDecline.bind(this);
+    this.handleCloseDecline = this.handleCloseDecline.bind(this);
     this.handleApproveLeave = this.handleApproveLeave.bind(this);
     this.handleDeclineReason = this.handleDeclineReason.bind(this);
     this.handleDeclineSubmit = this.handleDeclineSubmit.bind(this);
@@ -76,14 +76,14 @@ export default class PendingLeaveList extends Component {
     this.handleEditSubmit = this.handleEditSubmit.bind(this);
   }
 
-  handleOpenToggleEdit(e: Event & { currentTarget: HTMLElement }) {
+  handleOpenEdit(e: Event & { currentTarget: HTMLElement }) {
     this.setState({
       isEditing: !this.state.isEditing,
       listID: e.currentTarget.id
     });
   }
 
-  handleCloseToggleEdit() {
+  handleCloseEdit() {
     const { dispatch } = this.props;
 
     this.setState({
@@ -107,14 +107,14 @@ export default class PendingLeaveList extends Component {
     this.setState({ editReason: target.value });
   }
 
-  handleOpenToggleDecline(e: Event & { currentTarget: HTMLElement }) {
+  handleOpenDecline(e: Event & { currentTarget: HTMLElement }) {
     this.setState({
       isDecline: !this.state.isDecline,
       listID: e.currentTarget.id
     });
   }
 
-  handleCloseToggleDecline() {
+  handleCloseDecline() {
     const { dispatch } = this.props;
 
     this.setState({ isDecline: !this.state.isDecline, errorMessage: '' });
@@ -350,18 +350,20 @@ export default class PendingLeaveList extends Component {
         <div>
           {this.props.pending_items.filter(e => e.id === listID).map(record => (
             <div key={record.id}>
-              <div style={{ paddingTop: '50px' }}>
-                <form
-                  encType="multipart/form-data"
-                  onSubmit={this.handleEditSubmit}
-                >
-                  <div className="col-md-5 offset-md-3">
+              <div
+                className="col-md-5 offset-md-3 pb-2"
+                style={{ paddingTop: '40px' }}
+              >
+                <div className="card card-block">
+                  <h2>
+                    {record.user.othernames}{' '}{record.user.surname}
+                  </h2>
+                  <form
+                    encType="multipart/form-data"
+                    onSubmit={this.handleEditSubmit}
+                  >
                     <div className="row">
-                      <div className="col">
-                        <h2>
-                          {record.user.othernames}{' '}{record.user.surname}
-                        </h2>
-                      </div>
+                      <div className="col" />
                     </div>
                     <div className="row">
                       <div className="col-md-6">
@@ -461,7 +463,7 @@ export default class PendingLeaveList extends Component {
                     <button
                       type="button"
                       className="btn btn-outline-primary"
-                      onClick={this.handleCloseToggleEdit}
+                      onClick={this.handleCloseEdit}
                     >
                       Close
                     </button>
@@ -478,8 +480,8 @@ export default class PendingLeaveList extends Component {
                     <div className="text-danger">
                       {this.state.errorMessage}
                     </div>
-                  </div>
-                </form>
+                  </form>
+                </div>
               </div>
             </div>
           ))}
@@ -492,9 +494,12 @@ export default class PendingLeaveList extends Component {
         <div>
           {this.props.pending_items.filter(e => e.id === listID).map(record => (
             <div key={record.id}>
-              <div style={{ paddingTop: '50px' }}>
-                <form onSubmit={this.handleDeclineSubmit}>
-                  <div className="col-md-5 offset-md-3">
+              <div
+                className="col-md-5 offset-md-3"
+                style={{ paddingTop: '40px' }}
+              >
+                <div className="card card-block">
+                  <form onSubmit={this.handleDeclineSubmit}>
                     <h2>
                       {record.user.othernames}{' '}{record.user.surname}
                     </h2>
@@ -511,7 +516,7 @@ export default class PendingLeaveList extends Component {
                     <button
                       type="button"
                       className="btn btn-outline-primary"
-                      onClick={this.handleCloseToggleDecline}
+                      onClick={this.handleCloseDecline}
                     >
                       Close
                     </button>
@@ -521,8 +526,8 @@ export default class PendingLeaveList extends Component {
                     <div className="text-danger">
                       <div className="pt-4">{this.state.errorMessage}</div>
                     </div>
-                  </div>
-                </form>
+                  </form>
+                </div>
               </div>
             </div>
           ))}
@@ -551,7 +556,7 @@ export default class PendingLeaveList extends Component {
         <td>
           <button
             className="btn btn-link text-danger"
-            onClick={this.handleOpenToggleDecline}
+            onClick={this.handleOpenDecline}
             id={record.id}
           >
             Decline
@@ -560,7 +565,7 @@ export default class PendingLeaveList extends Component {
         <td>
           <button
             className="btn btn-link"
-            onClick={this.handleOpenToggleEdit}
+            onClick={this.handleOpenEdit}
             id={record.id}
           >
             Edit
