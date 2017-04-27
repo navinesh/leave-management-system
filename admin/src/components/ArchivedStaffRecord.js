@@ -87,7 +87,10 @@ export default class ArchivedStaffRecordList extends Component {
         <div>
           {archived_staff_record.filter(e => e.id === listID).map(record => (
             <div key={record.id}>
-              <div className="col-md-5 offset-md-3 pb-2">
+              <div
+                className="col-md-5 offset-md-3 pb-2"
+                style={{ paddingTop: '40px' }}
+              >
                 <div className="card card-block">
                   <h5>
                     Unarchive
