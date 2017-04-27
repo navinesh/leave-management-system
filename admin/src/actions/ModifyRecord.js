@@ -37,7 +37,8 @@ export function submitModifyUserRecord(modifyUserDetails: Object) {
         christmas: modifyUserDetails.christmasDays,
         date_of_birth: modifyUserDetails.dateOfBirth,
         maternity: modifyUserDetails.maternityDays,
-        gender: modifyUserDetails.gender
+        gender: modifyUserDetails.gender,
+        editReason: modifyUserDetails.editReason
       })
       .then(response => {
         if (response.status === 200) {
