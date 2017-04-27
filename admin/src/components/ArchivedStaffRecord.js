@@ -92,9 +92,6 @@ export default class ArchivedStaffRecordList extends Component {
                 style={{ paddingTop: '40px' }}
               >
                 <div className="card card-block">
-                  <h5>
-                    Unarchive
-                  </h5>
                   <form
                     encType="multipart/form-data"
                     onSubmit={this.handleSubmit}
@@ -199,7 +196,7 @@ export default class ArchivedStaffRecordList extends Component {
                   : <p className="list-group-item"><br /></p>}
                 <li className="list-group-item">
                   <button
-                    className="btn btn-secondary btn-sm"
+                    className="btn btn-outline-primary btn-sm"
                     onClick={this.handleOpenUnarchive}
                     id={record.id}
                   >
