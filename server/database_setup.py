@@ -78,6 +78,40 @@ class User(Base):
         }
 
 
+class Userupdates(Base):
+    __tablename__ = 'userupdates'  # representation of table inside database
+
+    id = Column(Integer, primary_key=True)
+    designation = Column(Text)
+    gender = Column(Text)
+    date_of_birth = Column(Date)
+    annual = Column(Numeric)
+    sick = Column(Numeric)
+    bereavement = Column(Numeric)
+    christmas = Column(Numeric)
+    maternity = Column(Numeric)
+    editReason = Column(Text)
+    user = relationship(
+        User, backref=backref("userupdates", cascade="all, delete-orphan"))
+    user_id = Column(Integer, ForeignKey('user.id'))
+
+    @property
+    def serialize(self):
+        """Return data in serializeable format"""
+        return {
+            'id': self.id,
+            'designation': self.designation,
+            'gender': self.gender,
+            'date_of_birth': self.date_of_birth,
+            'annual': self.annual,
+            'sick': self.sick,
+            'bereavement': self.bereavement,
+            'christmas': self.christmas,
+            'maternity': self.maternity,
+            'editReason': self.archiveReason,
+        }
+
+
 class Leaverecord(Base):
     __tablename__ = 'leaverecord'  # representation of table inside database
 
