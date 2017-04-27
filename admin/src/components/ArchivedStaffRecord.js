@@ -1,15 +1,12 @@
 // @flow
 import React, { Component } from 'react';
 
-import Modal from 'react-modal';
+import { searchStaffRecord } from '../actions/StaffRecord';
+import { fetchArchivedStaffRecord } from '../actions/ArchivedStaffRecord';
 
 const moment = require('moment');
 
-import customStyles from '../Styles';
 import '../spinners.css';
-
-import { searchStaffRecord } from '../actions/StaffRecord';
-import { fetchArchivedStaffRecord } from '../actions/ArchivedStaffRecord';
 
 export default class ArchivedStaffRecordList extends Component {
   props: {
@@ -23,13 +20,13 @@ export default class ArchivedStaffRecordList extends Component {
 
   state: {
     errorMessage: string,
-    showModal: boolean,
+    isUnarchive: boolean,
     listID: string
   };
 
   handleSearchChange: Function;
-  handleOpenModal: Function;
-  handleCloseModal: Function;
+  handleOpenUnarchive: Function;
+  handleCloseUnarchive: Function;
   handleSubmit: Function;
 
   constructor() {
@@ -37,11 +34,11 @@ export default class ArchivedStaffRecordList extends Component {
     this.state = {
       errorMessage: '',
       listID: '',
-      showModal: false
+      isUnarchive: false
     };
 
-    this.handleOpenModal = this.handleOpenModal.bind(this);
-    this.handleCloseModal = this.handleCloseModal.bind(this);
+    this.handleOpenUnarchive = this.handleOpenUnarchive.bind(this);
+    this.handleCloseUnarchive = this.handleCloseUnarchive.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -49,14 +46,14 @@ export default class ArchivedStaffRecordList extends Component {
     this.props.dispatch(searchStaffRecord(target.value.toLowerCase()));
   }
 
-  handleOpenModal(e: Event & { currentTarget: HTMLElement }) {
-    this.setState({ showModal: true, listID: e.currentTarget.id });
+  handleOpenUnarchive(e: Event & { currentTarget: HTMLElement }) {
+    this.setState({ isUnarchive: true, listID: e.currentTarget.id });
   }
 
-  handleCloseModal(e: Event) {
+  handleCloseUnarchive(e: Event) {
     const { dispatch } = this.props;
 
-    this.setState({ showModal: false, errorMessage: '' });
+    this.setState({ isUnarchive: false, errorMessage: '' });
     dispatch(fetchArchivedStaffRecord());
     dispatch({ type: 'CLEAR_UNARCHIVE_MESSAGE' });
   }
@@ -84,6 +81,63 @@ export default class ArchivedStaffRecordList extends Component {
   render() {
     const { archived_staff_record, searchTerm } = this.props;
     const listID = parseInt(this.state.listID, 10);
+
+    if (this.state.isUnarchive) {
+      return (
+        <div>
+          {archived_staff_record.filter(e => e.id === listID).map(record => (
+            <div key={record.id}>
+              <div className="col-md-5 offset-md-3 pb-2">
+                <div className="card card-block">
+                  <h5>
+                    Unarchive
+                  </h5>
+                  <form
+                    encType="multipart/form-data"
+                    onSubmit={this.handleSubmit}
+                  >
+                    <div className="row">
+                      <div className="col">
+                        <p>
+                          Are you sure you want to unarchive{' '}
+                        </p>
+                        <p>
+                          <span className="h5">
+                            {record.othernames}
+                            {' '}
+                            {record.surname}
+                          </span>
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      className="btn btn-outline-primary"
+                      onClick={this.handleCloseUnarchive}
+                    >
+                      Close
+                    </button>
+                    <button type="submit" className="btn btn-primary ml-4">
+                      Yes
+                    </button>
+                    {this.props.isUnArchiveFetching
+                      ? <div className="loader1" />
+                      : <p className="text-primary pt-2">
+                          {this.props.unArchiveMessage}
+                        </p>}
+
+                    <div className="text-danger">
+                      {this.state.errorMessage}
+                    </div>
+
+                  </form>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      );
+    }
 
     const filteredElements = archived_staff_record
       .filter(
@@ -143,7 +197,7 @@ export default class ArchivedStaffRecordList extends Component {
                 <li className="list-group-item">
                   <button
                     className="btn btn-secondary btn-sm"
-                    onClick={this.handleOpenModal}
+                    onClick={this.handleOpenUnarchive}
                     id={record.id}
                   >
                     Unarchive
@@ -171,64 +225,6 @@ export default class ArchivedStaffRecordList extends Component {
         </div>
         <div className="row">
           {filteredElements}
-          {archived_staff_record.filter(e => e.id === listID).map(record => (
-            <div key={record.id}>
-              <Modal
-                className="Modal__Bootstrap modal-dialog"
-                isOpen={this.state.showModal}
-                onRequestClose={this.handleCloseModal}
-                contentLabel="Modal #1"
-                overlayClassName="Overlay"
-                style={customStyles}
-              >
-                <div className="modal-content">
-                  <div className="modal-header">
-                    <h5 className="modal-title">
-                      Unarchive
-                    </h5>
-                  </div>
-                  <form
-                    encType="multipart/form-data"
-                    onSubmit={this.handleSubmit}
-                  >
-                    <div className="modal-body">
-                      <p>
-                        Are you sure you want to unarchive{' '}
-                        <span className="h5">
-                          {record.othernames}
-                          {' '}
-                          {record.surname}
-                        </span>
-                        ?
-                      </p>
-                    </div>
-                    <div className="modal-footer">
-                      <button
-                        type="button"
-                        className="btn btn-outline-primary"
-                        onClick={this.handleCloseModal}
-                      >
-                        Close
-                      </button>
-                      <button type="submit" className="btn btn-primary">
-                        Yes
-                      </button>
-                    </div>
-                  </form>
-                  <div className="text-primary text-center">
-                    {this.props.isUnArchiveFetching
-                      ? <div className="loader1" />
-                      : <p className="lead pb-2">
-                          {this.props.unArchiveMessage}
-                        </p>}
-                  </div>
-                  <div className="text-danger text-center">
-                    <div className="pb-4">{this.state.errorMessage}</div>
-                  </div>
-                </div>
-              </Modal>
-            </div>
-          ))}
         </div>
       </div>
     );
