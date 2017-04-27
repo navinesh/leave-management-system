@@ -9,7 +9,7 @@ import random
 import json
 from httplib2 import Http
 import string
-from database_setup import Base, User, Leaverecord, Adminuser, Publicholiday
+from database_setup import Base, User, Userupdates, Leaverecord, Adminuser, Publicholiday
 from sqlalchemy import create_engine
 from sqlalchemy.orm import relationship, sessionmaker, join
 from sqlalchemy.ext.declarative import declarative_base
@@ -370,6 +370,22 @@ def modify_user():
 
     session.add(userRecord)
     session.commit()
+
+    "update logs table"
+    userUpdates = Userupdates(
+        designation=designation,
+        gender=gender,
+        date_of_birth=date_of_birth,
+        annual=annual,
+        sick=sick,
+        bereavement=bereavement,
+        christmas=christmas,
+        maternity=maternity,
+        editReason=editReason)
+
+    session.add(userUpdates)
+    session.commit()
+
     return jsonify({'message': 'User record has been updated.'}), 201
 
 
