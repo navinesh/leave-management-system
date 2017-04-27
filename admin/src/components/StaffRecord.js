@@ -168,7 +168,9 @@ export default class StaffRecordList extends Component {
     };
     const maternityDays = mDays(gender);
 
-    const editReason = this.state.editReason ? this.state.editReason : null;
+    const editReason = this.state.editReason
+      ? this.state.editReason.trim()
+      : null;
 
     // verify data
     if (
