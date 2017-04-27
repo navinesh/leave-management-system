@@ -403,6 +403,8 @@ export default class ApprovedLeaveList extends Component {
                             ref={input => (this.endDate = input)}
                           />
                           <DateRangePicker
+                            startDatePlaceholderText={record.start_date}
+                            endDatePlaceholderText={record.end_date}
                             startDate={this.state.startDate}
                             endDate={this.state.endDate}
                             onDatesChange={({ startDate, endDate }) =>
