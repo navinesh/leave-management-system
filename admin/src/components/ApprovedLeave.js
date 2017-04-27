@@ -36,8 +36,6 @@ export default class ApprovedLeaveList extends Component {
   };
 
   handleOpenEdit: Function;
-  handleStartDateChange: Function;
-  handleEndDateChange: Function;
   handleEditReason: Function;
   handleEditSubmit: Function;
   handleCloseEdit: Function;
@@ -57,16 +55,14 @@ export default class ApprovedLeaveList extends Component {
       errorMessage: '',
       editReason: '',
       deleteReason: '',
-      startDate: '',
-      endDate: '',
+      startDate: null,
+      endDate: null,
       listID: '',
       isEditing: false,
       isDelete: false,
       focusedInput: null
     };
 
-    this.handleStartDateChange = this.handleStartDateChange.bind(this);
-    this.handleEndDateChange = this.handleEndDateChange.bind(this);
     this.handleEditReason = this.handleEditReason.bind(this);
     this.handleEditSubmit = this.handleEditSubmit.bind(this);
     this.handleOpenEdit = this.handleOpenEdit.bind(this);
@@ -82,14 +78,6 @@ export default class ApprovedLeaveList extends Component {
       isEditing: !this.state.isEditing,
       listID: e.currentTarget.id
     });
-  }
-
-  handleStartDateChange(e: Event) {
-    this.setState({ startDate: e });
-  }
-
-  handleEndDateChange(e: Event) {
-    this.setState({ endDate: e });
   }
 
   handleEditReason({ target }: SyntheticInputEvent) {
@@ -398,7 +386,14 @@ export default class ApprovedLeaveList extends Component {
                     <div className="row">
                       <div className="col">
                         <div className="form-group">
-                          <label htmlFor="endDate">End date</label>
+                          <label htmlFor="startDate-endDate">
+                            Start date - End date
+                          </label>
+                          <input
+                            type="hidden"
+                            defaultValue={record.start_date}
+                            ref={input => (this.startDate = input)}
+                          />
                           <input
                             type="hidden"
                             defaultValue={record.end_date}
