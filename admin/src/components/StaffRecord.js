@@ -516,13 +516,12 @@ export default class StaffRecordList extends Component {
                   <h5>
                     Archive
                   </h5>
-
                   <form
                     encType="multipart/form-data"
                     onSubmit={this.handleArchiveSubmit}
                   >
                     <div className="row">
-                      <div className="col-md-6">
+                      <div className="col">
                         <p>{record.othernames}{' '}{record.surname}</p>
                         <div className="form-group">
                           <label htmlFor="reason">Reason</label>
