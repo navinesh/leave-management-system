@@ -20,7 +20,7 @@ const PublicHolidays = (
     deletePublicMessage: string
   }
 ) => (
-  <div className="container">
+  <div className="col-md-10 offset-md-1 card card-block">
     <div className="row">
       <div className="col">
         <h4>Public Holidays</h4>
