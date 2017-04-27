@@ -27,13 +27,12 @@ export default class ApprovedLeaveList extends Component {
     errorMessage: string,
     editReason: string,
     deleteReason: string,
-    showModal1: boolean,
-    showModal2: boolean,
     listID: string,
     startDate: any,
     endDate: any,
     isEditing: boolean,
-    isDelete: boolean
+    isDelete: boolean,
+    focusedInput: ?boolean
   };
 
   handleOpenEdit: Function;
@@ -62,7 +61,8 @@ export default class ApprovedLeaveList extends Component {
       endDate: '',
       listID: '',
       isEditing: false,
-      isDelete: false
+      isDelete: false,
+      focusedInput: null
     };
 
     this.handleStartDateChange = this.handleStartDateChange.bind(this);
