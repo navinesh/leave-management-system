@@ -3,12 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "flow-bin": "^0.43.1",
+    "flow-bin": "^0.45.0",
     "react-scripts": "0.9.5"
   },
   "dependencies": {
     "axios": "^0.16.1",
-    "flow": "^0.2.3",
     "moment": "^2.18.1",
     "moment-range": "^3.0.3",
     "react": "^15.5.0",
