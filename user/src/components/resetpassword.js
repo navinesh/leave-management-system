@@ -1,5 +1,6 @@
-import React, { Component, PropTypes } from "react";
-var Loader = require("halogen/ClipLoader");
+import React, { Component, PropTypes } from 'react';
+
+import '../spinners.css';
 
 export default class UserResetPassword extends Component {
   constructor() {
@@ -16,7 +17,7 @@ export default class UserResetPassword extends Component {
     const email = this.state.email ? this.state.email.trim() : null;
 
     if (!email) {
-      this.setState({ errorMessage: "Enter a valid email address!" });
+      this.setState({ errorMessage: 'Enter a valid email address!' });
       return;
     }
 
@@ -25,7 +26,7 @@ export default class UserResetPassword extends Component {
 
   render() {
     return (
-      <div className="card card-block" style={{ marginTop: "100px" }}>
+      <div className="card card-block" style={{ marginTop: '100px' }}>
         <form onSubmit={this.handleSubmit.bind(this)}>
           <div className="form-group">
             <label htmlFor="email">Email address</label>
@@ -45,7 +46,7 @@ export default class UserResetPassword extends Component {
         </form>
         <div className="text-danger text-center">
           {this.props.isFetching
-            ? <Loader color="#0275d8" size="20px" />
+            ? <div className="loader1" />
             : this.props.message}
           {this.state.errorMessage}
         </div>
