@@ -1,7 +1,7 @@
-import React, { Component, PropTypes } from "react";
-import { Link } from "react-router-dom";
+import React, { Component, PropTypes } from 'react';
+import { Link } from 'react-router-dom';
 
-var Loader = require("halogen/ClipLoader");
+import '../spinners.css';
 
 export default class Login extends Component {
   handleEmailChange(e) {
@@ -27,7 +27,7 @@ export default class Login extends Component {
 
   render() {
     return (
-      <div className="Login" style={{ marginTop: "80px" }}>
+      <div className="Login" style={{ marginTop: '80px' }}>
         <div className="card card-block">
           <form onSubmit={this.handleSubmit.bind(this)}>
             <div className="form-group">
@@ -61,7 +61,7 @@ export default class Login extends Component {
           </form>
           <div className="text-danger text-center">
             {this.props.isFetching
-              ? <Loader color="#0275d8" size="20px" />
+              ? <div className="loader" />
               : this.props.message}
           </div>
         </div>
