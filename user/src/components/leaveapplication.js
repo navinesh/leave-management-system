@@ -1,21 +1,20 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component, PropTypes } from 'react';
 
-var Loader = require("halogen/ClipLoader");
-var DatePicker = require("react-datepicker");
+import { DateRangePicker } from 'react-dates';
+import 'react-dates/lib/css/_datepicker.css';
 
-import "react-datepicker/dist/react-datepicker.css";
-import Moment from "moment";
-import { extendMoment } from "moment-range";
+import '../spinners.css';
+
+import Moment from 'moment';
+import { extendMoment } from 'moment-range';
 const moment = extendMoment(Moment);
 
 export default class LeaveApplications extends Component {
   constructor() {
     super();
-    this.state = { errorMessage: "", successMessage: "" };
+    this.state = { errorMessage: '', successMessage: '' };
     this.handleLeaveChange = this.handleLeaveChange.bind(this);
     this.handleLeaveTypeChange = this.handleLeaveTypeChange.bind(this);
-    this.handleStartDateChange = this.handleStartDateChange.bind(this);
-    this.handleEndDateChange = this.handleEndDateChange.bind(this);
     this.handleSupervisorEmailChange = this.handleSupervisorEmailChange.bind(
       this
     );
@@ -33,14 +32,6 @@ export default class LeaveApplications extends Component {
 
   handleLeaveTypeChange(e) {
     this.setState({ leaveType: e.target.value });
-  }
-
-  handleStartDateChange(e) {
-    this.setState({ startDate: e });
-  }
-
-  handleEndDateChange(e) {
-    this.setState({ endDate: e });
   }
 
   handleSupervisorEmailChange(e) {
@@ -62,6 +53,7 @@ export default class LeaveApplications extends Component {
   handleSubmit(e) {
     e.preventDefault();
     const { user_detail } = this.props;
+
     const user_id = user_detail.id;
     const annualDays = user_detail.annual;
     const sickDays = user_detail.sick;
@@ -92,17 +84,17 @@ export default class LeaveApplications extends Component {
       !reason
     ) {
       this.setState({
-        errorMessage: "One or more required fields are missing!"
+        errorMessage: 'One or more required fields are missing!'
       });
       return;
     }
 
     // get date range from user selection
-    const leaveRangeDays = endDate.diff(startDate, "days") + 1;
+    const leaveRangeDays = endDate.diff(startDate, 'days') + 1;
 
     // check user data range selection
     if (leaveRangeDays <= 0) {
-      this.setState({ errorMessage: "The dates you selected are invalid!" });
+      this.setState({ errorMessage: 'The dates you selected are invalid!' });
       return;
     }
 
@@ -110,14 +102,14 @@ export default class LeaveApplications extends Component {
     const range = moment.range(startDate, endDate);
 
     const dateRange = [];
-    for (let numDays of range.by("days")) {
-      dateRange.push(numDays.format("DD, MM, YYYY"));
+    for (let numDays of range.by('days')) {
+      dateRange.push(numDays.format('DD, MM, YYYY'));
     }
 
     const weekend = [];
-    for (let numWeekends of range.by("days")) {
+    for (let numWeekends of range.by('days')) {
       if (numWeekends.isoWeekday() === 6 || numWeekends.isoWeekday() === 7) {
-        weekend.push(numWeekends.format("DD, MM, YYYY"));
+        weekend.push(numWeekends.format('DD, MM, YYYY'));
       }
     }
 
@@ -131,7 +123,7 @@ export default class LeaveApplications extends Component {
     // exclude public holidays
     const publicHolidays = this.props.public_holiday.map(item => {
       let hDate = new Date(item.holiday_date);
-      let holiday_date = moment(hDate).format("DD, MM, YYYY");
+      let holiday_date = moment(hDate).format('DD, MM, YYYY');
       return holiday_date;
     });
 
@@ -143,14 +135,14 @@ export default class LeaveApplications extends Component {
 
     if (leaveDays === 0) {
       this.setState({
-        errorMessage: "The dates you selected fall on public holiday!"
+        errorMessage: 'The dates you selected fall on public holiday!'
       });
       return;
     }
 
     // if half day then subtract 0.5
-    const myLeaveDays = leaveType === "half day am" ||
-      leaveType === "half day pm"
+    const myLeaveDays = leaveType === 'half day am' ||
+      leaveType === 'half day pm'
       ? leaveDays - 0.5
       : leaveDays;
 
@@ -198,36 +190,36 @@ export default class LeaveApplications extends Component {
     const applicationDays = getLeaveDays(leave);
 
     if (applicationDays < 0) {
-      this.setState({ errorMessage: "Your leave balance cannot be negative!" });
+      this.setState({ errorMessage: 'Your leave balance cannot be negative!' });
       return;
     }
 
     if (applicationDays === false) {
       this.setState({
-        errorMessage: "A medical certificate is required for maternity leave!"
+        errorMessage: 'A medical certificate is required for maternity leave!'
       });
       return;
     }
 
     if (applicationDays === null) {
       this.setState({
-        errorMessage: "A medical certificate is required for absence of two consecutive days or more and after four single day absences!"
+        errorMessage: 'A medical certificate is required for absence of two consecutive days or more and after four single day absences!'
       });
       return;
     }
 
     if (applicationDays === undefined) {
       this.setState({
-        errorMessage: "The date you selected as your date of birth does not match our record!"
+        errorMessage: 'The date you selected as your date of birth does not match our record!'
       });
       return;
     }
 
-    const sDate = moment(startDate).format("DD/MM/YYYY");
-    const eDate = moment(endDate).format("DD/MM/YYYY");
+    const sDate = moment(startDate).format('DD/MM/YYYY');
+    const eDate = moment(endDate).format('DD/MM/YYYY');
 
-    this.setState({ errorMessage: "" });
-    this.setState({ successMessage: "Your application has been submitted." });
+    this.setState({ errorMessage: '' });
+    this.setState({ successMessage: 'Your application has been submitted.' });
 
     const applicationDetails = {
       user_id: user_id,
@@ -251,7 +243,7 @@ export default class LeaveApplications extends Component {
 
     if (this.state.successMessage) {
       return (
-        <div className="container text-center" style={{ marginTop: "100px" }}>
+        <div className="container text-center" style={{ marginTop: '100px' }}>
           <div className="col-md-12">
             <h1 className="display-4">{this.state.successMessage}</h1>
             <br />
@@ -266,12 +258,12 @@ export default class LeaveApplications extends Component {
       );
     } else {
       return (
-        <div className="container" style={{ marginTop: "80px" }}>
+        <div className="container" style={{ marginTop: '80px' }}>
           <div className="row">
             <div className="col-md-12 pb-2">
               <div className="col-md-10 offset-md-2">
                 <p className="h5">
-                  {user_detail.othernames}{" "}{user_detail.surname}
+                  {user_detail.othernames}{' '}{user_detail.surname}
                 </p>
               </div>
             </div>
@@ -301,7 +293,7 @@ export default class LeaveApplications extends Component {
                     {user_detail.christmas}
                   </span>
                 </li>
-                {gender === "female" &&
+                {gender === 'female' &&
                   <li className="list-group-item justify-content-between">
                     Maternity
                     <span className="badge badge-primary badge-pill">
@@ -331,7 +323,7 @@ export default class LeaveApplications extends Component {
                           <option>bereavement</option>
                           <option>christmas</option>
                           <option>birthday</option>
-                          {gender === "female" && <option>maternity</option>}
+                          {gender === 'female' && <option>maternity</option>}
                           <option>lwop</option>
                           <option>other</option>
                         </select>
@@ -354,33 +346,29 @@ export default class LeaveApplications extends Component {
                     </div>
                   </div>
                   <div className="row">
-                    <div className="col-md-6">
+                    <div className="col">
                       <div className="form-group">
-                        <label htmlFor="startDate">Start date</label>
-                        <DatePicker
-                          className="form-control"
-                          placeholderText="Click to select a date"
-                          selected={this.state.startDate}
+                        <label htmlFor="startDate-endDate">
+                          Start date - End date
+                        </label>
+                        <DateRangePicker
                           startDate={this.state.startDate}
                           endDate={this.state.endDate}
-                          onChange={this.handleStartDateChange}
-                          showMonthDropdown
-                          dropdownMode="select"
-                        />
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label htmlFor="endDate">End date</label>
-                        <DatePicker
-                          className="form-control"
-                          placeholderText="Click to select a date"
-                          selected={this.state.endDate}
-                          startDate={this.state.startDate}
-                          endDate={this.state.endDate}
-                          onChange={this.handleEndDateChange}
-                          showMonthDropdown
-                          dropdownMode="select"
+                          onDatesChange={({ startDate, endDate }) =>
+                            this.setState({ startDate, endDate })}
+                          focusedInput={this.state.focusedInput}
+                          onFocusChange={focusedInput =>
+                            this.setState({ focusedInput })}
+                          isOutsideRange={() => false}
+                          minimumNights={0}
+                          showDefaultInputIcon
+                          showClearDates
+                          withPortal
+                          renderCalendarInfo={() => (
+                            <p className="text-center">
+                              To select a single day click the date twice.
+                            </p>
+                          )}
                         />
                       </div>
                     </div>
@@ -436,9 +424,7 @@ export default class LeaveApplications extends Component {
                   </div>
                 </form>
                 <div className="text-danger text-center">
-                  {isFetching
-                    ? <Loader color="#0275d8" size="20px" />
-                    : message}
+                  {isFetching ? <div className="loader" /> : message}
                 </div>
                 <div className="text-danger text-center pt-2">
                   <div>{this.state.errorMessage}</div>
