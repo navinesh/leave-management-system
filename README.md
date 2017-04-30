@@ -9,6 +9,7 @@ A web application to manage employee leave records. There are two modules; user 
 * React-Router
 * Flow
 * MomentJS
+* React-dates
 * React-datepicker
 * Moment-range
 * Axios
