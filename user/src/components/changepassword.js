@@ -1,11 +1,11 @@
-import React, { Component, PropTypes } from "react";
+import React, { Component, PropTypes } from 'react';
 
-var Loader = require("halogen/ClipLoader");
+import '../spinners.css';
 
 export default class UserChange extends Component {
   constructor() {
     super();
-    this.state = { errorMessage: "" };
+    this.state = { errorMessage: '' };
   }
 
   handleCurrentPasswordChange(e) {
@@ -22,11 +22,11 @@ export default class UserChange extends Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    this.setState({ errorMessage: "" });
+    this.setState({ errorMessage: '' });
     const { auth_info } = this.props;
     let auth_token = auth_info.auth_token;
     if (!auth_token) {
-      auth_token = localStorage.getItem("auth_token");
+      auth_token = localStorage.getItem('auth_token');
     }
 
     const currentPassword = this.state.currentPassword
@@ -41,17 +41,17 @@ export default class UserChange extends Component {
 
     if (!currentPassword || !newPassword || !newPasswordConfirm) {
       this.setState({
-        errorMessage: "One or more required fields are missing!"
+        errorMessage: 'One or more required fields are missing!'
       });
       return;
     }
 
     if (newPassword !== newPasswordConfirm) {
-      this.setState({ errorMessage: "Your new passwords do not match!" });
+      this.setState({ errorMessage: 'Your new passwords do not match!' });
       return;
     }
 
-    this.setState({ errorMessage: "" });
+    this.setState({ errorMessage: '' });
 
     const creds = {
       currentPassword: currentPassword,
@@ -63,7 +63,7 @@ export default class UserChange extends Component {
 
   render() {
     return (
-      <div className="card card-block" style={{ marginTop: "100px" }}>
+      <div className="card card-block" style={{ marginTop: '100px' }}>
         <form onSubmit={this.handleSubmit.bind(this)}>
           <div className="form-group">
             <label htmlFor="currentPassword">Current password</label>
@@ -103,7 +103,7 @@ export default class UserChange extends Component {
         </form>
         <div className="text-danger text-center">
           {this.props.isFetching
-            ? <Loader color="#0275d8" size="20px" />
+            ? <div className="loader1" />
             : this.props.message}
         </div>
         <div className="text-danger text-center">
