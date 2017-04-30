@@ -441,7 +441,7 @@ export default class PendingLeaveList extends Component {
                             withPortal
                             renderCalendarInfo={() => (
                               <p className="text-center">
-                                To select a single day click on the date twice.
+                                To select a single day click the date twice.
                               </p>
                             )}
                           />
