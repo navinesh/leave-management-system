@@ -1,16 +1,23 @@
-import React, { PropTypes, Component } from "react";
-import { Link } from "react-router-dom";
+// @flow
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
-import { logoutUser } from "../actions/userlogout";
+import { logoutUser } from '../actions/userlogout';
 
 export default class Navs extends Component {
-  userLogout(e) {
+  props: {
+    isAuthenticated: boolean,
+    dispatch: Function
+  };
+
+  userLogout(e: Event) {
     e.preventDefault();
     this.props.dispatch(logoutUser());
   }
 
   render() {
     const { isAuthenticated } = this.props;
+
     return (
       <nav className="navbar fixed-top navbar-toggleable-md">
         <div className="container">
@@ -25,7 +32,7 @@ export default class Navs extends Component {
           >
             <span className="navbar-toggler-icon" />
           </button>
-          <Link className="navbar-brand" to="/" style={{ color: "#707070" }}>
+          <Link className="navbar-brand" to="/" style={{ color: '#707070' }}>
             Leave Management System
           </Link>
           {isAuthenticated &&
@@ -51,5 +58,3 @@ export default class Navs extends Component {
     );
   }
 }
-
-Navs.propTypes = { isAuthenticated: PropTypes.bool.isRequired };
