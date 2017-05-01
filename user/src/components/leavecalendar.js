@@ -1,23 +1,24 @@
-import React, { PropTypes } from "react";
+// @flow
+import React from 'react';
 
-const moment = require("moment");
+const moment = require('moment');
 
-const Leaves = ({ records }) => {
+export default ({ records }: { records: Array<any> }) => {
   const itemNodes = records
     .filter(record => {
       // get current date and format it
       let dateToday = moment();
 
-      let todayDate = dateToday.format("DD/MM/YYYY");
+      let todayDate = dateToday.format('DD/MM/YYYY');
 
       // get end date and format it
-      let end_Date = moment(record.end_date, "DD/MM/YYYY").format("DD/MM/YYYY");
+      let end_Date = moment(record.end_date, 'DD/MM/YYYY').format('DD/MM/YYYY');
 
       // check if current date and end date is same
       let isCurrentDate = todayDate === end_Date ? true : false;
 
       // get end date and format it
-      let eDate = moment(record.end_date, "DD/MM/YYYY").format("MM/DD/YYYY");
+      let eDate = moment(record.end_date, 'DD/MM/YYYY').format('MM/DD/YYYY');
 
       let endDate = moment(new Date(eDate));
 
@@ -38,10 +39,10 @@ const Leaves = ({ records }) => {
     ));
 
   return itemNodes.length > 0
-    ? <div className="table-responsive" style={{ marginTop: "80px" }}>
+    ? <div className="table-responsive" style={{ marginTop: '80px' }}>
         <table
           className="table table-bordered table-hover"
-          style={{ backgroundColor: "#FFFFFF" }}
+          style={{ backgroundColor: '#FFFFFF' }}
         >
           <thead className="thead-default">
             <tr>
@@ -57,11 +58,7 @@ const Leaves = ({ records }) => {
           </tbody>
         </table>
       </div>
-    : <div className="container text-center" style={{ paddingTop: "100px" }}>
+    : <div className="container text-center" style={{ paddingTop: '100px' }}>
         <h1 className="display-3">There are no approved leave record.</h1>
       </div>;
 };
-
-Leaves.propTypes = { records: PropTypes.array.isRequired };
-
-export default Leaves;
