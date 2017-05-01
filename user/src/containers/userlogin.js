@@ -1,8 +1,9 @@
-import React from "react";
-import { connect } from "react-redux";
+// @flow
+import React from 'react';
+import { connect } from 'react-redux';
 
-import { fetchLogin } from "../actions/userlogin";
-import Login from "../components/userlogin";
+import { fetchLogin } from '../actions/userlogin';
+import Login from '../components/userlogin';
 
 const UserLogin = ({ dispatch, isAuthenticated, message, isFetching }) => (
   <div className="UserLogin">
