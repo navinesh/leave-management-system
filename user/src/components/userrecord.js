@@ -1,9 +1,10 @@
-import React, { PropTypes } from "react";
-import { Link } from "react-router-dom";
+// @flow
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-const PendingRecordList = ({ user_record }) => {
+const PendingRecordList = ({ user_record }: { user_record: Array<any> }) => {
   const pendingList = user_record
-    .filter(data => data.leave_status === "pending")
+    .filter(data => data.leave_status === 'pending')
     .map(record => (
       <tr key={record.id}>
         <td>{record.leave_name}</td>
@@ -20,7 +21,7 @@ const PendingRecordList = ({ user_record }) => {
         <p className="lead">Pending Leave Schedule</p>
         <table
           className="table table-bordered table-hover"
-          style={{ backgroundColor: "#FFFFFF" }}
+          style={{ backgroundColor: '#FFFFFF' }}
         >
           <thead className="thead-default">
             <tr>
@@ -42,9 +43,9 @@ const PendingRecordList = ({ user_record }) => {
   }
 };
 
-const ApprovedRecordList = ({ user_record }) => {
+const ApprovedRecordList = ({ user_record }: { user_record: Array<any> }) => {
   const approvedList = user_record
-    .filter(data => data.leave_status === "approved")
+    .filter(data => data.leave_status === 'approved')
     .map(record => (
       <tr key={record.id}>
         <td>{record.leave_name}</td>
@@ -61,7 +62,7 @@ const ApprovedRecordList = ({ user_record }) => {
         <p className="lead">Approved Leave Schedule</p>
         <table
           className="table table-bordered table-hover"
-          style={{ backgroundColor: "#FFFFFF" }}
+          style={{ backgroundColor: '#FFFFFF' }}
         >
           <thead className="thead-default">
             <tr>
@@ -83,12 +84,18 @@ const ApprovedRecordList = ({ user_record }) => {
   }
 };
 
-export const UserRecord = ({ user_detail, message }) => {
+export const UserRecord = ({
+  user_detail,
+  message
+}: {
+  user_detail: Object,
+  message: string
+}) => {
   let gender = user_detail.gender ? user_detail.gender.toLowerCase() : null;
 
   if (message) {
     return (
-      <div className="container text-center" style={{ paddingTop: "100px" }}>
+      <div className="container text-center" style={{ paddingTop: '100px' }}>
         <div className="col-md-8 offset-md-2 ">
           <h1 className="display-4">
             The site configured at this address does not contain the requested resource.
@@ -100,13 +107,13 @@ export const UserRecord = ({ user_detail, message }) => {
     return (
       <div
         className="jumbotron jumbotron-fluid"
-        style={{ backgroundColor: "#FFFFFF", paddingTop: "90px" }}
+        style={{ backgroundColor: '#FFFFFF', paddingTop: '90px' }}
       >
         <div className="container">
           <div className="row">
             <div className="col-md-12">
               <p className="display-4">
-                {user_detail.othernames}{" "}{user_detail.surname}
+                {user_detail.othernames}{' '}{user_detail.surname}
                 <br />
                 <Link to="/changepassword" className="btn btn-outline-primary">
                   Change password
@@ -115,7 +122,7 @@ export const UserRecord = ({ user_detail, message }) => {
             </div>
             <div className="col-md-2 pt-3">
               <p className="lead">
-                Annual{" "}
+                Annual{' '}
                 <span className="badge badge-primary badge-pill">
                   {user_detail.annual}
                 </span>
@@ -123,7 +130,7 @@ export const UserRecord = ({ user_detail, message }) => {
             </div>
             <div className="col-md-2 pt-3">
               <p className="lead">
-                Sick{" "}
+                Sick{' '}
                 <span className="badge badge-primary badge-pill">
                   {user_detail.sick}
                 </span>
@@ -131,7 +138,7 @@ export const UserRecord = ({ user_detail, message }) => {
             </div>
             <div className="col-md-2 pt-3">
               <p className="lead">
-                Christmas{" "}
+                Christmas{' '}
                 <span className="badge badge-primary badge-pill">
                   {user_detail.christmas}
                 </span>
@@ -139,16 +146,16 @@ export const UserRecord = ({ user_detail, message }) => {
             </div>
             <div className="col-md-2 pt-3">
               <p className="lead">
-                Bereavement{" "}
+                Bereavement{' '}
                 <span className="badge badge-primary badge-pill">
                   {user_detail.bereavement}
                 </span>
               </p>
             </div>
             <div className="col-md-2 pt-3">
-              {gender === "female" &&
+              {gender === 'female' &&
                 <p className="lead">
-                  Maternity{" "}
+                  Maternity{' '}
                   <span className="badge badge-primary badge-pill">
                     {user_detail.maternity}
                   </span>
@@ -161,7 +168,7 @@ export const UserRecord = ({ user_detail, message }) => {
   }
 };
 
-export const RecordList = ({ user_record }) => (
+export const RecordList = ({ user_record }: { user_record: Array<any> }) => (
   <div className="container">
     <div className="row">
       <PendingRecordList user_record={user_record} />
@@ -169,10 +176,3 @@ export const RecordList = ({ user_record }) => (
     </div>
   </div>
 );
-
-UserRecord.propTypes = {
-  user_detail: PropTypes.object.isRequired,
-  message: PropTypes.string
-};
-
-RecordList.propTypes = { user_record: PropTypes.array.isRequired };
