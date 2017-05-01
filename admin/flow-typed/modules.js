@@ -38,6 +38,7 @@ declare module 'axios' {
 declare module 'react-dates' {
   declare var exports: any;
 }
+
 declare module 'react-dates/lib/css/_datepicker.css' {
   declare var exports: any;
 }
