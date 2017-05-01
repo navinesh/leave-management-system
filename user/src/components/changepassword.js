@@ -1,11 +1,25 @@
-import React, { Component, PropTypes } from 'react';
+// @flow
+import React, { Component } from 'react';
 
 import '../spinners.css';
 
 export default class UserChange extends Component {
+  props: {
+    onChangeClick: Function,
+    message: string,
+    isFetching: boolean,
+    auth_info: Object
+  };
+
+  state: {
+    errorMessage: string,
+    currentPassword: string,
+    newPassword: string
+  };
+
   constructor() {
     super();
-    this.state = { errorMessage: '' };
+    this.state = { errorMessage: '', currentPassword: '', newPassword: '' };
   }
 
   handleCurrentPasswordChange(e) {
@@ -113,10 +127,3 @@ export default class UserChange extends Component {
     );
   }
 }
-
-UserChange.propTypes = {
-  onChangeClick: PropTypes.func.isRequired,
-  message: PropTypes.string,
-  isFetching: PropTypes.bool.isRequired,
-  auth_info: PropTypes.object.isRequired
-};
