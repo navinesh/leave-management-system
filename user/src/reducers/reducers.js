@@ -1,9 +1,9 @@
-import { combineReducers } from "redux";
+import { combineReducers } from 'redux';
 
 import {
   REQUEST_LEAVE_CALENDAR,
   RECEIVE_LEAVE_CALENDAR
-} from "../actions/leavecalendar";
+} from '../actions/LeaveCalendar';
 
 import {
   LOGIN_USER_REQUEST,
@@ -13,49 +13,49 @@ import {
   LOGIN_USER_SUCCESS_FROM_TOKEN,
   LOGIN_USER_FAILURE_FROM_TOKEN,
   LOGIN_FAILURE_FROM_TOKEN
-} from "../actions/userlogin";
+} from '../actions/UserLogin';
 
-import { LOGOUT_USER_REQUEST } from "../actions/userlogout";
-import { LOGOUT_USER_SUCCESS } from "../actions/userlogout";
+import { LOGOUT_USER_REQUEST } from '../actions/UserLogout';
+import { LOGOUT_USER_SUCCESS } from '../actions/UserLogout';
 
 import {
   REQUEST_USER_RECORD,
   RECEIVE_USER_RECORD,
   USER_RECORD_ERROR,
   CLEAR_USER_RECORD
-} from "../actions/userrecord";
+} from '../actions/UserRecord';
 
 import {
   REQUEST_USER_DETAILS,
   RECEIVE_USER_DETAILS,
   USER_DETAILS_ERROR,
   CLEAR_USER_DETAILS
-} from "../actions/userdetails";
+} from '../actions/UserDetails';
 
 import {
   LEAVE_APPLICATION_REQUEST,
   LEAVE_APPLICATION_SUCCESS,
   LEAVE_APPLICATION_FAILURE
-} from "../actions/leaveapplication";
+} from '../actions/LeaveApplication';
 
 import {
   REQUEST_PASSWORD_CHANGE,
   PASSWORD_CHANGE_SUCCESS,
   PASSWORD_CHANGE_ERROR,
   CLEAR_CHANGE_PASSWORD_ERROR
-} from "../actions/changepassword";
+} from '../actions/ChangePassword';
 
 import {
   REQUEST_PASSWORD_RESET,
   PASSWORD_RESET_SUCCESS,
   PASSWORD_RESET_ERROR
-} from "../actions/resetpassword";
+} from '../actions/ResetPassword';
 
 import {
   REQUEST_PUBLIC_HOLIDAY,
   RECEIVE_PUBLIC_HOLIDAY,
   ERROR_PUBLIC_HOLIDAY
-} from "../actions/publicholiday";
+} from '../actions/PublicHoliday';
 
 const leaveRecords = (
   state = {
@@ -85,8 +85,8 @@ const leaveRecords = (
 const userAuth = (
   state = {
     isFetching: false,
-    isAuthenticated: localStorage.getItem("auth_token") ? true : false,
-    message: "",
+    isAuthenticated: localStorage.getItem('auth_token') ? true : false,
+    message: '',
     auth_info: {}
   },
   action
@@ -104,7 +104,7 @@ const userAuth = (
         isFetching: false,
         isAuthenticated: true,
         auth_info: action.auth_info,
-        message: "Login successful!"
+        message: 'Login successful!'
       };
     case LOGIN_USER_FAILURE:
       return {
@@ -124,8 +124,8 @@ const userAuth = (
         ...state,
         isFetching: false,
         isAuthenticated: false,
-        message: "",
-        auth_info: ""
+        message: '',
+        auth_info: ''
       };
     case LOGIN_USER_REQUEST_FROM_TOKEN:
       return {
@@ -138,7 +138,7 @@ const userAuth = (
         isFetching: false,
         isAuthenticated: true,
         auth_info: action.auth_info,
-        message: "Login successful!"
+        message: 'Login successful!'
       };
     case LOGIN_USER_FAILURE_FROM_TOKEN:
       return {
@@ -152,8 +152,8 @@ const userAuth = (
         ...state,
         isFetching: false,
         isAuthenticated: false,
-        message: "Your session has expired!",
-        auth_info: ""
+        message: 'Your session has expired!',
+        auth_info: ''
       };
     default:
       return state;
@@ -164,7 +164,7 @@ const userRecords = (
   state = {
     isFetching: false,
     userRecord: [],
-    message: ""
+    message: ''
   },
   action
 ) => {
@@ -190,7 +190,7 @@ const userRecords = (
       return {
         ...state,
         isFetching: false,
-        message: "",
+        message: '',
         userRecord: []
       };
     default:
@@ -202,7 +202,7 @@ const userDetails = (
   state = {
     isFetching: false,
     userDetail: {},
-    message: ""
+    message: ''
   },
   action
 ) => {
@@ -228,7 +228,7 @@ const userDetails = (
       return {
         ...state,
         isFetching: false,
-        message: "",
+        message: '',
         userDetail: {}
       };
     default:
@@ -239,7 +239,7 @@ const userDetails = (
 const leaveApplication = (
   state = {
     isFetching: false,
-    message: ""
+    message: ''
   },
   action
 ) => {
@@ -248,7 +248,7 @@ const leaveApplication = (
       return {
         ...state,
         isFetching: true,
-        message: ""
+        message: ''
       };
     case LEAVE_APPLICATION_SUCCESS:
       return {
@@ -269,7 +269,7 @@ const leaveApplication = (
 const changePassword = (
   state = {
     isFetching: false,
-    message: ""
+    message: ''
   },
   action
 ) => {
@@ -295,7 +295,7 @@ const changePassword = (
       return {
         ...state,
         isFetching: false,
-        message: ""
+        message: ''
       };
     default:
       return state;
@@ -305,7 +305,7 @@ const changePassword = (
 const resetPassword = (
   state = {
     isFetching: false,
-    message: ""
+    message: ''
   },
   action
 ) => {

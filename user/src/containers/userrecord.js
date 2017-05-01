@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 
 import '../spinners.css';
 
-import { fetchUserDetailsIfNeeded } from '../actions/userdetails';
-import { fetchUserRecordIfNeeded } from '../actions/userrecord';
-import { UserRecord, RecordList } from '../components/userrecord';
+import { fetchUserDetailsIfNeeded } from '../actions/UserDetails';
+import { fetchUserRecordIfNeeded } from '../actions/UserRecord';
+import { UserRecord, RecordList } from '../components/UserRecord';
 
 class UserRecords extends Component {
   componentDidMount() {

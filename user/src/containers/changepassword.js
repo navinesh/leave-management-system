@@ -2,11 +2,11 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import UserChange from '../components/changepassword';
+import UserChange from '../components/ChangePassword';
 import {
   changePassword,
   clearChangePasswordError
-} from '../actions/changepassword';
+} from '../actions/ChangePassword';
 
 class UserChangePassword extends Component {
   componentDidMount() {

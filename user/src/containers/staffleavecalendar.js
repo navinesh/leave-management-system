@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 
 import '../spinners.css';
 
-import { fetchLeaveIfNeeded } from '../actions/leavecalendar';
-import Leaves from '../components/leavecalendar';
+import { fetchLeaveIfNeeded } from '../actions/LeaveCalendar';
+import Leaves from '../components/LeaveCalendar';
 
 class LeaveCalendar extends Component {
   componentDidMount() {

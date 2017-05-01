@@ -2,10 +2,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { fetchLoginFromToken } from '../actions/userlogin';
-import LeaveCalendar from './leavecalendar';
-import UserLogin from './userlogin';
-import UserRecord from './userrecord';
+import { fetchLoginFromToken } from '../actions/UserLogin';
+import LeaveCalendar from './LeaveCalendar';
+import UserLogin from './UserLogin';
+import UserRecord from './UserRecord';
 
 class Main extends Component {
   componentDidMount() {

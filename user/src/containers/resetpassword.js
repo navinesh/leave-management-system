@@ -3,8 +3,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-import UserResetPassword from '../components/resetpassword';
-import { resetPassword } from '../actions/resetpassword';
+import UserResetPassword from '../components/ResetPassword';
+import { resetPassword } from '../actions/ResetPassword';
 
 const ResetPassword = ({ dispatch, isAuthenticated, message, isFetching }) => (
   <div className="ResetPassword">

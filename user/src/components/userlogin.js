@@ -13,12 +13,13 @@ export default class Login extends Component {
 
   state: {
     email: string,
-    password: string
+    password: string,
+    errorMessage: string
   };
 
   constructor() {
     super();
-    this.state = { email: '', password: '' };
+    this.state = { email: '', password: '', errorMessage: '' };
   }
 
   handleEmailChange({ target }: SyntheticInputEvent) {
@@ -34,7 +35,24 @@ export default class Login extends Component {
     const email = this.state.email ? this.state.email.trim() : null;
     const password = this.state.password ? this.state.password.trim() : null;
 
-    if (!email || !password) {
+    if (!email && !password) {
+      this.setState({
+        error: 'The username you entered does not belong to an account. Please check your username and try again.'
+      });
+      return;
+    }
+
+    if (!email && password) {
+      this.setState({
+        error: 'The username you entered does not belong to an account. Please check your username and try again.'
+      });
+      return;
+    }
+
+    if (email && !password) {
+      this.setState({
+        error: 'Sorry, your password was incorrect. Please double-check your password.'
+      });
       return;
     }
 

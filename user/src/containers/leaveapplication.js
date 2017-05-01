@@ -3,11 +3,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-import { fetchLoginFromToken } from '../actions/userlogin';
-import { fetchUserDetailsIfNeeded } from '../actions/userdetails';
-import { fetchLeaveApplication } from '../actions/leaveapplication';
-import LeaveApplications from '../components/leaveapplication';
-import { fetchPublicHoliday } from '../actions/publicholiday';
+import { fetchLoginFromToken } from '../actions/UserLogin';
+import { fetchUserDetailsIfNeeded } from '../actions/UserDetails';
+import { fetchLeaveApplication } from '../actions/LeaveApplication';
+import LeaveApplications from '../components/LeaveApplication';
+import { fetchPublicHoliday } from '../actions/PublicHoliday';
 
 class LeaveApplication extends Component {
   componentDidMount() {

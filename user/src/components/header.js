@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import { logoutUser } from '../actions/userlogout';
+import { logoutUser } from '../actions/UserLogout';
 
 export default class Navs extends Component {
   props: {

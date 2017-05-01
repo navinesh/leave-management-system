@@ -2,7 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import Navs from '../components/header';
+import Navs from '../components/Header';
 
 const Header = ({ isAuthenticated, dispatch }) => (
   <div className="Header">

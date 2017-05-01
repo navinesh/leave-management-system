@@ -3,7 +3,7 @@ import React from 'react';
 import { render } from 'react-dom';
 
 import { Provider } from 'react-redux';
-import configureStore from './stores/configureStore';
+import configureStore from './stores/ConfigureStore';
 const store = configureStore();
 
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
@@ -11,13 +11,13 @@ import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import './index.css';
 import './bootstrap.min.css';
 
-import Header from './containers/header';
-import Main from './containers/main';
-import StaffLeaveCalendar from './containers/staffleavecalendar';
-import ResetPassword from './containers/resetpassword';
-import UserChangePassword from './containers/changepassword';
-import UserError from './components/usererror';
-import LeaveApplication from './containers/leaveapplication';
+import Header from './containers/Header';
+import Main from './containers/Main';
+import StaffLeaveCalendar from './containers/StaffLeaveCalendar';
+import ResetPassword from './containers/ResetPassword';
+import UserChangePassword from './containers/ChangePassword';
+import UserError from './components/UserError';
+import LeaveApplication from './containers/LeaveApplication';
 
 const PrivateRoute = ({ component, ...rest }) => (
   <Route
