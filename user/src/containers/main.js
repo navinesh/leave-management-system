@@ -1,17 +1,18 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+// @flow
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-import { fetchLoginFromToken } from "../actions/userlogin";
-import LeaveCalendar from "./leavecalendar";
-import UserLogin from "./userlogin";
-import UserRecord from "./userrecord";
+import { fetchLoginFromToken } from '../actions/userlogin';
+import LeaveCalendar from './leavecalendar';
+import UserLogin from './userlogin';
+import UserRecord from './userrecord';
 
 class Main extends Component {
   componentDidMount() {
     const { dispatch, auth_info } = this.props;
     let auth_token = auth_info.auth_token
       ? auth_info.auth_token
-      : localStorage.getItem("auth_token");
+      : localStorage.getItem('auth_token');
 
     if (auth_token) {
       dispatch(fetchLoginFromToken(auth_token));
