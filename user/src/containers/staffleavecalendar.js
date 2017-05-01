@@ -1,10 +1,10 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-const BeatLoader = require("halogen/BeatLoader");
+import '../spinners.css';
 
-import { fetchLeaveIfNeeded } from "../actions/leavecalendar";
-import Leaves from "../components/leavecalendar";
+import { fetchLeaveIfNeeded } from '../actions/leavecalendar';
+import Leaves from '../components/leavecalendar';
 
 class LeaveCalendar extends Component {
   componentDidMount() {
@@ -18,7 +18,7 @@ class LeaveCalendar extends Component {
       <div className="container">
         {isFetching
           ? <div className="text-center">
-              <BeatLoader color="#0275d8" size="12px" />
+              <div className="loader1" />
             </div>
           : <Leaves records={records} />}
       </div>
