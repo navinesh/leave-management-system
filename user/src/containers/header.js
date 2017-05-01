@@ -1,7 +1,8 @@
-import React from "react";
-import { connect } from "react-redux";
+// @flow
+import React from 'react';
+import { connect } from 'react-redux';
 
-import Navs from "../components/header";
+import Navs from '../components/header';
 
 const Header = ({ isAuthenticated, dispatch }) => (
   <div className="Header">
