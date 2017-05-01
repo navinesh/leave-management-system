@@ -1,35 +1,36 @@
-import React from "react";
-import { render } from "react-dom";
+// @flow
+import React from 'react';
+import { render } from 'react-dom';
 
-import { Provider } from "react-redux";
-import configureStore from "./stores/configureStore";
+import { Provider } from 'react-redux';
+import configureStore from './stores/configureStore';
 const store = configureStore();
 
-import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
-import "./index.css";
-import "./bootstrap.min.css";
+import './index.css';
+import './bootstrap.min.css';
 
-import Header from "./containers/header";
-import Main from "./containers/main";
-import StaffLeaveCalendar from "./containers/staffleavecalendar";
-import ResetPassword from "./containers/resetpassword";
-import UserChangePassword from "./containers/changepassword";
-import UserError from "./components/usererror";
-import LeaveApplication from "./containers/leaveapplication";
+import Header from './containers/header';
+import Main from './containers/main';
+import StaffLeaveCalendar from './containers/staffleavecalendar';
+import ResetPassword from './containers/resetpassword';
+import UserChangePassword from './containers/changepassword';
+import UserError from './components/usererror';
+import LeaveApplication from './containers/leaveapplication';
 
 const PrivateRoute = ({ component, ...rest }) => (
   <Route
     {...rest}
     render={props =>
-      store.getState().userAuth.isAuthenticated
+      (store.getState().userAuth.isAuthenticated
         ? React.createElement(component, props)
         : <Redirect
             to={{
-              pathname: "/",
+              pathname: '/',
               state: { from: props.location }
             }}
-          />}
+          />)}
   />
 );
 
@@ -51,4 +52,4 @@ const App = () => (
   </Provider>
 );
 
-render(<App />, document.getElementById("root"));
+render(<App />, document.getElementById('root'));
