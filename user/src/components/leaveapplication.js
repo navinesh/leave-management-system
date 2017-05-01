@@ -1,4 +1,5 @@
-import React, { Component, PropTypes } from 'react';
+// @flow
+import React, { Component } from 'react';
 
 import { DateRangePicker } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
@@ -10,9 +11,52 @@ import { extendMoment } from 'moment-range';
 const moment = extendMoment(Moment);
 
 export default class LeaveApplications extends Component {
+  props: {
+    onLeaveApplicationClick: Function,
+    message: string,
+    isFetching: boolean,
+    user_detail: Object,
+    public_holiday: Array<any>
+  };
+
+  state: {
+    leave: string,
+    leaveType: string,
+    startDate: any,
+    endDate: any,
+    supervisorEmail: string,
+    secretaryEmail: string,
+    reason: string,
+    sickSheet: any,
+    errorMessage: string,
+    successMessage: string,
+    focusedInput: ?boolean
+  };
+
+  handleLeaveChange: Function;
+  handleLeaveTypeChange: Function;
+  handleSupervisorEmailChange: Function;
+  handleSecretaryEmailChange: Function;
+  handleReasonChange: Function;
+  handleFileChange: Function;
+  handleSubmit: Function;
+
   constructor() {
     super();
-    this.state = { errorMessage: '', successMessage: '' };
+    this.state = {
+      errorMessage: '',
+      successMessage: '',
+      leave: '',
+      leaveType: '',
+      startDate: null,
+      endDate: null,
+      supervisorEmail: '',
+      secretaryEmail: '',
+      reason: '',
+      sickSheet: '',
+      focusedInput: null
+    };
+
     this.handleLeaveChange = this.handleLeaveChange.bind(this);
     this.handleLeaveTypeChange = this.handleLeaveTypeChange.bind(this);
     this.handleSupervisorEmailChange = this.handleSupervisorEmailChange.bind(
@@ -26,31 +70,31 @@ export default class LeaveApplications extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleLeaveChange(e) {
-    this.setState({ leave: e.target.value });
+  handleLeaveChange({ target }: SyntheticInputEvent) {
+    this.setState({ leave: target.value });
   }
 
-  handleLeaveTypeChange(e) {
-    this.setState({ leaveType: e.target.value });
+  handleLeaveTypeChange({ target }: SyntheticInputEvent) {
+    this.setState({ leaveType: target.value });
   }
 
-  handleSupervisorEmailChange(e) {
-    this.setState({ supervisorEmail: e.target.value });
+  handleSupervisorEmailChange({ target }: SyntheticInputEvent) {
+    this.setState({ supervisorEmail: target.value });
   }
 
-  handleSecretaryEmailChange(e) {
-    this.setState({ secretaryEmail: e.target.value });
+  handleSecretaryEmailChange({ target }: SyntheticInputEvent) {
+    this.setState({ secretaryEmail: target.value });
   }
 
-  handleReasonChange(e) {
-    this.setState({ reason: e.target.value });
+  handleReasonChange({ target }: SyntheticInputEvent) {
+    this.setState({ reason: target.value });
   }
 
-  handleFileChange(e) {
-    this.setState({ sickSheet: e.target.files[0] });
+  handleFileChange({ target }: SyntheticInputEvent) {
+    this.setState({ sickSheet: target.files[0] });
   }
 
-  handleSubmit(e) {
+  handleSubmit(e: Event) {
     e.preventDefault();
     const { user_detail } = this.props;
 
@@ -175,7 +219,13 @@ export default class LeaveApplications extends Component {
             : undefined;
         },
         maternity: () => {
-          return !sickSheet ? false : maternityDays - myLeaveDays;
+          if (!sickSheet) {
+            return false;
+          } else {
+            if (maternityDays) {
+              return maternityDays - myLeaveDays;
+            }
+          }
         },
         lwop: () => {
           return myLeaveDays;
@@ -437,11 +487,3 @@ export default class LeaveApplications extends Component {
     }
   }
 }
-
-LeaveApplications.propTypes = {
-  onLeaveApplicationClick: PropTypes.func.isRequired,
-  message: PropTypes.string,
-  isFetching: PropTypes.bool.isRequired,
-  user_detail: PropTypes.object.isRequired,
-  public_holiday: PropTypes.array.isRequired
-};
