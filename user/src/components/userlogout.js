@@ -1,11 +1,8 @@
-import React, { PropTypes } from "react";
+// @flow
+import React from 'react';
 
-const Logout = ({ onLogoutClick }) => (
+export default ({ onLogoutClick }: { onLogoutClick: Function }) => (
   <button onClick={() => onLogoutClick()} className="btn btn-primary-outline">
     Log out
   </button>
 );
-
-Logout.propTypes = { onLogoutClick: PropTypes.func.isRequired };
-
-export default Logout;
