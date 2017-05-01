@@ -1,18 +1,30 @@
-import React, { Component, PropTypes } from 'react';
+// @flow
+import React, { Component } from 'react';
 
 import '../spinners.css';
 
 export default class UserResetPassword extends Component {
+  props: {
+    onResetClick: Function,
+    message: string,
+    isFetching: boolean
+  };
+
+  state: {
+    errorMessage: string,
+    email: string
+  };
+
   constructor() {
     super();
-    this.state = { errorMessage: null };
+    this.state = { errorMessage: '', email: '' };
   }
 
-  handleEmailChange(e) {
-    this.setState({ email: e.target.value });
+  handleEmailChange({ target }: SyntheticInputEvent) {
+    this.setState({ email: target.value });
   }
 
-  handleSubmit(e) {
+  handleSubmit(e: Event) {
     e.preventDefault();
     const email = this.state.email ? this.state.email.trim() : null;
 
@@ -54,9 +66,3 @@ export default class UserResetPassword extends Component {
     );
   }
 }
-
-UserResetPassword.propTypes = {
-  onResetClick: PropTypes.func.isRequired,
-  message: PropTypes.string,
-  isFetching: PropTypes.bool.isRequired
-};
