@@ -14,27 +14,33 @@ export default class UserChange extends Component {
   state: {
     errorMessage: string,
     currentPassword: string,
-    newPassword: string
+    newPassword: string,
+    newPasswordConfirm: string
   };
 
   constructor() {
     super();
-    this.state = { errorMessage: '', currentPassword: '', newPassword: '' };
+    this.state = {
+      errorMessage: '',
+      currentPassword: '',
+      newPassword: '',
+      newPasswordConfirm: ''
+    };
   }
 
-  handleCurrentPasswordChange(e) {
-    this.setState({ currentPassword: e.target.value });
+  handleCurrentPasswordChange({ target }: SyntheticInputEvent) {
+    this.setState({ currentPassword: target.value });
   }
 
-  handleNewPasswordChange(e) {
-    this.setState({ newPassword: e.target.value });
+  handleNewPasswordChange({ target }: SyntheticInputEvent) {
+    this.setState({ newPassword: target.value });
   }
 
-  handleNewPasswordConfirmChange(e) {
-    this.setState({ newPasswordConfirm: e.target.value });
+  handleNewPasswordConfirmChange({ target }: SyntheticInputEvent) {
+    this.setState({ newPasswordConfirm: target.value });
   }
 
-  handleSubmit(e) {
+  handleSubmit(e: Event) {
     e.preventDefault();
     this.setState({ errorMessage: '' });
     const { auth_info } = this.props;
