@@ -1,19 +1,18 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-const BeatLoader = require("halogen/BeatLoader");
-const PulseLoader = require("halogen/PulseLoader");
+import '../spinners.css';
 
-import { fetchUserDetailsIfNeeded } from "../actions/userdetails";
-import { fetchUserRecordIfNeeded } from "../actions/userrecord";
-import { UserRecord, RecordList } from "../components/userrecord";
+import { fetchUserDetailsIfNeeded } from '../actions/userdetails';
+import { fetchUserRecordIfNeeded } from '../actions/userrecord';
+import { UserRecord, RecordList } from '../components/userrecord';
 
 class UserRecords extends Component {
   componentDidMount() {
     const { dispatch, auth_info } = this.props;
     let auth_token = auth_info.auth_token
       ? auth_info.auth_token
-      : localStorage.getItem("auth_token");
+      : localStorage.getItem('auth_token');
 
     if (auth_token) {
       dispatch(fetchUserDetailsIfNeeded(auth_token));
@@ -34,12 +33,12 @@ class UserRecords extends Component {
       <div className="UserRecords">
         {isFetching
           ? <div className="text-center">
-              <BeatLoader color="#0275d8" size="12px" />
+              <div className="loader1" />
             </div>
           : <UserRecord user_detail={user_detail} message={message} />}
         {isRecordFetching
           ? <div className="text-center">
-              <PulseLoader color="#0275d8" size="12px" />
+              <div className="loader1" />
             </div>
           : <RecordList user_record={user_record} />}
       </div>
