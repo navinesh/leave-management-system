@@ -1,11 +1,12 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+// @flow
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
-import UserChange from "../components/changepassword";
+import UserChange from '../components/changepassword';
 import {
   changePassword,
   clearChangePasswordError
-} from "../actions/changepassword";
+} from '../actions/changepassword';
 
 class UserChangePassword extends Component {
   componentDidMount() {
