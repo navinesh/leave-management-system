@@ -1,18 +1,35 @@
-import React, { Component, PropTypes } from 'react';
+// @flow
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 import '../spinners.css';
 
 export default class Login extends Component {
-  handleEmailChange(e) {
-    this.setState({ email: e.target.value });
+  props: {
+    onLoginClick: Function,
+    message: string,
+    isFetching: boolean
+  };
+
+  state: {
+    email: string,
+    password: string
+  };
+
+  constructor() {
+    super();
+    this.state = { email: '', password: '' };
   }
 
-  handlePasswordChange(e) {
-    this.setState({ password: e.target.value });
+  handleEmailChange({ target }: SyntheticInputEvent) {
+    this.setState({ email: target.value });
   }
 
-  handleSubmit(e) {
+  handlePasswordChange({ target }: SyntheticInputEvent) {
+    this.setState({ password: target.value });
+  }
+
+  handleSubmit(e: Event) {
     e.preventDefault();
     const email = this.state.email ? this.state.email.trim() : null;
     const password = this.state.password ? this.state.password.trim() : null;
@@ -72,9 +89,3 @@ export default class Login extends Component {
     );
   }
 }
-
-Login.propTypes = {
-  onLoginClick: PropTypes.func.isRequired,
-  message: PropTypes.string,
-  isFetching: PropTypes.bool.isRequired
-};
