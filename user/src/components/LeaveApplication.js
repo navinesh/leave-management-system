@@ -268,8 +268,10 @@ export default class LeaveApplications extends Component {
     const sDate = moment(startDate).format('DD/MM/YYYY');
     const eDate = moment(endDate).format('DD/MM/YYYY');
 
-    this.setState({ errorMessage: '' });
-    this.setState({ successMessage: 'Your application has been submitted.' });
+    this.setState({
+      errorMessage: '',
+      successMessage: 'Your application has been submitted.'
+    });
 
     const applicationDetails = {
       user_id: user_id,
