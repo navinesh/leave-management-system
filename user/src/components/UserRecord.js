@@ -111,7 +111,7 @@ export const UserRecord = ({
       >
         <div className="container">
           <div className="row">
-            <div className="col-md-12">
+            <div className="col-md-6">
               <p className="display-4">
                 {user_detail.othernames}{' '}{user_detail.surname}
                 <br />
@@ -120,46 +120,40 @@ export const UserRecord = ({
                 </Link>
               </p>
             </div>
-            <div className="col-md-2 pt-3">
-              <p className="lead">
-                Annual{' '}
-                <span className="badge badge-primary badge-pill">
-                  {user_detail.annual}
-                </span>
-              </p>
-            </div>
-            <div className="col-md-2 pt-3">
-              <p className="lead">
-                Sick{' '}
-                <span className="badge badge-primary badge-pill">
-                  {user_detail.sick}
-                </span>
-              </p>
-            </div>
-            <div className="col-md-2 pt-3">
-              <p className="lead">
-                Christmas{' '}
-                <span className="badge badge-primary badge-pill">
-                  {user_detail.christmas}
-                </span>
-              </p>
-            </div>
-            <div className="col-md-2 pt-3">
-              <p className="lead">
-                Bereavement{' '}
-                <span className="badge badge-primary badge-pill">
-                  {user_detail.bereavement}
-                </span>
-              </p>
-            </div>
-            <div className="col-md-2 pt-3">
-              {gender === 'female' &&
-                <p className="lead">
-                  Maternity{' '}
+            <div className="col-md-3">
+              <ul className="list-group">
+                <li className="list-group-item justify-content-between">
+                  Annual
                   <span className="badge badge-primary badge-pill">
-                    {user_detail.maternity}
+                    {user_detail.annual}
                   </span>
-                </p>}
+                </li>
+                <li className="list-group-item justify-content-between">
+                  Sick
+                  <span className="badge badge-primary badge-pill">
+                    {user_detail.sick}
+                  </span>
+                </li>
+                <li className="list-group-item justify-content-between">
+                  Bereavement
+                  <span className="badge badge-primary badge-pill">
+                    {user_detail.bereavement}
+                  </span>
+                </li>
+                <li className="list-group-item justify-content-between">
+                  Christmas
+                  <span className="badge badge-primary badge-pill">
+                    {user_detail.christmas}
+                  </span>
+                </li>
+                {gender === 'female' &&
+                  <li className="list-group-item justify-content-between">
+                    Maternity
+                    <span className="badge badge-primary badge-pill">
+                      {user_detail.maternity}
+                    </span>
+                  </li>}
+              </ul>
             </div>
           </div>
         </div>
