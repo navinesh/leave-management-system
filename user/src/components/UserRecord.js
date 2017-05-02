@@ -111,11 +111,11 @@ export const UserRecord = ({
       >
         <div className="container">
           <div className="row">
-            <div className="col-md-6">
+            <div className="col-md-6 offset-md-1">
               <p className="display-4">
                 {user_detail.othernames}{' '}{user_detail.surname}
                 <br />
-                <Link to="/changepassword" className="btn btn-outline-primary">
+                <Link to="/changepassword" className="btn btn-primary">
                   Change password
                 </Link>
               </p>
