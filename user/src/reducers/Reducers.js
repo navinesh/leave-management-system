@@ -57,8 +57,13 @@ import {
   ERROR_PUBLIC_HOLIDAY
 } from '../actions/PublicHoliday';
 
+type LeaveRecords = {
+  isFetching: boolean,
+  items: Array<any>
+};
+
 const leaveRecords = (
-  state = {
+  state: LeaveRecords = {
     isFetching: false,
     items: []
   },
@@ -82,8 +87,15 @@ const leaveRecords = (
   }
 };
 
+type UserAuth = {
+  isFetching: boolean,
+  isAuthenticated: boolean,
+  message: string,
+  auth_info: Object
+};
+
 const userAuth = (
-  state = {
+  state: UserAuth = {
     isFetching: false,
     isAuthenticated: localStorage.getItem('auth_token') ? true : false,
     message: '',
@@ -160,8 +172,14 @@ const userAuth = (
   }
 };
 
+type UserRecords = {
+  isFetching: boolean,
+  userRecord: Array<any>,
+  message: string
+};
+
 const userRecords = (
-  state = {
+  state: UserRecords = {
     isFetching: false,
     userRecord: [],
     message: ''
@@ -198,8 +216,14 @@ const userRecords = (
   }
 };
 
+type UserDeatils = {
+  isFetching: boolean,
+  userDetail: Object,
+  message: string
+};
+
 const userDetails = (
-  state = {
+  state: UserDeatils = {
     isFetching: false,
     userDetail: {},
     message: ''
@@ -236,8 +260,13 @@ const userDetails = (
   }
 };
 
+type LeaveApplication = {
+  isFetching: boolean,
+  message: string
+};
+
 const leaveApplication = (
-  state = {
+  state: LeaveApplication = {
     isFetching: false,
     message: ''
   },
@@ -266,8 +295,13 @@ const leaveApplication = (
   }
 };
 
+type ChangePassword = {
+  isFetching: boolean,
+  message: string
+};
+
 const changePassword = (
-  state = {
+  state: ChangePassword = {
     isFetching: false,
     message: ''
   },
@@ -302,8 +336,13 @@ const changePassword = (
   }
 };
 
+type ResetPassword = {
+  isFetching: boolean,
+  message: string
+};
+
 const resetPassword = (
-  state = {
+  state: ResetPassword = {
     isFetching: false,
     message: ''
   },
@@ -332,8 +371,13 @@ const resetPassword = (
   }
 };
 
+type PublicHoliday = {
+  isFetching: boolean,
+  public_holiday: Array<any>
+};
+
 const publicHoliday = (
-  state = { isFetching: false, public_holiday: [] },
+  state: PublicHoliday = { isFetching: false, public_holiday: [] },
   action
 ) => {
   switch (action.type) {
