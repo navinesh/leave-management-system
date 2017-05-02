@@ -56,6 +56,10 @@ export default class Login extends Component {
       return;
     }
 
+    this.setState({
+      errorMessage: ''
+    });
+
     const creds = { email: email, password: password };
     this.props.onLoginClick(creds);
   }
@@ -98,9 +102,7 @@ export default class Login extends Component {
             {this.props.isFetching
               ? <div className="loader" />
               : this.props.message}
-            {this.props.isFetching
-              ? <div className="loader" />
-              : this.state.errorMessage}
+            {this.state.errorMessage}
           </div>
         </div>
         <div className="card card-block mt-3">
