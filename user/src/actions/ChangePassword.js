@@ -1,19 +1,20 @@
-import axios from "axios";
+// @flow
+import axios from 'axios';
 
-export const REQUEST_PASSWORD_CHANGE = "REQUEST_PASSWORD_CHANGE";
-export const PASSWORD_CHANGE_SUCCESS = "PASSWORD_CHANGE_SUCCESS";
-export const PASSWORD_CHANGE_ERROR = "PASSWORD_CHANGE_ERROR";
-export const CLEAR_CHANGE_PASSWORD_ERROR = "CLEAR_CHANGE_PASSWORD_ERROR";
+export const REQUEST_PASSWORD_CHANGE = 'REQUEST_PASSWORD_CHANGE';
+export const PASSWORD_CHANGE_SUCCESS = 'PASSWORD_CHANGE_SUCCESS';
+export const PASSWORD_CHANGE_ERROR = 'PASSWORD_CHANGE_ERROR';
+export const CLEAR_CHANGE_PASSWORD_ERROR = 'CLEAR_CHANGE_PASSWORD_ERROR';
 
-export const requestPasswordChange = creds => {
+export const requestPasswordChange = (creds: Object) => {
   return { type: REQUEST_PASSWORD_CHANGE, creds };
 };
 
-export const passwordChangeError = data => {
+export const passwordChangeError = (data: Object) => {
   return { type: PASSWORD_CHANGE_ERROR, message: data.message };
 };
 
-export const passwordChangeSuccess = data => {
+export const passwordChangeSuccess = (data: Object) => {
   return { type: PASSWORD_CHANGE_SUCCESS, message: data.message };
 };
 
@@ -21,12 +22,12 @@ export const clearChangePasswordError = () => {
   return { type: CLEAR_CHANGE_PASSWORD_ERROR };
 };
 
-export function changePassword(creds) {
-  return dispatch => {
+export function changePassword(creds: Object) {
+  return (dispatch: Function) => {
     dispatch(requestPasswordChange(creds));
     axios({
-      method: "post",
-      url: "http://localhost:8080/change-password",
+      method: 'post',
+      url: 'http://localhost:8080/change-password',
       auth: { username: creds.auth_token },
       data: {
         oldPassword: creds.currentPassword,
@@ -41,10 +42,10 @@ export function changePassword(creds) {
         }
       })
       .catch(error => {
-        localStorage.removeItem("auth_token");
-        dispatch({ type: "LOGIN_FAILURE_FROM_TOKEN" });
-        dispatch({ type: "CLEAR_USER_RECORD" });
-        dispatch({ type: "CLEAR_USER_DETAILS" });
+        localStorage.removeItem('auth_token');
+        dispatch({ type: 'LOGIN_FAILURE_FROM_TOKEN' });
+        dispatch({ type: 'CLEAR_USER_RECORD' });
+        dispatch({ type: 'CLEAR_USER_DETAILS' });
       });
   };
 }
