@@ -1,3 +1,4 @@
+// @flow
 import axios from 'axios';
 import { fetchUserRecord } from '../actions/UserRecord';
 
@@ -5,20 +6,20 @@ export const LEAVE_APPLICATION_REQUEST = 'LEAVE_APPLICATION_REQUEST';
 export const LEAVE_APPLICATION_SUCCESS = 'LEAVE_APPLICATION_SUCCESS';
 export const LEAVE_APPLICATION_FAILURE = 'LEAVE_APPLICATION_FAILURE';
 
-export function requestLeaveApplication(applicationDetails) {
+export const requestLeaveApplication = (applicationDetails: Object) => {
   return { type: LEAVE_APPLICATION_REQUEST, applicationDetails };
-}
+};
 
-export function receiveLeaveApplication() {
+export const receiveLeaveApplication = () => {
   return { type: LEAVE_APPLICATION_SUCCESS };
-}
+};
 
-export function leaveApplicationFailure(data) {
+export const leaveApplicationFailure = (data: Object) => {
   return { type: LEAVE_APPLICATION_FAILURE, message: data.message };
-}
+};
 
-export function fetchLeaveApplication(applicationDetails) {
-  return (dispatch, getState) => {
+export const fetchLeaveApplication = (applicationDetails: Object) => {
+  return (dispatch: Function, getState: Function) => {
     dispatch(requestLeaveApplication(applicationDetails));
 
     let data = new FormData();
@@ -42,4 +43,4 @@ export function fetchLeaveApplication(applicationDetails) {
       }
     });
   };
-}
+};
