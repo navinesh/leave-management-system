@@ -1,32 +1,33 @@
-import axios from "axios";
+// @flow
+import axios from 'axios';
 
-export const REQUEST_USER_DETAILS = "REQUEST_USER_DETAILS";
-export const RECEIVE_USER_DETAILS = "RECEIVE_USER_DETAILS";
-export const USER_DETAILS_ERROR = "USER_DETAILS_ERROR";
-export const CLEAR_USER_DETAILS = "CLEAR_USER_DETAILS";
+export const REQUEST_USER_DETAILS = 'REQUEST_USER_DETAILS';
+export const RECEIVE_USER_DETAILS = 'RECEIVE_USER_DETAILS';
+export const USER_DETAILS_ERROR = 'USER_DETAILS_ERROR';
+export const CLEAR_USER_DETAILS = 'CLEAR_USER_DETAILS';
 
-export const requestUserDetails = auth_token => ({
+export const requestUserDetails = (auth_token: string) => ({
   type: REQUEST_USER_DETAILS,
   auth_token
 });
 
-export const userDetailsError = data => ({
+export const userDetailsError = (data: Object) => ({
   type: USER_DETAILS_ERROR,
   message: data.message
 });
 
-export const receiveUserDetails = data => ({
+export const receiveUserDetails = (data: Object) => ({
   type: RECEIVE_USER_DETAILS,
   user_detail: data.user_detail
 });
 
 export const clearUserDetails = () => ({ type: CLEAR_USER_DETAILS });
 
-export const fetchUserDetails = auth_token => {
-  return dispatch => {
+export const fetchUserDetails = (auth_token: string) => {
+  return (dispatch: Function) => {
     dispatch(requestUserDetails(auth_token));
     axios({
-      url: "http://localhost:8080/user-detail.api",
+      url: 'http://localhost:8080/user-detail.api',
       auth: { username: auth_token }
     })
       .then(response => {
@@ -37,15 +38,18 @@ export const fetchUserDetails = auth_token => {
         }
       })
       .catch(error => {
-        localStorage.removeItem("auth_token");
-        dispatch({ type: "LOGIN_FAILURE_FROM_TOKEN" });
-        dispatch({ type: "CLEAR_USER_RECORD" });
-        dispatch({ type: "CLEAR_USER_DETAILS" });
+        localStorage.removeItem('auth_token');
+        dispatch({ type: 'LOGIN_FAILURE_FROM_TOKEN' });
+        dispatch({ type: 'CLEAR_USER_RECORD' });
+        dispatch({ type: 'CLEAR_USER_DETAILS' });
       });
   };
 };
 
-export const shouldfetchUserDetails = (state, userDetails) => {
+export const shouldfetchUserDetails = (
+  state: Object,
+  userDetails?: Array<any>
+) => {
   const userState = state.userDetails;
   const { userDetail } = userState;
   const details = Object.keys(userDetail).length;
@@ -57,9 +61,9 @@ export const shouldfetchUserDetails = (state, userDetails) => {
   }
 };
 
-export const fetchUserDetailsIfNeeded = auth_token => {
-  return (dispatch, getState) => {
-    if (shouldfetchUserDetails(getState(), auth_token)) {
+export const fetchUserDetailsIfNeeded = (auth_token: string) => {
+  return (dispatch: Function, getState: Function) => {
+    if (shouldfetchUserDetails(getState())) {
       // Dispatch a thunk from thunk!
       return dispatch(fetchUserDetails(auth_token));
     } else {
