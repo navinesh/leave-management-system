@@ -1,6 +1,7 @@
+// @flow
 import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
-import { createLogger } from 'redux-logger';
+import { createLogger } from 'redux-logger'; //remove in production
 import rootReducer from '../reducers/Reducers';
 
 const configureStore = () => {
