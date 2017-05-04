@@ -1,18 +1,19 @@
-import fetch from "isomorphic-fetch";
+// @flow
+import fetch from 'isomorphic-fetch';
 
-export const REQUEST_LEAVE_CALENDAR = "REQUEST_LEAVE_CALENDAR";
-export const RECEIVE_LEAVE_CALENDAR = "RECEIVE_LEAVE_CALENDAR";
+export const REQUEST_LEAVE_CALENDAR = 'REQUEST_LEAVE_CALENDAR';
+export const RECEIVE_LEAVE_CALENDAR = 'RECEIVE_LEAVE_CALENDAR';
 
 export const requestLeave = () => ({ type: REQUEST_LEAVE_CALENDAR });
 
-export const receiveLeave = json => ({
+export const receiveLeave = (json: Object) => ({
   type: RECEIVE_LEAVE_CALENDAR,
   records: json.approved_leave_records,
   receivedAt: Date.now()
 });
 
 export const fetchLeave = () => {
-  return dispatch => {
+  return (dispatch: Function) => {
     dispatch(requestLeave());
     return fetch(`http://localhost:8080/approved-leave.api`)
       .then(response => response.json())
@@ -20,7 +21,7 @@ export const fetchLeave = () => {
   };
 };
 
-export const shouldfetchLeave = (state, leaveRecords) => {
+export const shouldfetchLeave = (state: Object, leaveRecords?: Array<any>) => {
   const leaveState = state.leaveRecords;
   const { items } = leaveState;
   const item = items.length;
@@ -33,7 +34,7 @@ export const shouldfetchLeave = (state, leaveRecords) => {
 };
 
 export const fetchLeaveIfNeeded = () => {
-  return (dispatch, getState) => {
+  return (dispatch: Function, getState: Function) => {
     if (shouldfetchLeave(getState())) {
       // Dispatch a thunk from thunk!
       return dispatch(fetchLeave());
