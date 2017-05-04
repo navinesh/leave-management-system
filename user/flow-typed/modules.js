@@ -15,6 +15,15 @@ declare module 'react-redux' {
   declare var exports: any;
 }
 
+declare module 'redux-thunk' {
+  declare var exports: any;
+}
+
+// remove in production
+declare module 'redux-logger' {
+  declare var exports: any;
+}
+
 declare module 'moment' {
   declare var exports: any;
 }
