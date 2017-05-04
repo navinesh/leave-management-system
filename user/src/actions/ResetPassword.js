@@ -1,26 +1,27 @@
-import axios from "axios";
+// @flow
+import axios from 'axios';
 
-export const REQUEST_PASSWORD_RESET = "REQUEST_PASSWORD_RESET";
-export const PASSWORD_RESET_SUCCESS = "PASSWORD_RESET_SUCCESS";
-export const PASSWORD_RESET_ERROR = "PASSWORD_RESET_ERROR";
+export const REQUEST_PASSWORD_RESET = 'REQUEST_PASSWORD_RESET';
+export const PASSWORD_RESET_SUCCESS = 'PASSWORD_RESET_SUCCESS';
+export const PASSWORD_RESET_ERROR = 'PASSWORD_RESET_ERROR';
 
-export function requestPasswordReset(email) {
+export const requestPasswordReset = (email: string) => {
   return { type: REQUEST_PASSWORD_RESET, email };
-}
+};
 
-export function passwordResetError(data) {
+export const passwordResetError = (data: Object) => {
   return { type: PASSWORD_RESET_ERROR, message: data.message };
-}
+};
 
-export function passwordResetSuccess(data) {
+export const passwordResetSuccess = (data: Object) => {
   return { type: PASSWORD_RESET_SUCCESS, message: data.message };
-}
+};
 
-export function resetPassword(email) {
-  return dispatch => {
+export const resetPassword = (email: string) => {
+  return (dispatch: Function) => {
     dispatch(requestPasswordReset(email));
     axios
-      .post("http://localhost:8080/reset-password.api", { email: email })
+      .post('http://localhost:8080/reset-password.api', { email: email })
       .then(response => {
         if (response.status === 200) {
           dispatch(passwordResetError(response.data));
@@ -29,4 +30,4 @@ export function resetPassword(email) {
         }
       });
   };
-}
+};
