@@ -42,3 +42,7 @@ declare module 'react-dates' {
 declare module 'react-dates/lib/css/_datepicker.css' {
   declare var exports: any;
 }
+
+declare module 'isomorphic-fetch' {
+  declare var exports: any;
+}
