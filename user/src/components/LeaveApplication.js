@@ -416,6 +416,7 @@ export default class LeaveApplications extends Component {
                           showDefaultInputIcon
                           showClearDates
                           withPortal
+                          displayFormat="DD/MM/YYYY"
                           renderCalendarInfo={() => (
                             <p className="text-center">
                               To select a single day click the date twice.
