@@ -191,6 +191,7 @@ def apply_for_leave():
         leave_status=leave_status,
         file_name=new_file_name,
         date_posted=str(datetime.now().date()))
+
     session.add(leaverecord)
     session.commit()
     return jsonify({'message': 'Your application has been submitted.'}), 201
