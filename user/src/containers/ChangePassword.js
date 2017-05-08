@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 import UserChange from '../components/ChangePassword';
 import {
@@ -25,15 +26,16 @@ class UserChangePassword extends Component {
 
     return (
       <div className="UserAccount">
-        {isAuthenticated &&
-          <div className="col col-md-4 offset-md-4">
-            <UserChange
-              isFetching={isFetching}
-              message={message}
-              auth_info={auth_info}
-              onChangeClick={creds => dispatch(changePassword(creds))}
-            />
-          </div>}
+        {isAuthenticated
+          ? <div className="col col-md-4 offset-md-4">
+              <UserChange
+                isFetching={isFetching}
+                message={message}
+                auth_info={auth_info}
+                onChangeClick={creds => dispatch(changePassword(creds))}
+              />
+            </div>
+          : <Redirect to="/" />}
       </div>
     );
   }
