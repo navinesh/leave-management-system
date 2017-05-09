@@ -10,15 +10,55 @@ import Moment from 'moment';
 import { extendMoment } from 'moment-range';
 const moment = extendMoment(Moment);
 
-export default class LeaveApplications extends Component {
-  props: {
-    onLeaveApplicationClick: Function,
-    message: string,
-    isFetching: boolean,
-    user_detail: Object,
-    public_holiday: Array<any>
-  };
+const UserName = props => (
+  <p className="h5">
+    {props.user_detail.othernames}{' '}{props.user_detail.surname}
+  </p>
+);
 
+const UserRecord = props => {
+  let gender = props.user_detail.gender
+    ? props.user_detail.gender.toLowerCase()
+    : null;
+
+  return (
+    <ul className="list-group">
+      <li className="list-group-item justify-content-between">
+        Annual
+        <span className="badge badge-primary badge-pill">
+          {props.user_detail.annual}
+        </span>
+      </li>
+      <li className="list-group-item justify-content-between">
+        Sick
+        <span className="badge badge-primary badge-pill">
+          {props.user_detail.sick}
+        </span>
+      </li>
+      <li className="list-group-item justify-content-between">
+        Bereavement
+        <span className="badge badge-primary badge-pill">
+          {props.user_detail.bereavement}
+        </span>
+      </li>
+      <li className="list-group-item justify-content-between">
+        Christmas
+        <span className="badge badge-primary badge-pill">
+          {props.user_detail.christmas}
+        </span>
+      </li>
+      {gender === 'female' &&
+        <li className="list-group-item justify-content-between">
+          Maternity
+          <span className="badge badge-primary badge-pill">
+            {props.user_detail.maternity}
+          </span>
+        </li>}
+    </ul>
+  );
+};
+
+class LeaveApplication extends Component {
   state: {
     leave: string,
     leaveType: string,
@@ -40,6 +80,7 @@ export default class LeaveApplications extends Component {
   handleReasonChange: Function;
   handleFileChange: Function;
   handleSubmit: Function;
+  userConfirm: Function;
 
   constructor() {
     super();
@@ -68,6 +109,7 @@ export default class LeaveApplications extends Component {
     this.handleReasonChange = this.handleReasonChange.bind(this);
     this.handleFileChange = this.handleFileChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.userConfirm = this.userConfirm.bind(this);
   }
 
   handleLeaveChange({ target }: SyntheticInputEvent) {
@@ -92,6 +134,11 @@ export default class LeaveApplications extends Component {
 
   handleFileChange({ target }: SyntheticInputEvent) {
     this.setState({ sickSheet: target.files[0] });
+  }
+
+  userConfirm(e: Event) {
+    e.preventDefault();
+    this.setState({ successMessage: '' });
   }
 
   handleSubmit(e: Event) {
@@ -295,198 +342,181 @@ export default class LeaveApplications extends Component {
 
     if (this.state.successMessage) {
       return (
-        <div className="container text-center" style={{ marginTop: '100px' }}>
-          <div className="col-md-12">
-            <h1 className="display-4">{this.state.successMessage}</h1>
-            <br />
-            <a
-              className="btn btn-outline-primary btn-lg"
-              href="/leaveapplication"
-            >
-              apply for leave
-            </a>
-          </div>
+        <div className="text-center">
+          <h2 className="display-4">{this.state.successMessage}</h2>
+          <br />
+          <button
+            onClick={this.userConfirm}
+            className="btn btn-outline-primary"
+          >
+            OK
+          </button>
         </div>
       );
     } else {
       return (
-        <div className="container" style={{ marginTop: '80px' }}>
-          <div className="row">
-            <div className="col-md-12 pb-2">
-              <div className="col-md-10 offset-md-2">
-                <p className="h5">
-                  {user_detail.othernames}{' '}{user_detail.surname}
-                </p>
-              </div>
-            </div>
-            <div className="col-md-2 offset-md-2">
-              <ul className="list-group">
-                <li className="list-group-item justify-content-between">
-                  Annual
-                  <span className="badge badge-primary badge-pill">
-                    {user_detail.annual}
-                  </span>
-                </li>
-                <li className="list-group-item justify-content-between">
-                  Sick
-                  <span className="badge badge-primary badge-pill">
-                    {user_detail.sick}
-                  </span>
-                </li>
-                <li className="list-group-item justify-content-between">
-                  Bereavement
-                  <span className="badge badge-primary badge-pill">
-                    {user_detail.bereavement}
-                  </span>
-                </li>
-                <li className="list-group-item justify-content-between">
-                  Christmas
-                  <span className="badge badge-primary badge-pill">
-                    {user_detail.christmas}
-                  </span>
-                </li>
-                {gender === 'female' &&
-                  <li className="list-group-item justify-content-between">
-                    Maternity
-                    <span className="badge badge-primary badge-pill">
-                      {user_detail.maternity}
-                    </span>
-                  </li>}
-              </ul>
-            </div>
-            <div className="col-md-5 mb-3">
-              <div className="card card-block">
-                <form
-                  encType="multipart/form-data"
-                  onSubmit={this.handleSubmit}
-                >
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label htmlFor="leave">Leave</label>
-                        <select
-                          className="form-control"
-                          id="leave"
-                          onChange={this.handleLeaveChange}
-                        >
-                          <option />
-                          <option>annual</option>
-                          <option>sick</option>
-                          <option>bereavement</option>
-                          <option>christmas</option>
-                          <option>birthday</option>
-                          {gender === 'female' && <option>maternity</option>}
-                          <option>lwop</option>
-                          <option>other</option>
-                        </select>
-                      </div>
-                    </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label htmlFor="leaveType">Leave type</label>
-                        <select
-                          className="form-control"
-                          id="leaveType"
-                          onChange={this.handleLeaveTypeChange}
-                        >
-                          <option />
-                          <option>full</option>
-                          <option>half day am</option>
-                          <option>half day pm</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="row">
-                    <div className="col">
-                      <div className="form-group">
-                        <label htmlFor="startDate-endDate">
-                          Start date - End date
-                        </label>
-                        <DateRangePicker
-                          startDate={this.state.startDate}
-                          endDate={this.state.endDate}
-                          onDatesChange={({ startDate, endDate }) =>
-                            this.setState({ startDate, endDate })}
-                          focusedInput={this.state.focusedInput}
-                          onFocusChange={focusedInput =>
-                            this.setState({ focusedInput })}
-                          isOutsideRange={() => false}
-                          minimumNights={0}
-                          showDefaultInputIcon
-                          showClearDates
-                          withPortal
-                          displayFormat="DD/MM/YYYY"
-                          renderCalendarInfo={() => (
-                            <p className="text-center">
-                              To select a single day click the date twice.
-                            </p>
-                          )}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="supervisorEmail">Supervisor email</label>
-                    <input
-                      type="email"
-                      className="form-control"
-                      placeholder="Supervisor email"
-                      id="supervisorEmail"
-                      onChange={this.handleSupervisorEmailChange}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="secretaryEmail">
-                      Second supervisor / secretary email
-                    </label>
-                    <input
-                      type="email"
-                      className="form-control"
-                      placeholder="Second supervisor / secretary email"
-                      id="secretaryEmail"
-                      onChange={this.handleSecretaryEmailChange}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="reason">Reason</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Reason for leave"
-                      id="reason"
-                      onChange={this.handleReasonChange}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="sicksheet">Sick sheet</label>
-                    <input
-                      type="file"
-                      className="form-control-file"
-                      id="sicksheet"
-                      onChange={this.handleFileChange}
-                    />
-                    <small className="form-text text-muted">
-                      A medical certificate is required for absence of two consecutive days or more and after four single day absences.
-                    </small>
-                  </div>
-                  <div className="form-group">
-                    <button type="submit" className="btn btn-primary col">
-                      Submit
-                    </button>
-                  </div>
-                </form>
-                <div className="text-danger text-center">
-                  {isFetching ? <div className="loader" /> : message}
+        <div className="card card-block">
+          <form encType="multipart/form-data" onSubmit={this.handleSubmit}>
+            <div className="row">
+              <div className="col-md-6">
+                <div className="form-group">
+                  <label htmlFor="leave">Leave</label>
+                  <select
+                    className="form-control"
+                    id="leave"
+                    onChange={this.handleLeaveChange}
+                  >
+                    <option />
+                    <option>annual</option>
+                    <option>sick</option>
+                    <option>bereavement</option>
+                    <option>christmas</option>
+                    <option>birthday</option>
+                    {gender === 'female' && <option>maternity</option>}
+                    <option>lwop</option>
+                    <option>other</option>
+                  </select>
                 </div>
-                <div className="text-danger text-center pt-2">
-                  <div>{this.state.errorMessage}</div>
+              </div>
+              <div className="col-md-6">
+                <div className="form-group">
+                  <label htmlFor="leaveType">Leave type</label>
+                  <select
+                    className="form-control"
+                    id="leaveType"
+                    onChange={this.handleLeaveTypeChange}
+                  >
+                    <option />
+                    <option>full</option>
+                    <option>half day am</option>
+                    <option>half day pm</option>
+                  </select>
                 </div>
               </div>
             </div>
+            <div className="row">
+              <div className="col">
+                <div className="form-group">
+                  <label htmlFor="startDate-endDate">
+                    Start date - End date
+                  </label>
+                  <DateRangePicker
+                    startDate={this.state.startDate}
+                    endDate={this.state.endDate}
+                    onDatesChange={({ startDate, endDate }) =>
+                      this.setState({ startDate, endDate })}
+                    focusedInput={this.state.focusedInput}
+                    onFocusChange={focusedInput =>
+                      this.setState({ focusedInput })}
+                    isOutsideRange={() => false}
+                    minimumNights={0}
+                    showDefaultInputIcon
+                    showClearDates
+                    withPortal
+                    displayFormat="DD/MM/YYYY"
+                    renderCalendarInfo={() => (
+                      <p className="text-center">
+                        To select a single day click the date twice.
+                      </p>
+                    )}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="form-group">
+              <label htmlFor="supervisorEmail">Supervisor email</label>
+              <input
+                type="email"
+                className="form-control"
+                placeholder="Supervisor email"
+                id="supervisorEmail"
+                onChange={this.handleSupervisorEmailChange}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="secretaryEmail">
+                Second supervisor / secretary email
+              </label>
+              <input
+                type="email"
+                className="form-control"
+                placeholder="Second supervisor / secretary email"
+                id="secretaryEmail"
+                onChange={this.handleSecretaryEmailChange}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="reason">Reason</label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Reason for leave"
+                id="reason"
+                onChange={this.handleReasonChange}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="sicksheet">Sick sheet</label>
+              <input
+                type="file"
+                className="form-control-file"
+                id="sicksheet"
+                onChange={this.handleFileChange}
+              />
+              <small className="form-text text-muted">
+                A medical certificate is required for absence of two consecutive days or more and after four single day absences.
+              </small>
+            </div>
+            <div className="form-group">
+              <button type="submit" className="btn btn-primary col">
+                Submit
+              </button>
+            </div>
+          </form>
+          <div className="text-danger text-center">
+            {isFetching ? <div className="loader" /> : message}
+          </div>
+          <div className="text-danger text-center pt-2">
+            <div>{this.state.errorMessage}</div>
           </div>
         </div>
       );
     }
   }
 }
+
+export default ({
+  user_detail,
+  onLeaveApplicationClick,
+  message,
+  isFetching,
+  public_holiday
+}: {
+  user_detail: Object,
+  onLeaveApplicationClick: Function,
+  message: string,
+  isFetching: boolean,
+  public_holiday: Array<any>
+}) => (
+  <div className="container" style={{ marginTop: '80px' }}>
+    <div className="row">
+      <div className="col-md-12 pb-2">
+        <div className="col-md-11 offset-md-1">
+          <UserName user_detail={user_detail} />
+        </div>
+      </div>
+      <div className="col-md-3 offset-md-1">
+        <UserRecord user_detail={user_detail} />
+      </div>
+      <div className="col-md-6 mb-2">
+        <LeaveApplication
+          user_detail={user_detail}
+          onLeaveApplicationClick={onLeaveApplicationClick}
+          message={message}
+          isFetching={isFetching}
+          public_holiday={public_holiday}
+        />
+      </div>
+    </div>
+  </div>
+);
