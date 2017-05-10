@@ -136,8 +136,7 @@ class LeaveApplication extends Component {
     this.setState({ sickSheet: target.files[0] });
   }
 
-  handleUserConfirm(e: Event) {
-    e.preventDefault();
+  handleUserConfirm() {
     this.setState({ successMessage: '' });
   }
 
