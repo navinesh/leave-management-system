@@ -80,7 +80,7 @@ class LeaveApplication extends Component {
   handleReasonChange: Function;
   handleFileChange: Function;
   handleSubmit: Function;
-  userConfirm: Function;
+  handleUserConfirm: Function;
 
   constructor() {
     super();
@@ -109,7 +109,7 @@ class LeaveApplication extends Component {
     this.handleReasonChange = this.handleReasonChange.bind(this);
     this.handleFileChange = this.handleFileChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.userConfirm = this.userConfirm.bind(this);
+    this.handleUserConfirm = this.handleUserConfirm.bind(this);
   }
 
   handleLeaveChange({ target }: SyntheticInputEvent) {
@@ -136,7 +136,7 @@ class LeaveApplication extends Component {
     this.setState({ sickSheet: target.files[0] });
   }
 
-  userConfirm(e: Event) {
+  handleUserConfirm(e: Event) {
     e.preventDefault();
     this.setState({ successMessage: '' });
   }
@@ -346,7 +346,7 @@ class LeaveApplication extends Component {
           <h2 className="display-4">{this.state.successMessage}</h2>
           <br />
           <button
-            onClick={this.userConfirm}
+            onClick={this.handleUserConfirm}
             className="btn btn-outline-primary"
           >
             OK
