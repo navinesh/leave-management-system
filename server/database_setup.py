@@ -11,7 +11,7 @@ from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer,
 Base = declarative_base()
 
 secret_key = ''.join(
-    random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
+    random.choice(string.ascii_uppercase + string.digits) for x in range(32))
 
 
 class User(Base):
@@ -153,7 +153,7 @@ class Leaverecord(Base):
 
 """ admin db """
 admin_secret_key = ''.join(
-    random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
+    random.choice(string.ascii_uppercase + string.digits) for x in range(32))
 
 
 class Adminuser(Base):
