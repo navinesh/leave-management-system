@@ -352,135 +352,135 @@ class LeaveApplication extends Component {
           </button>
         </div>
       );
-    } else {
-      return (
-        <div className="card card-block">
-          <form encType="multipart/form-data" onSubmit={this.handleSubmit}>
-            <div className="row">
-              <div className="col-md-6">
-                <div className="form-group">
-                  <label htmlFor="leave">Leave</label>
-                  <select
-                    className="form-control"
-                    id="leave"
-                    onChange={this.handleLeaveChange}
-                  >
-                    <option />
-                    <option>annual</option>
-                    <option>sick</option>
-                    <option>bereavement</option>
-                    <option>christmas</option>
-                    <option>birthday</option>
-                    {gender === 'female' && <option>maternity</option>}
-                    <option>lwop</option>
-                    <option>other</option>
-                  </select>
-                </div>
-              </div>
-              <div className="col-md-6">
-                <div className="form-group">
-                  <label htmlFor="leaveType">Leave type</label>
-                  <select
-                    className="form-control"
-                    id="leaveType"
-                    onChange={this.handleLeaveTypeChange}
-                  >
-                    <option />
-                    <option>full</option>
-                    <option>half day am</option>
-                    <option>half day pm</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col">
-                <div className="form-group">
-                  <label htmlFor="startDate-endDate">
-                    Start date - End date
-                  </label>
-                  <DateRangePicker
-                    startDate={this.state.startDate}
-                    endDate={this.state.endDate}
-                    onDatesChange={({ startDate, endDate }) =>
-                      this.setState({ startDate, endDate })}
-                    focusedInput={this.state.focusedInput}
-                    onFocusChange={focusedInput =>
-                      this.setState({ focusedInput })}
-                    isOutsideRange={() => false}
-                    minimumNights={0}
-                    showDefaultInputIcon
-                    showClearDates
-                    withPortal
-                    displayFormat="DD/MM/YYYY"
-                    renderCalendarInfo={() => (
-                      <p className="text-center">
-                        To select a single day click the date twice.
-                      </p>
-                    )}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="form-group">
-              <label htmlFor="supervisorEmail">Supervisor email</label>
-              <input
-                type="email"
-                className="form-control"
-                placeholder="Supervisor email"
-                id="supervisorEmail"
-                onChange={this.handleSupervisorEmailChange}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="secretaryEmail">
-                Second supervisor / secretary email
-              </label>
-              <input
-                type="email"
-                className="form-control"
-                placeholder="Second supervisor / secretary email"
-                id="secretaryEmail"
-                onChange={this.handleSecretaryEmailChange}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="reason">Reason</label>
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Reason for leave"
-                id="reason"
-                onChange={this.handleReasonChange}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="sicksheet">Sick sheet</label>
-              <input
-                type="file"
-                className="form-control-file"
-                id="sicksheet"
-                onChange={this.handleFileChange}
-              />
-              <small className="form-text text-muted">
-                A medical certificate is required for absence of two consecutive days or more and after four single day absences.
-              </small>
-            </div>
-            <div className="form-group">
-              <button type="submit" className="btn btn-primary col">
-                Submit
-              </button>
-            </div>
-          </form>
-          <div className="text-danger text-center">
-            {isFetching ? <div className="loader" /> : message}
-          </div>
-          <div className="text-danger text-center pt-2">
-            <div>{this.state.errorMessage}</div>
-          </div>
-        </div>
-      );
     }
+
+    return (
+      <div className="card card-block">
+        <form encType="multipart/form-data" onSubmit={this.handleSubmit}>
+          <div className="row">
+            <div className="col-md-6">
+              <div className="form-group">
+                <label htmlFor="leave">Leave</label>
+                <select
+                  className="form-control"
+                  id="leave"
+                  onChange={this.handleLeaveChange}
+                >
+                  <option />
+                  <option>annual</option>
+                  <option>sick</option>
+                  <option>bereavement</option>
+                  <option>christmas</option>
+                  <option>birthday</option>
+                  {gender === 'female' && <option>maternity</option>}
+                  <option>lwop</option>
+                  <option>other</option>
+                </select>
+              </div>
+            </div>
+            <div className="col-md-6">
+              <div className="form-group">
+                <label htmlFor="leaveType">Leave type</label>
+                <select
+                  className="form-control"
+                  id="leaveType"
+                  onChange={this.handleLeaveTypeChange}
+                >
+                  <option />
+                  <option>full</option>
+                  <option>half day am</option>
+                  <option>half day pm</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div className="row">
+            <div className="col">
+              <div className="form-group">
+                <label htmlFor="startDate-endDate">
+                  Start date - End date
+                </label>
+                <DateRangePicker
+                  startDate={this.state.startDate}
+                  endDate={this.state.endDate}
+                  onDatesChange={({ startDate, endDate }) =>
+                    this.setState({ startDate, endDate })}
+                  focusedInput={this.state.focusedInput}
+                  onFocusChange={focusedInput =>
+                    this.setState({ focusedInput })}
+                  isOutsideRange={() => false}
+                  minimumNights={0}
+                  showDefaultInputIcon
+                  showClearDates
+                  withPortal
+                  displayFormat="DD/MM/YYYY"
+                  renderCalendarInfo={() => (
+                    <p className="text-center">
+                      To select a single day click the date twice.
+                    </p>
+                  )}
+                />
+              </div>
+            </div>
+          </div>
+          <div className="form-group">
+            <label htmlFor="supervisorEmail">Supervisor email</label>
+            <input
+              type="email"
+              className="form-control"
+              placeholder="Supervisor email"
+              id="supervisorEmail"
+              onChange={this.handleSupervisorEmailChange}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="secretaryEmail">
+              Second supervisor / secretary email
+            </label>
+            <input
+              type="email"
+              className="form-control"
+              placeholder="Second supervisor / secretary email"
+              id="secretaryEmail"
+              onChange={this.handleSecretaryEmailChange}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="reason">Reason</label>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Reason for leave"
+              id="reason"
+              onChange={this.handleReasonChange}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="sicksheet">Sick sheet</label>
+            <input
+              type="file"
+              className="form-control-file"
+              id="sicksheet"
+              onChange={this.handleFileChange}
+            />
+            <small className="form-text text-muted">
+              A medical certificate is required for absence of two consecutive days or more and after four single day absences.
+            </small>
+          </div>
+          <div className="form-group">
+            <button type="submit" className="btn btn-primary col">
+              Submit
+            </button>
+          </div>
+        </form>
+        <div className="text-danger text-center">
+          {isFetching ? <div className="loader" /> : message}
+        </div>
+        <div className="text-danger text-center pt-2">
+          <div>{this.state.errorMessage}</div>
+        </div>
+      </div>
+    );
   }
 }
 
