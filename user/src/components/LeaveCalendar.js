@@ -59,6 +59,6 @@ export default ({ records }: { records: Array<any> }) => {
         </table>
       </div>
     : <div className="container text-center" style={{ paddingTop: '100px' }}>
-        <h1 className="display-3">There are no approved leave record.</h1>
+        <h2 className="display-4">There are no approved leave record.</h2>
       </div>;
 };
