@@ -332,6 +332,7 @@ class LeaveApplication extends Component {
       applicationDays: applicationDays,
       sickSheet: sickSheet
     };
+
     this.props.onLeaveApplicationClick(applicationDetails);
   }
 
