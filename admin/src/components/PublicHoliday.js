@@ -22,6 +22,10 @@ const PublicHolidays = (props: {
     <div className="row">
       <div className="col">
         <h4>Public Holidays</h4>
+      </div>
+    </div>
+    <div className="row">
+      <div className="col">
         <DeletePublicHoliday
           public_holiday={props.public_holiday}
           dispatch={props.dispatch}
@@ -170,7 +174,7 @@ class DeletePublicHoliday extends Component {
 
     setTimeout(() => {
       this.props.dispatch({ type: 'CLEAR_DELETE_PUBLIC_MESSAGE' });
-    }, 5000);
+    }, 3000);
   }
 
   render() {
