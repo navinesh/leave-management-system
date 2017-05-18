@@ -8,18 +8,16 @@ import 'react-dates/lib/css/_datepicker.css';
 
 import '../spinners.css';
 
-const PublicHolidays = (
-  props: {
-    public_holiday: Array<any>,
-    dispatch: Function,
-    onAddPublicHolidaySubmit: Function,
-    onDeletePublicHolidaySubmit: Function,
-    isAddPublicFetching: boolean,
-    addPublicMessage: string,
-    isDeletePublicFetching: boolean,
-    deletePublicMessage: string
-  }
-) => (
+const PublicHolidays = (props: {
+  public_holiday: Array<any>,
+  dispatch: Function,
+  onAddPublicHolidaySubmit: Function,
+  onDeletePublicHolidaySubmit: Function,
+  isAddPublicFetching: boolean,
+  addPublicMessage: string,
+  isDeletePublicFetching: boolean,
+  deletePublicMessage: string
+}) => (
   <div className="col-md-10 offset-md-1 card card-block">
     <div className="row">
       <div className="col">
@@ -37,15 +35,15 @@ const PublicHolidays = (
         />
         <div>
           {props.isAddPublicFetching
-            ? <div className="text-center">
-                <div className="loader1" />
+            ? <div className="text-success">
+                ADDING...
               </div>
             : <p className="text-primary">
                 {props.addPublicMessage}
               </p>}
           {props.isDeletePublicFetching
-            ? <div className="text-center">
-                <div className="loader1" />
+            ? <div className="text-danger">
+                DELETING...
               </div>
             : <p className="text-primary">
                 {props.deletePublicMessage}
@@ -93,7 +91,7 @@ class AddPublicHoliday extends Component {
 
       setTimeout(() => {
         this.setState({ errorMessage: '' });
-      }, 5000);
+      }, 3000);
       return null;
     }
 
@@ -159,7 +157,7 @@ class DeletePublicHoliday extends Component {
 
       setTimeout(() => {
         this.setState({ errorMessage: '' });
-      }, 5000);
+      }, 3000);
       return null;
     }
 
