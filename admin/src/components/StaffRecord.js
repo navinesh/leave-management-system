@@ -6,9 +6,9 @@ import { searchStaffRecord, fetchStaffRecord } from '../actions/StaffRecord';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-const moment = require('moment');
-
 import '../spinners.css';
+
+const moment = require('moment');
 
 export default class StaffRecordList extends Component {
   props: {
