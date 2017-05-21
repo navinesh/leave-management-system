@@ -6,11 +6,11 @@ import { fetchPendingLeave } from '../actions/PendingLeave';
 import { DateRangePicker } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
 
+import '../spinners.css';
+
 import Moment from 'moment';
 import { extendMoment } from 'moment-range';
 const moment = extendMoment(Moment);
-
-import '../spinners.css';
 
 export default class PendingLeaveList extends Component {
   props: {
