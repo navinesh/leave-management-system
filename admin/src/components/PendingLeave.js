@@ -351,13 +351,13 @@ export default class PendingLeaveList extends Component {
           {this.props.pending_items.filter(e => e.id === listID).map(record => (
             <div key={record.id}>
               <div
-                className="col-md-5 offset-md-3 pb-2"
+                className="col-md-6 offset-md-3 pb-2"
                 style={{ paddingTop: '40px' }}
               >
                 <div className="card card-block">
-                  <h2>
+                  <h5>
                     {record.user.othernames}{' '}{record.user.surname}
-                  </h2>
+                  </h5>
                   <form
                     encType="multipart/form-data"
                     onSubmit={this.handleEditSubmit}
@@ -497,14 +497,14 @@ export default class PendingLeaveList extends Component {
           {this.props.pending_items.filter(e => e.id === listID).map(record => (
             <div key={record.id}>
               <div
-                className="col-md-5 offset-md-3"
+                className="col-md-6 offset-md-3"
                 style={{ paddingTop: '40px' }}
               >
                 <div className="card card-block">
                   <form onSubmit={this.handleDeclineSubmit}>
-                    <h2>
+                    <h5>
                       {record.user.othernames}{' '}{record.user.surname}
-                    </h2>
+                    </h5>
                     <div className="form-group">
                       <label htmlFor="reason">Decline reason</label>
                       <input
