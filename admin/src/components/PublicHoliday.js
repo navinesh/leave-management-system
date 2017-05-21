@@ -1,12 +1,12 @@
 // @flow
 import React, { Component } from 'react';
 
-const moment = require('moment');
-
 import { SingleDatePicker } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
 
 import '../spinners.css';
+
+const moment = require('moment');
 
 const PublicHolidays = (props: {
   public_holiday: Array<any>,
