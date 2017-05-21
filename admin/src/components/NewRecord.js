@@ -4,9 +4,9 @@ import React, { Component } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-const moment = require('moment');
-
 import '../spinners.css';
+
+const moment = require('moment');
 
 export default class NewRecordForm extends Component {
   props: {
