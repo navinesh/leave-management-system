@@ -4,9 +4,9 @@ import React, { Component } from 'react';
 import { searchStaffRecord } from '../actions/StaffRecord';
 import { fetchArchivedStaffRecord } from '../actions/ArchivedStaffRecord';
 
-const moment = require('moment');
-
 import '../spinners.css';
+
+const moment = require('moment');
 
 export default class ArchivedStaffRecordList extends Component {
   props: {
