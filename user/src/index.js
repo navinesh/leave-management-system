@@ -3,8 +3,6 @@ import React from 'react';
 import { render } from 'react-dom';
 
 import { Provider } from 'react-redux';
-import configureStore from './stores/ConfigureStore';
-const store = configureStore();
 
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
@@ -19,18 +17,21 @@ import UserChangePassword from './containers/ChangePassword';
 import UserError from './components/UserError';
 import LeaveApplication from './containers/LeaveApplication';
 
+import configureStore from './stores/ConfigureStore';
+const store = configureStore();
+
 const PrivateRoute = ({ component, ...rest }) => (
   <Route
     {...rest}
     render={props =>
-      (store.getState().userAuth.isAuthenticated
+      store.getState().userAuth.isAuthenticated
         ? React.createElement(component, props)
         : <Redirect
             to={{
               pathname: '/',
               state: { from: props.location }
             }}
-          />)}
+          />}
   />
 );
 
