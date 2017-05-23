@@ -180,23 +180,15 @@ export default class PendingLeaveList extends Component {
     const leaveType = this.leave_type.value;
     const reason = this.state.editReason ? this.state.editReason.trim() : null;
 
-    const obj = {};
-    pending_items.filter(e => e.id === leave_id).map(record => {
-      obj['annual'] = record.user.annual;
-      obj['sick'] = record.user.sick;
-      obj['bereavement'] = record.user.bereavement;
-      obj['christmas'] = record.user.christmas;
-      obj['maternity'] = record.user.maternity;
-      obj['date_of_birth'] = record.user.date_of_birth;
-      return null;
-    });
+    const userRecord = pending_items.filter(e => e.id === leave_id);
 
-    const annualDays = obj.annual;
-    const sickDays = obj.sick;
-    const bereavementDays = obj.bereavement;
-    const christmasDays = obj.christmas;
-    const maternityDays = obj.maternity && obj.maternity;
-    const dateOfBirth = obj.date_of_birth;
+    const annualDays = userRecord[0].user.annual;
+    const sickDays = userRecord[0].user.sick;
+    const bereavementDays = userRecord[0].user.bereavement;
+    const christmasDays = userRecord[0].user.christmas;
+    const maternityDays =
+      userRecord[0].user.maternity && userRecord[0].user.maternity;
+    const dateOfBirth = userRecord[0].user.date_of_birth;
 
     if (
       !leave_id ||
