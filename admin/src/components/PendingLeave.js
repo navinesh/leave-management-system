@@ -126,8 +126,9 @@ export default class PendingLeaveList extends Component {
   }
 
   handleApproveLeave(e: Event) {
-    const leaveID = e.target.id ? e.target.id : null;
-    const LeaveStatus = 'approved';
+    const { pending_items } = this.props;
+    const leaveID = e.target.id ? parseInt(e.target.id, 10) : null;
+    const leaveStatus = 'approved';
 
     if (!leaveID) {
       this.setState({
@@ -136,9 +137,18 @@ export default class PendingLeaveList extends Component {
       return;
     }
 
+    const userRecord = pending_items.filter(e => e.id === leaveID);
+
+    const userID = userRecord[0].user_id;
+    const leaveDays = userRecord[0].leave_days;
+    const leaveName = userRecord[0].leave_name;
+
     const approveLeaveData = {
       leaveID: leaveID,
-      LeaveStatus: LeaveStatus
+      leaveStatus: leaveStatus,
+      userID: userID,
+      leaveDays: leaveDays,
+      leaveName: leaveName
     };
 
     this.props.onApproveLeaveSubmit(approveLeaveData);
