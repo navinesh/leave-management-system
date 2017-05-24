@@ -27,7 +27,10 @@ export function submitApproveLeave(approveLeaveData) {
     axios
       .post('http://localhost:8080/approveleave', {
         leave_id: approveLeaveData.leaveID,
-        LeaveStatus: approveLeaveData.LeaveStatus
+        leaveStatus: approveLeaveData.leaveStatus,
+        userID: approveLeaveData.userID,
+        leaveDays: approveLeaveData.leaveDays,
+        leaveName: approveLeaveData.leaveName
       })
       .then(response => {
         if (response.status === 200) {
