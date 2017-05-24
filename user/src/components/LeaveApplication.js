@@ -316,6 +316,8 @@ class LeaveApplication extends Component {
 
     this.setState({
       errorMessage: '',
+      startDate: null,
+      endDate: null,
       successMessage: 'Your application has been submitted.'
     });
 
