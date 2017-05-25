@@ -200,6 +200,11 @@ export default class PendingLeaveList extends Component {
       userRecord[0].user.maternity && userRecord[0].user.maternity;
     const dateOfBirth = userRecord[0].user.date_of_birth;
 
+    const previousLeaveDays = userRecord[0].leave_days;
+    const previousLeaveName = userRecord[0].leave_name;
+    const previousStartDate = userRecord[0].start_date;
+    const previousEndDate = userRecord[0].end_date;
+
     if (
       !leave_id ||
       !leave ||
@@ -338,7 +343,11 @@ export default class PendingLeaveList extends Component {
       endDate: eDate,
       reason: reason,
       leaveDays: myLeaveDays,
-      applicationDays: applicationDays
+      applicationDays: applicationDays,
+      previousLeaveDays: previousLeaveDays,
+      previousLeaveName: previousLeaveName,
+      previousStartDate: previousStartDate,
+      previousEndDate: previousEndDate
     };
 
     this.props.onEditLeaveSubmit(editLeaveData);
