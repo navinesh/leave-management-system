@@ -32,7 +32,11 @@ export function submitEditLeave(editLeaveData: Object) {
         endDate: editLeaveData.endDate,
         reason: editLeaveData.reason,
         leaveDays: editLeaveData.leaveDays,
-        applicationDays: editLeaveData.applicationDays
+        applicationDays: editLeaveData.applicationDays,
+        previousLeaveDays: editLeaveData.previousLeaveDays,
+        previousLeaveName: editLeaveData.previousLeaveName,
+        previousStartDate: editLeaveData.previousStartDate,
+        previousEndDate: editLeaveData.previousEndDate
       })
       .then(response => {
         if (response.status === 200) {
