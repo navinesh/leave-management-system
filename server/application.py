@@ -594,6 +594,11 @@ def edit_leave():
     leave_reason = request.json.get('reason')
     leave_days = request.json.get('leaveDays')
     application_days = request.json.get('applicationDays')
+    previous_leave_days = request.json.get('previousLeaveDays')
+    previous_leave_name = request.json.get('previousLeaveName')
+    previous_leave_type = request.json.get('previousLeaveType')
+    previous_start_date = request.json.get('previousStartDate')
+    previous_end_date = request.json.get('previousEndDate')
 
     leaveRecord = session.query(Leaverecord).filter_by(id=leave_id).one()
 
@@ -609,9 +614,27 @@ def edit_leave():
     leaveRecord.end_date = date_to
     leaveRecord.leave_reason = leave_reason
     leaveRecord.leave_days = leave_days
-
+    leaveRecord.date_reviewed = str(datetime.now().date())
     session.add(leaveRecord)
     session.commit()
+
+    updateLog = Leaveupdates(
+        updated_leave_name=leave_name,
+        updated_leave_type=leave_type,
+        updated_start_date=date_from,
+        updated_end_date=date_to,
+        updated_leave_days=leave_days,
+        previous_leave_days=previous_leave_days,
+        previous_leave_name=previous_leave_name,
+        previous_leave_type=previous_leave_type,
+        previous_start_date=previous_start_date,
+        previous_end_date=previous_end_date,
+        date_posted=str(datetime.now().date()),
+        editReason=leave_reason,
+        leave_id=leave_id)
+    session.add(updateLog)
+    session.commit()
+
     return jsonify({'message': 'Leave record has been modified.'}), 201
 
 
