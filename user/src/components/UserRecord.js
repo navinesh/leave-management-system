@@ -18,7 +18,7 @@ const PendingRecordList = ({ user_record }: { user_record: Array<any> }) => {
   if (pendingList.length > 0) {
     return (
       <div className="col-md-12">
-        <p className="lead">Pending Leave Schedule</p>
+        <p className="text-uppercase">Pending Leave Schedule</p>
         <table
           className="table table-bordered table-hover"
           style={{ backgroundColor: '#FFFFFF' }}
@@ -59,7 +59,7 @@ const ApprovedRecordList = ({ user_record }: { user_record: Array<any> }) => {
   if (approvedList.length > 0) {
     return (
       <div className="col-md-12">
-        <p className="lead">Approved Leave Schedule</p>
+        <p className="text-uppercase">Approved Leave Schedule</p>
         <table
           className="table table-bordered table-hover"
           style={{ backgroundColor: '#FFFFFF' }}
