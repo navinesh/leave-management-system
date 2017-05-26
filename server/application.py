@@ -639,8 +639,6 @@ def edit_leave():
 
 
 # Edit approved leave
-
-
 @app.route('/editapprovedleave', methods=['POST'])
 @cross_origin()
 def edit_approved_leave():
