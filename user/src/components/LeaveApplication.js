@@ -86,7 +86,7 @@ class LeaveApplication extends Component {
     super();
     this.state = {
       errorMessage: '',
-      successMessage: '',
+      successMessage: 'Your application has been submitted',
       leave: '',
       leaveType: '',
       startDate: null,
@@ -344,15 +344,18 @@ class LeaveApplication extends Component {
 
     if (this.state.successMessage) {
       return (
-        <div className="text-center">
-          <h2 className="display-4">{this.state.successMessage}</h2>
-          <br />
-          <button
-            onClick={this.handleUserConfirm}
-            className="btn btn-outline-primary"
-          >
-            OK
-          </button>
+        <div className="card">
+          <div className="card-block text-center">
+            <p className="text-capitalize">
+              {this.state.successMessage}
+            </p>
+            <button
+              onClick={this.handleUserConfirm}
+              className="btn btn-primary btn-sm"
+            >
+              Apply for leave
+            </button>
+          </div>
         </div>
       );
     }
