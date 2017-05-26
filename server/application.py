@@ -9,7 +9,8 @@ import random
 import json
 from httplib2 import Http
 import string
-from database_setup import Base, User, Userupdates, Leaverecord, Adminuser, Publicholiday
+from database_setup import Base, User, Userupdates, \
+    Leaverecord, Adminuser, Publicholiday, Leaveupdates
 from sqlalchemy import create_engine
 from sqlalchemy.orm import relationship, sessionmaker, join
 from sqlalchemy.ext.declarative import declarative_base
@@ -508,7 +509,10 @@ def delete_public_holiday():
 def approve_leave():
     "approve leave"
     leave_id = request.json.get('leave_id')
-    leave_status = request.json.get('LeaveStatus')
+    leave_status = request.json.get('leaveStatus')
+    user_id = request.json.get('userID')
+    leave_days = float(request.json.get('leaveDays'))
+    leave_name = request.json.get('leaveName')
 
     leaveRecord = session.query(Leaverecord).filter_by(id=leave_id).one()
 
@@ -519,9 +523,36 @@ def approve_leave():
 
     leaveRecord.leave_status = leave_status
     leaveRecord.date_reviewed = str(datetime.now().date())
-
     session.add(leaveRecord)
     session.commit()
+
+    userRecord = session.query(User).filter_by(id=user_id).one()
+
+    if leave_name == 'annual':
+        userRecord.annual = float(userRecord.annual) - leave_days
+        session.add(userRecord)
+        session.commit()
+
+    if leave_name == 'sick':
+        userRecord.sick = float(userRecord.sick) - leave_days
+        session.add(userRecord)
+        session.commit()
+
+    if leave_name == 'bereavement':
+        userRecord.bereavement = float(userRecord.bereavement) - leave_days
+        session.add(userRecord)
+        session.commit()
+
+    if leave_name == 'maternity':
+        userRecord.maternity = float(userRecord.maternity) - leave_days
+        session.add(userRecord)
+        session.commit()
+
+    if leave_name == 'christmas':
+        userRecord.christmas = float(userRecord.christmas) - leave_days
+        session.add(userRecord)
+        session.commit()
+
     return jsonify({'message': 'Leave has been approved.'}), 201
 
 
