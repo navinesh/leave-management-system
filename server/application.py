@@ -638,6 +638,181 @@ def edit_leave():
     return jsonify({'message': 'Leave record has been modified.'}), 201
 
 
+# Edit approved leave
+
+
+@app.route('/editapprovedleave', methods=['POST'])
+@cross_origin()
+def edit_approved_leave():
+    "edit leave"
+    leave_id = request.json.get('leave_id')
+    leave_name = request.json.get('leave')
+    leave_type = request.json.get('leaveType')
+    date_from = request.json.get('startDate')
+    date_to = request.json.get('endDate')
+    leave_reason = request.json.get('reason')
+    leave_days = float(request.json.get('leaveDays'))
+    application_days = request.json.get('applicationDays')
+    previous_leave_days = float(request.json.get('previousLeaveDays'))
+    previous_leave_name = request.json.get('previousLeaveName')
+    previous_leave_type = request.json.get('previousLeaveType')
+    previous_start_date = request.json.get('previousStartDate')
+    previous_end_date = request.json.get('previousEndDate')
+    new_leave_balance = request.json.get('newLeaveBalance')
+
+    leaveRecord = session.query(Leaverecord).filter_by(id=leave_id).one()
+
+    if leaveRecord is None:
+        return jsonify({
+            'message': 'Cannot find this record in the database.'
+        }), 200
+
+    leaveRecord.id = leave_id
+    leaveRecord.leave_name = leave_name
+    leaveRecord.leave_type = leave_type
+    leaveRecord.start_date = date_from
+    leaveRecord.end_date = date_to
+    leaveRecord.leave_reason = leave_reason
+    leaveRecord.leave_days = leave_days
+    leaveRecord.date_reviewed = str(datetime.now().date())
+    session.add(leaveRecord)
+    session.commit()
+
+    updateLog = Leaveupdates(
+        updated_leave_name=leave_name,
+        updated_leave_type=leave_type,
+        updated_start_date=date_from,
+        updated_end_date=date_to,
+        updated_leave_days=leave_days,
+        previous_leave_days=previous_leave_days,
+        previous_leave_name=previous_leave_name,
+        previous_leave_type=previous_leave_type,
+        previous_start_date=previous_start_date,
+        previous_end_date=previous_end_date,
+        date_posted=str(datetime.now().date()),
+        editReason=leave_reason,
+        leave_id=leave_id)
+    session.add(updateLog)
+    session.commit()
+
+    userRecord = session.query(User).filter_by(id=leaveRecord.user_id).one()
+
+    if leave_name != previous_leave_name:
+        if previous_leave_name == 'annual':
+            userRecord.annual = new_leave_balance
+            session.add(userRecord)
+            session.commit()
+
+        if previous_leave_name == 'sick':
+            userRecord.sick = new_leave_balance
+            session.add(userRecord)
+            session.commit()
+
+        if previous_leave_name == 'christmas':
+            userRecord.christmas = new_leave_balance
+            session.add(userRecord)
+            session.commit()
+
+        if previous_leave_name == 'bereavement':
+            userRecord.bereavement = new_leave_balance
+            session.add(userRecord)
+            session.commit()
+
+        if previous_leave_name == 'maternity':
+            userRecord.maternity = new_leave_balance
+            session.add(userRecord)
+            session.commit()
+
+        if leave_name == 'annual':
+            userRecord.annual = float(userRecord.annual) - leave_days
+            session.add(userRecord)
+            session.commit()
+
+        if leave_name == 'sick':
+            userRecord.sick = float(userRecord.sick) - leave_days
+            session.add(userRecord)
+            session.commit()
+
+        if leave_name == 'bereavement':
+            userRecord.bereavement = float(userRecord.bereavement) - leave_days
+            session.add(userRecord)
+            session.commit()
+
+        if leave_name == 'maternity':
+            userRecord.maternity = float(userRecord.maternity) - leave_days
+            session.add(userRecord)
+            session.commit()
+
+        if leave_name == 'christmas':
+            userRecord.christmas = float(userRecord.christmas) - leave_days
+            session.add(userRecord)
+            session.commit()
+
+    if leave_name == previous_leave_name:
+        if leave_days != previous_leave_days:
+            if leave_days > previous_leave_days:
+                num_days_difference = leave_days - previous_leave_days
+                if leave_name == 'annual':
+                    userRecord.annual = float(userRecord.annual) - leave_days
+                    session.add(userRecord)
+                    session.commit()
+
+                if leave_name == 'sick':
+                    userRecord.sick = float(userRecord.sick) - leave_days
+                    session.add(userRecord)
+                    session.commit()
+
+                if leave_name == 'christmas':
+                    userRecord.christmas = float(
+                        userRecord.christmas) - leave_days
+                    session.add(userRecord)
+                    session.commit()
+
+                if leave_name == 'maternity':
+                    userRecord.maternity = float(
+                        userRecord.maternity) - leave_days
+                    session.add(userRecord)
+                    session.commit()
+
+                if leave_name == 'bereavement':
+                    userRecord.bereavement = float(
+                        userRecord.bereavement) - leave_days
+                    session.add(userRecord)
+                    session.commit()
+
+            if leave_days < previous_leave_days:
+                num_days_difference = leave_days + previous_leave_days
+                if leave_name == 'annual':
+                    userRecord.annual = float(userRecord.annual) + leave_days
+                    session.add(userRecord)
+                    session.commit()
+
+                if leave_name == 'sick':
+                    userRecord.sick = float(userRecord.sick) + leave_days
+                    session.add(userRecord)
+                    session.commit()
+
+                if leave_name == 'christmas':
+                    userRecord.christmas = float(
+                        userRecord.christmas) + leave_days
+                    session.add(userRecord)
+                    session.commit()
+
+                if leave_name == 'maternity':
+                    userRecord.maternity = float(
+                        userRecord.maternity) + leave_days
+                    session.add(userRecord)
+                    session.commit()
+
+                if leave_name == 'bereavement':
+                    userRecord.bereavement = float(
+                        userRecord.bereavement) + leave_days
+                    session.add(userRecord)
+                    session.commit()
+
+    return jsonify({'message': 'Leave record has been modified.'}), 201
+
+
 # JSON API to view user detail
 @app.route('/user-detail.api')
 @cross_origin()
