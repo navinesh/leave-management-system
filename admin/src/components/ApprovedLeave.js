@@ -17,7 +17,7 @@ export default class ApprovedLeaveList extends Component {
     approved_items: Array<any>,
     public_holiday: Array<any>,
     dispatch: Function,
-    onEditLeaveSubmit: Function,
+    onEditApprovedLeaveSubmit: Function,
     onDeleteLeaveSubmit: Function,
     isEditLeaveFetching: boolean,
     editLeaveMessage: string
@@ -86,7 +86,7 @@ export default class ApprovedLeaveList extends Component {
 
   handleEditSubmit(e: Event) {
     e.preventDefault();
-    const { approved_items, onEditLeaveSubmit } = this.props;
+    const { approved_items, onEditApprovedLeaveSubmit } = this.props;
 
     const leave_id = parseInt(this.state.listID, 10);
     const startDate = this.state.startDate
@@ -103,6 +103,10 @@ export default class ApprovedLeaveList extends Component {
 
     const previousLeaveName = userRecord[0].leave_name;
     const previousLeaveDays = userRecord[0].leave_days;
+    const previousLeaveType = userRecord[0].leave_type;
+    const previousStartDate = userRecord[0].start_date;
+    const previousEndDate = userRecord[0].end_date;
+
     const annualDays = userRecord[0].user.annual;
     const sickDays = userRecord[0].user.sick;
     const bereavementDays = userRecord[0].user.bereavement;
@@ -272,7 +276,7 @@ export default class ApprovedLeaveList extends Component {
     };
 
     const newLeaveBalance = getPreviousLeaveDays(previousLeaveName);
-
+    console.log(newLeaveBalance);
     const sDate = moment(startDate).format('DD/MM/YYYY');
     const eDate = moment(endDate).format('DD/MM/YYYY');
 
@@ -288,11 +292,14 @@ export default class ApprovedLeaveList extends Component {
       leaveDays: myLeaveDays,
       applicationDays: applicationDays,
       previousLeaveDays: previousLeaveDays,
-      newLeaveBalance: newLeaveBalance,
-      previousLeaveName: previousLeaveName
+      previousLeaveName: previousLeaveName,
+      previousLeaveType: previousLeaveType,
+      previousStartDate: previousStartDate,
+      previousEndDate: previousEndDate,
+      newLeaveBalance: newLeaveBalance
     };
 
-    onEditLeaveSubmit(editLeaveData);
+    onEditApprovedLeaveSubmit(editLeaveData);
   }
 
   handleCloseEdit() {
