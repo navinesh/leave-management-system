@@ -202,6 +202,7 @@ export default class PendingLeaveList extends Component {
 
     const previousLeaveDays = userRecord[0].leave_days;
     const previousLeaveName = userRecord[0].leave_name;
+    const previousLeaveType = userRecord[0].leave_type;
     const previousStartDate = userRecord[0].start_date;
     const previousEndDate = userRecord[0].end_date;
 
@@ -346,6 +347,7 @@ export default class PendingLeaveList extends Component {
       applicationDays: applicationDays,
       previousLeaveDays: previousLeaveDays,
       previousLeaveName: previousLeaveName,
+      previousLeaveType: previousLeaveType,
       previousStartDate: previousStartDate,
       previousEndDate: previousEndDate
     };
