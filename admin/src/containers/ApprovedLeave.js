@@ -7,7 +7,7 @@ import '../spinners.css';
 
 import { fetchLoginFromToken } from '../actions/AdminLogin';
 import { fetchApprovedLeave } from '../actions/ApprovedLeave';
-import { submitEditLeave } from '../actions/EditLeave';
+import { submitEditApprovedLeave } from '../actions/EditLeave';
 import { submitDeleteLeave } from '../actions/DeleteLeave';
 import ApprovedLeaveList from '../components/ApprovedLeave';
 
@@ -47,8 +47,8 @@ class ApprovedLeave extends Component {
                   dispatch={dispatch}
                   isEditLeaveFetching={isEditLeaveFetching}
                   editLeaveMessage={editLeaveMessage}
-                  onEditLeaveSubmit={editLeaveData =>
-                    dispatch(submitEditLeave(editLeaveData))}
+                  onEditApprovedLeaveSubmit={editLeaveData =>
+                    dispatch(submitEditApprovedLeave(editLeaveData))}
                   onDeleteLeaveSubmit={deleteLeaveData =>
                     dispatch(submitDeleteLeave(deleteLeaveData))}
                 />
