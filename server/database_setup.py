@@ -14,6 +14,7 @@ secret_key = ''.join(
     random.choice(string.ascii_uppercase + string.digits) for x in range(32))
 
 
+# user
 class User(Base):
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
@@ -78,6 +79,7 @@ class User(Base):
         }
 
 
+# user updates
 class Userupdates(Base):
     __tablename__ = 'userupdates'  # representation of table inside database
 
@@ -112,6 +114,7 @@ class Userupdates(Base):
         }
 
 
+# leave record
 class Leaverecord(Base):
     __tablename__ = 'leaverecord'  # representation of table inside database
 
@@ -120,7 +123,7 @@ class Leaverecord(Base):
     leave_type = Column(String)
     start_date = Column(String)
     end_date = Column(String)
-    leave_days = Column(String)
+    leave_days = Column(Numeric)
     leave_reason = Column(String)
     leave_status = Column(String)
     date_posted = Column(String)
@@ -151,7 +154,51 @@ class Leaverecord(Base):
         }
 
 
-""" admin db """
+# leave updates
+class Leaveupdates(Base):
+    __tablename__ = 'leaveupdates'  # representation of table inside database
+
+    id = Column(Integer, primary_key=True)
+    updated_leave_name = Column(String)
+    updated_leave_type = Column(String)
+    updated_start_date = Column(String)
+    updated_end_date = Column(String)
+    updated_leave_days = Column(Numeric)
+    leave_status = Column(String)
+    date_posted = Column(String)
+    editReason = Column(Text)
+    previous_leave_days = Column(Numeric)
+    previous_leave_name = Column(String)
+    previous_leave_type = Column(String)
+    previous_start_date = Column(String)
+    previous_end_date = Column(String)
+    leaverecord = relationship(
+        Leaverecord,
+        backref=backref("leaveupdates", cascade="all, delete-orphan"))
+    leave_id = Column(Integer, ForeignKey('leaverecord.id'))
+
+    @property
+    def serialize(self):
+        """Return data in serializeable format"""
+        return {
+            'id': self.id,
+            'updated_leave_name': self.updated_leave_name,
+            'updated_leave_type': self.updated_leave_type,
+            'updated_start_date': self.updated_start_date,
+            'updated_end_date': self.updated_end_date,
+            'updated_leave_days': self.updated_leave_days,
+            'editReason': self.editReason,
+            'previous_leave_days': self.previous_leave_days,
+            'previous_leave_name': self.previous_leave_name,
+            'previous_leave_type': self.previous_leave_type,
+            'previous_start_date': self.previous_start_date,
+            'previous_end_date': self.previous_end_date,
+            'date_posted': self.date_posted,
+            'leave_id': self.leave_id
+        }
+
+
+# admin
 admin_secret_key = ''.join(
     random.choice(string.ascii_uppercase + string.digits) for x in range(32))
 
@@ -199,6 +246,7 @@ class Adminuser(Base):
         }
 
 
+# public holiday
 class Publicholiday(Base):
     __tablename__ = 'publicholiday'  # representation of table inside database
 
