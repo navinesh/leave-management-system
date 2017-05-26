@@ -35,8 +35,42 @@ export function submitEditLeave(editLeaveData: Object) {
         applicationDays: editLeaveData.applicationDays,
         previousLeaveDays: editLeaveData.previousLeaveDays,
         previousLeaveName: editLeaveData.previousLeaveName,
+        previousLeaveType: editLeaveData.previousLeaveType,
         previousStartDate: editLeaveData.previousStartDate,
         previousEndDate: editLeaveData.previousEndDate
+      })
+      .then(response => {
+        if (response.status === 200) {
+          dispatch(failureEditLeave(response.data));
+        } else {
+          dispatch(successEditLeave(response.data));
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+}
+
+export function submitEditApprovedLeave(editLeaveData: Object) {
+  return (dispatch: Function) => {
+    dispatch(requestEditLeave(editLeaveData));
+    axios
+      .post('http://localhost:8080/editapprovedleave', {
+        leave_id: editLeaveData.leave_id,
+        leave: editLeaveData.leave,
+        leaveType: editLeaveData.leaveType,
+        startDate: editLeaveData.startDate,
+        endDate: editLeaveData.endDate,
+        reason: editLeaveData.reason,
+        leaveDays: editLeaveData.leaveDays,
+        applicationDays: editLeaveData.applicationDays,
+        previousLeaveDays: editLeaveData.previousLeaveDays,
+        previousLeaveName: editLeaveData.previousLeaveName,
+        previousLeaveType: editLeaveData.previousLeaveType,
+        previousStartDate: editLeaveData.previousStartDate,
+        previousEndDate: editLeaveData.previousEndDate,
+        newLeaveBalance: editLeaveData.newLeaveBalance
       })
       .then(response => {
         if (response.status === 200) {
