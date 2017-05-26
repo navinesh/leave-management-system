@@ -86,7 +86,7 @@ class LeaveApplication extends Component {
     super();
     this.state = {
       errorMessage: '',
-      successMessage: 'Your application has been submitted',
+      successMessage: '',
       leave: '',
       leaveType: '',
       startDate: null,
