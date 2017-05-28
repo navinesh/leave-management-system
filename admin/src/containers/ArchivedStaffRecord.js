@@ -10,14 +10,21 @@ import ArchivedStaffRecordList from '../components/ArchivedStaffRecord';
 import { submitUnArchiveUser } from '../actions/UnArchiveUser';
 
 class ArchivedStaffRecord extends Component {
-  componentDidMount() {
+  componentWillMount() {
     const { dispatch, auth_info } = this.props;
     let admin_token = auth_info.admin_token
       ? auth_info.admin_token
       : localStorage.getItem('admin_token');
 
     if (admin_token) {
-      dispatch(fetchLoginFromToken(admin_token, fetchArchivedStaffRecord));
+      dispatch(fetchLoginFromToken(admin_token));
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.isAuthenticated) {
+      const { dispatch } = this.props;
+      dispatch(fetchArchivedStaffRecord());
     }
   }
 
@@ -47,7 +54,7 @@ class ArchivedStaffRecord extends Component {
               onUnArchiveUserSubmit={unArchiveUser =>
                 dispatch(submitUnArchiveUser(unArchiveUser))}
             />
-          : <Redirect to="/" />}
+          : <Redirect to="/login" />}
       </div>
     );
   }
