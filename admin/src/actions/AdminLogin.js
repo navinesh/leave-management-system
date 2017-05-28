@@ -61,11 +61,7 @@ export const fetchLogin = (creds: Object) => {
   };
 };
 
-export const fetchLoginFromToken = (
-  admin_token: string,
-  action1?: Function,
-  action2?: Function
-) => {
+export const fetchLoginFromToken = (admin_token: string) => {
   return (dispatch: Function) => {
     dispatch(requestAdminLoginFromToken(admin_token));
     axios
@@ -78,11 +74,6 @@ export const fetchLoginFromToken = (
           dispatch(loginAdminErrorFromToken(response.data));
         } else {
           dispatch(receiveAdminLoginFromToken(response.data));
-
-          if (action1 || action2) {
-            dispatch(action1());
-            dispatch(action2());
-          }
         }
       })
       .catch(error => {
