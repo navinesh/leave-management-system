@@ -10,14 +10,21 @@ import { submitAddPublicHoliday } from '../actions/NewPublicHoliday';
 import { submitDeletePublicHoliday } from '../actions/DeletePublicHoliday';
 
 class PublicHoliday extends Component {
-  componentDidMount() {
+  componentWillMount() {
     const { dispatch, auth_info } = this.props;
     let admin_token = auth_info.admin_token
       ? auth_info.admin_token
       : localStorage.getItem('admin_token');
 
     if (admin_token) {
-      dispatch(fetchLoginFromToken(admin_token, fetchPublicHoliday));
+      dispatch(fetchLoginFromToken(admin_token));
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.isAuthenticated) {
+      const { dispatch } = this.props;
+      dispatch(fetchPublicHoliday());
     }
   }
 
@@ -47,7 +54,7 @@ class PublicHoliday extends Component {
               onDeletePublicHolidaySubmit={deletePublicHolidayDate =>
                 dispatch(submitDeletePublicHoliday(deletePublicHolidayDate))}
             />
-          : <Redirect to="/" />}
+          : <Redirect to="/login" />}
       </div>
     );
   }
