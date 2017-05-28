@@ -10,21 +10,24 @@ import { fetchPublicHoliday } from '../actions/PublicHoliday';
 import { submitApproveLeave } from '../actions/ApproveLeave';
 import { submitDeclineLeave } from '../actions/DeclineLeave';
 import { submitEditLeave } from '../actions/EditLeave';
-import AdminLogin from './AdminLogin';
 import PendingLeaveList from '../components/PendingLeave';
+import { Redirect } from 'react-router-dom';
 
 class PendingLeave extends Component {
-  componentDidMount() {
+  componentWillMount() {
     const { dispatch, auth_info } = this.props;
     let admin_token = auth_info.admin_token
       ? auth_info.admin_token
       : localStorage.getItem('admin_token');
 
     if (admin_token) {
-      dispatch(
-        fetchLoginFromToken(admin_token, fetchPendingLeave, fetchPublicHoliday)
-      );
-    } else {
+      dispatch(fetchLoginFromToken(admin_token));
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.isAuthenticated) {
+      const { dispatch } = this.props;
       dispatch(fetchPendingLeave());
       dispatch(fetchPublicHoliday());
     }
@@ -61,11 +64,7 @@ class PendingLeave extends Component {
                   onEditLeaveSubmit={editLeaveData =>
                     dispatch(submitEditLeave(editLeaveData))}
                 />
-          : <div>
-              <h1 className="display-4 text-center pb-4">
-                Leave Management System
-              </h1><AdminLogin />
-            </div>}
+          : <Redirect to="/login" />}
       </div>
     );
   }
