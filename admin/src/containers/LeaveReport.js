@@ -10,14 +10,21 @@ import { fetchLeaveRecord } from '../actions/LeaveReport';
 import LeaveReportList from '../components/LeaveReport';
 
 class LeaveReport extends Component {
-  componentDidMount() {
+  componentWillMount() {
     const { dispatch, auth_info } = this.props;
     let admin_token = auth_info.admin_token
       ? auth_info.admin_token
       : localStorage.getItem('admin_token');
 
     if (admin_token) {
-      dispatch(fetchLoginFromToken(admin_token, fetchLeaveRecord));
+      dispatch(fetchLoginFromToken(admin_token));
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.isAuthenticated) {
+      const { dispatch } = this.props;
+      dispatch(fetchLeaveRecord());
     }
   }
 
@@ -32,7 +39,7 @@ class LeaveReport extends Component {
                   <div className="loader1" />
                 </div>
               : <LeaveReportList leave_record={leave_record} />
-          : <Redirect to="/" />}
+          : <Redirect to="/login" />}
       </div>
     );
   }
