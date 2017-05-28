@@ -276,7 +276,6 @@ export default class ApprovedLeaveList extends Component {
     };
 
     const newLeaveBalance = getPreviousLeaveDays(previousLeaveName);
-    console.log(newLeaveBalance);
     const sDate = moment(startDate).format('DD/MM/YYYY');
     const eDate = moment(endDate).format('DD/MM/YYYY');
 
