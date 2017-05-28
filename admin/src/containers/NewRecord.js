@@ -8,7 +8,7 @@ import NewRecordForm from '../components/NewRecord';
 import { submitNewUserRecord, clearNewUserRecord } from '../actions/NewRecord';
 
 class NewRecord extends Component {
-  componentDidMount() {
+  componentWillMount() {
     const { dispatch, auth_info } = this.props;
     let admin_token = auth_info.admin_token
       ? auth_info.admin_token
@@ -36,7 +36,7 @@ class NewRecord extends Component {
               onNewUserRecordSubmit={newUserDetails =>
                 dispatch(submitNewUserRecord(newUserDetails))}
             />
-          : <Redirect to="/" />}
+          : <Redirect to="/login" />}
       </div>
     );
   }
