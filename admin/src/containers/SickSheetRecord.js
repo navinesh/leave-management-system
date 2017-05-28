@@ -10,14 +10,21 @@ import { fetchSickSheetRecord } from '../actions/SickSheetRecord';
 import SickSheetList from '../components/SickSheetRecord';
 
 class SickSheetRecord extends Component {
-  componentDidMount() {
+  componentWillMount() {
     const { dispatch, auth_info } = this.props;
     let admin_token = auth_info.admin_token
       ? auth_info.admin_token
       : localStorage.getItem('admin_token');
 
     if (admin_token) {
-      dispatch(fetchLoginFromToken(admin_token, fetchSickSheetRecord));
+      dispatch(fetchLoginFromToken(admin_token));
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.isAuthenticated) {
+      const { dispatch } = this.props;
+      dispatch(fetchSickSheetRecord());
     }
   }
 
@@ -32,7 +39,7 @@ class SickSheetRecord extends Component {
                   <div className="loader1" />
                 </div>
               : <SickSheetList sickSheet_items={sickSheet_items} />
-          : <Redirect to="/" />}
+          : <Redirect to="/login" />}
       </div>
     );
   }
