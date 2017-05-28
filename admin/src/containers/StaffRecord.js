@@ -13,14 +13,21 @@ import { submitModifyUserRecord } from '../actions/ModifyRecord';
 import { submitArchiveUser } from '../actions/ArchiveUser';
 
 class StaffRecord extends Component {
-  componentDidMount() {
+  componentWillMount() {
     const { dispatch, auth_info } = this.props;
     let admin_token = auth_info.admin_token
       ? auth_info.admin_token
       : localStorage.getItem('admin_token');
 
     if (admin_token) {
-      dispatch(fetchLoginFromToken(admin_token, fetchStaffRecord));
+      dispatch(fetchLoginFromToken(admin_token));
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.isAuthenticated) {
+      const { dispatch } = this.props;
+      dispatch(fetchStaffRecord());
     }
   }
 
@@ -56,7 +63,7 @@ class StaffRecord extends Component {
               onArchiveUserSubmit={archiveUser =>
                 dispatch(submitArchiveUser(archiveUser))}
             />
-          : <Redirect to="/" />}
+          : <Redirect to="/login" />}
       </div>
     );
   }
