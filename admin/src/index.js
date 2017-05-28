@@ -8,6 +8,7 @@ import './index.css';
 import './bootstrap.min.css';
 
 import AdminHeader from './containers/AdminHeader';
+import AdminLogin from './containers/AdminLogin';
 import PendingLeave from './containers/PendingLeave';
 import ApprovedLeave from './containers/ApprovedLeave';
 import StaffRecord from './containers/StaffRecord';
@@ -30,7 +31,7 @@ const PrivateRoute = ({ component, ...rest }) => (
         ? React.createElement(component, props)
         : <Redirect
             to={{
-              pathname: '/',
+              pathname: '/login',
               state: { from: props.location }
             }}
           />}
@@ -43,7 +44,7 @@ const App = () => (
       <div>
         <AdminHeader />
         <Switch>
-          <Route exact path="/" component={PendingLeave} />
+          <PrivateRoute exact path="/" component={PendingLeave} />
           <PrivateRoute path="/staffrecord" component={StaffRecord} />
           <PrivateRoute path="/approvedleave" component={ApprovedLeave} />
           <PrivateRoute path="/leavereport" component={LeaveReport} />
@@ -58,6 +59,7 @@ const App = () => (
           />
           <PrivateRoute path="/newrecord" component={NewRecord} />
           <PrivateRoute path="/publicholiday" component={PublicHoliday} />
+          <Route path="/login" component={AdminLogin} />
           <Route component={Error} />
         </Switch>
       </div>
