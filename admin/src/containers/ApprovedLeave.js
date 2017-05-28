@@ -12,14 +12,21 @@ import { submitDeleteLeave } from '../actions/DeleteLeave';
 import ApprovedLeaveList from '../components/ApprovedLeave';
 
 class ApprovedLeave extends Component {
-  componentDidMount() {
+  componentWillMount() {
     const { dispatch, auth_info } = this.props;
     let admin_token = auth_info.admin_token
       ? auth_info.admin_token
       : localStorage.getItem('admin_token');
 
     if (admin_token) {
-      dispatch(fetchLoginFromToken(admin_token, fetchApprovedLeave));
+      dispatch(fetchLoginFromToken(admin_token));
+    }
+  }
+
+  componentDidMount() {
+    if (this.props.isAuthenticated) {
+      const { dispatch } = this.props;
+      dispatch(fetchApprovedLeave());
     }
   }
 
@@ -52,7 +59,7 @@ class ApprovedLeave extends Component {
                   onDeleteLeaveSubmit={deleteLeaveData =>
                     dispatch(submitDeleteLeave(deleteLeaveData))}
                 />
-          : <Redirect to="/" />}
+          : <Redirect to="/login" />}
       </div>
     );
   }
