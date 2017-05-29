@@ -108,7 +108,7 @@ export default class StaffRecordList extends Component {
 
     if (this.state.editReason) {
       dispatch(fetchStaffRecord());
-      dispatch({ type: 'CLEAR_MODIFY_USER_MESSAG' });
+      dispatch({ type: 'CLEAR_MODIFY_USER_MESSAGE' });
     }
   }
 
@@ -128,7 +128,7 @@ export default class StaffRecordList extends Component {
 
     if (this.state.archiveReason) {
       dispatch(fetchStaffRecord());
-      dispatch({ type: 'CLEAR_ARCHIVE_MESSAGE' });
+      dispatch({ type: 'CLEAR_ARCHIVED_STAFF_RECORD' });
     }
 
     this.setState({
@@ -484,18 +484,23 @@ export default class StaffRecordList extends Component {
                       </div>
                       <button
                         type="button"
-                        className="btn btn-outline-primary"
+                        className="btn btn-outline-primary btn-sm"
                         onClick={this.handleCloseEdit}
                       >
                         Close
                       </button>
-                      <button type="submit" className="btn btn-primary ml-4">
+                      <button
+                        type="submit"
+                        className="btn btn-primary btn-sm ml-4"
+                      >
                         Save changes
                       </button>
-                      {isFetching
-                        ? <div className="loader1" />
-                        : <p className="text-primary pt-2">{message}</p>}
-                      <div className="text-danger">
+                      <div className="text-primary text-center">
+                        {isFetching
+                          ? <div className="loader2" />
+                          : <p className="mt-3">{message}</p>}
+                      </div>
+                      <div className="text-danger text-center">
                         {this.state.errorMessage}
                       </div>
                     </form>
@@ -542,20 +547,23 @@ export default class StaffRecordList extends Component {
                     </div>
                     <button
                       type="button"
-                      className="btn btn-outline-primary"
+                      className="btn btn-outline-primary btn-sm"
                       onClick={this.HandleCloseArchive}
                     >
                       Close
                     </button>
-                    <button type="submit" className="btn btn-primary ml-4">
+                    <button
+                      type="submit"
+                      className="btn btn-primary btn-sm ml-4"
+                    >
                       Save changes
                     </button>
-                    <div className="text-primary">
+                    <div className="text-primary text-center">
                       {isArchiveFetching
-                        ? <div className="loader1" />
-                        : <p className="pb-2">{archiveMessage}</p>}
+                        ? <div className="loader2" />
+                        : <p className="mt-3">{archiveMessage}</p>}
                     </div>
-                    <div className="text-danger">
+                    <div className="text-danger text-center">
                       {this.state.errorMessage}
                     </div>
                   </form>
@@ -614,7 +622,7 @@ export default class StaffRecordList extends Component {
                     {dateOfBirth}
                   </span>
                 </li>
-                {record.gender.toLowerCase() === 'female'
+                {record.gender.toLowerCase() === 'female' && record.maternity
                   ? <li className="list-group-item justify-content-between">
                       Maternity
                       <span className="badge badge-primary badge-pill ">
@@ -624,14 +632,14 @@ export default class StaffRecordList extends Component {
                   : <p className="list-group-item"><br /></p>}
                 <li className="list-group-item">
                   <button
-                    className="btn btn-outline-primary btn-sm"
+                    className="btn btn-primary btn-sm"
                     onClick={this.handleOpenEdit}
                     id={record.id}
                   >
                     Edit
                   </button>
                   <button
-                    className="btn btn-outline-primary btn-sm ml-3"
+                    className="btn btn-primary btn-sm ml-3"
                     onClick={this.HandleOpenArchive}
                     id={record.id}
                   >
