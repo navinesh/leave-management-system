@@ -107,7 +107,7 @@ export const UserRecord = ({
     return (
       <div
         className="jumbotron jumbotron-fluid"
-        style={{ backgroundColor: '#FFFFFF', paddingTop: '90px' }}
+        style={{ backgroundColor: '#FFFFFF', paddingTop: '80px' }}
       >
         <div className="container">
           <div className="row">
