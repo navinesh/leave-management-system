@@ -8,7 +8,7 @@ import '../spinners.css';
 import { fetchLoginFromToken } from '../actions/AdminLogin';
 import { fetchApprovedLeave } from '../actions/ApprovedLeave';
 import { submitEditApprovedLeave } from '../actions/EditLeave';
-import { submitDeleteLeave } from '../actions/DeleteLeave';
+import { submitCancelLeave } from '../actions/CancelLeave';
 import ApprovedLeaveList from '../components/ApprovedLeave';
 
 class ApprovedLeave extends Component {
@@ -38,7 +38,9 @@ class ApprovedLeave extends Component {
       isFetching,
       dispatch,
       isEditLeaveFetching,
-      editLeaveMessage
+      editLeaveMessage,
+      isCancelLeaveFetching,
+      cancelLeaveMessage
     } = this.props;
 
     return (
@@ -54,10 +56,12 @@ class ApprovedLeave extends Component {
                   dispatch={dispatch}
                   isEditLeaveFetching={isEditLeaveFetching}
                   editLeaveMessage={editLeaveMessage}
+                  isCancelLeaveFetching={isCancelLeaveFetching}
+                  cancelLeaveMessage={cancelLeaveMessage}
                   onEditApprovedLeaveSubmit={editLeaveData =>
                     dispatch(submitEditApprovedLeave(editLeaveData))}
-                  onDeleteLeaveSubmit={deleteLeaveData =>
-                    dispatch(submitDeleteLeave(deleteLeaveData))}
+                  onCancelLeaveSubmit={cancelLeaveData =>
+                    dispatch(submitCancelLeave(cancelLeaveData))}
                 />
           : <Redirect to="/login" />}
       </div>
@@ -66,11 +70,18 @@ class ApprovedLeave extends Component {
 }
 
 const mapStateToProps = state => {
-  const { adminAuth, approvedLeave, publicHoliday, editLeave } = state;
+  const {
+    adminAuth,
+    approvedLeave,
+    publicHoliday,
+    editLeave,
+    cancelLeave
+  } = state;
   const { auth_info, isAuthenticated } = adminAuth;
   const { isFetching, approved_items } = approvedLeave;
   const { public_holiday } = publicHoliday;
   const { isEditLeaveFetching, editLeaveMessage } = editLeave;
+  const { isCancelLeaveFetching, cancelLeaveMessage } = cancelLeave;
 
   return {
     auth_info,
@@ -79,7 +90,9 @@ const mapStateToProps = state => {
     public_holiday,
     isFetching,
     isEditLeaveFetching,
-    editLeaveMessage
+    editLeaveMessage,
+    isCancelLeaveFetching,
+    cancelLeaveMessage
   };
 };
 
