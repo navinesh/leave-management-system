@@ -32,7 +32,7 @@ const LeaveReportList = (props: { leave_record: Array<any> }) => {
             <th>Status</th>
             <th>Date posted</th>
             <th>Date reviewed</th>
-            <th>Reason for decline</th>
+            <th>Reason</th>
           </tr>
         </thead>
         <tbody>
