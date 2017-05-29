@@ -41,7 +41,9 @@ class PendingLeave extends Component {
       public_holiday,
       dispatch,
       isEditLeaveFetching,
-      editLeaveMessage
+      editLeaveMessage,
+      isDeclineLeaveFetching,
+      declineLeaveMessage
     } = this.props;
 
     return (
@@ -57,6 +59,8 @@ class PendingLeave extends Component {
                   dispatch={dispatch}
                   isEditLeaveFetching={isEditLeaveFetching}
                   editLeaveMessage={editLeaveMessage}
+                  isDeclineLeaveFetching={isDeclineLeaveFetching}
+                  declineLeaveMessage={declineLeaveMessage}
                   onApproveLeaveSubmit={approveLeaveData =>
                     dispatch(submitApproveLeave(approveLeaveData))}
                   onDeclineLeaveSubmit={declineLeaveData =>
@@ -71,11 +75,18 @@ class PendingLeave extends Component {
 }
 
 const mapStateToProps = state => {
-  const { adminAuth, pendingLeave, publicHoliday, editLeave } = state;
+  const {
+    adminAuth,
+    pendingLeave,
+    publicHoliday,
+    editLeave,
+    declineLeave
+  } = state;
   const { auth_info, isAuthenticated } = adminAuth;
   const { isFetching, pending_items } = pendingLeave;
   const { public_holiday } = publicHoliday;
   const { isEditLeaveFetching, editLeaveMessage } = editLeave;
+  const { isDeclineLeaveFetching, declineLeaveMessage } = declineLeave;
 
   return {
     auth_info,
@@ -84,7 +95,9 @@ const mapStateToProps = state => {
     pending_items,
     public_holiday,
     isEditLeaveFetching,
-    editLeaveMessage
+    editLeaveMessage,
+    isDeclineLeaveFetching,
+    declineLeaveMessage
   };
 };
 
