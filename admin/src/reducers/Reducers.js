@@ -593,11 +593,14 @@ const deletePublicHoliday = (
 
 type approveLeaveState = {
   isApproveLeaveFetching: boolean,
-  message: string
+  approveLeavemessage: string
 };
 
 const approveLeave = (
-  state: approveLeaveState = { isApproveLeaveFetching: false, message: '' },
+  state: approveLeaveState = {
+    isApproveLeaveFetching: false,
+    approveLeavemessage: ''
+  },
   action
 ) => {
   switch (action.type) {
@@ -607,13 +610,13 @@ const approveLeave = (
       return {
         ...state,
         isApproveLeaveFetching: false,
-        message: action.message
+        approveLeavemessage: action.message
       };
     case APPROVE_LEAVE_ERROR:
       return {
         ...state,
         isApproveLeaveFetching: false,
-        message: action.message
+        approveLeavemessage: action.message
       };
     default:
       return state;
@@ -691,14 +694,14 @@ const editLeave = (
 };
 
 type cancelLeaveState = {
-  isDeleteLeaveFetching: boolean,
-  deleteLeaveMessage: string
+  isCancelLeaveFetching: boolean,
+  cancelLeaveMessage: string
 };
 
 const cancelLeave = (
   state: cancelLeaveState = {
     isCancelLeaveFetching: false,
-    deleteLeaveMessage: ''
+    cancelLeaveMessage: ''
   },
   action
 ) => {
