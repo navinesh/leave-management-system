@@ -35,23 +35,23 @@ export default class Header extends Component {
             id="navbarNav"
           >
             <div className="navbar-nav">
+              <Link className="nav-item nav-link" to="/approvedleave">
+                Approved
+              </Link>
               <Link className="nav-item nav-link" to="/staffrecord">
                 Staff
               </Link>
-              <Link className="nav-item nav-link" to="/approvedleave">
-                Calendar
+              <Link className="nav-item nav-link" to="/archivedstaffrecord">
+                Archived
+              </Link>
+              <Link className="nav-item nav-link" to="/newrecord">
+                New
               </Link>
               <Link className="nav-item nav-link" to="/leavereport">
                 Report
               </Link>
               <Link className="nav-item nav-link" to="/sicksheetrecord">
                 Sick sheet
-              </Link>
-              <Link className="nav-item nav-link" to="/newrecord">
-                New
-              </Link>
-              <Link className="nav-item nav-link" to="/archivedstaffrecord">
-                Archived
               </Link>
               <Link className="nav-item nav-link" to="/publicholiday">
                 Public Holidays
