@@ -18,7 +18,7 @@ export default class ApprovedLeaveList extends Component {
     public_holiday: Array<any>,
     dispatch: Function,
     onEditApprovedLeaveSubmit: Function,
-    onDeleteLeaveSubmit: Function,
+    onCancelLeaveSubmit: Function,
     isEditLeaveFetching: boolean,
     editLeaveMessage: string
   };
@@ -26,12 +26,12 @@ export default class ApprovedLeaveList extends Component {
   state: {
     errorMessage: string,
     editReason: string,
-    deleteReason: string,
+    cancelReason: string,
     listID: string,
     startDate: any,
     endDate: any,
     isEditing: boolean,
-    isDelete: boolean,
+    isCancel: boolean,
     focusedInput: ?boolean
   };
 
@@ -39,10 +39,10 @@ export default class ApprovedLeaveList extends Component {
   handleEditReason: Function;
   handleEditSubmit: Function;
   handleCloseEdit: Function;
-  hadleOpenDelete: Function;
-  handleDeleteReason: Function;
-  handleDeleteSubmit: Function;
-  handleCloseDelete: Function;
+  handleOpenCancel: Function;
+  handleCancelReason: Function;
+  handleCancelSubmit: Function;
+  handleCloseCancel: Function;
 
   leave_name: HTMLInputElement;
   leave_type: HTMLInputElement;
@@ -54,12 +54,12 @@ export default class ApprovedLeaveList extends Component {
     this.state = {
       errorMessage: '',
       editReason: '',
-      deleteReason: '',
+      cancelReason: '',
       startDate: null,
       endDate: null,
       listID: '',
       isEditing: false,
-      isDelete: false,
+      isCancel: false,
       focusedInput: null
     };
 
@@ -67,16 +67,16 @@ export default class ApprovedLeaveList extends Component {
     this.handleEditSubmit = this.handleEditSubmit.bind(this);
     this.handleOpenEdit = this.handleOpenEdit.bind(this);
     this.handleCloseEdit = this.handleCloseEdit.bind(this);
-    this.hadleOpenDelete = this.hadleOpenDelete.bind(this);
-    this.handleDeleteReason = this.handleDeleteReason.bind(this);
-    this.handleDeleteSubmit = this.handleDeleteSubmit.bind(this);
-    this.handleCloseDelete = this.handleCloseDelete.bind(this);
+    this.handleOpenCancel = this.handleOpenCancel.bind(this);
+    this.handleCancelReason = this.handleCancelReason.bind(this);
+    this.handleCancelSubmit = this.handleCancelSubmit.bind(this);
+    this.handleCloseCancel = this.handleCloseCancel.bind(this);
   }
 
   handleOpenEdit(e: Event & { currentTarget: HTMLElement }) {
     this.setState({
       isEditing: !this.state.isEditing,
-      listID: e.currentTarget.id
+      listID: parseInt(e.currentTarget.id, 10)
     });
   }
 
@@ -88,7 +88,7 @@ export default class ApprovedLeaveList extends Component {
     e.preventDefault();
     const { approved_items, onEditApprovedLeaveSubmit } = this.props;
 
-    const leave_id = parseInt(this.state.listID, 10);
+    const leave_id = this.state.listID;
     const startDate = this.state.startDate
       ? this.state.startDate
       : moment(this.startDate.value, 'DD/MM/YYYY');
@@ -312,24 +312,24 @@ export default class ApprovedLeaveList extends Component {
     }
   }
 
-  hadleOpenDelete(e: Event & { currentTarget: HTMLElement }) {
+  handleOpenCancel(e: Event & { currentTarget: HTMLElement }) {
     this.setState({
-      isDelete: !this.state.isDelete,
-      listID: e.currentTarget.id
+      isCancel: !this.state.isCancel,
+      listID: parseInt(e.currentTarget.id, 10)
     });
   }
 
-  handleDeleteReason({ target }: SyntheticInputEvent) {
-    this.setState({ deleteReason: target.value });
+  handleCancelReason({ target }: SyntheticInputEvent) {
+    this.setState({ cancelReason: target.value });
   }
 
-  handleDeleteSubmit(e: Event) {
+  handleCancelSubmit(e: Event) {
     e.preventDefault();
-    const { onDeleteLeaveSubmit } = this.props;
+    const { onCancelLeaveSubmit, approved_items } = this.props;
 
     const listID = this.state.listID;
-    const reason = this.state.deleteReason
-      ? this.state.deleteReason.trim()
+    const reason = this.state.cancelReason
+      ? this.state.cancelReason.trim()
       : null;
 
     if (!reason) {
@@ -339,21 +339,33 @@ export default class ApprovedLeaveList extends Component {
       return;
     }
 
-    const deleteLeaveData = {
+    const userRecord = approved_items.filter(e => e.id === listID);
+    const userID = userRecord[0].user.id;
+    const leaveDays = userRecord[0].leave_days;
+    const leaveName = userRecord[0].leave_name;
+
+    const leaveStatus = 'cancelled';
+
+    const cancelLeaveData = {
       leaveID: listID,
-      reason: reason
+      reason: reason,
+      userID: userID,
+      leaveDays: leaveDays,
+      leaveName: leaveName,
+      leaveStatus: leaveStatus
     };
 
-    onDeleteLeaveSubmit(deleteLeaveData);
+    onCancelLeaveSubmit(cancelLeaveData);
   }
 
-  handleCloseDelete(e: Event) {
+  handleCloseCancel(e: Event) {
     const { dispatch } = this.props;
 
-    this.setState({ isDelete: !this.state.isDelete, errorMessage: '' });
+    this.setState({ isCancel: !this.state.isCancel, errorMessage: '' });
 
-    if (this.state.deleteReason) {
+    if (this.state.cancelReason) {
       dispatch(fetchApprovedLeave());
+      dispatch({ type: 'CLEAR_ARCHIVED_STAFF_RECORD' });
     }
   }
 
@@ -481,21 +493,25 @@ export default class ApprovedLeaveList extends Component {
                     </div>
                     <button
                       type="button"
-                      className="btn btn-outline-primary"
+                      className="btn btn-outline-primary btn-sm"
                       onClick={this.handleCloseEdit}
                     >
                       Close
                     </button>
-                    <button type="submit" className="btn btn-primary ml-4">
+                    <button
+                      type="submit"
+                      className="btn btn-primary btn-sm ml-4"
+                    >
                       Save changes
                     </button>
-                    {this.props.isEditLeaveFetching
-                      ? <div className="loader1" />
-                      : <p className="text-primary pt-2">
-                          {this.props.editLeaveMessage}
-                        </p>}
-
-                    <div className="text-danger">
+                    <div className="text-primary text-center">
+                      {this.props.isEditLeaveFetching
+                        ? <div className="loader2" />
+                        : <p className="text-primary mt-2">
+                            {this.props.editLeaveMessage}
+                          </p>}
+                    </div>
+                    <div className="text-danger text-center">
                       {this.state.errorMessage}
                     </div>
                   </form>
@@ -507,7 +523,7 @@ export default class ApprovedLeaveList extends Component {
       );
     }
 
-    if (this.state.isDelete) {
+    if (this.state.isCancel) {
       return (
         <div>
           {approved_items.filter(e => e.id === listID).map(record => (
@@ -518,9 +534,9 @@ export default class ApprovedLeaveList extends Component {
               >
                 <div className="card card-block">
                   <h5>
-                    Delete
+                    Cancel
                   </h5>
-                  <form onSubmit={this.handleDeleteSubmit}>
+                  <form onSubmit={this.handleCancelSubmit}>
                     <div className="row">
                       <div className="col">
                         <p>{record.othernames}{' '}{record.surname}</p>
@@ -530,22 +546,32 @@ export default class ApprovedLeaveList extends Component {
                             type="text"
                             className="form-control"
                             placeholder="Enter reason"
-                            onChange={this.handleDeleteReason}
+                            onChange={this.handleCancelReason}
                           />
                         </div>
                       </div>
                     </div>
                     <button
                       type="button"
-                      className="btn btn-outline-primary"
-                      onClick={this.handleCloseDelete}
+                      className="btn btn-outline-primary btn-sm"
+                      onClick={this.handleCloseCancel}
                     >
                       Close
                     </button>
-                    <button type="submit" className="btn btn-primary ml-4">
-                      Decline
+                    <button
+                      type="submit"
+                      className="btn btn-primary ml-4 btn-sm"
+                    >
+                      Cancel
                     </button>
-                    <div className="text-danger pt-2">
+                    <div className="text-primary text-center">
+                      {this.props.isCanceLeaveFetching
+                        ? <div className="loader2" />
+                        : <p className="mt-3">
+                            {this.props.cancelLeaveMessage}
+                          </p>}
+                    </div>
+                    <div className="text-danger text-center">
                       {this.state.errorMessage}
                     </div>
                   </form>
@@ -602,10 +628,10 @@ export default class ApprovedLeaveList extends Component {
           <td>
             <button
               className="btn btn-link text-danger"
-              onClick={this.hadleOpenDelete}
+              onClick={this.handleOpenCancel}
               id={data.id}
             >
-              Delete
+              Cancel
             </button>
           </td>
         </tr>
