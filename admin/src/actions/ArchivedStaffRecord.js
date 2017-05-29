@@ -2,6 +2,7 @@
 export const REQUEST_ARCHIVED_STAFF_RECORD = 'REQUEST_ARCHIVED_STAFF_RECORD';
 export const RECEIVE_ARCHIVED_STAFF_RECORD = 'RECEIVE_ARCHIVED_STAFF_RECORD';
 export const ERROR_ARCHIVED_STAFF_RECORD = 'ERROR_ARCHIVED_STAFF_RECORD';
+export const CLEAR_ARCHIVED_STAFF_RECORD = 'CLEAR_ARCHIVED_STAFF_RECORD';
 
 export const requestArchivedStaffRecord = () => ({
   type: REQUEST_ARCHIVED_STAFF_RECORD
@@ -15,6 +16,10 @@ export const receiveArchivedStaffRecord = (json: Object) => ({
 
 export const errorArchivedStaffRecord = () => ({
   type: ERROR_ARCHIVED_STAFF_RECORD
+});
+
+export const clearArchivedStaffRecord = () => ({
+  type: CLEAR_ARCHIVED_STAFF_RECORD
 });
 
 export const fetchArchivedStaffRecord = () => {
