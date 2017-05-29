@@ -20,14 +20,16 @@ export default class ApprovedLeaveList extends Component {
     onEditApprovedLeaveSubmit: Function,
     onCancelLeaveSubmit: Function,
     isEditLeaveFetching: boolean,
-    editLeaveMessage: string
+    editLeaveMessage: string,
+    isCancelLeaveFetching: boolean,
+    cancelLeaveMessage: string
   };
 
   state: {
     errorMessage: string,
     editReason: string,
     cancelReason: string,
-    listID: string,
+    listID: number,
     startDate: any,
     endDate: any,
     isEditing: boolean,
@@ -57,7 +59,7 @@ export default class ApprovedLeaveList extends Component {
       cancelReason: '',
       startDate: null,
       endDate: null,
-      listID: '',
+      listID: 0,
       isEditing: false,
       isCancel: false,
       focusedInput: null
