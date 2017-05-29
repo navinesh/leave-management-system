@@ -41,7 +41,8 @@ import {
 import {
   REQUEST_ARCHIVED_STAFF_RECORD,
   RECEIVE_ARCHIVED_STAFF_RECORD,
-  ERROR_ARCHIVED_STAFF_RECORD
+  ERROR_ARCHIVED_STAFF_RECORD,
+  CLEAR_ARCHIVED_STAFF_RECORD
 } from '../actions/ArchivedStaffRecord';
 
 import {
@@ -113,7 +114,8 @@ import {
 import {
   DECLINE_LEAVE_REQUEST,
   DECLINE_LEAVE_SUCCESS,
-  DECLINE_LEAVE_ERROR
+  DECLINE_LEAVE_ERROR,
+  CLEAR_DECLINE_LEAVE
 } from '../actions/DeclineLeave';
 
 import {
@@ -124,10 +126,10 @@ import {
 } from '../actions/EditLeave';
 
 import {
-  DELETE_LEAVE_REQUEST,
-  DELETE_LEAVE_SUCCESS,
-  DELETE_LEAVE_ERROR
-} from '../actions/DeleteLeave';
+  CANCEL_LEAVE_REQUEST,
+  CANCEL_LEAVE_SUCCESS,
+  CANCEL_LEAVE_ERROR
+} from '../actions/CancelLeave';
 
 type adminState = {
   isFetching: boolean,
@@ -289,6 +291,12 @@ const archivedStaffRecord = (
       };
     case ERROR_ARCHIVED_STAFF_RECORD:
       return { ...state, isFetching: false };
+    case CLEAR_ARCHIVED_STAFF_RECORD:
+      return {
+        ...state,
+        isFetching: false,
+        archived_staff_record: ''
+      };
     default:
       return state;
   }
@@ -628,13 +636,19 @@ const declineLeave = (
       return {
         ...state,
         isDeclineLeaveFetching: false,
-        message: action.message
+        declineLeaveMessage: action.message
       };
     case DECLINE_LEAVE_ERROR:
       return {
         ...state,
         isDeclineLeaveFetching: false,
-        message: action.message
+        declineLeaveMessage: action.message
+      };
+    case CLEAR_DECLINE_LEAVE:
+      return {
+        ...state,
+        isDeclineLeaveFetching: false,
+        declineLeaveMessage: ''
       };
     default:
       return state;
@@ -676,32 +690,32 @@ const editLeave = (
   }
 };
 
-type deleteLeaveState = {
+type cancelLeaveState = {
   isDeleteLeaveFetching: boolean,
   deleteLeaveMessage: string
 };
 
-const deleteLeave = (
-  state: deleteLeaveState = {
-    isDeleteLeaveFetching: false,
+const cancelLeave = (
+  state: cancelLeaveState = {
+    isCancelLeaveFetching: false,
     deleteLeaveMessage: ''
   },
   action
 ) => {
   switch (action.type) {
-    case DELETE_LEAVE_REQUEST:
-      return { ...state, isDeleteLeaveFetching: true };
-    case DELETE_LEAVE_SUCCESS:
+    case CANCEL_LEAVE_REQUEST:
+      return { ...state, isCancelLeaveFetching: true };
+    case CANCEL_LEAVE_SUCCESS:
       return {
         ...state,
-        isDeleteLeaveFetching: false,
-        deleteLeaveMessage: action.message
+        isCancelLeaveFetching: false,
+        cancelLeaveMessage: action.message
       };
-    case DELETE_LEAVE_ERROR:
+    case CANCEL_LEAVE_ERROR:
       return {
         ...state,
-        isDeleteLeaveFetching: false,
-        deleteLeaveMessage: action.message
+        isCancelLeaveFetching: false,
+        cancelLeaveMessage: action.message
       };
     default:
       return state;
@@ -727,7 +741,7 @@ const rootReducer = combineReducers({
   approveLeave,
   declineLeave,
   editLeave,
-  deleteLeave
+  cancelLeave
 });
 
 export default rootReducer;
