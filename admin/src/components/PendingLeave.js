@@ -79,7 +79,7 @@ export default class PendingLeaveList extends Component {
   handleOpenEdit(e: Event & { currentTarget: HTMLElement }) {
     this.setState({
       isEditing: !this.state.isEditing,
-      listID: e.currentTarget.id
+      listID: e.currentTarget.id ? parseInt(e.currentTarget.id, 10) : null
     });
   }
 
@@ -110,7 +110,7 @@ export default class PendingLeaveList extends Component {
   handleOpenDecline(e: Event & { currentTarget: HTMLElement }) {
     this.setState({
       isDecline: !this.state.isDecline,
-      listID: e.currentTarget.id
+      listID: e.currentTarget.id ? parseInt(e.currentTarget.id, 10) : null
     });
   }
 
@@ -121,7 +121,7 @@ export default class PendingLeaveList extends Component {
 
     if (this.state.declineReason) {
       dispatch(fetchPendingLeave());
-      dispatch({ type: 'CLEAR_EDIT_LEAVE' });
+      dispatch({ type: 'CLEAR_DECLINE_LEAVE' });
     }
   }
 
@@ -477,22 +477,25 @@ export default class PendingLeaveList extends Component {
                     </div>
                     <button
                       type="button"
-                      className="btn btn-outline-primary"
+                      className="btn btn-outline-primary btn-sm"
                       onClick={this.handleCloseEdit}
                     >
                       Close
                     </button>
-                    <button type="submit" className="btn btn-primary ml-4">
+                    <button
+                      type="submit"
+                      className="btn btn-primary btn-sm ml-4"
+                    >
                       Save changes
                     </button>
                     <div className="text-primary text-center">
                       {this.props.isEditLeaveFetching
-                        ? <div className="loader1" />
-                        : <p className="lead pb-2">
+                        ? <div className="loader2" />
+                        : <p className="mt-3">
                             {this.props.editLeaveMessage}
                           </p>}
                     </div>
-                    <div className="text-danger">
+                    <div className="text-danger text-center">
                       {this.state.errorMessage}
                     </div>
                   </form>
@@ -530,16 +533,26 @@ export default class PendingLeaveList extends Component {
                     </div>
                     <button
                       type="button"
-                      className="btn btn-outline-primary"
+                      className="btn btn-outline-primary btn-sm"
                       onClick={this.handleCloseDecline}
                     >
                       Close
                     </button>
-                    <button type="submit" className="btn btn-primary ml-4">
+                    <button
+                      type="submit"
+                      className="btn btn-primary btn-sm ml-4"
+                    >
                       Decline
                     </button>
-                    <div className="text-danger">
-                      <div className="pt-4">{this.state.errorMessage}</div>
+                    <div className="text-primary text-center">
+                      {this.props.isDeclineLeaveFetching
+                        ? <div className="loader2" />
+                        : <p className="mt-3">
+                            {this.props.declineLeaveMessage}
+                          </p>}
+                    </div>
+                    <div className="text-danger text-center">
+                      <div className="mt-3">{this.state.errorMessage}</div>
                     </div>
                   </form>
                 </div>
