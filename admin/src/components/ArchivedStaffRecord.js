@@ -112,17 +112,20 @@ export default class ArchivedStaffRecordList extends Component {
                     </div>
                     <button
                       type="button"
-                      className="btn btn-outline-primary"
+                      className="btn btn-outline-primary btn-sm"
                       onClick={this.handleCloseUnarchive}
                     >
                       Close
                     </button>
-                    <button type="submit" className="btn btn-primary ml-4">
+                    <button
+                      type="submit"
+                      className="btn btn-primary btn-sm ml-4"
+                    >
                       Yes
                     </button>
                     {this.props.isUnArchiveFetching
-                      ? <div className="loader1" />
-                      : <p className="text-primary pt-2">
+                      ? <div className="loader2" />
+                      : <p className="text-primary text-center mt-3">
                           {this.props.unArchiveMessage}
                         </p>}
 
@@ -196,7 +199,7 @@ export default class ArchivedStaffRecordList extends Component {
                   : <p className="list-group-item"><br /></p>}
                 <li className="list-group-item">
                   <button
-                    className="btn btn-outline-primary btn-sm"
+                    className="btn btn-primary btn-sm"
                     onClick={this.handleOpenUnarchive}
                     id={record.id}
                   >
