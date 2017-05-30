@@ -39,7 +39,7 @@ export const loginAdminErrorFromToken = (data: Object) => ({
   message: data.message
 });
 
-export const fetchLogin = (creds: Object) => {
+/*export const fetchLogin = (creds: Object) => {
   return (dispatch: Function) => {
     dispatch(requestAdminLogin(creds));
     axios
@@ -58,6 +58,26 @@ export const fetchLogin = (creds: Object) => {
       .catch(error => {
         console.log(error);
       });
+  };
+};*/
+
+export const fetchLogin = (creds: Object) => {
+  return async (dispatch: Function) => {
+    try {
+      dispatch(requestAdminLogin(creds));
+      const response = await axios.post('http://localhost:8080/adminlogin', {
+        email: creds.email,
+        password: creds.password
+      });
+      if (response.status !== 201) {
+        dispatch(loginAdminError(response.data));
+      } else {
+        localStorage.setItem('admin_token', response.data.admin_token);
+        dispatch(receiveAdminLogin(response.data));
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
 
