@@ -6,26 +6,26 @@ export const NEW_USER_RECORD_SUCCESS = 'NEW_USER_RECORD_SUCCESS';
 export const NEW_USER_RECORD_FAILURE = 'NEW_USER_RECORD_FAILURE';
 export const CLEAR_NEW_USER_RECORD = 'CLEAR_NEW_USER_RECORD';
 
-export function requestNewUserRecord(newUserDetails: Object) {
+export const requestNewUserRecord = (newUserDetails: Object) => {
   return {
     type: NEW_USER_RECORD_REQUEST,
     newUserDetails
   };
-}
+};
 
-export function successNewUserRecord(data: Object) {
+export const successNewUserRecord = (data: Object) => {
   return {
     type: NEW_USER_RECORD_SUCCESS,
     message: data.message
   };
-}
+};
 
-export function failureNewUserRecord(data: Object) {
+export const failureNewUserRecord = (data: Object) => {
   return {
     type: NEW_USER_RECORD_FAILURE,
     message: data.message
   };
-}
+};
 
 export const clearNewUserRecord = () => {
   return {
@@ -33,7 +33,7 @@ export const clearNewUserRecord = () => {
   };
 };
 
-export function submitNewUserRecord(newUserDetails: Object) {
+export const submitNewUserRecord = (newUserDetails: Object) => {
   return (dispatch: Function) => {
     dispatch(requestNewUserRecord(newUserDetails));
     axios
@@ -61,4 +61,4 @@ export function submitNewUserRecord(newUserDetails: Object) {
         console.log(error);
       });
   };
-}
+};
