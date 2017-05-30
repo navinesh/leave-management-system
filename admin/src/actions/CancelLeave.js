@@ -5,8 +5,9 @@ export const CANCEL_LEAVE_REQUEST = 'CANCEL_LEAVE_REQUEST';
 export const CANCEL_LEAVE_SUCCESS = 'CANCEL_LEAVE_SUCCESS';
 export const CANCEL_LEAVE_ERROR = 'CANCEL_LEAVE_ERROR';
 
-export const requestCancelLeave = () => ({
-  type: CANCEL_LEAVE_REQUEST
+export const requestCancelLeave = (cancelLeaveData: Object) => ({
+  type: CANCEL_LEAVE_REQUEST,
+  cancelLeaveData
 });
 
 export const receiveCancelLeave = (data: Object) => ({
@@ -19,7 +20,7 @@ export const errorCancelLeave = (data: Object) => ({
   message: data.message
 });
 
-export function submitCancelLeave(cancelLeaveData: Object) {
+export const submitCancelLeave = (cancelLeaveData: Object) => {
   return (dispatch: Function) => {
     dispatch(requestCancelLeave(cancelLeaveData));
     axios
@@ -42,4 +43,4 @@ export function submitCancelLeave(cancelLeaveData: Object) {
         console.log(error);
       });
   };
-}
+};
