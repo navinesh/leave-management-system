@@ -6,21 +6,21 @@ export const UNARCHIVE_USER_SUCCESS = 'UNARCHIVE_USER_SUCCESS';
 export const UNARCHIVE_USER_FAILURE = 'UNARCHIVE_USER_FAILURE';
 export const CLEAR_UNARCHIVE_MESSAGE = 'CLEAR_UNARCHIVE_MESSAGE';
 
-export function requestUnArchiveUser(unArchiveUser: Object) {
+export const requestUnArchiveUser = (unArchiveUser: Object) => {
   return { type: UNARCHIVE_USER_REQUEST, unArchiveUser };
-}
+};
 
-export function successUnArchiveUser(data: Object) {
+export const successUnArchiveUser = (data: Object) => {
   return { type: UNARCHIVE_USER_SUCCESS, message: data.message };
-}
+};
 
-export function failureUnArchiveUser(data: Object) {
+export const failureUnArchiveUser = (data: Object) => {
   return { type: UNARCHIVE_USER_FAILURE, message: data.message };
-}
+};
 
 export const clearUnArchiveMessage = () => ({ type: CLEAR_UNARCHIVE_MESSAGE });
 
-export function submitUnArchiveUser(unArchiveUser: Object) {
+export const submitUnArchiveUser = (unArchiveUser: Object) => {
   return (dispatch: Function) => {
     dispatch(requestUnArchiveUser(unArchiveUser));
     axios
@@ -39,4 +39,4 @@ export function submitUnArchiveUser(unArchiveUser: Object) {
         console.log(error);
       });
   };
-}
+};
