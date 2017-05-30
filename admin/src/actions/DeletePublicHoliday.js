@@ -7,21 +7,21 @@ export const DELETE_PUBLIC_HOLIDAY_SUCCESS = 'DELETE_PUBLIC_HOLIDAY_SUCCESS';
 export const DELETE_PUBLIC_HOLIDAY_FAILURE = 'DELETE_PUBLIC_HOLIDAY_FAILURE';
 export const CLEAR_DELETE_PUBLIC_MESSAGE = 'CLEAR_DELETE_PUBLIC_MESSAGE';
 
-export function requestDeletePublicHoliday(archiveUser: Object) {
+export const requestDeletePublicHoliday = (archiveUser: Object) => {
   return { type: DELETE_PUBLIC_HOLIDAY_REQUEST, archiveUser };
-}
+};
 
-export function successDeletePublicHoliday(data: Object) {
+export const successDeletePublicHoliday = (data: Object) => {
   return { type: DELETE_PUBLIC_HOLIDAY_SUCCESS, message: data.message };
-}
+};
 
-export function failureDeletePublicHoliday(data: Object) {
+export const failureDeletePublicHoliday = (data: Object) => {
   return { type: DELETE_PUBLIC_HOLIDAY_FAILURE, message: data.message };
-}
+};
 
 export const clearpublicMessage = () => ({ type: CLEAR_DELETE_PUBLIC_MESSAGE });
 
-export function submitDeletePublicHoliday(deletePublicHolidayDate: Object) {
+export const submitDeletePublicHoliday = (deletePublicHolidayDate: Object) => {
   return (dispatch: Function) => {
     dispatch(requestDeletePublicHoliday(deletePublicHolidayDate));
     axios
@@ -40,4 +40,4 @@ export function submitDeletePublicHoliday(deletePublicHolidayDate: Object) {
         console.log(error);
       });
   };
-}
+};
