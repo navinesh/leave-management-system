@@ -7,21 +7,21 @@ export const MODIFY_USER_RECORD_SUCCESS = 'MODIFY_USER_RECORD_SUCCESS';
 export const MODIFY_USER_RECORD_FAILURE = 'Modify_USER_RECORD_FAILURE';
 export const CLEAR_MODIFY_USER_MESSAGE = 'CLEAR_MODIFY_USER_MESSAGE';
 
-export function requestModifyUserRecord(modifyUserDetails: Object) {
+export const requestModifyUserRecord = (modifyUserDetails: Object) => {
   return { type: MODIFY_USER_RECORD_REQUEST, modifyUserDetails };
-}
+};
 
-export function successModifyUserRecord(data: Object) {
+export const successModifyUserRecord = (data: Object) => {
   return { type: MODIFY_USER_RECORD_SUCCESS, message: data.message };
-}
+};
 
-export function failureModifyUserRecord(data: Object) {
+export const failureModifyUserRecord = (data: Object) => {
   return { type: MODIFY_USER_RECORD_FAILURE, message: data.message };
-}
+};
 
 export const clearModifyUser = () => ({ type: CLEAR_MODIFY_USER_MESSAGE });
 
-export function submitModifyUserRecord(modifyUserDetails: Object) {
+export const submitModifyUserRecord = (modifyUserDetails: Object) => {
   return (dispatch: Function) => {
     dispatch(requestModifyUserRecord(modifyUserDetails));
     axios
@@ -52,4 +52,4 @@ export function submitModifyUserRecord(modifyUserDetails: Object) {
         console.log(error);
       });
   };
-}
+};
