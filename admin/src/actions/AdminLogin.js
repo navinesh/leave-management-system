@@ -39,28 +39,6 @@ export const loginAdminErrorFromToken = (data: Object) => ({
   message: data.message
 });
 
-/*export const fetchLogin = (creds: Object) => {
-  return (dispatch: Function) => {
-    dispatch(requestAdminLogin(creds));
-    axios
-      .post('http://localhost:8080/adminlogin', {
-        email: creds.email,
-        password: creds.password
-      })
-      .then(response => {
-        if (response.status === 200) {
-          dispatch(loginAdminError(response.data));
-        } else {
-          localStorage.setItem('admin_token', response.data.admin_token);
-          dispatch(receiveAdminLogin(response.data));
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      });
-  };
-};*/
-
 export const fetchLogin = (creds: Object) => {
   return async (dispatch: Function) => {
     try {
@@ -82,22 +60,20 @@ export const fetchLogin = (creds: Object) => {
 };
 
 export const fetchLoginFromToken = (admin_token: string) => {
-  return (dispatch: Function) => {
-    dispatch(requestAdminLoginFromToken(admin_token));
-    axios
-      .post('http://localhost:8080/admintoken', {
+  return async (dispatch: Function) => {
+    try {
+      dispatch(requestAdminLoginFromToken(admin_token));
+      const response = axios.post('http://localhost:8080/admintoken', {
         admin_token: admin_token
-      })
-      .then(response => {
-        if (response.status === 200) {
-          localStorage.removeItem('admin_token');
-          dispatch(loginAdminErrorFromToken(response.data));
-        } else {
-          dispatch(receiveAdminLoginFromToken(response.data));
-        }
-      })
-      .catch(error => {
-        console.log(error);
       });
+      if (response.status !== 201) {
+        localStorage.removeItem('admin_token');
+        dispatch(loginAdminErrorFromToken(response.data));
+      } else {
+        dispatch(receiveAdminLoginFromToken(response.data));
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
