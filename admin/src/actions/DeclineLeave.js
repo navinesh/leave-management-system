@@ -6,8 +6,9 @@ export const DECLINE_LEAVE_SUCCESS = 'DECLINE_LEAVE_SUCCESS';
 export const DECLINE_LEAVE_ERROR = 'DECLINE_LEAVE_ERROR';
 export const CLEAR_DECLINE_LEAVE = 'CLEAR_DECLINE_LEAVE';
 
-export const requestDeclineLeave = () => ({
-  type: DECLINE_LEAVE_REQUEST
+export const requestDeclineLeave = (declineLeaveData: Object) => ({
+  type: DECLINE_LEAVE_REQUEST,
+  declineLeaveData
 });
 
 export const receiveDeclineLeave = (data: Object) => ({
@@ -22,7 +23,7 @@ export const errorDeclineLeave = (data: Object) => ({
 
 export const clearDeclineLeave = () => ({ type: CLEAR_DECLINE_LEAVE });
 
-export function submitDeclineLeave(declineLeaveData: Object) {
+export const submitDeclineLeave = (declineLeaveData: Object) => {
   return (dispatch: Function) => {
     dispatch(requestDeclineLeave(declineLeaveData));
     axios
@@ -42,4 +43,4 @@ export function submitDeclineLeave(declineLeaveData: Object) {
         console.log(error);
       });
   };
-}
+};
