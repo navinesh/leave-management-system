@@ -6,21 +6,21 @@ export const ARCHIVE_USER_SUCCESS = 'ARCHIVE_USER_SUCCESS';
 export const ARCHIVE_USER_FAILURE = 'ARCHIVE_USER_FAILURE';
 export const CLEAR_ARCHIVE_MESSAGE = 'CLEAR_ARCHIVE_MESSAGE';
 
-export function requestArchiveUser(archiveUser: Object) {
+export const requestArchiveUser = (archiveUser: Object) => {
   return { type: ARCHIVE_USER_REQUEST, archiveUser };
-}
+};
 
-export function successArchiveUser(data: Object) {
+export const successArchiveUser = (data: Object) => {
   return { type: ARCHIVE_USER_SUCCESS, message: data.message };
-}
+};
 
-export function failureArchiveUser(data: Object) {
+export const failureArchiveUser = (data: Object) => {
   return { type: ARCHIVE_USER_FAILURE, message: data.message };
-}
+};
 
 export const clearArchiveMessage = () => ({ type: CLEAR_ARCHIVE_MESSAGE });
 
-export function submitArchiveUser(archiveUser: Object) {
+export const submitArchiveUser = (archiveUser: Object) => {
   return (dispatch: Function) => {
     dispatch(requestArchiveUser(archiveUser));
     axios
@@ -40,4 +40,4 @@ export function submitArchiveUser(archiveUser: Object) {
         console.log(error);
       });
   };
-}
+};
