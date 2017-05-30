@@ -63,7 +63,7 @@ export const fetchLoginFromToken = (admin_token: string) => {
   return async (dispatch: Function) => {
     try {
       dispatch(requestAdminLoginFromToken(admin_token));
-      const response = axios.post('http://localhost:8080/admintoken', {
+      const response = await axios.post('http://localhost:8080/admintoken', {
         admin_token: admin_token
       });
       if (response.status !== 201) {
