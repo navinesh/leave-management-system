@@ -7,21 +7,21 @@ export const ADD_PUBLIC_HOLIDAY_SUCCESS = 'ADD_PUBLIC_HOLIDAY_SUCCESS';
 export const ADD_PUBLIC_HOLIDAY_FAILURE = 'ADD_PUBLIC_HOLIDAY_FAILURE';
 export const CLEAR_ADD_PUBLIC_MESSAGE = 'CLEAR_ADD_PUBLIC_MESSAGE';
 
-export function requestAddPublicHoliday(archiveUser: Object) {
+export const requestAddPublicHoliday = (archiveUser: Object) => {
   return { type: ADD_PUBLIC_HOLIDAY_REQUEST, archiveUser };
-}
+};
 
-export function successAddPublicHoliday(data: Object) {
+export const successAddPublicHoliday = (data: Object) => {
   return { type: ADD_PUBLIC_HOLIDAY_SUCCESS, message: data.message };
-}
+};
 
-export function failureAddPublicHoliday(data: Object) {
+export const failureAddPublicHoliday = (data: Object) => {
   return { type: ADD_PUBLIC_HOLIDAY_FAILURE, message: data.message };
-}
+};
 
 export const clearpublicMessage = () => ({ type: CLEAR_ADD_PUBLIC_MESSAGE });
 
-export function submitAddPublicHoliday(publicHolidayDate: Object) {
+export const submitAddPublicHoliday = (publicHolidayDate: Object) => {
   return (dispatch: Function) => {
     dispatch(requestAddPublicHoliday(publicHolidayDate));
     axios
@@ -40,4 +40,4 @@ export function submitAddPublicHoliday(publicHolidayDate: Object) {
         console.log(error);
       });
   };
-}
+};
