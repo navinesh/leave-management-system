@@ -6,21 +6,21 @@ export const EDIT_LEAVE_SUCCESS = 'EDIT_LEAVE_SUCCESS';
 export const EDIT_LEAVE_FAILURE = 'EDIT_LEAVE_FAILURE';
 export const CLEAR_EDIT_LEAVE = 'CLEAR_EDIT_LEAVE';
 
-export function requestEditLeave(editLeaveData: Object) {
+export const requestEditLeave = (editLeaveData: Object) => {
   return { type: EDIT_LEAVE_REQUEST, editLeaveData };
-}
+};
 
-export function successEditLeave(data: Object) {
+export const successEditLeave = (data: Object) => {
   return { type: EDIT_LEAVE_SUCCESS, message: data.message };
-}
+};
 
-export function failureEditLeave(data: Object) {
+export const failureEditLeave = (data: Object) => {
   return { type: EDIT_LEAVE_FAILURE, message: data.message };
-}
+};
 
 export const clearEditLeave = () => ({ type: CLEAR_EDIT_LEAVE });
 
-export function submitEditLeave(editLeaveData: Object) {
+export const submitEditLeave = (editLeaveData: Object) => {
   return (dispatch: Function) => {
     dispatch(requestEditLeave(editLeaveData));
     axios
@@ -50,9 +50,9 @@ export function submitEditLeave(editLeaveData: Object) {
         console.log(error);
       });
   };
-}
+};
 
-export function submitEditApprovedLeave(editLeaveData: Object) {
+export const submitEditApprovedLeave = (editLeaveData: Object) => {
   return (dispatch: Function) => {
     dispatch(requestEditLeave(editLeaveData));
     axios
@@ -83,4 +83,4 @@ export function submitEditApprovedLeave(editLeaveData: Object) {
         console.log(error);
       });
   };
-}
+};
