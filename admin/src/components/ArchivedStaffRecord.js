@@ -21,7 +21,7 @@ export default class ArchivedStaffRecordList extends Component {
   state: {
     errorMessage: string,
     isUnarchive: boolean,
-    listID: string
+    listID: number
   };
 
   handleSearchChange: Function;
@@ -33,7 +33,7 @@ export default class ArchivedStaffRecordList extends Component {
     super();
     this.state = {
       errorMessage: '',
-      listID: '',
+      listID: 0,
       isUnarchive: false
     };
 
@@ -47,7 +47,10 @@ export default class ArchivedStaffRecordList extends Component {
   }
 
   handleOpenUnarchive(e: Event & { currentTarget: HTMLElement }) {
-    this.setState({ isUnarchive: true, listID: e.currentTarget.id });
+    this.setState({
+      isUnarchive: true,
+      listID: parseInt(e.currentTarget.id, 10)
+    });
   }
 
   handleCloseUnarchive(e: Event) {
@@ -80,64 +83,65 @@ export default class ArchivedStaffRecordList extends Component {
 
   render() {
     const { archived_staff_record, searchTerm } = this.props;
-    const listID = parseInt(this.state.listID, 10);
 
     if (this.state.isUnarchive) {
       return (
         <div>
-          {archived_staff_record.filter(e => e.id === listID).map(record => (
-            <div key={record.id}>
-              <div
-                className="col-md-5 offset-md-3 pb-2"
-                style={{ paddingTop: '40px' }}
-              >
-                <div className="card card-block">
-                  <form
-                    encType="multipart/form-data"
-                    onSubmit={this.handleSubmit}
-                  >
-                    <div className="row">
-                      <div className="col">
-                        <p>
-                          Are you sure you want to unarchive{' '}
-                        </p>
-                        <p>
-                          <span className="h5">
-                            {record.othernames}
-                            {' '}
-                            {record.surname}
-                          </span>
-                        </p>
+          {archived_staff_record
+            .filter(e => e.id === this.state.listID)
+            .map(record => (
+              <div key={record.id}>
+                <div
+                  className="col-md-5 offset-md-3 pb-2"
+                  style={{ paddingTop: '40px' }}
+                >
+                  <div className="card card-block">
+                    <form
+                      encType="multipart/form-data"
+                      onSubmit={this.handleSubmit}
+                    >
+                      <div className="row">
+                        <div className="col">
+                          <p>
+                            Are you sure you want to unarchive{' '}
+                          </p>
+                          <p>
+                            <span className="h5">
+                              {record.othernames}
+                              {' '}
+                              {record.surname}
+                            </span>
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                    <button
-                      type="button"
-                      className="btn btn-outline-primary btn-sm"
-                      onClick={this.handleCloseUnarchive}
-                    >
-                      Close
-                    </button>
-                    <button
-                      type="submit"
-                      className="btn btn-primary btn-sm ml-4"
-                    >
-                      Yes
-                    </button>
-                    {this.props.isUnArchiveFetching
-                      ? <div className="loader2" />
-                      : <p className="text-primary text-center mt-3">
-                          {this.props.unArchiveMessage}
-                        </p>}
+                      <button
+                        type="button"
+                        className="btn btn-outline-primary btn-sm"
+                        onClick={this.handleCloseUnarchive}
+                      >
+                        Close
+                      </button>
+                      <button
+                        type="submit"
+                        className="btn btn-primary btn-sm ml-4"
+                      >
+                        Yes
+                      </button>
+                      {this.props.isUnArchiveFetching
+                        ? <div className="loader2" />
+                        : <p className="text-primary text-center mt-3">
+                            {this.props.unArchiveMessage}
+                          </p>}
 
-                    <div className="text-danger">
-                      {this.state.errorMessage}
-                    </div>
+                      <div className="text-danger">
+                        {this.state.errorMessage}
+                      </div>
 
-                  </form>
+                    </form>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
+            ))}
         </div>
       );
     }
