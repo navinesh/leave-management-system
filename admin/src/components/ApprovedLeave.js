@@ -367,7 +367,7 @@ export default class ApprovedLeaveList extends Component {
 
     if (this.state.cancelReason) {
       dispatch(fetchApprovedLeave());
-      dispatch({ type: 'CLEAR_ARCHIVED_STAFF_RECORD' });
+      dispatch({ type: 'CLEAR_CANCEL_LEAVE' });
     }
   }
 
