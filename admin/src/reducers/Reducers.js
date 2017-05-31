@@ -41,8 +41,7 @@ import {
 import {
   REQUEST_ARCHIVED_STAFF_RECORD,
   RECEIVE_ARCHIVED_STAFF_RECORD,
-  ERROR_ARCHIVED_STAFF_RECORD,
-  CLEAR_ARCHIVED_STAFF_RECORD
+  ERROR_ARCHIVED_STAFF_RECORD
 } from '../actions/ArchivedStaffRecord';
 
 import {
@@ -293,12 +292,6 @@ const archivedStaffRecord = (
       };
     case ERROR_ARCHIVED_STAFF_RECORD:
       return { ...state, isFetching: false };
-    case CLEAR_ARCHIVED_STAFF_RECORD:
-      return {
-        ...state,
-        isFetching: false,
-        archived_staff_record: ''
-      };
     default:
       return state;
   }
