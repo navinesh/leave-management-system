@@ -4,6 +4,7 @@ import axios from 'axios';
 export const CANCEL_LEAVE_REQUEST = 'CANCEL_LEAVE_REQUEST';
 export const CANCEL_LEAVE_SUCCESS = 'CANCEL_LEAVE_SUCCESS';
 export const CANCEL_LEAVE_ERROR = 'CANCEL_LEAVE_ERROR';
+export const CLEAR_CANCEL_LEAVE = 'CLEAR_CANCEL_LEAVE';
 
 export const requestCancelLeave = (cancelLeaveData: Object) => ({
   type: CANCEL_LEAVE_REQUEST,
@@ -18,6 +19,10 @@ export const receiveCancelLeave = (data: Object) => ({
 export const errorCancelLeave = (data: Object) => ({
   type: CANCEL_LEAVE_ERROR,
   message: data.message
+});
+
+export const clearApproveLeave = () => ({
+  type: CLEAR_CANCEL_LEAVE
 });
 
 export const submitCancelLeave = (cancelLeaveData: Object) => {
