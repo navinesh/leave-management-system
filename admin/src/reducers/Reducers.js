@@ -108,7 +108,8 @@ import {
 import {
   APPROVE_LEAVE_REQUEST,
   APPROVE_LEAVE_SUCCESS,
-  APPROVE_LEAVE_ERROR
+  APPROVE_LEAVE_ERROR,
+  CLEAR_APPROVE_LEAVE
 } from '../actions/ApproveLeave';
 
 import {
@@ -128,7 +129,8 @@ import {
 import {
   CANCEL_LEAVE_REQUEST,
   CANCEL_LEAVE_SUCCESS,
-  CANCEL_LEAVE_ERROR
+  CANCEL_LEAVE_ERROR,
+  CLEAR_CANCEL_LEAVE
 } from '../actions/CancelLeave';
 
 type adminState = {
@@ -618,6 +620,12 @@ const approveLeave = (
         isApproveLeaveFetching: false,
         approveLeavemessage: action.message
       };
+    case CLEAR_APPROVE_LEAVE:
+      return {
+        ...state,
+        isApproveLeaveFetching: false,
+        approveLeavemessage: ''
+      };
     default:
       return state;
   }
@@ -719,6 +727,12 @@ const cancelLeave = (
         ...state,
         isCancelLeaveFetching: false,
         cancelLeaveMessage: action.message
+      };
+    case CLEAR_CANCEL_LEAVE:
+      return {
+        ...state,
+        isCancelLeaveFetching: false,
+        cancelLeaveMessage: ''
       };
     default:
       return state;
