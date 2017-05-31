@@ -40,6 +40,8 @@ class PendingLeave extends Component {
       pending_items,
       public_holiday,
       dispatch,
+      isApproveLeaveFetching,
+      approveLeavemessage,
       isEditLeaveFetching,
       editLeaveMessage,
       isDeclineLeaveFetching,
@@ -57,6 +59,8 @@ class PendingLeave extends Component {
                   pending_items={pending_items}
                   public_holiday={public_holiday}
                   dispatch={dispatch}
+                  isApproveLeaveFetching={isApproveLeaveFetching}
+                  approveLeavemessage={approveLeavemessage}
                   isEditLeaveFetching={isEditLeaveFetching}
                   editLeaveMessage={editLeaveMessage}
                   isDeclineLeaveFetching={isDeclineLeaveFetching}
@@ -79,12 +83,14 @@ const mapStateToProps = state => {
     adminAuth,
     pendingLeave,
     publicHoliday,
+    approveLeave,
     editLeave,
     declineLeave
   } = state;
   const { auth_info, isAuthenticated } = adminAuth;
   const { isFetching, pending_items } = pendingLeave;
   const { public_holiday } = publicHoliday;
+  const { isApproveLeaveFetching, approveLeavemessage } = approveLeave;
   const { isEditLeaveFetching, editLeaveMessage } = editLeave;
   const { isDeclineLeaveFetching, declineLeaveMessage } = declineLeave;
 
@@ -94,6 +100,8 @@ const mapStateToProps = state => {
     isFetching,
     pending_items,
     public_holiday,
+    isApproveLeaveFetching,
+    approveLeavemessage,
     isEditLeaveFetching,
     editLeaveMessage,
     isDeclineLeaveFetching,
