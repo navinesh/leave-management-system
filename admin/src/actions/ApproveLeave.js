@@ -1,11 +1,10 @@
 //@ flow
 import axios from 'axios';
 
-import { fetchPendingLeave } from '../actions/PendingLeave';
-
 export const APPROVE_LEAVE_REQUEST = 'APPROVE_LEAVE_REQUEST';
 export const APPROVE_LEAVE_SUCCESS = 'APPROVE_LEAVE_SUCCESS';
 export const APPROVE_LEAVE_ERROR = 'APPROVE_LEAVE_ERROR';
+export const CLEAR_APPROVE_LEAVE = 'CLEAR_APPROVE_LEAVE';
 
 export const requestApproveLeave = (approveLeaveData: Object) => ({
   type: APPROVE_LEAVE_REQUEST,
@@ -22,6 +21,10 @@ export const errorApproveLeave = (data: Object) => ({
   message: data.message
 });
 
+export const clearApproveLeave = () => ({
+  type: CLEAR_APPROVE_LEAVE
+});
+
 export const submitApproveLeave = (approveLeaveData: Object) => {
   return dispatch => {
     dispatch(requestApproveLeave(approveLeaveData));
@@ -34,11 +37,10 @@ export const submitApproveLeave = (approveLeaveData: Object) => {
         leaveName: approveLeaveData.leaveName
       })
       .then(response => {
-        if (response.status === 200) {
+        if (response.status !== 201) {
           dispatch(errorApproveLeave(response.data));
         } else {
           dispatch(receiveApproveLeave(response.data));
-          dispatch(fetchPendingLeave());
         }
       })
       .catch(error => {
