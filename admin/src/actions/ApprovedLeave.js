@@ -7,9 +7,9 @@ export const requestApprovedLeave = () => ({
   type: REQUEST_APPROVED_LEAVE
 });
 
-export const receiveApprovedLeave = (json: Object) => ({
+export const receiveApprovedLeave = (data: Object) => ({
   type: RECEIVE_APPROVED_LEAVE,
-  approved_records: json.approved_leave_records,
+  approved_records: data.approved_leave_records,
   receivedAt: Date.now()
 });
 
@@ -18,13 +18,14 @@ export const errorApprovedLeave = () => ({
 });
 
 export const fetchApprovedLeave = () => {
-  return (dispatch: Function) => {
-    dispatch(requestApprovedLeave());
-    return fetch(`http://localhost:8080/approved-leave.api`)
-      .then(response => response.json())
-      .then(json => dispatch(receiveApprovedLeave(json)))
-      .catch(error => {
-        dispatch(errorApprovedLeave());
-      });
+  return async (dispatch: Function) => {
+    try {
+      dispatch(requestApprovedLeave());
+      const response = await fetch(`http://localhost:8080/approved-leave.api`);
+      const data = await response.json();
+      dispatch(receiveApprovedLeave(data));
+    } catch (error) {
+      dispatch(errorApprovedLeave());
+    }
   };
 };
