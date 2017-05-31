@@ -521,37 +521,62 @@ def approve_leave():
             'message': 'Cannot find this record in the database.'
         }), 200
 
+    userRecord = session.query(User).filter_by(id=user_id).one()
+
+    if leave_name == 'annual':
+        annual = float(userRecord.annual) - leave_days
+        if annual < 0:
+            return jsonify({'message': 'Leave balance cannot be negative!'})
+            abort(400)
+        else:
+            userRecord.annual = annual
+            session.add(userRecord)
+            session.commit()
+
+    if leave_name == 'sick':
+        sick = float(userRecord.sick) - leave_days
+        if sick < 0:
+            return jsonify({'message': 'Leave balance cannot be negative!'})
+            abort(400)
+        else:
+            userRecord.sick = sick
+            session.add(userRecord)
+            session.commit()
+
+    if leave_name == 'bereavement':
+        bereavement = float(userRecord.bereavement) - leave_days
+        if bereavement < 0:
+            return jsonify({'message': 'Leave balance cannot be negative!'})
+            abort(400)
+        else:
+            userRecord.bereavement = bereavement
+            session.add(userRecord)
+            session.commit()
+
+    if leave_name == 'maternity':
+        maternity = float(userRecord.maternity) - leave_days
+        if maternity < 0:
+            return jsonify({'message': 'Leave balance cannot be negative!'})
+            abort(400)
+        else:
+            userRecord.maternity = maternity
+            session.add(userRecord)
+            session.commit()
+
+    if leave_name == 'christmas':
+        christmas = float(userRecord.christmas) - leave_days
+        if christmas < 0:
+            return jsonify({'message': 'Leave balance cannot be negative!'})
+            abort(400)
+        else:
+            userRecord.christmas = christmas
+            session.add(userRecord)
+            session.commit()
+
     leaveRecord.leave_status = leave_status
     leaveRecord.date_reviewed = str(datetime.now().date())
     session.add(leaveRecord)
     session.commit()
-
-    userRecord = session.query(User).filter_by(id=user_id).one()
-
-    if leave_name == 'annual':
-        userRecord.annual = float(userRecord.annual) - leave_days
-        session.add(userRecord)
-        session.commit()
-
-    if leave_name == 'sick':
-        userRecord.sick = float(userRecord.sick) - leave_days
-        session.add(userRecord)
-        session.commit()
-
-    if leave_name == 'bereavement':
-        userRecord.bereavement = float(userRecord.bereavement) - leave_days
-        session.add(userRecord)
-        session.commit()
-
-    if leave_name == 'maternity':
-        userRecord.maternity = float(userRecord.maternity) - leave_days
-        session.add(userRecord)
-        session.commit()
-
-    if leave_name == 'christmas':
-        userRecord.christmas = float(userRecord.christmas) - leave_days
-        session.add(userRecord)
-        session.commit()
 
     return jsonify({'message': 'Leave has been approved.'}), 201
 
