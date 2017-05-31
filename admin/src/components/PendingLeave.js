@@ -19,6 +19,8 @@ export default class PendingLeaveList extends Component {
     onApproveLeaveSubmit: Function,
     onDeclineLeaveSubmit: Function,
     onEditLeaveSubmit: Function,
+    isApproveLeaveFetching: boolean,
+    approveLeavemessage: string,
     isEditLeaveFetching: boolean,
     editLeaveMessage: string,
     isDeclineLeaveFetching: boolean,
@@ -33,16 +35,20 @@ export default class PendingLeaveList extends Component {
     listID: number,
     startDate: any,
     endDate: any,
+    isApproving: boolean,
+    approveSuccess: boolean,
     isEditing: boolean,
-    focusedInput: ?boolean,
-    isDecline: boolean
+    isDeclining: boolean,
+    focusedInput: ?boolean
   };
 
   handleOpenEdit: Function;
   handleCloseEdit: Function;
   handleOpenDecline: Function;
   handleCloseDecline: Function;
-  handleApproveLeave: Function;
+  handleOpenApproveLeave: Function;
+  handleCloseApproveLeave: Function;
+  handleApproveLeaveSubmit: Function;
   handleDeclineReason: Function;
   handleDeclineSubmit: Function;
   handleEditReason: Function;
@@ -62,16 +68,20 @@ export default class PendingLeaveList extends Component {
       startDate: null,
       endDate: null,
       listID: 0,
+      isApproving: false,
+      approveSuccess: false,
       isEditing: false,
       focusedInput: null,
-      isDecline: false
+      isDeclining: false
     };
 
     this.handleOpenEdit = this.handleOpenEdit.bind(this);
     this.handleCloseEdit = this.handleCloseEdit.bind(this);
     this.handleOpenDecline = this.handleOpenDecline.bind(this);
     this.handleCloseDecline = this.handleCloseDecline.bind(this);
-    this.handleApproveLeave = this.handleApproveLeave.bind(this);
+    this.handleOpenApproveLeave = this.handleOpenApproveLeave.bind(this);
+    this.handleCloseApproveLeave = this.handleCloseApproveLeave.bind(this);
+    this.handleApproveLeaveSubmit = this.handleApproveLeaveSubmit.bind(this);
     this.handleDeclineReason = this.handleDeclineReason.bind(this);
     this.handleDeclineSubmit = this.handleDeclineSubmit.bind(this);
     this.handleEditReason = this.handleEditReason.bind(this);
@@ -97,8 +107,8 @@ export default class PendingLeaveList extends Component {
     });
 
     if (this.state.editReason) {
-      dispatch(fetchPendingLeave());
       dispatch({ type: 'CLEAR_EDIT_LEAVE' });
+      dispatch(fetchPendingLeave());
     }
   }
 
@@ -112,7 +122,7 @@ export default class PendingLeaveList extends Component {
 
   handleOpenDecline(e: Event & { currentTarget: HTMLElement }) {
     this.setState({
-      isDecline: !this.state.isDecline,
+      isDeclining: !this.state.isDeclining,
       listID: e.currentTarget.id ? parseInt(e.currentTarget.id, 10) : 0
     });
   }
@@ -121,20 +131,45 @@ export default class PendingLeaveList extends Component {
     const { dispatch } = this.props;
 
     this.setState({
-      isDecline: !this.state.isDecline,
+      isDeclining: !this.state.isDeclining,
       errorMessage: '',
       listID: 0
     });
 
     if (this.state.declineReason) {
-      dispatch(fetchPendingLeave());
       dispatch({ type: 'CLEAR_DECLINE_LEAVE' });
+      dispatch(fetchPendingLeave());
     }
   }
 
-  handleApproveLeave(e: Event) {
+  handleOpenApproveLeave(e: Event & { currentTarget: HTMLElement }) {
+    this.setState({
+      isApproving: !this.state.isApproving,
+      listID: e.currentTarget.id ? parseInt(e.currentTarget.id, 10) : 0
+    });
+  }
+
+  handleCloseApproveLeave() {
+    const { dispatch } = this.props;
+
+    this.setState({
+      isApproving: !this.state.isApproving,
+      errorMessage: '',
+      listID: 0
+    });
+
+    if (this.state.approveSuccess) {
+      dispatch({ type: 'CLEAR_APPROVE_LEAVE' });
+      dispatch(fetchPendingLeave());
+    }
+
+    this.setState({ approveSuccess: false });
+  }
+
+  handleApproveLeaveSubmit(e: Event) {
+    e.preventDefault();
     const { pending_items } = this.props;
-    const leaveID = e.target.id ? parseInt(e.target.id, 10) : 0;
+    const leaveID = this.state.listID;
     const leaveStatus = 'approved';
 
     if (!leaveID) {
@@ -149,6 +184,8 @@ export default class PendingLeaveList extends Component {
     const userID = userRecord[0].user_id;
     const leaveDays = userRecord[0].leave_days;
     const leaveName = userRecord[0].leave_name;
+
+    this.setState({ approveSuccess: true });
 
     const approveLeaveData = {
       leaveID: leaveID,
@@ -356,6 +393,77 @@ export default class PendingLeaveList extends Component {
   }
 
   render() {
+    if (this.state.isApproving) {
+      return (
+        <div>
+          {this.props.pending_items
+            .filter(e => e.id === this.state.listID)
+            .map(record => (
+              <div key={record.id}>
+                <div
+                  className="col-md-10 offset-md-1"
+                  style={{ paddingTop: '40px' }}
+                >
+                  <div className="card card-block">
+                    <form onSubmit={this.handleApproveLeaveSubmit}>
+                      <table
+                        className="table table-bordered table-hover"
+                        style={{ backgroundColor: '#FFFFFF' }}
+                      >
+                        <thead className="thead-default">
+                          <tr>
+                            <th>Name</th>
+                            <th>Leave</th>
+                            <th>Type</th>
+                            <th>Start date</th>
+                            <th>End date</th>
+                            <th>Leave days</th>
+                            <th>Reason</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr key={record.id}>
+                            <td>
+                              {record.user.othernames}{' '}{record.user.surname}
+                            </td>
+                            <td>{record.leave_name}</td>
+                            <td>{record.leave_type}</td>
+                            <td>{record.start_date}</td>
+                            <td>{record.end_date}</td>
+                            <td>{record.leave_days}</td>
+                            <td>{record.leave_reason}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <button
+                        type="button"
+                        className="btn btn-outline-primary btn-sm"
+                        onClick={this.handleCloseApproveLeave}
+                      >
+                        Close
+                      </button>
+                      <button
+                        type="submit"
+                        className="btn btn-primary btn-sm ml-4"
+                      >
+                        Approve
+                      </button>
+                      <div className="text-primary text-center">
+                        {this.props.isApproveLeaveFetching
+                          ? <div className="loader2" />
+                          : <p className="mt-3">
+                              {this.props.approveLeavemessage}
+                            </p>}
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            ))}
+        </div>
+      );
+    }
+
     if (this.state.isEditing) {
       return (
         <div>
@@ -507,7 +615,7 @@ export default class PendingLeaveList extends Component {
       );
     }
 
-    if (this.state.isDecline) {
+    if (this.state.isDeclining) {
       return (
         <div>
           {this.props.pending_items
@@ -577,7 +685,7 @@ export default class PendingLeaveList extends Component {
         <td>
           <button
             className="btn btn-link"
-            onClick={this.handleApproveLeave}
+            onClick={this.handleOpenApproveLeave}
             id={record.id}
           >
             Approve
