@@ -128,7 +128,7 @@ export default class StaffRecordList extends Component {
 
     if (this.state.archiveReason) {
       dispatch(fetchStaffRecord());
-      dispatch({ type: 'CLEAR_ARCHIVED_STAFF_RECORD' });
+      dispatch({ type: 'CLEAR_ARCHIVE_MESSAGE' });
     }
 
     this.setState({
