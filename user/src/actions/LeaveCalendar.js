@@ -12,13 +12,15 @@ export const receiveLeave = (json: Object) => ({
   receivedAt: Date.now()
 });
 
-export const fetchLeave = () => {
-  return (dispatch: Function) => {
+export const fetchLeave = () => async (dispatch: Function) => {
+  try {
     dispatch(requestLeave());
-    return fetch(`http://localhost:8080/approved-leave.api`)
-      .then(response => response.json())
-      .then(json => dispatch(receiveLeave(json)));
-  };
+    const response = await fetch(`http://localhost:8080/approved-leave.api`);
+    const data = await response.json();
+    dispatch(receiveLeave(data));
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const shouldfetchLeave = (state: Object, leaveRecords?: Array<any>) => {
@@ -33,14 +35,15 @@ export const shouldfetchLeave = (state: Object, leaveRecords?: Array<any>) => {
   }
 };
 
-export const fetchLeaveIfNeeded = () => {
-  return (dispatch: Function, getState: Function) => {
-    if (shouldfetchLeave(getState())) {
-      // Dispatch a thunk from thunk!
-      return dispatch(fetchLeave());
-    } else {
-      // Let the calling code know there's nothing to wait for.
-      return Promise.resolve();
-    }
-  };
+export const fetchLeaveIfNeeded = () => (
+  dispatch: Function,
+  getState: Function
+) => {
+  if (shouldfetchLeave(getState())) {
+    // Dispatch a thunk from thunk!
+    return dispatch(fetchLeave());
+  } else {
+    // Let the calling code know there's nothing to wait for.
+    return Promise.resolve();
+  }
 };
