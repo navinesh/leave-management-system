@@ -7,9 +7,9 @@ export const requestSickSheetRecord = () => ({
   type: REQUEST_SICKSHEET_RECORD
 });
 
-export const receiveSickSheetRecord = (json: Object) => ({
+export const receiveSickSheetRecord = (data: Object) => ({
   type: RECEIVE_SICKSHEET_RECORD,
-  sickSheet_records: json.sick_sheet_records,
+  sickSheet_records: data.sick_sheet_records,
   receivedAt: Date.now()
 });
 
@@ -18,13 +18,16 @@ export const errorSickSheetRecord = () => ({
 });
 
 export const fetchSickSheetRecord = () => {
-  return (dispatch: Function) => {
-    dispatch(requestSickSheetRecord());
-    return fetch(`http://localhost:8080/sicksheet-record.api`)
-      .then(response => response.json())
-      .then(json => dispatch(receiveSickSheetRecord(json)))
-      .catch(error => {
-        dispatch(errorSickSheetRecord());
-      });
+  return async (dispatch: Function) => {
+    try {
+      dispatch(requestSickSheetRecord());
+      const response = await fetch(
+        `http://localhost:8080/sicksheet-record.api`
+      );
+      const data = await response.json();
+      dispatch(receiveSickSheetRecord(data));
+    } catch (error) {
+      dispatch(errorSickSheetRecord());
+    }
   };
 };
