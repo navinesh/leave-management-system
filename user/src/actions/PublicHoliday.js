@@ -7,9 +7,9 @@ export const requestPublicHoliday = () => ({
   type: REQUEST_PUBLIC_HOLIDAY
 });
 
-export const receivePublicHoliday = (json: Object) => ({
+export const receivePublicHoliday = (data: Object) => ({
   type: RECEIVE_PUBLIC_HOLIDAY,
-  public_holiday: json.public_holiday,
+  public_holiday: data.public_holiday,
   receivedAt: Date.now()
 });
 
@@ -17,14 +17,13 @@ export const errorPublicHoliday = () => ({
   type: ERROR_PUBLIC_HOLIDAY
 });
 
-export const fetchPublicHoliday = () => {
-  return (dispatch: Function) => {
+export const fetchPublicHoliday = () => async (dispatch: Function) => {
+  try {
     dispatch(requestPublicHoliday());
-    return fetch(`http://localhost:8080/public-holiday.api/`)
-      .then(response => response.json())
-      .then(json => dispatch(receivePublicHoliday(json)))
-      .catch(error => {
-        dispatch(errorPublicHoliday());
-      });
-  };
+    const response = await fetch(`http://localhost:8080/public-holiday.api/`);
+    const data = await response.json();
+    receivePublicHoliday(data);
+  } catch (error) {
+    dispatch(errorPublicHoliday());
+  }
 };
