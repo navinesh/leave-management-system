@@ -24,23 +24,22 @@ export const errorDeclineLeave = (data: Object) => ({
 export const clearDeclineLeave = () => ({ type: CLEAR_DECLINE_LEAVE });
 
 export const submitDeclineLeave = (declineLeaveData: Object) => {
-  return (dispatch: Function) => {
-    dispatch(requestDeclineLeave(declineLeaveData));
-    axios
-      .post('http://localhost:8080/declineleave', {
+  return async (dispatch: Function) => {
+    try {
+      dispatch(requestDeclineLeave(declineLeaveData));
+      const response = await axios.post('http://localhost:8080/declineleave', {
         leave_id: declineLeaveData.leaveID,
         LeaveStatus: declineLeaveData.LeaveStatus,
         DeclineReason: declineLeaveData.DeclineReason
-      })
-      .then(response => {
-        if (response.status === 200) {
-          dispatch(errorDeclineLeave(response.data));
-        } else {
-          dispatch(receiveDeclineLeave(response.data));
-        }
-      })
-      .catch(error => {
-        console.log(error);
       });
+
+      if (response.status !== 201) {
+        dispatch(errorDeclineLeave(response.data));
+      } else {
+        dispatch(receiveDeclineLeave(response.data));
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
