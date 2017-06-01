@@ -30,15 +30,13 @@ export const clearSearchStaffRecord = () => {
   };
 };
 
-export const fetchStaffRecord = () => {
-  return async (dispatch: Function) => {
-    try {
-      dispatch(requestStaffRecord());
-      const response = await fetch(`http://localhost:8080/staff-record.api`);
-      const data = await response.json();
-      dispatch(receiveStaffRecord(data));
-    } catch (error) {
-      dispatch(errorStaffRecord());
-    }
-  };
+export const fetchStaffRecord = () => async (dispatch: Function) => {
+  try {
+    dispatch(requestStaffRecord());
+    const response = await fetch(`http://localhost:8080/staff-record.api`);
+    const data = await response.json();
+    dispatch(receiveStaffRecord(data));
+  } catch (error) {
+    dispatch(errorStaffRecord());
+  }
 };
