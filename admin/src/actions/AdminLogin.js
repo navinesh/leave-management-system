@@ -66,6 +66,7 @@ export const fetchLoginFromToken = (admin_token: string) => {
       const response = await axios.post('http://localhost:8080/admintoken', {
         admin_token: admin_token
       });
+
       if (response.status !== 201) {
         localStorage.removeItem('admin_token');
         dispatch(loginAdminErrorFromToken(response.data));
