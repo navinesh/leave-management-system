@@ -18,8 +18,11 @@ export const leaveApplicationFailure = (data: Object) => {
   return { type: LEAVE_APPLICATION_FAILURE, message: data.message };
 };
 
-export const fetchLeaveApplication = (applicationDetails: Object) => {
-  return (dispatch: Function, getState: Function) => {
+export const fetchLeaveApplication = (applicationDetails: Object) => async (
+  dispatch: Function,
+  getState: Function
+) => {
+  try {
     dispatch(requestLeaveApplication(applicationDetails));
 
     let data = new FormData();
@@ -34,13 +37,19 @@ export const fetchLeaveApplication = (applicationDetails: Object) => {
     data.append('applicationDays', applicationDetails.applicationDays);
     data.append('reason', applicationDetails.reason);
     data.append('sickSheet', applicationDetails.sickSheet);
-    axios.post('http://localhost:8080/applyforleave', data).then(response => {
-      if (response.status === 200) {
-        dispatch(leaveApplicationFailure(response.data));
-      } else {
-        dispatch(receiveLeaveApplication());
-        dispatch(fetchUserRecord(getState().userAuth.auth_info.auth_token));
-      }
-    });
-  };
+
+    const response = await axios.post(
+      'http://localhost:8080/applyforleave',
+      data
+    );
+
+    if (response.status !== 201) {
+      dispatch(leaveApplicationFailure(response.data));
+    } else {
+      dispatch(receiveLeaveApplication());
+      dispatch(fetchUserRecord(getState().userAuth.auth_info.auth_token));
+    }
+  } catch (error) {
+    console.log(error);
+  }
 };
