@@ -20,11 +20,45 @@ export const failureEditLeave = (data: Object) => {
 
 export const clearEditLeave = () => ({ type: CLEAR_EDIT_LEAVE });
 
-export const submitEditLeave = (editLeaveData: Object) => {
-  return async (dispatch: Function) => {
-    try {
-      dispatch(requestEditLeave(editLeaveData));
-      const response = await axios.post('http://localhost:8080/editleave', {
+export const submitEditLeave = (editLeaveData: Object) => async (
+  dispatch: Function
+) => {
+  try {
+    dispatch(requestEditLeave(editLeaveData));
+    const response = await axios.post('http://localhost:8080/editleave', {
+      leave_id: editLeaveData.leave_id,
+      leave: editLeaveData.leave,
+      leaveType: editLeaveData.leaveType,
+      startDate: editLeaveData.startDate,
+      endDate: editLeaveData.endDate,
+      reason: editLeaveData.reason,
+      leaveDays: editLeaveData.leaveDays,
+      applicationDays: editLeaveData.applicationDays,
+      previousLeaveDays: editLeaveData.previousLeaveDays,
+      previousLeaveName: editLeaveData.previousLeaveName,
+      previousLeaveType: editLeaveData.previousLeaveType,
+      previousStartDate: editLeaveData.previousStartDate,
+      previousEndDate: editLeaveData.previousEndDate
+    });
+
+    if (response.status !== 201) {
+      dispatch(failureEditLeave(response.data));
+    } else {
+      dispatch(successEditLeave(response.data));
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const submitEditApprovedLeave = (editLeaveData: Object) => async (
+  dispatch: Function
+) => {
+  try {
+    dispatch(requestEditLeave(editLeaveData));
+    const response = await axios.post(
+      'http://localhost:8080/editapprovedleave',
+      {
         leave_id: editLeaveData.leave_id,
         leave: editLeaveData.leave,
         leaveType: editLeaveData.leaveType,
@@ -37,51 +71,17 @@ export const submitEditLeave = (editLeaveData: Object) => {
         previousLeaveName: editLeaveData.previousLeaveName,
         previousLeaveType: editLeaveData.previousLeaveType,
         previousStartDate: editLeaveData.previousStartDate,
-        previousEndDate: editLeaveData.previousEndDate
-      });
-
-      if (response.status !== 201) {
-        dispatch(failureEditLeave(response.data));
-      } else {
-        dispatch(successEditLeave(response.data));
+        previousEndDate: editLeaveData.previousEndDate,
+        newLeaveBalance: editLeaveData.newLeaveBalance
       }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-};
+    );
 
-export const submitEditApprovedLeave = (editLeaveData: Object) => {
-  return async (dispatch: Function) => {
-    try {
-      dispatch(requestEditLeave(editLeaveData));
-      const response = await axios.post(
-        'http://localhost:8080/editapprovedleave',
-        {
-          leave_id: editLeaveData.leave_id,
-          leave: editLeaveData.leave,
-          leaveType: editLeaveData.leaveType,
-          startDate: editLeaveData.startDate,
-          endDate: editLeaveData.endDate,
-          reason: editLeaveData.reason,
-          leaveDays: editLeaveData.leaveDays,
-          applicationDays: editLeaveData.applicationDays,
-          previousLeaveDays: editLeaveData.previousLeaveDays,
-          previousLeaveName: editLeaveData.previousLeaveName,
-          previousLeaveType: editLeaveData.previousLeaveType,
-          previousStartDate: editLeaveData.previousStartDate,
-          previousEndDate: editLeaveData.previousEndDate,
-          newLeaveBalance: editLeaveData.newLeaveBalance
-        }
-      );
-
-      if (response.status !== 201) {
-        dispatch(failureEditLeave(response.data));
-      } else {
-        dispatch(successEditLeave(response.data));
-      }
-    } catch (error) {
-      console.log(error);
+    if (response.status !== 201) {
+      dispatch(failureEditLeave(response.data));
+    } else {
+      dispatch(successEditLeave(response.data));
     }
-  };
+  } catch (error) {
+    console.log(error);
+  }
 };
