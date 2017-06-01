@@ -22,10 +22,10 @@ export const failureModifyUserRecord = (data: Object) => {
 export const clearModifyUser = () => ({ type: CLEAR_MODIFY_USER_MESSAGE });
 
 export const submitModifyUserRecord = (modifyUserDetails: Object) => {
-  return (dispatch: Function) => {
-    dispatch(requestModifyUserRecord(modifyUserDetails));
-    axios
-      .post('http://localhost:8080/modifyuser', {
+  return async (dispatch: Function) => {
+    try {
+      dispatch(requestModifyUserRecord(modifyUserDetails));
+      const response = await axios.post('http://localhost:8080/modifyuser', {
         user_id: modifyUserDetails.id,
         surname: modifyUserDetails.surname,
         othernames: modifyUserDetails.othernames,
@@ -39,17 +39,16 @@ export const submitModifyUserRecord = (modifyUserDetails: Object) => {
         maternity: modifyUserDetails.maternityDays,
         gender: modifyUserDetails.gender,
         editReason: modifyUserDetails.editReason
-      })
-      .then(response => {
-        if (response.status === 200) {
-          dispatch(failureModifyUserRecord(response.data));
-        } else {
-          dispatch(successModifyUserRecord(response.data));
-          dispatch(fetchStaffRecord());
-        }
-      })
-      .catch(error => {
-        console.log(error);
       });
+
+      if (response.status !== 201) {
+        dispatch(failureModifyUserRecord(response.data));
+      } else {
+        dispatch(successModifyUserRecord(response.data));
+        dispatch(fetchStaffRecord());
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
