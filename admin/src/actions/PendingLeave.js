@@ -7,9 +7,9 @@ export const requestPendingLeave = () => ({
   type: REQUEST_PENDING_LEAVE
 });
 
-export const receivePendingLeave = (json: Object) => ({
+export const receivePendingLeave = (data: Object) => ({
   type: RECEIVE_PENDING_LEAVE,
-  pending_records: json.pending_leave_records,
+  pending_records: data.pending_leave_records,
   receivedAt: Date.now()
 });
 
@@ -18,13 +18,14 @@ export const errorPendingLeave = () => ({
 });
 
 export const fetchPendingLeave = () => {
-  return (dispatch: Function) => {
-    dispatch(requestPendingLeave());
-    return fetch(`http://localhost:8080/pending-leave.api`)
-      .then(response => response.json())
-      .then(json => dispatch(receivePendingLeave(json)))
-      .catch(error => {
-        dispatch(errorPendingLeave());
-      });
+  return async (dispatch: Function) => {
+    try {
+      dispatch(requestPendingLeave());
+      const response = await fetch(`http://localhost:8080/pending-leave.api`);
+      const data = await response.json();
+      dispatch(receivePendingLeave(data));
+    } catch (error) {
+      dispatch(errorPendingLeave());
+    }
   };
 };
