@@ -21,22 +21,21 @@ export const failureUnArchiveUser = (data: Object) => {
 export const clearUnArchiveMessage = () => ({ type: CLEAR_UNARCHIVE_MESSAGE });
 
 export const submitUnArchiveUser = (unArchiveUser: Object) => {
-  return (dispatch: Function) => {
-    dispatch(requestUnArchiveUser(unArchiveUser));
-    axios
-      .post('http://localhost:8080/unarchiveuser', {
+  return async (dispatch: Function) => {
+    try {
+      dispatch(requestUnArchiveUser(unArchiveUser));
+      const response = await axios.post('http://localhost:8080/unarchiveuser', {
         user_id: unArchiveUser.id,
         isArchived: unArchiveUser.isArchived
-      })
-      .then(response => {
-        if (response.status === 200) {
-          dispatch(failureUnArchiveUser(response.data));
-        } else {
-          dispatch(successUnArchiveUser(response.data));
-        }
-      })
-      .catch(error => {
-        console.log(error);
       });
+
+      if (response.status !== 201) {
+        dispatch(failureUnArchiveUser(response.data));
+      } else {
+        dispatch(successUnArchiveUser(response.data));
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
