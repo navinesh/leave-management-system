@@ -20,23 +20,23 @@ export const failureArchiveUser = (data: Object) => {
 
 export const clearArchiveMessage = () => ({ type: CLEAR_ARCHIVE_MESSAGE });
 
-export const submitArchiveUser = (archiveUser: Object) => {
-  return async (dispatch: Function) => {
-    try {
-      dispatch(requestArchiveUser(archiveUser));
-      const response = await axios.post('http://localhost:8080/archiveuser', {
-        user_id: archiveUser.id,
-        isArchived: archiveUser.isArchived,
-        archiveReason: archiveUser.archiveReason
-      });
+export const submitArchiveUser = (archiveUser: Object) => async (
+  dispatch: Function
+) => {
+  try {
+    dispatch(requestArchiveUser(archiveUser));
+    const response = await axios.post('http://localhost:8080/archiveuser', {
+      user_id: archiveUser.id,
+      isArchived: archiveUser.isArchived,
+      archiveReason: archiveUser.archiveReason
+    });
 
-      if (response.status !== 201) {
-        dispatch(failureArchiveUser(response.data));
-      } else {
-        dispatch(successArchiveUser(response.data));
-      }
-    } catch (error) {
-      console.log(error);
+    if (response.status !== 201) {
+      dispatch(failureArchiveUser(response.data));
+    } else {
+      dispatch(successArchiveUser(response.data));
     }
-  };
+  } catch (error) {
+    console.log(error);
+  }
 };
