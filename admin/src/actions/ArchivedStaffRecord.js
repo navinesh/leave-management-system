@@ -7,9 +7,9 @@ export const requestArchivedStaffRecord = () => ({
   type: REQUEST_ARCHIVED_STAFF_RECORD
 });
 
-export const receiveArchivedStaffRecord = (json: Object) => ({
+export const receiveArchivedStaffRecord = (data: Object) => ({
   type: RECEIVE_ARCHIVED_STAFF_RECORD,
-  archived_staff_record: json.archived_staff_record,
+  archived_staff_record: data.archived_staff_record,
   receivedAt: Date.now()
 });
 
@@ -18,13 +18,16 @@ export const errorArchivedStaffRecord = () => ({
 });
 
 export const fetchArchivedStaffRecord = () => {
-  return (dispatch: Function) => {
-    dispatch(requestArchivedStaffRecord());
-    return fetch(`http://localhost:8080/archived-staff-record.api`)
-      .then(response => response.json())
-      .then(json => dispatch(receiveArchivedStaffRecord(json)))
-      .catch(error => {
-        dispatch(errorArchivedStaffRecord());
-      });
+  return async (dispatch: Function) => {
+    try {
+      dispatch(requestArchivedStaffRecord());
+      const response = await fetch(
+        `http://localhost:8080/archived-staff-record.api`
+      );
+      const data = await response.json();
+      dispatch(receiveArchivedStaffRecord(data));
+    } catch (error) {
+      dispatch(errorArchivedStaffRecord());
+    }
   };
 };
