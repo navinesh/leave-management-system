@@ -17,17 +17,15 @@ export const errorArchivedStaffRecord = () => ({
   type: ERROR_ARCHIVED_STAFF_RECORD
 });
 
-export const fetchArchivedStaffRecord = () => {
-  return async (dispatch: Function) => {
-    try {
-      dispatch(requestArchivedStaffRecord());
-      const response = await fetch(
-        `http://localhost:8080/archived-staff-record.api`
-      );
-      const data = await response.json();
-      dispatch(receiveArchivedStaffRecord(data));
-    } catch (error) {
-      dispatch(errorArchivedStaffRecord());
-    }
-  };
+export const fetchArchivedStaffRecord = () => async (dispatch: Function) => {
+  try {
+    dispatch(requestArchivedStaffRecord());
+    const response = await fetch(
+      `http://localhost:8080/archived-staff-record.api`
+    );
+    const data = await response.json();
+    dispatch(receiveArchivedStaffRecord(data));
+  } catch (error) {
+    dispatch(errorArchivedStaffRecord());
+  }
 };
