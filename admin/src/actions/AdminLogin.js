@@ -39,42 +39,40 @@ export const loginAdminErrorFromToken = (data: Object) => ({
   message: data.message
 });
 
-export const fetchLogin = (creds: Object) => {
-  return async (dispatch: Function) => {
-    try {
-      dispatch(requestAdminLogin(creds));
-      const response = await axios.post('http://localhost:8080/adminlogin', {
-        email: creds.email,
-        password: creds.password
-      });
-      if (response.status !== 201) {
-        dispatch(loginAdminError(response.data));
-      } else {
-        localStorage.setItem('admin_token', response.data.admin_token);
-        dispatch(receiveAdminLogin(response.data));
-      }
-    } catch (error) {
-      console.log(error);
+export const fetchLogin = (creds: Object) => async (dispatch: Function) => {
+  try {
+    dispatch(requestAdminLogin(creds));
+    const response = await axios.post('http://localhost:8080/adminlogin', {
+      email: creds.email,
+      password: creds.password
+    });
+    if (response.status !== 201) {
+      dispatch(loginAdminError(response.data));
+    } else {
+      localStorage.setItem('admin_token', response.data.admin_token);
+      dispatch(receiveAdminLogin(response.data));
     }
-  };
+  } catch (error) {
+    console.log(error);
+  }
 };
 
-export const fetchLoginFromToken = (admin_token: string) => {
-  return async (dispatch: Function) => {
-    try {
-      dispatch(requestAdminLoginFromToken(admin_token));
-      const response = await axios.post('http://localhost:8080/admintoken', {
-        admin_token: admin_token
-      });
+export const fetchLoginFromToken = (admin_token: string) => async (
+  dispatch: Function
+) => {
+  try {
+    dispatch(requestAdminLoginFromToken(admin_token));
+    const response = await axios.post('http://localhost:8080/admintoken', {
+      admin_token: admin_token
+    });
 
-      if (response.status !== 201) {
-        localStorage.removeItem('admin_token');
-        dispatch(loginAdminErrorFromToken(response.data));
-      } else {
-        dispatch(receiveAdminLoginFromToken(response.data));
-      }
-    } catch (error) {
-      console.log(error);
+    if (response.status !== 201) {
+      localStorage.removeItem('admin_token');
+      dispatch(loginAdminErrorFromToken(response.data));
+    } else {
+      dispatch(receiveAdminLoginFromToken(response.data));
     }
-  };
+  } catch (error) {
+    console.log(error);
+  }
 };
