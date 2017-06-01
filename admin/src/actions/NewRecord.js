@@ -33,31 +33,31 @@ export const clearNewUserRecord = () => {
   };
 };
 
-export const submitNewUserRecord = (newUserDetails: Object) => {
-  return async (dispatch: Function) => {
-    try {
-      dispatch(requestNewUserRecord(newUserDetails));
-      const response = await axios.post('http://localhost:8080/adduser', {
-        surname: newUserDetails.surname,
-        othernames: newUserDetails.othernames,
-        email: newUserDetails.staffEmail,
-        designation: newUserDetails.designation,
-        annual: newUserDetails.annualDays,
-        sick: newUserDetails.sickDays,
-        bereavement: newUserDetails.bereavementDays,
-        christmas: newUserDetails.christmasDays,
-        date_of_birth: newUserDetails.dateOfBirth,
-        maternity: newUserDetails.maternityDays,
-        gender: newUserDetails.gender
-      });
+export const submitNewUserRecord = (newUserDetails: Object) => async (
+  dispatch: Function
+) => {
+  try {
+    dispatch(requestNewUserRecord(newUserDetails));
+    const response = await axios.post('http://localhost:8080/adduser', {
+      surname: newUserDetails.surname,
+      othernames: newUserDetails.othernames,
+      email: newUserDetails.staffEmail,
+      designation: newUserDetails.designation,
+      annual: newUserDetails.annualDays,
+      sick: newUserDetails.sickDays,
+      bereavement: newUserDetails.bereavementDays,
+      christmas: newUserDetails.christmasDays,
+      date_of_birth: newUserDetails.dateOfBirth,
+      maternity: newUserDetails.maternityDays,
+      gender: newUserDetails.gender
+    });
 
-      if (response.status !== 201) {
-        dispatch(failureNewUserRecord(response.data));
-      } else {
-        dispatch(successNewUserRecord(response.data));
-      }
-    } catch (error) {
-      console.log(error);
+    if (response.status !== 201) {
+      dispatch(failureNewUserRecord(response.data));
+    } else {
+      dispatch(successNewUserRecord(response.data));
     }
-  };
+  } catch (error) {
+    console.log(error);
+  }
 };
