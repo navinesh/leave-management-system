@@ -9,9 +9,9 @@ export const requestStaffRecord = () => ({
   type: REQUEST_STAFF_RECORD
 });
 
-export const receiveStaffRecord = (json: Object) => ({
+export const receiveStaffRecord = (data: Object) => ({
   type: RECEIVE_STAFF_RECORD,
-  staff_record: json.staff_record,
+  staff_record: data.staff_record,
   receivedAt: Date.now()
 });
 
@@ -31,13 +31,14 @@ export const clearSearchStaffRecord = () => {
 };
 
 export const fetchStaffRecord = () => {
-  return (dispatch: Function) => {
-    dispatch(requestStaffRecord());
-    return fetch(`http://localhost:8080/staff-record.api`)
-      .then(response => response.json())
-      .then(json => dispatch(receiveStaffRecord(json)))
-      .catch(error => {
-        dispatch(errorStaffRecord());
-      });
+  return async (dispatch: Function) => {
+    try {
+      dispatch(requestStaffRecord());
+      const response = await fetch(`http://localhost:8080/staff-record.api`);
+      const data = await response.json();
+      dispatch(receiveStaffRecord(data));
+    } catch (error) {
+      dispatch(errorStaffRecord());
+    }
   };
 };
