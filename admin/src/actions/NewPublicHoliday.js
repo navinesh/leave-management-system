@@ -21,25 +21,25 @@ export const failureAddPublicHoliday = (data: Object) => {
 
 export const clearpublicMessage = () => ({ type: CLEAR_ADD_PUBLIC_MESSAGE });
 
-export const submitAddPublicHoliday = (publicHolidayDate: Object) => {
-  return async (dispatch: Function) => {
-    try {
-      dispatch(requestAddPublicHoliday(publicHolidayDate));
-      const response = await axios.post(
-        'http://localhost:8080/addpublicholiday',
-        {
-          holidayDate: publicHolidayDate.holidayDate
-        }
-      );
-
-      if (response.status !== 201) {
-        dispatch(failureAddPublicHoliday(response.data));
-      } else {
-        dispatch(successAddPublicHoliday(response.data));
-        dispatch(fetchPublicHoliday());
+export const submitAddPublicHoliday = (publicHolidayDate: Object) => async (
+  dispatch: Function
+) => {
+  try {
+    dispatch(requestAddPublicHoliday(publicHolidayDate));
+    const response = await axios.post(
+      'http://localhost:8080/addpublicholiday',
+      {
+        holidayDate: publicHolidayDate.holidayDate
       }
-    } catch (error) {
-      console.log(error);
+    );
+
+    if (response.status !== 201) {
+      dispatch(failureAddPublicHoliday(response.data));
+    } else {
+      dispatch(successAddPublicHoliday(response.data));
+      dispatch(fetchPublicHoliday());
     }
-  };
+  } catch (error) {
+    console.log(error);
+  }
 };
