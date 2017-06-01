@@ -17,17 +17,13 @@ export const errorSickSheetRecord = () => ({
   type: ERROR_SICKSHEET_RECORD
 });
 
-export const fetchSickSheetRecord = () => {
-  return async (dispatch: Function) => {
-    try {
-      dispatch(requestSickSheetRecord());
-      const response = await fetch(
-        `http://localhost:8080/sicksheet-record.api`
-      );
-      const data = await response.json();
-      dispatch(receiveSickSheetRecord(data));
-    } catch (error) {
-      dispatch(errorSickSheetRecord());
-    }
-  };
+export const fetchSickSheetRecord = () => async (dispatch: Function) => {
+  try {
+    dispatch(requestSickSheetRecord());
+    const response = await fetch(`http://localhost:8080/sicksheet-record.api`);
+    const data = await response.json();
+    dispatch(receiveSickSheetRecord(data));
+  } catch (error) {
+    dispatch(errorSickSheetRecord());
+  }
 };
