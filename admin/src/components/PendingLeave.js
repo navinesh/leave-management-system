@@ -405,36 +405,36 @@ export default class PendingLeaveList extends Component {
                   style={{ paddingTop: '40px' }}
                 >
                   <div className="card card-block">
+                    <table
+                      className="table table-bordered table-hover"
+                      style={{ backgroundColor: '#FFFFFF' }}
+                    >
+                      <thead className="thead-default">
+                        <tr>
+                          <th>Name</th>
+                          <th>Leave</th>
+                          <th>Type</th>
+                          <th>Start date</th>
+                          <th>End date</th>
+                          <th>Leave days</th>
+                          <th>Reason</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr key={record.id}>
+                          <td>
+                            {record.user.othernames}{' '}{record.user.surname}
+                          </td>
+                          <td>{record.leave_name}</td>
+                          <td>{record.leave_type}</td>
+                          <td>{record.start_date}</td>
+                          <td>{record.end_date}</td>
+                          <td>{record.leave_days}</td>
+                          <td>{record.leave_reason}</td>
+                        </tr>
+                      </tbody>
+                    </table>
                     <form onSubmit={this.handleApproveLeaveSubmit}>
-                      <table
-                        className="table table-bordered table-hover"
-                        style={{ backgroundColor: '#FFFFFF' }}
-                      >
-                        <thead className="thead-default">
-                          <tr>
-                            <th>Name</th>
-                            <th>Leave</th>
-                            <th>Type</th>
-                            <th>Start date</th>
-                            <th>End date</th>
-                            <th>Leave days</th>
-                            <th>Reason</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr key={record.id}>
-                            <td>
-                              {record.user.othernames}{' '}{record.user.surname}
-                            </td>
-                            <td>{record.leave_name}</td>
-                            <td>{record.leave_type}</td>
-                            <td>{record.start_date}</td>
-                            <td>{record.end_date}</td>
-                            <td>{record.leave_days}</td>
-                            <td>{record.leave_reason}</td>
-                          </tr>
-                        </tbody>
-                      </table>
                       <button
                         type="button"
                         className="btn btn-outline-primary btn-sm"
