@@ -34,10 +34,10 @@ export const clearNewUserRecord = () => {
 };
 
 export const submitNewUserRecord = (newUserDetails: Object) => {
-  return (dispatch: Function) => {
-    dispatch(requestNewUserRecord(newUserDetails));
-    axios
-      .post('http://localhost:8080/adduser', {
+  return async (dispatch: Function) => {
+    try {
+      dispatch(requestNewUserRecord(newUserDetails));
+      const response = await axios.post('http://localhost:8080/adduser', {
         surname: newUserDetails.surname,
         othernames: newUserDetails.othernames,
         email: newUserDetails.staffEmail,
@@ -49,16 +49,15 @@ export const submitNewUserRecord = (newUserDetails: Object) => {
         date_of_birth: newUserDetails.dateOfBirth,
         maternity: newUserDetails.maternityDays,
         gender: newUserDetails.gender
-      })
-      .then(response => {
-        if (response.status === 200) {
-          dispatch(failureNewUserRecord(response.data));
-        } else {
-          dispatch(successNewUserRecord(response.data));
-        }
-      })
-      .catch(error => {
-        console.log(error);
       });
+
+      if (response.status !== 201) {
+        dispatch(failureNewUserRecord(response.data));
+      } else {
+        dispatch(successNewUserRecord(response.data));
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
