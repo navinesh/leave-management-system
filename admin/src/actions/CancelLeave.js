@@ -26,26 +26,25 @@ export const clearApproveLeave = () => ({
 });
 
 export const submitCancelLeave = (cancelLeaveData: Object) => {
-  return (dispatch: Function) => {
-    dispatch(requestCancelLeave(cancelLeaveData));
-    axios
-      .post('http://localhost:8080/cancelleave', {
+  return async (dispatch: Function) => {
+    try {
+      dispatch(requestCancelLeave(cancelLeaveData));
+      const response = await axios.post('http://localhost:8080/cancelleave', {
         leaveID: cancelLeaveData.leaveID,
         cancelReason: cancelLeaveData.cancelReason,
         userID: cancelLeaveData.userID,
         leaveDays: cancelLeaveData.leaveDays,
         leaveName: cancelLeaveData.leaveName,
         leaveStatus: cancelLeaveData.leaveStatus
-      })
-      .then(response => {
-        if (response.status === 200) {
-          dispatch(errorCancelLeave(response.data));
-        } else {
-          dispatch(receiveCancelLeave(response.data));
-        }
-      })
-      .catch(error => {
-        console.log(error);
       });
+
+      if (response.status !== 201) {
+        dispatch(errorCancelLeave(response.data));
+      } else {
+        dispatch(receiveCancelLeave(response.data));
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
