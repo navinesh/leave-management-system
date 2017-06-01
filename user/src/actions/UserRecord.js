@@ -23,27 +23,27 @@ export const receiveUserRecord = (data: Object) => ({
 
 export const clearUserRecord = () => ({ type: CLEAR_USER_RECORD });
 
-export const fetchUserRecord = (auth_token: string) => {
-  return (dispatch: Function) => {
+export const fetchUserRecord = (auth_token: string) => async (
+  dispatch: Function
+) => {
+  try {
     dispatch(requestUserRecord(auth_token));
-    axios({
+    const response = await axios({
       url: 'http://localhost:8080/user-record.api',
       auth: { username: auth_token }
-    })
-      .then(response => {
-        if (response.status === 200) {
-          dispatch(userRecordError(response.data));
-        } else {
-          dispatch(receiveUserRecord(response.data));
-        }
-      })
-      .catch(error => {
-        localStorage.removeItem('auth_token');
-        dispatch({ type: 'LOGIN_FAILURE_FROM_TOKEN' });
-        dispatch({ type: 'CLEAR_USER_RECORD' });
-        dispatch({ type: 'CLEAR_USER_DETAILS' });
-      });
-  };
+    });
+
+    if (response.status !== 201) {
+      dispatch(userRecordError(response.data));
+    } else {
+      dispatch(receiveUserRecord(response.data));
+    }
+  } catch (error) {
+    localStorage.removeItem('auth_token');
+    dispatch({ type: 'LOGIN_FAILURE_FROM_TOKEN' });
+    dispatch({ type: 'CLEAR_USER_RECORD' });
+    dispatch({ type: 'CLEAR_USER_DETAILS' });
+  }
 };
 
 export const shouldfetchUserRecord = (
@@ -61,14 +61,15 @@ export const shouldfetchUserRecord = (
   }
 };
 
-export const fetchUserRecordIfNeeded = (auth_token: string) => {
-  return (dispatch: Function, getState: Function) => {
-    if (shouldfetchUserRecord(getState())) {
-      // Dispatch a thunk from thunk!
-      return dispatch(fetchUserRecord(auth_token));
-    } else {
-      // Let the calling code know there's nothing to wait for.
-      return Promise.resolve();
-    }
-  };
+export const fetchUserRecordIfNeeded = (auth_token: string) => (
+  dispatch: Function,
+  getState: Function
+) => {
+  if (shouldfetchUserRecord(getState())) {
+    // Dispatch a thunk from thunk!
+    return dispatch(fetchUserRecord(auth_token));
+  } else {
+    // Let the calling code know there's nothing to wait for.
+    return Promise.resolve();
+  }
 };
