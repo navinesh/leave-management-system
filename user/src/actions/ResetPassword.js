@@ -17,17 +17,20 @@ export const passwordResetSuccess = (data: Object) => {
   return { type: PASSWORD_RESET_SUCCESS, message: data.message };
 };
 
-export const resetPassword = (email: string) => {
-  return (dispatch: Function) => {
+export const resetPassword = (email: string) => async (dispatch: Function) => {
+  try {
     dispatch(requestPasswordReset(email));
-    axios
-      .post('http://localhost:8080/reset-password.api', { email: email })
-      .then(response => {
-        if (response.status === 200) {
-          dispatch(passwordResetError(response.data));
-        } else {
-          dispatch(passwordResetSuccess(response.data));
-        }
-      });
-  };
+    const response = await axios.post(
+      'http://localhost:8080/reset-password.api',
+      { email: email }
+    );
+
+    if (response.status !== 201) {
+      dispatch(passwordResetError(response.data));
+    } else {
+      dispatch(passwordResetSuccess(response.data));
+    }
+  } catch (error) {
+    console.log(error);
+  }
 };
