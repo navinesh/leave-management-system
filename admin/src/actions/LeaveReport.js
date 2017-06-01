@@ -7,9 +7,9 @@ export const requestLeaveRecord = () => ({
   type: REQUEST_LEAVE_RECORD
 });
 
-export const receiveLeaveRecord = (json: Object) => ({
+export const receiveLeaveRecord = (data: Object) => ({
   type: RECEIVE_LEAVE_RECORD,
-  leave_record: json.leave_record,
+  leave_record: data.leave_record,
   receivedAt: Date.now()
 });
 
@@ -18,13 +18,14 @@ export const errorLeaveRecord = () => ({
 });
 
 export const fetchLeaveRecord = () => {
-  return (dispatch: Function) => {
-    dispatch(requestLeaveRecord());
-    return fetch(`http://localhost:8080/leave-record.api`)
-      .then(response => response.json())
-      .then(json => dispatch(receiveLeaveRecord(json)))
-      .catch(error => {
-        dispatch(errorLeaveRecord());
-      });
+  return async (dispatch: Function) => {
+    try {
+      dispatch(requestLeaveRecord());
+      const response = await fetch(`http://localhost:8080/leave-record.api`);
+      const data = await response.json();
+      dispatch(receiveLeaveRecord(data));
+    } catch (error) {
+      dispatch(errorLeaveRecord());
+    }
   };
 };
