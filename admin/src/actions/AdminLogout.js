@@ -10,10 +10,8 @@ export const receiveLogout = () => ({
   type: LOGOUT_ADMIN_SUCCESS
 });
 
-export const logoutAdmin = () => {
-  return (dispatch: Function) => {
-    dispatch(requestLogout());
-    dispatch(receiveLogout());
-    localStorage.removeItem('admin_token');
-  };
+export const logoutAdmin = () => (dispatch: Function) => {
+  dispatch(requestLogout());
+  dispatch(receiveLogout());
+  localStorage.removeItem('admin_token');
 };
