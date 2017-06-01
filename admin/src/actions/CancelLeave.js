@@ -25,26 +25,26 @@ export const clearApproveLeave = () => ({
   type: CLEAR_CANCEL_LEAVE
 });
 
-export const submitCancelLeave = (cancelLeaveData: Object) => {
-  return async (dispatch: Function) => {
-    try {
-      dispatch(requestCancelLeave(cancelLeaveData));
-      const response = await axios.post('http://localhost:8080/cancelleave', {
-        leaveID: cancelLeaveData.leaveID,
-        cancelReason: cancelLeaveData.cancelReason,
-        userID: cancelLeaveData.userID,
-        leaveDays: cancelLeaveData.leaveDays,
-        leaveName: cancelLeaveData.leaveName,
-        leaveStatus: cancelLeaveData.leaveStatus
-      });
+export const submitCancelLeave = (cancelLeaveData: Object) => async (
+  dispatch: Function
+) => {
+  try {
+    dispatch(requestCancelLeave(cancelLeaveData));
+    const response = await axios.post('http://localhost:8080/cancelleave', {
+      leaveID: cancelLeaveData.leaveID,
+      cancelReason: cancelLeaveData.cancelReason,
+      userID: cancelLeaveData.userID,
+      leaveDays: cancelLeaveData.leaveDays,
+      leaveName: cancelLeaveData.leaveName,
+      leaveStatus: cancelLeaveData.leaveStatus
+    });
 
-      if (response.status !== 201) {
-        dispatch(errorCancelLeave(response.data));
-      } else {
-        dispatch(receiveCancelLeave(response.data));
-      }
-    } catch (error) {
-      console.log(error);
+    if (response.status !== 201) {
+      dispatch(errorCancelLeave(response.data));
+    } else {
+      dispatch(receiveCancelLeave(response.data));
     }
-  };
+  } catch (error) {
+    console.log(error);
+  }
 };
