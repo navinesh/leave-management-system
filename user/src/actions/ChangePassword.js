@@ -22,10 +22,10 @@ export const clearChangePasswordError = () => {
   return { type: CLEAR_CHANGE_PASSWORD_ERROR };
 };
 
-export function changePassword(creds: Object) {
-  return (dispatch: Function) => {
+export const changePassword = (creds: Object) => async (dispatch: Function) => {
+  try {
     dispatch(requestPasswordChange(creds));
-    axios({
+    const response = await axios({
       method: 'post',
       url: 'http://localhost:8080/change-password',
       auth: { username: creds.auth_token },
@@ -33,19 +33,17 @@ export function changePassword(creds: Object) {
         oldPassword: creds.currentPassword,
         newPassword: creds.newPassword
       }
-    })
-      .then(response => {
-        if (response.status === 200) {
-          dispatch(passwordChangeError(response.data));
-        } else {
-          dispatch(passwordChangeSuccess(response.data));
-        }
-      })
-      .catch(error => {
-        localStorage.removeItem('auth_token');
-        dispatch({ type: 'LOGIN_FAILURE_FROM_TOKEN' });
-        dispatch({ type: 'CLEAR_USER_RECORD' });
-        dispatch({ type: 'CLEAR_USER_DETAILS' });
-      });
-  };
-}
+    });
+
+    if (response.status !== 201) {
+      dispatch(passwordChangeError(response.data));
+    } else {
+      dispatch(passwordChangeSuccess(response.data));
+    }
+  } catch (error) {
+    localStorage.removeItem('auth_token');
+    dispatch({ type: 'LOGIN_FAILURE_FROM_TOKEN' });
+    dispatch({ type: 'CLEAR_USER_RECORD' });
+    dispatch({ type: 'CLEAR_USER_DETAILS' });
+  }
+};
