@@ -25,25 +25,25 @@ export const clearApproveLeave = () => ({
   type: CLEAR_APPROVE_LEAVE
 });
 
-export const submitApproveLeave = (approveLeaveData: Object) => {
-  return async (dispatch: Function) => {
-    try {
-      dispatch(requestApproveLeave(approveLeaveData));
-      const response = await axios.post('http://localhost:8080/approveleave', {
-        leave_id: approveLeaveData.leaveID,
-        leaveStatus: approveLeaveData.leaveStatus,
-        userID: approveLeaveData.userID,
-        leaveDays: approveLeaveData.leaveDays,
-        leaveName: approveLeaveData.leaveName
-      });
+export const submitApproveLeave = (approveLeaveData: Object) => async (
+  dispatch: Function
+) => {
+  try {
+    dispatch(requestApproveLeave(approveLeaveData));
+    const response = await axios.post('http://localhost:8080/approveleave', {
+      leave_id: approveLeaveData.leaveID,
+      leaveStatus: approveLeaveData.leaveStatus,
+      userID: approveLeaveData.userID,
+      leaveDays: approveLeaveData.leaveDays,
+      leaveName: approveLeaveData.leaveName
+    });
 
-      if (response.status !== 201) {
-        dispatch(errorApproveLeave(response.data));
-      } else {
-        dispatch(receiveApproveLeave(response.data));
-      }
-    } catch (error) {
-      console.log(error);
+    if (response.status !== 201) {
+      dispatch(errorApproveLeave(response.data));
+    } else {
+      dispatch(receiveApproveLeave(response.data));
     }
-  };
+  } catch (error) {
+    console.log(error);
+  }
 };
