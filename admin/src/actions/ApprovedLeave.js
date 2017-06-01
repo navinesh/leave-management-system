@@ -17,15 +17,13 @@ export const errorApprovedLeave = () => ({
   type: ERROR_APPROVED_LEAVE
 });
 
-export const fetchApprovedLeave = () => {
-  return async (dispatch: Function) => {
-    try {
-      dispatch(requestApprovedLeave());
-      const response = await fetch(`http://localhost:8080/approved-leave.api`);
-      const data = await response.json();
-      dispatch(receiveApprovedLeave(data));
-    } catch (error) {
-      dispatch(errorApprovedLeave());
-    }
-  };
+export const fetchApprovedLeave = () => async (dispatch: Function) => {
+  try {
+    dispatch(requestApprovedLeave());
+    const response = await fetch(`http://localhost:8080/approved-leave.api`);
+    const data = await response.json();
+    dispatch(receiveApprovedLeave(data));
+  } catch (error) {
+    dispatch(errorApprovedLeave());
+  }
 };
