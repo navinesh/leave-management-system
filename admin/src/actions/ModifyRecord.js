@@ -21,34 +21,34 @@ export const failureModifyUserRecord = (data: Object) => {
 
 export const clearModifyUser = () => ({ type: CLEAR_MODIFY_USER_MESSAGE });
 
-export const submitModifyUserRecord = (modifyUserDetails: Object) => {
-  return async (dispatch: Function) => {
-    try {
-      dispatch(requestModifyUserRecord(modifyUserDetails));
-      const response = await axios.post('http://localhost:8080/modifyuser', {
-        user_id: modifyUserDetails.id,
-        surname: modifyUserDetails.surname,
-        othernames: modifyUserDetails.othernames,
-        email: modifyUserDetails.staffEmail,
-        designation: modifyUserDetails.designation,
-        annual: modifyUserDetails.annualDays,
-        sick: modifyUserDetails.sickDays,
-        bereavement: modifyUserDetails.bereavmentDays,
-        christmas: modifyUserDetails.christmasDays,
-        date_of_birth: modifyUserDetails.dateOfBirth,
-        maternity: modifyUserDetails.maternityDays,
-        gender: modifyUserDetails.gender,
-        editReason: modifyUserDetails.editReason
-      });
+export const submitModifyUserRecord = (modifyUserDetails: Object) => async (
+  dispatch: Function
+) => {
+  try {
+    dispatch(requestModifyUserRecord(modifyUserDetails));
+    const response = await axios.post('http://localhost:8080/modifyuser', {
+      user_id: modifyUserDetails.id,
+      surname: modifyUserDetails.surname,
+      othernames: modifyUserDetails.othernames,
+      email: modifyUserDetails.staffEmail,
+      designation: modifyUserDetails.designation,
+      annual: modifyUserDetails.annualDays,
+      sick: modifyUserDetails.sickDays,
+      bereavement: modifyUserDetails.bereavmentDays,
+      christmas: modifyUserDetails.christmasDays,
+      date_of_birth: modifyUserDetails.dateOfBirth,
+      maternity: modifyUserDetails.maternityDays,
+      gender: modifyUserDetails.gender,
+      editReason: modifyUserDetails.editReason
+    });
 
-      if (response.status !== 201) {
-        dispatch(failureModifyUserRecord(response.data));
-      } else {
-        dispatch(successModifyUserRecord(response.data));
-        dispatch(fetchStaffRecord());
-      }
-    } catch (error) {
-      console.log(error);
+    if (response.status !== 201) {
+      dispatch(failureModifyUserRecord(response.data));
+    } else {
+      dispatch(successModifyUserRecord(response.data));
+      dispatch(fetchStaffRecord());
     }
-  };
+  } catch (error) {
+    console.log(error);
+  }
 };
