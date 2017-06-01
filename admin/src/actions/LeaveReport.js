@@ -17,15 +17,13 @@ export const errorLeaveRecord = () => ({
   type: ERROR_LEAVE_RECORD
 });
 
-export const fetchLeaveRecord = () => {
-  return async (dispatch: Function) => {
-    try {
-      dispatch(requestLeaveRecord());
-      const response = await fetch(`http://localhost:8080/leave-record.api`);
-      const data = await response.json();
-      dispatch(receiveLeaveRecord(data));
-    } catch (error) {
-      dispatch(errorLeaveRecord());
-    }
-  };
+export const fetchLeaveRecord = () => async (dispatch: Function) => {
+  try {
+    dispatch(requestLeaveRecord());
+    const response = await fetch(`http://localhost:8080/leave-record.api`);
+    const data = await response.json();
+    dispatch(receiveLeaveRecord(data));
+  } catch (error) {
+    dispatch(errorLeaveRecord());
+  }
 };
