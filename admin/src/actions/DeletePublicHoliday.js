@@ -22,22 +22,24 @@ export const failureDeletePublicHoliday = (data: Object) => {
 export const clearpublicMessage = () => ({ type: CLEAR_DELETE_PUBLIC_MESSAGE });
 
 export const submitDeletePublicHoliday = (deletePublicHolidayDate: Object) => {
-  return (dispatch: Function) => {
-    dispatch(requestDeletePublicHoliday(deletePublicHolidayDate));
-    axios
-      .post('http://localhost:8080/deletepublicholiday', {
-        id: deletePublicHolidayDate.id
-      })
-      .then(response => {
-        if (response.status === 200) {
-          dispatch(failureDeletePublicHoliday(response.data));
-        } else {
-          dispatch(successDeletePublicHoliday(response.data));
-          dispatch(fetchPublicHoliday());
+  return async (dispatch: Function) => {
+    try {
+      dispatch(requestDeletePublicHoliday(deletePublicHolidayDate));
+      const response = await axios.post(
+        'http://localhost:8080/deletepublicholiday',
+        {
+          id: deletePublicHolidayDate.id
         }
-      })
-      .catch(error => {
-        console.log(error);
-      });
+      );
+
+      if (response.status !== 201) {
+        dispatch(failureDeletePublicHoliday(response.data));
+      } else {
+        dispatch(successDeletePublicHoliday(response.data));
+        dispatch(fetchPublicHoliday());
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
