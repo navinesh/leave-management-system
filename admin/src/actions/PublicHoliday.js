@@ -17,15 +17,13 @@ export const errorPublicHoliday = () => ({
   type: ERROR_PUBLIC_HOLIDAY
 });
 
-export const fetchPublicHoliday = () => {
-  return async (dispatch: Function) => {
-    try {
-      dispatch(requestPublicHoliday());
-      const response = await fetch(`http://localhost:8080/public-holiday.api/`);
-      const data = await response.json();
-      dispatch(receivePublicHoliday(data));
-    } catch (error) {
-      dispatch(errorPublicHoliday());
-    }
-  };
+export const fetchPublicHoliday = () => async (dispatch: Function) => {
+  try {
+    dispatch(requestPublicHoliday());
+    const response = await fetch(`http://localhost:8080/public-holiday.api/`);
+    const data = await response.json();
+    dispatch(receivePublicHoliday(data));
+  } catch (error) {
+    dispatch(errorPublicHoliday());
+  }
 };
