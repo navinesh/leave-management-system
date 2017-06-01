@@ -42,39 +42,43 @@ export const loginUserErrorFromToken = (data: Object) => ({
 
 export const loginFailureFromToken = () => ({ type: LOGIN_FAILURE_FROM_TOKEN });
 
-export const fetchLogin = (creds: Object) => {
-  return (dispatch: Function) => {
+export const fetchLogin = (creds: Object) => async (dispatch: Function) => {
+  try {
     dispatch(requestUserLogin(creds));
-    axios
-      .post('http://localhost:8080/userlogin', {
-        email: creds.email,
-        password: creds.password
-      })
-      .then(response => {
-        if (response.status === 200) {
-          dispatch(loginUserError(response.data));
-        } else {
-          localStorage.setItem('auth_token', response.data.auth_token);
-          dispatch(receiveUserLogin(response.data));
-        }
-      });
-  };
+    const response = await axios.post('http://localhost:8080/userlogin', {
+      email: creds.email,
+      password: creds.password
+    });
+
+    if (response.status !== 201) {
+      dispatch(loginUserError(response.data));
+    } else {
+      localStorage.setItem('auth_token', response.data.auth_token);
+      dispatch(receiveUserLogin(response.data));
+    }
+  } catch (error) {
+    console.log(error);
+  }
 };
 
-export const fetchLoginFromToken = (auth_token: string) => {
-  return (dispatch: Function) => {
+export const fetchLoginFromToken = (auth_token: string) => async (
+  dispatch: Function
+) => {
+  try {
     dispatch(requestUserLoginFromToken(auth_token));
-    axios
-      .post('http://localhost:8080/usertoken', { auth_token: auth_token })
-      .then(response => {
-        if (response.status === 200) {
-          localStorage.removeItem('auth_token');
-          dispatch(loginUserErrorFromToken(response.data));
-          dispatch({ type: 'CLEAR_USER_RECORD' });
-          dispatch({ type: 'CLEAR_USER_DETAILS' });
-        } else {
-          dispatch(receiveUserLoginFromToken(response.data));
-        }
-      });
-  };
+    const response = await axios.post('http://localhost:8080/usertoken', {
+      auth_token: auth_token
+    });
+
+    if (response.status !== 201) {
+      localStorage.removeItem('auth_token');
+      dispatch(loginUserErrorFromToken(response.data));
+      dispatch({ type: 'CLEAR_USER_RECORD' });
+      dispatch({ type: 'CLEAR_USER_DETAILS' });
+    } else {
+      dispatch(receiveUserLoginFromToken(response.data));
+    }
+  } catch (error) {
+    console.log(error);
+  }
 };
