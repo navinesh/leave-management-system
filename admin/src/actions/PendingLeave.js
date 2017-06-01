@@ -17,15 +17,13 @@ export const errorPendingLeave = () => ({
   type: ERROR_PENDING_LEAVE
 });
 
-export const fetchPendingLeave = () => {
-  return async (dispatch: Function) => {
-    try {
-      dispatch(requestPendingLeave());
-      const response = await fetch(`http://localhost:8080/pending-leave.api`);
-      const data = await response.json();
-      dispatch(receivePendingLeave(data));
-    } catch (error) {
-      dispatch(errorPendingLeave());
-    }
-  };
+export const fetchPendingLeave = () => async (dispatch: Function) => {
+  try {
+    dispatch(requestPendingLeave());
+    const response = await fetch(`http://localhost:8080/pending-leave.api`);
+    const data = await response.json();
+    dispatch(receivePendingLeave(data));
+  } catch (error) {
+    dispatch(errorPendingLeave());
+  }
 };
