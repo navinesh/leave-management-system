@@ -3,6 +3,7 @@ import fetch from 'isomorphic-fetch';
 
 export const REQUEST_LEAVE_CALENDAR = 'REQUEST_LEAVE_CALENDAR';
 export const RECEIVE_LEAVE_CALENDAR = 'RECEIVE_LEAVE_CALENDAR';
+export const FAILURE_LEAVE_CALENDAR = 'FAILURE_LEAVE_CALENDAR';
 
 export const requestLeave = () => ({ type: REQUEST_LEAVE_CALENDAR });
 
@@ -12,6 +13,10 @@ export const receiveLeave = (json: Object) => ({
   receivedAt: Date.now()
 });
 
+export const failureLeaveCalendar = () => ({
+  type: FAILURE_LEAVE_CALENDAR
+});
+
 export const fetchLeave = () => async (dispatch: Function) => {
   try {
     dispatch(requestLeave());
@@ -19,7 +24,7 @@ export const fetchLeave = () => async (dispatch: Function) => {
     const data = await response.json();
     dispatch(receiveLeave(data));
   } catch (error) {
-    console.log(error);
+    dispatch(failureLeaveCalendar());
   }
 };
 
