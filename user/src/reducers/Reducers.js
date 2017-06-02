@@ -2,7 +2,8 @@ import { combineReducers } from 'redux';
 
 import {
   REQUEST_LEAVE_CALENDAR,
-  RECEIVE_LEAVE_CALENDAR
+  RECEIVE_LEAVE_CALENDAR,
+  FAILURE_LEAVE_CALENDAR
 } from '../actions/LeaveCalendar';
 
 import {
@@ -81,6 +82,11 @@ const leaveRecords = (
         isFetching: false,
         items: action.records,
         lastUpdated: action.receivedAt
+      };
+    case FAILURE_LEAVE_CALENDAR:
+      return {
+        ...state,
+        isFetching: false
       };
     default:
       return state;
