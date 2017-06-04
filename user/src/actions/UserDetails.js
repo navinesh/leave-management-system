@@ -68,8 +68,5 @@ export const fetchUserDetailsIfNeeded = (auth_token: string) => (
   if (shouldfetchUserDetails(getState())) {
     // Dispatch a thunk from thunk!
     return dispatch(fetchUserDetails(auth_token));
-  } else {
-    // Let the calling code know there's nothing to wait for.
-    return Promise.resolve();
   }
 };
