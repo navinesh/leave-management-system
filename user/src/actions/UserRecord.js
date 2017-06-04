@@ -68,8 +68,5 @@ export const fetchUserRecordIfNeeded = (auth_token: string) => (
   if (shouldfetchUserRecord(getState())) {
     // Dispatch a thunk from thunk!
     return dispatch(fetchUserRecord(auth_token));
-  } else {
-    // Let the calling code know there's nothing to wait for.
-    return Promise.resolve();
   }
 };
