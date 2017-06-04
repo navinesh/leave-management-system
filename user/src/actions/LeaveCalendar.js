@@ -1,6 +1,4 @@
 // @flow
-import fetch from 'isomorphic-fetch';
-
 export const REQUEST_LEAVE_CALENDAR = 'REQUEST_LEAVE_CALENDAR';
 export const RECEIVE_LEAVE_CALENDAR = 'RECEIVE_LEAVE_CALENDAR';
 export const FAILURE_LEAVE_CALENDAR = 'FAILURE_LEAVE_CALENDAR';
@@ -47,8 +45,5 @@ export const fetchLeaveIfNeeded = () => (
   if (shouldfetchLeave(getState())) {
     // Dispatch a thunk from thunk!
     return dispatch(fetchLeave());
-  } else {
-    // Let the calling code know there's nothing to wait for.
-    return Promise.resolve();
   }
 };
