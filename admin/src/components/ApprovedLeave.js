@@ -495,15 +495,12 @@ export default class ApprovedLeaveList extends Component {
                     </div>
                     <button
                       type="button"
-                      className="btn btn-outline-primary btn-sm"
+                      className="btn btn-outline-primary"
                       onClick={this.handleCloseEdit}
                     >
                       Close
                     </button>
-                    <button
-                      type="submit"
-                      className="btn btn-primary btn-sm ml-4"
-                    >
+                    <button type="submit" className="btn btn-primary ml-4">
                       Save changes
                     </button>
                     <div className="text-primary text-center">
@@ -555,15 +552,12 @@ export default class ApprovedLeaveList extends Component {
                     </div>
                     <button
                       type="button"
-                      className="btn btn-outline-primary btn-sm"
+                      className="btn btn-outline-primary"
                       onClick={this.handleCloseCancel}
                     >
                       Close
                     </button>
-                    <button
-                      type="submit"
-                      className="btn btn-primary ml-4 btn-sm"
-                    >
+                    <button type="submit" className="btn btn-primary ml-4">
                       Cancel
                     </button>
                     <div className="text-primary text-center">
