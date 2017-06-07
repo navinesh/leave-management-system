@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const PendingRecordList = ({ user_record }: { user_record: Array<any> }) => {
   const pendingList = user_record
     .filter(data => data.leave_status === 'pending')
-    .map(record => (
+    .map(record =>
       <tr key={record.id}>
         <td>{record.leave_name}</td>
         <td>{record.leave_days}</td>
@@ -13,7 +13,7 @@ const PendingRecordList = ({ user_record }: { user_record: Array<any> }) => {
         <td>{record.end_date}</td>
         <td>{record.leave_reason}</td>
       </tr>
-    ));
+    );
 
   if (pendingList.length > 0) {
     return (
@@ -46,7 +46,7 @@ const PendingRecordList = ({ user_record }: { user_record: Array<any> }) => {
 const ApprovedRecordList = ({ user_record }: { user_record: Array<any> }) => {
   const approvedList = user_record
     .filter(data => data.leave_status === 'approved')
-    .map(record => (
+    .map(record =>
       <tr key={record.id}>
         <td>{record.leave_name}</td>
         <td>{record.leave_days}</td>
@@ -54,7 +54,7 @@ const ApprovedRecordList = ({ user_record }: { user_record: Array<any> }) => {
         <td>{record.end_date}</td>
         <td>{record.leave_reason}</td>
       </tr>
-    ));
+    );
 
   if (approvedList.length > 0) {
     return (
@@ -98,7 +98,8 @@ export const UserRecord = ({
       <div className="container text-center" style={{ paddingTop: '100px' }}>
         <div className="col-md-8 offset-md-2 ">
           <h1 className="display-4">
-            The site configured at this address does not contain the requested resource.
+            The site configured at this address does not contain the requested
+            resource.
           </h1>
         </div>
       </div>
@@ -167,11 +168,10 @@ export const UserRecord = ({
   }
 };
 
-export const RecordList = ({ user_record }: { user_record: Array<any> }) => (
+export const RecordList = ({ user_record }: { user_record: Array<any> }) =>
   <div className="container">
     <div className="row">
       <PendingRecordList user_record={user_record} />
       <ApprovedRecordList user_record={user_record} />
     </div>
-  </div>
-);
+  </div>;
