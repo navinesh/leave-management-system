@@ -10,11 +10,10 @@ import Moment from 'moment';
 import { extendMoment } from 'moment-range';
 const moment = extendMoment(Moment);
 
-const UserName = props => (
+const UserName = props =>
   <p className="h5">
     {props.user_detail.othernames}{' '}{props.user_detail.surname}
-  </p>
-);
+  </p>;
 
 const UserRecord = props => {
   let gender = props.user_detail.gender
@@ -142,7 +141,8 @@ class LeaveApplication extends Component {
 
   handleSubmit(e: Event) {
     e.preventDefault();
-    const { user_detail } = this.props;
+    const { user_detail, user_record } = this.props;
+    console.log(this.props);
 
     const user_id = user_detail.id;
     const annualDays = user_detail.annual;
@@ -236,6 +236,14 @@ class LeaveApplication extends Component {
       ? leaveDays - 0.5
       : leaveDays;
 
+    // get total of approved single sick leave days
+    const approvedSingleSickLeaves = user_record.filter(
+      e =>
+        e.leave_status === 'approved' &&
+        e.leave_name === 'sick' &&
+        e.leave_days === 1
+    );
+
     // calculate total leave days
     const getLeaveDays = type => {
       const totalDays = {
@@ -243,7 +251,8 @@ class LeaveApplication extends Component {
           return annualDays - myLeaveDays;
         },
         sick: () => {
-          return (myLeaveDays >= 2 || sickDays <= 6) && !sickSheet
+          return (myLeaveDays >= 2 || approvedSingleSickLeaves.length >= 4) &&
+            !sickSheet
             ? null
             : sickDays - myLeaveDays;
         },
@@ -299,14 +308,16 @@ class LeaveApplication extends Component {
 
     if (applicationDays === null) {
       this.setState({
-        errorMessage: 'A medical certificate is required for absence of two consecutive days or more and after four single day absences!'
+        errorMessage:
+          'A medical certificate is required for absence of two consecutive days or more and after four single day absences!'
       });
       return;
     }
 
     if (applicationDays === undefined) {
       this.setState({
-        errorMessage: 'The date you selected as your date of birth does not match our record!'
+        errorMessage:
+          'The date you selected as your date of birth does not match our record!'
       });
       return;
     }
@@ -420,11 +431,10 @@ class LeaveApplication extends Component {
                   showClearDates
                   withPortal
                   displayFormat="DD/MM/YYYY"
-                  renderCalendarInfo={() => (
+                  renderCalendarInfo={() =>
                     <p className="text-center">
                       To select a single day click the date twice.
-                    </p>
-                  )}
+                    </p>}
                 />
               </div>
             </div>
@@ -470,7 +480,8 @@ class LeaveApplication extends Component {
               onChange={this.handleFileChange}
             />
             <small className="form-text text-muted">
-              A medical certificate is required for absence of two consecutive days or more and after four single day absences.
+              A medical certificate is required for absence of two consecutive
+              days or more and after four single day absences.
             </small>
           </div>
           <div className="form-group">
@@ -495,14 +506,16 @@ export default ({
   onLeaveApplicationClick,
   message,
   isFetching,
+  user_record,
   public_holiday
 }: {
   user_detail: Object,
   onLeaveApplicationClick: Function,
   message: string,
   isFetching: boolean,
+  user_record: Object,
   public_holiday: Array<any>
-}) => (
+}) =>
   <div className="container" style={{ marginTop: '80px' }}>
     <div className="row">
       <div className="col-md-12 pb-2">
@@ -516,6 +529,7 @@ export default ({
       <div className="col-md-6 mb-2">
         <LeaveApplication
           user_detail={user_detail}
+          user_record={user_record}
           onLeaveApplicationClick={onLeaveApplicationClick}
           message={message}
           isFetching={isFetching}
@@ -523,5 +537,4 @@ export default ({
         />
       </div>
     </div>
-  </div>
-);
+  </div>;
