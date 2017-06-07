@@ -28,7 +28,7 @@ export default ({ records }: { records: Array<any> }) => {
       // return true for current and future dates
       return isCurrentDate || isEndDate ? true : false;
     })
-    .map(data => (
+    .map(data =>
       <tr key={data.id}>
         <td>{data.user.othernames} {data.user.surname}</td>
         <td>{data.leave_name}</td>
@@ -36,7 +36,7 @@ export default ({ records }: { records: Array<any> }) => {
         <td>{data.end_date}</td>
         <td>{data.leave_days}</td>
       </tr>
-    ));
+    );
 
   return itemNodes.length > 0
     ? <div className="table-responsive" style={{ marginTop: '80px' }}>
