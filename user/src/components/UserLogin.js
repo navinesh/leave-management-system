@@ -37,21 +37,24 @@ export default class Login extends Component {
 
     if (!email && !password) {
       this.setState({
-        errorMessage: 'The username you entered does not belong to an account. Please check your username and try again.'
+        errorMessage:
+          'The username you entered does not belong to an account. Please check your username and try again.'
       });
       return;
     }
 
     if (!email && password) {
       this.setState({
-        errorMessage: 'The username you entered does not belong to an account. Please check your username and try again.'
+        errorMessage:
+          'The username you entered does not belong to an account. Please check your username and try again.'
       });
       return;
     }
 
     if (email && !password) {
       this.setState({
-        errorMessage: 'Sorry, your password was incorrect. Please double-check your password.'
+        errorMessage:
+          'Sorry, your password was incorrect. Please double-check your password.'
       });
       return;
     }
