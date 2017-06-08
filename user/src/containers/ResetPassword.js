@@ -6,7 +6,7 @@ import { Redirect } from 'react-router-dom';
 import UserResetPassword from '../components/ResetPassword';
 import { resetPassword } from '../actions/ResetPassword';
 
-const ResetPassword = ({ dispatch, isAuthenticated, message, isFetching }) => (
+const ResetPassword = ({ dispatch, isAuthenticated, message, isFetching }) =>
   <div className="ResetPassword">
     {!isAuthenticated
       ? <div className="col col-md-4 offset-md-4">
@@ -17,8 +17,7 @@ const ResetPassword = ({ dispatch, isAuthenticated, message, isFetching }) => (
           />
         </div>
       : <Redirect to="/" />}
-  </div>
-);
+  </div>;
 
 const mapStateToProps = state => {
   const { userAuth } = state;
