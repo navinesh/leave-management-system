@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { fetchLogin } from '../actions/UserLogin';
 import Login from '../components/UserLogin';
 
-const UserLogin = ({ dispatch, isAuthenticated, message, isFetching }) => (
+const UserLogin = ({ dispatch, isAuthenticated, message, isFetching }) =>
   <div className="UserLogin">
     {!isAuthenticated &&
       <Login
@@ -13,8 +13,7 @@ const UserLogin = ({ dispatch, isAuthenticated, message, isFetching }) => (
         message={message}
         onLoginClick={creds => dispatch(fetchLogin(creds))}
       />}
-  </div>
-);
+  </div>;
 
 const mapStateToProps = state => {
   const { userAuth } = state;
