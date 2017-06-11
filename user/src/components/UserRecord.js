@@ -121,7 +121,7 @@ export const UserRecord = ({
                 </Link>
               </p>
             </div>
-            <div className="col-md-4">
+            <div className="col-md-3">
               <ul className="list-group">
                 <li className="list-group-item justify-content-between">
                   Annual
