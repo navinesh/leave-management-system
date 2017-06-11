@@ -323,7 +323,7 @@ aws4@^1.2.1:
   version "1.6.0"
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.6.0.tgz#83ef5ca860b2b32e4a0deedee8c771b9db57471e"
 
-axios@^0.16.1:
+axios@^0.16.2:
   version "0.16.2"
   resolved "https://registry.yarnpkg.com/axios/-/axios-0.16.2.tgz#ba4f92f17167dfbab40983785454b9ac149c3c6d"
   dependencies:
@@ -4867,9 +4867,9 @@ react-addons-shallow-compare@^15.5.2:
     fbjs "^0.8.4"
     object-assign "^4.1.0"
 
-react-datepicker@^0.46.0:
-  version "0.46.0"
-  resolved "https://registry.yarnpkg.com/react-datepicker/-/react-datepicker-0.46.0.tgz#dd0c58efde9931964a248854e073151374fc937f"
+react-datepicker@^0.47.0:
+  version "0.47.0"
+  resolved "https://registry.yarnpkg.com/react-datepicker/-/react-datepicker-0.47.0.tgz#bb002929e870e6bd7c9a92f95d5cd7c95051f629"
   dependencies:
     classnames "^2.2.5"
     moment "^2.17.1"
