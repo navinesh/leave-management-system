@@ -258,7 +258,7 @@ export default class StaffRecordList extends Component {
 
             return (
               <div key={record.id}>
-                <div className="col-md-5 offset-md-3 pb-2">
+                <div className="col-md-6 offset-md-3 pb-2">
                   <div className="card">
                     <h5 className="card-header">Edit</h5>
                     <div className="card-block">
@@ -523,8 +523,8 @@ export default class StaffRecordList extends Component {
           {staff_record.filter(e => e.id === listID).map(record =>
             <div key={record.id}>
               <div
-                className="col-md-5 offset-md-3"
-                style={{ paddingTop: '40px' }}
+                className="col-md-6 offset-md-3"
+                style={{ paddingTop: '10px' }}
               >
                 <div className="card">
                   <h5 className="card-header">Archive</h5>
