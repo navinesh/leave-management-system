@@ -111,17 +111,18 @@ export const UserRecord = ({
         style={{ backgroundColor: '#FFFFFF', paddingTop: '80px' }}
       >
         <div className="container">
-          <div className="row">
+          <div className="row justify-content-md-center">
             <div className="col-md-6">
               <p className="display-4">
                 {user_detail.othernames}{' '}{user_detail.surname}
-                <br />
+              </p>
+              <p>
                 <Link to="/changepassword" className="btn btn-primary">
                   Change password
                 </Link>
               </p>
             </div>
-            <div className="col-md-3">
+            <div className="col-md-4">
               <ul className="list-group">
                 <li className="list-group-item justify-content-between">
                   Annual
