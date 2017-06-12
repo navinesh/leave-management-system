@@ -193,7 +193,7 @@ export default class NewRecordForm extends Component {
 
     return (
       <div className="container">
-        <div className="col-md-5 offset-md-3 pb-2">
+        <div className="col-md-6 offset-md-3 pb-2">
           <div className="card card-block">
             <form encType="multipart/form-data" onSubmit={this.handleSubmit}>
               <div className="row">
