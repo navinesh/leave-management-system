@@ -241,6 +241,7 @@ class LeaveApplication extends Component {
       e =>
         e.leave_status === 'approved' &&
         e.leave_name === 'sick' &&
+        e.file_name === null &&
         e.leave_days === 1
     );
 
