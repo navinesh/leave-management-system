@@ -20,7 +20,7 @@ import LeaveApplication from './containers/LeaveApplication';
 import configureStore from './stores/ConfigureStore';
 const store = configureStore();
 
-const PrivateRoute = ({ component, ...rest }) => (
+const PrivateRoute = ({ component, ...rest }) =>
   <Route
     {...rest}
     render={props =>
@@ -32,10 +32,9 @@ const PrivateRoute = ({ component, ...rest }) => (
               state: { from: props.location }
             }}
           />}
-  />
-);
+  />;
 
-const App = () => (
+const App = () =>
   <Provider store={store}>
     <BrowserRouter>
       <div>
@@ -50,7 +49,6 @@ const App = () => (
         </Switch>
       </div>
     </BrowserRouter>
-  </Provider>
-);
+  </Provider>;
 
 render(<App />, document.getElementById('root'));
