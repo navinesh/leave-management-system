@@ -237,7 +237,8 @@ export default class ApprovedLeaveList extends Component {
 
     if (applicationDays === undefined) {
       this.setState({
-        errorMessage: 'The date you selected as date of birth does not match our record!'
+        errorMessage:
+          'The date you selected as date of birth does not match our record!'
       });
       return;
     }
@@ -378,146 +379,152 @@ export default class ApprovedLeaveList extends Component {
     if (this.state.isEditing) {
       return (
         <div>
-          {approved_items.filter(e => e.id === listID).map(record => (
+          {approved_items.filter(e => e.id === listID).map(record =>
             <div key={record.id}>
               <div
-                className="col-md-5 offset-md-3"
-                style={{ paddingTop: '40px' }}
+                className="col-md-6 offset-md-3"
+                style={{ paddingTop: '10px' }}
               >
-                <div className="card card-block">
-                  <h5>Edit</h5>
-                  <form
-                    encType="multipart/form-data"
-                    onSubmit={this.handleEditSubmit}
-                  >
-                    <div className="row">
-                      <div className="col-md-6">
-                        <p>
-                          {record.user.othernames}{' '}{record.user.surname}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="leave">
-                            Leave
-                          </label>
-                          <select
-                            className="form-control"
-                            id="leave"
-                            defaultValue={record.leave_name}
-                            ref={select => (this.leave_name = select)}
-                          >
-                            <option>{record.leave_name}</option>
-                            <option>annual</option>
-                            <option>sick</option>
-                            <option>bereavement</option>
-                            <option>christmas</option>
-                            <option>birthday</option>
-                            {record.user.gender === 'female'
-                              ? <option>maternity</option>
-                              : null}
-                            <option>lwop</option>
-                            <option>other</option>
-                          </select>
-                        </div>
-                      </div>
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="leave type">Leave type</label>
-                          <select
-                            className="form-control"
-                            id="leave type"
-                            defaultValue={record.leave_type}
-                            ref={select => (this.leave_type = select)}
-                          >
-                            <option>{record.leave_type}</option>
-                            <option>full</option>
-                            <option>half day am</option>
-                            <option>half day pm</option>
-                          </select>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col">
-                        <div className="form-group">
-                          <label htmlFor="startDate-endDate">
-                            Start date - End date
-                          </label>
-                          <input
-                            type="hidden"
-                            defaultValue={record.start_date}
-                            ref={input => (this.startDate = input)}
-                          />
-                          <input
-                            type="hidden"
-                            defaultValue={record.end_date}
-                            ref={input => (this.endDate = input)}
-                          />
-                          <DateRangePicker
-                            startDatePlaceholderText={record.start_date}
-                            endDatePlaceholderText={record.end_date}
-                            startDate={this.state.startDate}
-                            endDate={this.state.endDate}
-                            onDatesChange={({ startDate, endDate }) =>
-                              this.setState({ startDate, endDate })}
-                            focusedInput={this.state.focusedInput}
-                            onFocusChange={focusedInput =>
-                              this.setState({ focusedInput })}
-                            isOutsideRange={() => false}
-                            minimumNights={0}
-                            showDefaultInputIcon
-                            showClearDates
-                            withPortal
-                            renderCalendarInfo={() => (
-                              <p className="text-center">
-                                To select a single day click the date twice.
-                              </p>
-                            )}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="row">
-                      <div className="col">
-                        <div className="form-group">
-                          <label htmlFor="reason">Reason</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Enter reason"
-                            onChange={this.handleEditReason}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <button
-                      type="button"
-                      className="btn btn-outline-primary"
-                      onClick={this.handleCloseEdit}
+                <div className="card">
+                  <h5 className="card-header">Edit</h5>
+                  <div className="card-block">
+                    <form
+                      encType="multipart/form-data"
+                      onSubmit={this.handleEditSubmit}
                     >
-                      Close
-                    </button>
-                    <button type="submit" className="btn btn-primary ml-4">
-                      Save changes
-                    </button>
-                    <div className="text-primary text-center">
-                      {this.props.isEditLeaveFetching
-                        ? <div className="loader2" />
-                        : <p className="text-primary mt-2">
-                            {this.props.editLeaveMessage}
-                          </p>}
-                    </div>
-                    <div className="text-danger text-center">
-                      {this.state.errorMessage}
-                    </div>
-                  </form>
+                      <div className="row">
+                        <div className="col-md-6">
+                          <p>
+                            {record.user.othernames}{' '}{record.user.surname}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="leave">
+                              Leave
+                            </label>
+                            <select
+                              className="form-control"
+                              id="leave"
+                              defaultValue={record.leave_name}
+                              ref={select => (this.leave_name = select)}
+                            >
+                              <option>{record.leave_name}</option>
+                              <option>annual</option>
+                              <option>sick</option>
+                              <option>bereavement</option>
+                              <option>christmas</option>
+                              <option>birthday</option>
+                              {record.user.gender === 'female'
+                                ? <option>maternity</option>
+                                : null}
+                              <option>lwop</option>
+                              <option>other</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="leave type">Leave type</label>
+                            <select
+                              className="form-control"
+                              id="leave type"
+                              defaultValue={record.leave_type}
+                              ref={select => (this.leave_type = select)}
+                            >
+                              <option>{record.leave_type}</option>
+                              <option>full</option>
+                              <option>half day am</option>
+                              <option>half day pm</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col">
+                          <div className="form-group">
+                            <label htmlFor="startDate-endDate">
+                              Start date - End date
+                            </label>
+                            <input
+                              type="hidden"
+                              defaultValue={record.start_date}
+                              ref={input => (this.startDate = input)}
+                            />
+                            <input
+                              type="hidden"
+                              defaultValue={record.end_date}
+                              ref={input => (this.endDate = input)}
+                            />
+                            <DateRangePicker
+                              startDatePlaceholderText={record.start_date}
+                              endDatePlaceholderText={record.end_date}
+                              startDate={this.state.startDate}
+                              endDate={this.state.endDate}
+                              onDatesChange={({ startDate, endDate }) =>
+                                this.setState({ startDate, endDate })}
+                              focusedInput={this.state.focusedInput}
+                              onFocusChange={focusedInput =>
+                                this.setState({ focusedInput })}
+                              isOutsideRange={() => false}
+                              minimumNights={0}
+                              showDefaultInputIcon
+                              showClearDates
+                              withPortal
+                              renderCalendarInfo={() =>
+                                <p className="text-center">
+                                  To select a single day click the date twice.
+                                </p>}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col">
+                          <div className="form-group">
+                            <label htmlFor="reason">Reason</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              placeholder="Enter reason"
+                              onChange={this.handleEditReason}
+                            />
+                          </div>
+                        </div>
+                      </div>
+                      <div className="row justify-content-end">
+                        <button
+                          type="button"
+                          className="btn btn-outline-primary"
+                          onClick={this.handleCloseEdit}
+                        >
+                          Close
+                        </button>
+                        <button
+                          type="submit"
+                          className="btn btn-primary ml-2 mr-3"
+                        >
+                          Save changes
+                        </button>
+                      </div>
+                      <div className="text-primary text-center">
+                        {this.props.isEditLeaveFetching
+                          ? <div className="loader2" />
+                          : <p className="text-primary mt-2">
+                              {this.props.editLeaveMessage}
+                            </p>}
+                      </div>
+                      <div className="text-danger text-center">
+                        {this.state.errorMessage}
+                      </div>
+                    </form>
+                  </div>
                 </div>
               </div>
             </div>
-          ))}
+          )}
         </div>
       );
     }
@@ -525,56 +532,65 @@ export default class ApprovedLeaveList extends Component {
     if (this.state.isCancel) {
       return (
         <div>
-          {approved_items.filter(e => e.id === listID).map(record => (
+          {approved_items.filter(e => e.id === listID).map(record =>
             <div key={record.id}>
               <div
-                className="col-md-5 offset-md-3"
-                style={{ paddingTop: '40px' }}
+                className="col-md-6 offset-md-3"
+                style={{ paddingTop: '10px' }}
               >
-                <div className="card card-block">
-                  <h5>
+                <div className="card">
+                  <h5 className="card-header">
                     Cancel
                   </h5>
-                  <form onSubmit={this.handleCancelSubmit}>
-                    <div className="row">
-                      <div className="col">
-                        <p>{record.othernames}{' '}{record.surname}</p>
-                        <div className="form-group">
-                          <label htmlFor="reason">Reason</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Enter reason"
-                            onChange={this.handleCancelReason}
-                          />
+                  <div className="card-block">
+                    <form onSubmit={this.handleCancelSubmit}>
+                      <div className="row">
+                        <div className="col">
+                          <p>
+                            {record.user.othernames}{' '}{record.user.surname}
+                          </p>
+                          <div className="form-group">
+                            <label htmlFor="reason">Reason</label>
+                            <input
+                              type="text"
+                              className="form-control"
+                              placeholder="Enter reason"
+                              onChange={this.handleCancelReason}
+                            />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <button
-                      type="button"
-                      className="btn btn-outline-primary"
-                      onClick={this.handleCloseCancel}
-                    >
-                      Close
-                    </button>
-                    <button type="submit" className="btn btn-primary ml-4">
-                      Cancel
-                    </button>
-                    <div className="text-primary text-center">
-                      {this.props.isCanceLeaveFetching
-                        ? <div className="loader2" />
-                        : <p className="mt-3">
-                            {this.props.cancelLeaveMessage}
-                          </p>}
-                    </div>
-                    <div className="text-danger text-center">
-                      {this.state.errorMessage}
-                    </div>
-                  </form>
+                      <div className="row justify-content-end">
+                        <button
+                          type="button"
+                          className="btn btn-outline-primary"
+                          onClick={this.handleCloseCancel}
+                        >
+                          Close
+                        </button>
+                        <button
+                          type="submit"
+                          className="btn btn-primary ml-2 mr-3"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                      <div className="text-primary text-center">
+                        {this.props.isCanceLeaveFetching
+                          ? <div className="loader2" />
+                          : <p className="mt-3">
+                              {this.props.cancelLeaveMessage}
+                            </p>}
+                      </div>
+                      <div className="text-danger text-center">
+                        {this.state.errorMessage}
+                      </div>
+                    </form>
+                  </div>
                 </div>
               </div>
             </div>
-          ))}
+          )}
         </div>
       );
     }
@@ -604,7 +620,7 @@ export default class ApprovedLeaveList extends Component {
         // return true for current and future leaves
         return isCurrentDate || isEndDate ? true : false;
       })
-      .map(data => (
+      .map(data =>
         <tr key={data.id}>
           <td>{data.user.othernames}{' '}{data.user.surname}</td>
           <td>{data.leave_name}</td>
@@ -631,7 +647,7 @@ export default class ApprovedLeaveList extends Component {
             </button>
           </td>
         </tr>
-      ));
+      );
 
     return items.length > 0
       ? <div>
