@@ -396,13 +396,13 @@ export default class PendingLeaveList extends Component {
   render() {
     if (this.state.isApproving) {
       return (
-        <div>
+        <div className="col-md-10 offset-md-1">
           {this.props.pending_items
             .filter(e => e.id === this.state.listID)
             .map(record =>
               <div key={record.id}>
                 <div
-                  className="col-md-5 offset-md-3"
+                  className="col-md-6 offset-md-3"
                   style={{ paddingTop: '10px' }}
                 >
                   <div className="card">
@@ -462,7 +462,7 @@ export default class PendingLeaveList extends Component {
                       <div className="row">
                         <div className="col">
                           <div className="form-group">
-                            <label>Reason</label>
+                            <label>Leave reason</label>
                             <div className="form-control">
                               {record.leave_reason}
                             </div>
@@ -510,7 +510,7 @@ export default class PendingLeaveList extends Component {
             .map(record =>
               <div key={record.id}>
                 <div
-                  className="col-md-6 offset-md-3 pb-2"
+                  className="col-md-6 offset-md-3"
                   style={{ paddingTop: '10px' }}
                 >
                   <div className="card">
@@ -667,18 +667,74 @@ export default class PendingLeaveList extends Component {
             .map(record =>
               <div key={record.id}>
                 <div
-                  className="col-md-6 offset-md-3"
-                  style={{ paddingTop: '40px' }}
+                  className="col-md-6 offset-md-3 pb-2"
+                  style={{ paddingTop: '10px' }}
                 >
                   <div className="card">
                     <h5 className="card-header">
                       Decline
                     </h5>
                     <div className="card-block">
+                      <p>
+                        {record.user.othernames}{' '}{record.user.surname}
+                      </p>
+                      <div className="row">
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label>Leave</label>
+                            <div className="form-control">
+                              {record.leave_name}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label>Leave type</label>
+                            <div className="form-control">
+                              {record.leave_type}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label>Start date</label>
+                            <div className="form-control">
+                              {record.start_date}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label>End date</label>
+                            <div className="form-control">
+                              {record.end_date}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label>Leave days</label>
+                            <div className="form-control">
+                              {record.leave_days}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="row">
+                        <div className="col">
+                          <div className="form-group">
+                            <label>Leave reason</label>
+                            <div className="form-control">
+                              {record.leave_reason}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                       <form onSubmit={this.handleDeclineSubmit}>
-                        <p>
-                          {record.user.othernames}{' '}{record.user.surname}
-                        </p>
                         <div className="form-group">
                           <label htmlFor="reason">Decline reason</label>
                           <input
@@ -712,7 +768,9 @@ export default class PendingLeaveList extends Component {
                               </p>}
                         </div>
                         <div className="text-danger text-center">
-                          <div className="mt-3">{this.state.errorMessage}</div>
+                          <div className="mt-3">
+                            {this.state.errorMessage}
+                          </div>
                         </div>
                       </form>
                     </div>
