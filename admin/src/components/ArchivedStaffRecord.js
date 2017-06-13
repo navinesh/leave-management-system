@@ -86,59 +86,59 @@ export default class ArchivedStaffRecordList extends Component {
 
     if (this.state.isUnarchive) {
       return (
-        <div>
+        <div className="col-md-10 offset-md-1">
           {archived_staff_record
             .filter(e => e.id === this.state.listID)
-            .map(record => (
+            .map(record =>
               <div key={record.id}>
                 <div
-                  className="col-md-5 offset-md-3 pb-2"
-                  style={{ paddingTop: '40px' }}
+                  className="col-md-6 offset-md-3"
+                  style={{ paddingTop: '10px' }}
                 >
-                  <div className="card card-block">
-                    <form
-                      encType="multipart/form-data"
-                      onSubmit={this.handleSubmit}
-                    >
-                      <div className="row">
-                        <div className="col">
-                          <p>
-                            Are you sure you want to unarchive{' '}
-                          </p>
-                          <p>
-                            <span className="h5">
-                              {record.othernames}
-                              {' '}
-                              {record.surname}
-                            </span>
-                          </p>
-                        </div>
-                      </div>
-                      <button
-                        type="button"
-                        className="btn btn-outline-primary"
-                        onClick={this.handleCloseUnarchive}
+                  <div className="card">
+                    <h5 className="card-header">
+                      Unarchive
+                    </h5>
+                    <div className="card-block">
+                      <form
+                        encType="multipart/form-data"
+                        onSubmit={this.handleSubmit}
                       >
-                        Close
-                      </button>
-                      <button type="submit" className="btn btn-primary ml-4">
-                        Yes
-                      </button>
-                      {this.props.isUnArchiveFetching
-                        ? <div className="loader2" />
-                        : <p className="text-primary text-center mt-3">
-                            {this.props.unArchiveMessage}
-                          </p>}
+                        <div className="row">
+                          <div className="col">
+                            <p>{record.othernames}{' '}{record.surname}</p>
+                          </div>
+                        </div>
+                        <div className="row justify-content-end">
+                          <button
+                            type="button"
+                            className="btn btn-outline-primary"
+                            onClick={this.handleCloseUnarchive}
+                          >
+                            Close
+                          </button>
+                          <button
+                            type="submit"
+                            className="btn btn-primary ml-2 mr-3"
+                          >
+                            Yes
+                          </button>
+                        </div>
+                        {this.props.isUnArchiveFetching
+                          ? <div className="loader2" />
+                          : <p className="text-primary text-center mt-3">
+                              {this.props.unArchiveMessage}
+                            </p>}
 
-                      <div className="text-danger">
-                        {this.state.errorMessage}
-                      </div>
-
-                    </form>
+                        <div className="text-danger">
+                          {this.state.errorMessage}
+                        </div>
+                      </form>
+                    </div>
                   </div>
                 </div>
               </div>
-            ))}
+            )}
         </div>
       );
     }
