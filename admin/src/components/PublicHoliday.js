@@ -17,7 +17,7 @@ const PublicHolidays = (props: {
   addPublicMessage: string,
   isDeletePublicFetching: boolean,
   deletePublicMessage: string
-}) => (
+}) =>
   <div className="col-md-10 offset-md-1 card card-block">
     <div className="row">
       <div className="col">
@@ -55,8 +55,7 @@ const PublicHolidays = (props: {
         </div>
       </div>
     </div>
-  </div>
-);
+  </div>;
 
 class AddPublicHoliday extends Component {
   state: { date: any, errorMessage: string, focused: boolean };
@@ -126,7 +125,7 @@ class AddPublicHoliday extends Component {
               showClearDate
               withPortal
             />
-            <button type="submit" className="btn btn-primary btn-sm ml-3">
+            <button type="submit" className="btn btn-primary ml-3">
               Add
             </button>
           </div>
