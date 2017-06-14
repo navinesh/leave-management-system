@@ -112,7 +112,7 @@ export const UserRecord = ({
       >
         <div className="container">
           <div className="row justify-content-md-center">
-            <div className="col-md-6">
+            <div className="col-md-7">
               <p className="display-4">
                 {user_detail.othernames}{' '}{user_detail.surname}
               </p>
@@ -122,7 +122,7 @@ export const UserRecord = ({
                 </Link>
               </p>
             </div>
-            <div className="col-md-4">
+            <div className="col-md-3">
               <ul className="list-group">
                 <li className="list-group-item justify-content-between">
                   Annual
