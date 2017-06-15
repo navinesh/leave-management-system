@@ -3,14 +3,14 @@
  */
 
 body {
-    padding-top: 80px;
+  padding-top: 80px;
 }
 
 html body {
-    background-color: #FAFAFA;
+  background-color: #FAFAFA;
 }
 
 .navbar {
-    background-color: #fff;
-    border-bottom: 1px solid #edeeee;
+  background-color: #fff;
+  border-bottom: 1px solid #edeeee;
 }
