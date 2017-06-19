@@ -4,7 +4,7 @@ import React from 'react';
 const moment = require('moment');
 
 export default ({ records }: { records: Array<any> }) => {
-  const itemNodes = records
+  const leaveRecord = records
     .filter(record => {
       // get current date and format it
       let dateToday = moment();
@@ -38,7 +38,7 @@ export default ({ records }: { records: Array<any> }) => {
       </tr>
     );
 
-  return itemNodes.length > 0
+  return leaveRecord.length > 0
     ? <div className="table-responsive" style={{ marginTop: '80px' }}>
         <table
           className="table table-bordered table-hover"
@@ -54,7 +54,7 @@ export default ({ records }: { records: Array<any> }) => {
             </tr>
           </thead>
           <tbody>
-            {itemNodes}
+            {leaveRecord}
           </tbody>
         </table>
       </div>
