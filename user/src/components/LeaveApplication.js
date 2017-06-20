@@ -11,9 +11,9 @@ import { extendMoment } from 'moment-range';
 const moment = extendMoment(Moment);
 
 const UserName = props =>
-  <p className="h5">
+  <h5>
     {props.user_detail.othernames}{' '}{props.user_detail.surname}
-  </p>;
+  </h5>;
 
 const UserRecord = props => {
   let gender = props.user_detail.gender
