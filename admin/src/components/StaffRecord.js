@@ -10,6 +10,86 @@ import '../spinners.css';
 
 const moment = require('moment');
 
+const FilteredStaffRecords = props =>
+  <div className="row">
+    {props.staff_record
+      .filter(
+        e =>
+          e.othernames.toLowerCase().includes(props.searchTerm) ||
+          e.surname.toLowerCase().includes(props.searchTerm)
+      )
+      .map(record => {
+        let dob = new Date(record.date_of_birth);
+        let dateOfBirth = moment(dob).format('DD/MM/YYYY');
+
+        return (
+          <div className="col-md-3" key={record.id}>
+            <div className="card mb-3">
+              <ul className="list-group list-group-flush">
+                <li className="list-group-item">
+                  <p className="h5">{record.othernames}{' '}{record.surname}</p>
+                </li>
+                <li className="list-group-item justify-content-between">
+                  Annual
+                  <span className="badge badge-primary badge-pill ">
+                    {record.annual}
+                  </span>
+                </li>
+                <li className="list-group-item justify-content-between">
+                  Sick
+                  <span className="badge badge-primary badge-pill ">
+                    {record.sick}
+                  </span>
+                </li>
+                <li className="list-group-item justify-content-between">
+                  Bereavement
+                  <span className="badge badge-primary badge-pill ">
+                    {record.bereavement}
+                  </span>
+                </li>
+                <li className="list-group-item justify-content-between">
+                  Christmas
+                  <span className="badge badge-primary badge-pill ">
+                    {record.christmas}
+                  </span>
+                </li>
+                <li className="list-group-item justify-content-between">
+                  DOB
+                  <span className="badge badge-primary badge-pill ">
+                    {dateOfBirth}
+                  </span>
+                </li>
+                {record.gender.toLowerCase() === 'female' && record.maternity
+                  ? <li className="list-group-item justify-content-between">
+                      Maternity
+                      <span className="badge badge-primary badge-pill ">
+                        {record.maternity}
+                      </span>
+                    </li>
+                  : <p className="list-group-item"><br /></p>}
+                <li className="list-group-item">
+                  <button
+                    className="btn btn-primary btn-sm"
+                    onClick={this.handleOpenEdit}
+                    id={record.id}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="btn btn-primary btn-sm ml-3"
+                    onClick={this.handleOpenArchive}
+                    id={record.id}
+                  >
+                    Archive
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        );
+      })}
+  </div>;
+
 const Search = props =>
   <div className="row">
     <div className="col-md-3">
@@ -602,89 +682,13 @@ export default class StaffRecordList extends Component {
       );
     }
 
-    const filteredElements = staff_record
-      .filter(
-        e =>
-          e.othernames.toLowerCase().includes(searchTerm) ||
-          e.surname.toLowerCase().includes(searchTerm)
-      )
-      .map(record => {
-        let dob = new Date(record.date_of_birth);
-        let dateOfBirth = moment(dob).format('DD/MM/YYYY');
-
-        return (
-          <div className="col-md-3" key={record.id}>
-            <div className="card mb-3">
-              <ul className="list-group list-group-flush">
-                <li className="list-group-item">
-                  <p className="h5">{record.othernames}{' '}{record.surname}</p>
-                </li>
-                <li className="list-group-item justify-content-between">
-                  Annual
-                  <span className="badge badge-primary badge-pill ">
-                    {record.annual}
-                  </span>
-                </li>
-                <li className="list-group-item justify-content-between">
-                  Sick
-                  <span className="badge badge-primary badge-pill ">
-                    {record.sick}
-                  </span>
-                </li>
-                <li className="list-group-item justify-content-between">
-                  Bereavement
-                  <span className="badge badge-primary badge-pill ">
-                    {record.bereavement}
-                  </span>
-                </li>
-                <li className="list-group-item justify-content-between">
-                  Christmas
-                  <span className="badge badge-primary badge-pill ">
-                    {record.christmas}
-                  </span>
-                </li>
-                <li className="list-group-item justify-content-between">
-                  DOB
-                  <span className="badge badge-primary badge-pill ">
-                    {dateOfBirth}
-                  </span>
-                </li>
-                {record.gender.toLowerCase() === 'female' && record.maternity
-                  ? <li className="list-group-item justify-content-between">
-                      Maternity
-                      <span className="badge badge-primary badge-pill ">
-                        {record.maternity}
-                      </span>
-                    </li>
-                  : <p className="list-group-item"><br /></p>}
-                <li className="list-group-item">
-                  <button
-                    className="btn btn-primary btn-sm"
-                    onClick={this.handleOpenEdit}
-                    id={record.id}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="btn btn-primary btn-sm ml-3"
-                    onClick={this.handleOpenArchive}
-                    id={record.id}
-                  >
-                    Archive
-                  </button>
-                </li>
-              </ul>
-            </div>
-          </div>
-        );
-      });
-
     return (
       <div className="StaffRecordList">
         <Search handleSearchChange={this.handleSearchChange} />
-        <div className="row">
-          {filteredElements}
-        </div>
+        <FilteredStaffRecords
+          staff_record={staff_record}
+          searchTerm={searchTerm}
+        />
       </div>
     );
   }
