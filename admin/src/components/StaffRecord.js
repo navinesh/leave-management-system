@@ -10,6 +10,20 @@ import '../spinners.css';
 
 const moment = require('moment');
 
+const Search = props =>
+  <div className="row">
+    <div className="col-md-3">
+      <div className="form-group">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Search"
+          onChange={props.handleSearchChange}
+        />
+      </div>
+    </div>
+  </div>;
+
 const ArchiveUser = props =>
   <div>
     {props.staff_record.filter(e => e.id === props.listID).map(record =>
@@ -131,6 +145,7 @@ export default class StaffRecordList extends Component {
     this.handleCloseEdit = this.handleCloseEdit.bind(this);
     this.handleOpenArchive = this.handleOpenArchive.bind(this);
     this.handleCloseArchive = this.handleCloseArchive.bind(this);
+    this.handleSearchChange = this.handleSearchChange.bind(this);
   }
 
   handleSearchChange({ target }: SyntheticInputEvent) {
@@ -666,18 +681,7 @@ export default class StaffRecordList extends Component {
 
     return (
       <div className="StaffRecordList">
-        <div className="row">
-          <div className="col-md-3">
-            <div className="form-group">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Search"
-                onChange={this.handleSearchChange.bind(this)}
-              />
-            </div>
-          </div>
-        </div>
+        <Search handleSearchChange={this.handleSearchChange} />
         <div className="row">
           {filteredElements}
         </div>
