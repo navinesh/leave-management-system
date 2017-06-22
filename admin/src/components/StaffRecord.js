@@ -10,6 +10,61 @@ import '../spinners.css';
 
 const moment = require('moment');
 
+const ArchiveUser = props =>
+  <div>
+    {props.staff_record.filter(e => e.id === props.listID).map(record =>
+      <div key={record.id}>
+        <div className="col-md-6 offset-md-3" style={{ paddingTop: '10px' }}>
+          <div className="card">
+            <h5 className="card-header">Archive</h5>
+            <div className="card-block">
+              <form
+                encType="multipart/form-data"
+                onSubmit={props.handleArchiveSubmit}
+              >
+                <div className="row">
+                  <div className="col">
+                    <p>{record.othernames}{' '}{record.surname}</p>
+                    <div className="form-group">
+                      <label htmlFor="reason">Reason</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Enter reason"
+                        id="reason"
+                        onChange={props.handleArchiveReason}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="row justify-content-end">
+                  <button
+                    type="button"
+                    className="btn btn-outline-primary"
+                    onClick={props.handleCloseArchive}
+                  >
+                    Close
+                  </button>
+                  <button type="submit" className="btn btn-primary ml-2 mr-3">
+                    Save changes
+                  </button>
+                </div>
+                <div className="text-primary text-center">
+                  {props.isArchiveFetching
+                    ? <div className="loader2" />
+                    : <p className="mt-3">{props.archiveMessage}</p>}
+                </div>
+                <div className="text-danger text-center">
+                  {props.errorMessage}
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+  </div>;
+
 export default class StaffRecordList extends Component {
   props: {
     staff_record: Array<any>,
@@ -40,8 +95,8 @@ export default class StaffRecordList extends Component {
   handleArchiveSubmit: Function;
   handleOpenEdit: Function;
   handleCloseEdit: Function;
-  HandleOpenArchive: Function;
-  HandleCloseArchive: Function;
+  handleOpenArchive: Function;
+  handleCloseArchive: Function;
 
   surname: HTMLInputElement;
   othernames: HTMLInputElement;
@@ -74,8 +129,8 @@ export default class StaffRecordList extends Component {
     this.handleArchiveSubmit = this.handleArchiveSubmit.bind(this);
     this.handleOpenEdit = this.handleOpenEdit.bind(this);
     this.handleCloseEdit = this.handleCloseEdit.bind(this);
-    this.HandleOpenArchive = this.HandleOpenArchive.bind(this);
-    this.HandleCloseArchive = this.HandleCloseArchive.bind(this);
+    this.handleOpenArchive = this.handleOpenArchive.bind(this);
+    this.handleCloseArchive = this.handleCloseArchive.bind(this);
   }
 
   handleSearchChange({ target }: SyntheticInputEvent) {
@@ -116,14 +171,14 @@ export default class StaffRecordList extends Component {
     this.setState({ archiveReason: target.value });
   }
 
-  HandleOpenArchive(e: Event & { currentTarget: HTMLElement }) {
+  handleOpenArchive(e: Event & { currentTarget: HTMLElement }) {
     this.setState({
       isArchive: !this.state.isArchive,
       listID: e.currentTarget.id
     });
   }
 
-  HandleCloseArchive() {
+  handleCloseArchive() {
     const { dispatch } = this.props;
 
     if (this.state.archiveReason) {
@@ -519,65 +574,16 @@ export default class StaffRecordList extends Component {
 
     if (this.state.isArchive) {
       return (
-        <div>
-          {staff_record.filter(e => e.id === listID).map(record =>
-            <div key={record.id}>
-              <div
-                className="col-md-6 offset-md-3"
-                style={{ paddingTop: '10px' }}
-              >
-                <div className="card">
-                  <h5 className="card-header">Archive</h5>
-                  <div className="card-block">
-                    <form
-                      encType="multipart/form-data"
-                      onSubmit={this.handleArchiveSubmit}
-                    >
-                      <div className="row">
-                        <div className="col">
-                          <p>{record.othernames}{' '}{record.surname}</p>
-                          <div className="form-group">
-                            <label htmlFor="reason">Reason</label>
-                            <input
-                              type="text"
-                              className="form-control"
-                              placeholder="Enter reason"
-                              id="reason"
-                              onChange={this.handleArchiveReason}
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div className="row justify-content-end">
-                        <button
-                          type="button"
-                          className="btn btn-outline-primary"
-                          onClick={this.HandleCloseArchive}
-                        >
-                          Close
-                        </button>
-                        <button
-                          type="submit"
-                          className="btn btn-primary ml-2 mr-3"
-                        >
-                          Save changes
-                        </button>
-                      </div>
-                      <div className="text-primary text-center">
-                        {isArchiveFetching
-                          ? <div className="loader2" />
-                          : <p className="mt-3">{archiveMessage}</p>}
-                      </div>
-                      <div className="text-danger text-center">
-                        {this.state.errorMessage}
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-        </div>
+        <ArchiveUser
+          staff_record={staff_record}
+          listID={listID}
+          handleArchiveSubmit={this.handleArchiveSubmit}
+          handleArchiveReason={this.handleArchiveReason}
+          handleCloseArchive={this.handleCloseArchive}
+          isArchiveFetching={isArchiveFetching}
+          archiveMessage={archiveMessage}
+          errorMessage={this.state.errorMessage}
+        />
       );
     }
 
@@ -646,7 +652,7 @@ export default class StaffRecordList extends Component {
                   </button>
                   <button
                     className="btn btn-primary btn-sm ml-3"
-                    onClick={this.HandleOpenArchive}
+                    onClick={this.handleOpenArchive}
                     id={record.id}
                   >
                     Archive
