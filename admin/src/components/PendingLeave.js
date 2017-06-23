@@ -109,6 +109,121 @@ const ApproveLeave = props =>
     )}
   </div>;
 
+const DeclineLeave = props =>
+  <div>
+    {props.pending_items.filter(e => e.id === props.listID).map(record =>
+      <div key={record.id}>
+        <div
+          className="col-md-6 offset-md-3 pb-2"
+          style={{ paddingTop: '10px' }}
+        >
+          <div className="card">
+            <h5 className="card-header">
+              Decline
+            </h5>
+            <div className="card-block">
+              <p>
+                {record.user.othernames}{' '}{record.user.surname}
+              </p>
+              <div className="row">
+                <div className="col-md-6">
+                  <div className="form-group">
+                    <label>Leave</label>
+                    <div className="form-control">
+                      {record.leave_name}
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <div className="form-group">
+                    <label>Leave type</label>
+                    <div className="form-control">
+                      {record.leave_type}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-md-6">
+                  <div className="form-group">
+                    <label>Start date</label>
+                    <div className="form-control">
+                      {record.start_date}
+                    </div>
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <div className="form-group">
+                    <label>End date</label>
+                    <div className="form-control">
+                      {record.end_date}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-md-6">
+                  <div className="form-group">
+                    <label>Leave days</label>
+                    <div className="form-control">
+                      {record.leave_days}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col">
+                  <div className="form-group">
+                    <label>Leave reason</label>
+                    <div className="form-control">
+                      {record.leave_reason}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <form onSubmit={props.handleDeclineSubmit}>
+                <div className="form-group">
+                  <label htmlFor="reason">Decline reason</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder="Enter reason"
+                    id="reason"
+                    onChange={props.handleDeclineReason}
+                  />
+                </div>
+                <div className="row justify-content-end">
+                  <button
+                    type="button"
+                    className="btn btn-outline-primary"
+                    onClick={this.handleCloseDecline}
+                  >
+                    Close
+                  </button>
+                  <button type="submit" className="btn btn-primary ml-2 mr-3">
+                    Decline
+                  </button>
+                </div>
+                <div className="text-primary text-center">
+                  {props.isDeclineLeaveFetching
+                    ? <div className="loader2" />
+                    : <p className="mt-3">
+                        {props.declineLeaveMessage}
+                      </p>}
+                </div>
+                <div className="text-danger text-center">
+                  <div className="mt-3">
+                    {props.errorMessage}
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+  </div>;
+
 export default class PendingLeaveList extends Component {
   props: {
     pending_items: Array<any>,
@@ -663,124 +778,15 @@ export default class PendingLeaveList extends Component {
 
     if (this.state.isDeclining) {
       return (
-        <div>
-          {this.props.pending_items
-            .filter(e => e.id === this.state.listID)
-            .map(record =>
-              <div key={record.id}>
-                <div
-                  className="col-md-6 offset-md-3 pb-2"
-                  style={{ paddingTop: '10px' }}
-                >
-                  <div className="card">
-                    <h5 className="card-header">
-                      Decline
-                    </h5>
-                    <div className="card-block">
-                      <p>
-                        {record.user.othernames}{' '}{record.user.surname}
-                      </p>
-                      <div className="row">
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label>Leave</label>
-                            <div className="form-control">
-                              {record.leave_name}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label>Leave type</label>
-                            <div className="form-control">
-                              {record.leave_type}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="row">
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label>Start date</label>
-                            <div className="form-control">
-                              {record.start_date}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label>End date</label>
-                            <div className="form-control">
-                              {record.end_date}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="row">
-                        <div className="col-md-6">
-                          <div className="form-group">
-                            <label>Leave days</label>
-                            <div className="form-control">
-                              {record.leave_days}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="row">
-                        <div className="col">
-                          <div className="form-group">
-                            <label>Leave reason</label>
-                            <div className="form-control">
-                              {record.leave_reason}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <form onSubmit={this.handleDeclineSubmit}>
-                        <div className="form-group">
-                          <label htmlFor="reason">Decline reason</label>
-                          <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Enter reason"
-                            id="reason"
-                            onChange={this.handleDeclineReason}
-                          />
-                        </div>
-                        <div className="row justify-content-end">
-                          <button
-                            type="button"
-                            className="btn btn-outline-primary"
-                            onClick={this.handleCloseDecline}
-                          >
-                            Close
-                          </button>
-                          <button
-                            type="submit"
-                            className="btn btn-primary ml-2 mr-3"
-                          >
-                            Decline
-                          </button>
-                        </div>
-                        <div className="text-primary text-center">
-                          {this.props.isDeclineLeaveFetching
-                            ? <div className="loader2" />
-                            : <p className="mt-3">
-                                {this.props.declineLeaveMessage}
-                              </p>}
-                        </div>
-                        <div className="text-danger text-center">
-                          <div className="mt-3">
-                            {this.state.errorMessage}
-                          </div>
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-        </div>
+        <DeclineLeave
+          pending_itees={this.props.pending_items}
+          listID={this.state.listID}
+          handleDeclineReason={this.handleDeclineReason}
+          handleCloseDecline={this.props.handleCloseDecline}
+          isDeclineLeaveFetching={this.props.isDeclineLeaveFetching}
+          declineLeaveMessage={this.props.declineLeaveMessage}
+          errorMessage={this.state.errorMessage}
+        />
       );
     }
 
