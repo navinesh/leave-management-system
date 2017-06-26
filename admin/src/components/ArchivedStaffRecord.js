@@ -8,6 +8,70 @@ import '../spinners.css';
 
 const moment = require('moment');
 
+const Search = props =>
+  <div className="row">
+    <div className="col-md-3">
+      <div className="form-group">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Search"
+          onChange={props.handleSearchChange}
+        />
+      </div>
+    </div>
+  </div>;
+
+const UnArchiveLeave = props =>
+  <div className="col-md-10 offset-md-1">
+    {props.archived_staff_record
+      .filter(e => e.id === props.listID)
+      .map(record =>
+        <div key={record.id}>
+          <div className="col-md-6 offset-md-3" style={{ paddingTop: '10px' }}>
+            <div className="card">
+              <h5 className="card-header">
+                Unarchive
+              </h5>
+              <div className="card-block">
+                <form
+                  encType="multipart/form-data"
+                  onSubmit={props.handleSubmit}
+                >
+                  <div className="row">
+                    <div className="col">
+                      <p>{record.othernames}{' '}{record.surname}</p>
+                    </div>
+                  </div>
+                  <div className="row justify-content-end">
+                    <button
+                      type="button"
+                      className="btn btn-outline-primary"
+                      onClick={props.handleCloseUnarchive}
+                    >
+                      Close
+                    </button>
+                    <button type="submit" className="btn btn-primary ml-2 mr-3">
+                      Yes
+                    </button>
+                  </div>
+                  {props.isUnArchiveFetching
+                    ? <div className="loader2" />
+                    : <p className="text-primary text-center mt-3">
+                        {props.unArchiveMessage}
+                      </p>}
+
+                  <div className="text-danger">
+                    {props.errorMessage}
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+  </div>;
+
 export default class ArchivedStaffRecordList extends Component {
   props: {
     archived_staff_record: Array<any>,
@@ -40,6 +104,7 @@ export default class ArchivedStaffRecordList extends Component {
     this.handleOpenUnarchive = this.handleOpenUnarchive.bind(this);
     this.handleCloseUnarchive = this.handleCloseUnarchive.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSearchChange = this.handleSearchChange.bind(this);
   }
 
   handleSearchChange({ target }: SyntheticInputEvent) {
@@ -86,60 +151,15 @@ export default class ArchivedStaffRecordList extends Component {
 
     if (this.state.isUnarchive) {
       return (
-        <div className="col-md-10 offset-md-1">
-          {archived_staff_record
-            .filter(e => e.id === this.state.listID)
-            .map(record =>
-              <div key={record.id}>
-                <div
-                  className="col-md-6 offset-md-3"
-                  style={{ paddingTop: '10px' }}
-                >
-                  <div className="card">
-                    <h5 className="card-header">
-                      Unarchive
-                    </h5>
-                    <div className="card-block">
-                      <form
-                        encType="multipart/form-data"
-                        onSubmit={this.handleSubmit}
-                      >
-                        <div className="row">
-                          <div className="col">
-                            <p>{record.othernames}{' '}{record.surname}</p>
-                          </div>
-                        </div>
-                        <div className="row justify-content-end">
-                          <button
-                            type="button"
-                            className="btn btn-outline-primary"
-                            onClick={this.handleCloseUnarchive}
-                          >
-                            Close
-                          </button>
-                          <button
-                            type="submit"
-                            className="btn btn-primary ml-2 mr-3"
-                          >
-                            Yes
-                          </button>
-                        </div>
-                        {this.props.isUnArchiveFetching
-                          ? <div className="loader2" />
-                          : <p className="text-primary text-center mt-3">
-                              {this.props.unArchiveMessage}
-                            </p>}
-
-                        <div className="text-danger">
-                          {this.state.errorMessage}
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-        </div>
+        <UnArchiveLeave
+          archived_staff_record={this.props.archived_staff_record}
+          listID={this.state.listID}
+          handleSubmit={this.handleSubmit}
+          handleCloseUnarchive={this.handleCloseUnarchive}
+          isUnArchiveFetching={this.props.isUnArchiveFetching}
+          unArchiveMessage={this.props.unArchiveMessage}
+          errorMessage={this.state.errorMessage}
+        />
       );
     }
 
@@ -215,18 +235,7 @@ export default class ArchivedStaffRecordList extends Component {
 
     return (
       <div className="ArchivedStaffRecordList">
-        <div className="row">
-          <div className="col-md-3">
-            <div className="form-group">
-              <input
-                type="text"
-                className="form-control"
-                placeholder="Search"
-                onChange={this.handleSearchChange.bind(this)}
-              />
-            </div>
-          </div>
-        </div>
+        <Search />
         <div className="row">
           {filteredElements}
         </div>
