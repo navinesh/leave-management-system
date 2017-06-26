@@ -779,7 +779,7 @@ export default class PendingLeaveList extends Component {
     if (this.state.isDeclining) {
       return (
         <DeclineLeave
-          pending_itees={this.props.pending_items}
+          pending_items={this.props.pending_items}
           listID={this.state.listID}
           handleDeclineReason={this.handleDeclineReason}
           handleCloseDecline={this.props.handleCloseDecline}
