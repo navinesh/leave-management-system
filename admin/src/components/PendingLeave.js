@@ -18,12 +18,10 @@ const ApproveLeave = props =>
       <div key={record.id}>
         <div className="col-md-6 offset-md-3" style={{ paddingTop: '10px' }}>
           <div className="card">
-            <h5 className="card-header">
-              Approve
-            </h5>
+            <h5 className="card-header">Approve</h5>
             <div className="card-block">
               <p>
-                {record.user.othernames}{' '}{record.user.surname}
+                {record.user.othernames} {record.user.surname}
               </p>
               <div className="row">
                 <div className="col-md-6">
@@ -118,12 +116,10 @@ const DeclineLeave = props =>
           style={{ paddingTop: '10px' }}
         >
           <div className="card">
-            <h5 className="card-header">
-              Decline
-            </h5>
+            <h5 className="card-header">Decline</h5>
             <div className="card-block">
               <p>
-                {record.user.othernames}{' '}{record.user.surname}
+                {record.user.othernames} {record.user.surname}
               </p>
               <div className="row">
                 <div className="col-md-6">
@@ -522,10 +518,10 @@ export default class PendingLeaveList extends Component {
     }
 
     // if half day then subtract 0.5
-    const myLeaveDays = leaveType === 'half day am' ||
-      leaveType === 'half day pm'
-      ? leaveDays - 0.5
-      : leaveDays;
+    const myLeaveDays =
+      leaveType === 'half day am' || leaveType === 'half day pm'
+        ? leaveDays - 0.5
+        : leaveDays;
 
     // calculate total leave days
     const getLeaveDays = type => {
@@ -549,7 +545,7 @@ export default class PendingLeaveList extends Component {
           const birthDate = moment.utc(dOB);
           // check date of birth
           return moment(startDate).isSame(birthDate) &&
-            moment(endDate).isSame(birthDate)
+          moment(endDate).isSame(birthDate)
             ? myLeaveDays
             : undefined;
         },
@@ -631,12 +627,10 @@ export default class PendingLeaveList extends Component {
                   style={{ paddingTop: '10px' }}
                 >
                   <div className="card">
-                    <h5 className="card-header">
-                      Edit
-                    </h5>
+                    <h5 className="card-header">Edit</h5>
                     <div className="card-block">
                       <p>
-                        {record.user.othernames}{' '}{record.user.surname}
+                        {record.user.othernames} {record.user.surname}
                       </p>
                       <form
                         encType="multipart/form-data"
@@ -648,16 +642,16 @@ export default class PendingLeaveList extends Component {
                         <div className="row">
                           <div className="col-md-6">
                             <div className="form-group">
-                              <label htmlFor="leave">
-                                Leave
-                              </label>
+                              <label htmlFor="leave">Leave</label>
                               <select
                                 className="form-control"
                                 id="leave"
                                 defaultValue={record.leave_name}
                                 ref={select => (this.leave_name = select)}
                               >
-                                <option>{record.leave_name}</option>
+                                <option>
+                                  {record.leave_name}
+                                </option>
                                 <option>annual</option>
                                 <option>sick</option>
                                 <option>bereavement</option>
@@ -680,7 +674,9 @@ export default class PendingLeaveList extends Component {
                                 defaultValue={record.leave_type}
                                 ref={select => (this.leave_type = select)}
                               >
-                                <option>{record.leave_type}</option>
+                                <option>
+                                  {record.leave_type}
+                                </option>
                                 <option>full</option>
                                 <option>half day am</option>
                                 <option>half day pm</option>
@@ -792,13 +788,27 @@ export default class PendingLeaveList extends Component {
 
     const itemNodes = this.props.pending_items.map(record =>
       <tr key={record.id}>
-        <td>{record.user.othernames}{' '}{record.user.surname}</td>
-        <td>{record.leave_name}</td>
-        <td>{record.leave_type}</td>
-        <td>{record.start_date}</td>
-        <td>{record.end_date}</td>
-        <td>{record.leave_days}</td>
-        <td>{record.leave_reason}</td>
+        <td>
+          {record.user.othernames} {record.user.surname}
+        </td>
+        <td>
+          {record.leave_name}
+        </td>
+        <td>
+          {record.leave_type}
+        </td>
+        <td>
+          {record.start_date}
+        </td>
+        <td>
+          {record.end_date}
+        </td>
+        <td>
+          {record.leave_days}
+        </td>
+        <td>
+          {record.leave_reason}
+        </td>
         <td>
           <button
             className="btn btn-link"
