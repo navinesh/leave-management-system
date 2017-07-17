@@ -30,9 +30,7 @@ const UnArchiveLeave = props =>
         <div key={record.id}>
           <div className="col-md-6 offset-md-3" style={{ paddingTop: '10px' }}>
             <div className="card">
-              <h5 className="card-header">
-                Unarchive
-              </h5>
+              <h5 className="card-header">Unarchive</h5>
               <div className="card-block">
                 <form
                   encType="multipart/form-data"
@@ -40,7 +38,9 @@ const UnArchiveLeave = props =>
                 >
                   <div className="row">
                     <div className="col">
-                      <p>{record.othernames}{' '}{record.surname}</p>
+                      <p>
+                        {record.othernames} {record.surname}
+                      </p>
                     </div>
                   </div>
                   <div className="row justify-content-end">
@@ -178,7 +178,9 @@ export default class ArchivedStaffRecordList extends Component {
             <div className="card mb-3">
               <ul className="list-group list-group-flush">
                 <li className="list-group-item">
-                  <p className="h5">{record.othernames}{' '}{record.surname}</p>
+                  <p className="h5">
+                    {record.othernames} {record.surname}
+                  </p>
                 </li>
                 <li className="list-group-item justify-content-between">
                   Annual
@@ -217,7 +219,9 @@ export default class ArchivedStaffRecordList extends Component {
                         {record.maternity}
                       </span>
                     </li>
-                  : <p className="list-group-item"><br /></p>}
+                  : <p className="list-group-item">
+                      <br />
+                    </p>}
                 <li className="list-group-item">
                   <button
                     className="btn btn-primary btn-sm"
