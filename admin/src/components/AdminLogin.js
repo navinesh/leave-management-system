@@ -90,11 +90,15 @@ export default class Login extends Component {
             {isFetching ? <div className="loader" /> : message}
           </div>
           <div className="text-danger text-center">
-            <div>{this.state.errorMessage}</div>
+            <div>
+              {this.state.errorMessage}
+            </div>
           </div>
         </div>
         <div className="card card-block mt-3">
-          <Link to="/reset" className="btn">Forgot your password?</Link>
+          <Link to="/reset" className="btn">
+            Forgot your password?
+          </Link>
         </div>
       </div>
     );
