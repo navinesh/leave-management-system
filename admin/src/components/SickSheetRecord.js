@@ -3,13 +3,23 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const SickSheetList = (props: { sickSheet_items: Array<any> }) => {
-  const itemNodes = props.sickSheet_items.map(record => (
+  const itemNodes = props.sickSheet_items.map(record =>
     <tr key={record.id}>
-      <td>{record.user.othernames}{' '}{record.user.surname}</td>
-      <td>{record.start_date}</td>
-      <td>{record.end_date}</td>
-      <td>{record.leave_days}</td>
-      <td>{record.date_posted}</td>
+      <td>
+        {record.user.othernames} {record.user.surname}
+      </td>
+      <td>
+        {record.start_date}
+      </td>
+      <td>
+        {record.end_date}
+      </td>
+      <td>
+        {record.leave_days}
+      </td>
+      <td>
+        {record.date_posted}
+      </td>
       <td>
         <Link
           className="btn btn-primary btn-sm"
@@ -19,7 +29,7 @@ const SickSheetList = (props: { sickSheet_items: Array<any> }) => {
         </Link>
       </td>
     </tr>
-  ));
+  );
 
   return itemNodes.length > 0
     ? <div className="table-responsive">
