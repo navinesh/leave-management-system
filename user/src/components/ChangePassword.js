@@ -127,7 +127,9 @@ export default class UserChange extends Component {
             : this.props.message}
         </div>
         <div className="text-danger text-center">
-          <div>{this.state.errorMessage}</div>
+          <div>
+            {this.state.errorMessage}
+          </div>
         </div>
       </div>
     );
