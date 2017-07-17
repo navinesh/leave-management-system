@@ -242,45 +242,19 @@ export default class NewRecordForm extends Component {
                       onChange={this.handleDesignationChange}
                     >
                       <option />
-                      <option>
-                        Admin
-                      </option>
-                      <option>
-                        Level 3 Lawyer
-                      </option>
-                      <option>
-                        Level 4 Lawyer
-                      </option>
-                      <option>
-                        Level 3 Secretary
-                      </option>
-                      <option>
-                        Level 4 Secretary
-                      </option>
-                      <option>
-                        TM
-                      </option>
-                      <option>
-                        Accounts
-                      </option>
-                      <option>
-                        Library
-                      </option>
-                      <option>
-                        IT
-                      </option>
-                      <option>
-                        Search Clerk Level 3
-                      </option>
-                      <option>
-                        Search Clerk Level 4
-                      </option>
-                      <option>
-                        Legal Executive
-                      </option>
-                      <option>
-                        Partner
-                      </option>
+                      <option>Admin</option>
+                      <option>Level 3 Lawyer</option>
+                      <option>Level 4 Lawyer</option>
+                      <option>Level 3 Secretary</option>
+                      <option>Level 4 Secretary</option>
+                      <option>TM</option>
+                      <option>Accounts</option>
+                      <option>Library</option>
+                      <option>IT</option>
+                      <option>Search Clerk Level 3</option>
+                      <option>Search Clerk Level 4</option>
+                      <option>Legal Executive</option>
+                      <option>Partner</option>
                     </select>
                   </div>
                 </div>
@@ -293,12 +267,8 @@ export default class NewRecordForm extends Component {
                       onChange={this.handleGenderChange}
                     >
                       <option />
-                      <option>
-                        Male
-                      </option>
-                      <option>
-                        Female
-                      </option>
+                      <option>Male</option>
+                      <option>Female</option>
                     </select>
                   </div>
                 </div>
@@ -395,7 +365,9 @@ export default class NewRecordForm extends Component {
               {isFetching ? <div className="loader1" /> : message}
             </div>
             <div className="text-danger text-center">
-              <div>{this.state.errorMessage}</div>
+              <div>
+                {this.state.errorMessage}
+              </div>
             </div>
           </div>
         </div>
