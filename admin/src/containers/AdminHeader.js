@@ -4,11 +4,10 @@ import { connect } from 'react-redux';
 
 import Header from '../components/AdminHeader';
 
-const AdminHeader = ({ isAuthenticated, dispatch }) => (
+const AdminHeader = ({ isAuthenticated, dispatch }) =>
   <div className="AdminHeader">
     {isAuthenticated && <Header dispatch={dispatch} />}
-  </div>
-);
+  </div>;
 
 const mapStateToProps = state => {
   const { adminAuth } = state;
