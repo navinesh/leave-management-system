@@ -35,10 +35,10 @@ class LeaveReport extends Component {
       <div className="container">
         {isAuthenticated
           ? isFetching
-              ? <div className="text-center">
-                  <div className="loader1" />
-                </div>
-              : <LeaveReportList leave_record={leave_record} />
+            ? <div className="text-center">
+                <div className="loader1" />
+              </div>
+            : <LeaveReportList leave_record={leave_record} />
           : <Redirect to="/login" />}
       </div>
     );
