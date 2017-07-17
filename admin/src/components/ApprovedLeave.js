@@ -184,10 +184,10 @@ export default class ApprovedLeaveList extends Component {
     }
 
     // if half day then subtract 0.5
-    const myLeaveDays = leaveType === 'half day am' ||
-      leaveType === 'half day pm'
-      ? leaveDays - 0.5
-      : leaveDays;
+    const myLeaveDays =
+      leaveType === 'half day am' || leaveType === 'half day pm'
+        ? leaveDays - 0.5
+        : leaveDays;
 
     // calculate total leave days
     const getLeaveDays = type => {
@@ -211,7 +211,7 @@ export default class ApprovedLeaveList extends Component {
           const birthDate = moment.utc(dOB);
           // check date of birth
           return moment(startDate).isSame(birthDate) &&
-            moment(endDate).isSame(birthDate)
+          moment(endDate).isSame(birthDate)
             ? myLeaveDays
             : undefined;
         },
@@ -395,23 +395,23 @@ export default class ApprovedLeaveList extends Component {
                       <div className="row">
                         <div className="col-md-6">
                           <p>
-                            {record.user.othernames}{' '}{record.user.surname}
+                            {record.user.othernames} {record.user.surname}
                           </p>
                         </div>
                       </div>
                       <div className="row">
                         <div className="col-md-6">
                           <div className="form-group">
-                            <label htmlFor="leave">
-                              Leave
-                            </label>
+                            <label htmlFor="leave">Leave</label>
                             <select
                               className="form-control"
                               id="leave"
                               defaultValue={record.leave_name}
                               ref={select => (this.leave_name = select)}
                             >
-                              <option>{record.leave_name}</option>
+                              <option>
+                                {record.leave_name}
+                              </option>
                               <option>annual</option>
                               <option>sick</option>
                               <option>bereavement</option>
@@ -434,7 +434,9 @@ export default class ApprovedLeaveList extends Component {
                               defaultValue={record.leave_type}
                               ref={select => (this.leave_type = select)}
                             >
-                              <option>{record.leave_type}</option>
+                              <option>
+                                {record.leave_type}
+                              </option>
                               <option>full</option>
                               <option>half day am</option>
                               <option>half day pm</option>
@@ -539,15 +541,13 @@ export default class ApprovedLeaveList extends Component {
                 style={{ paddingTop: '10px' }}
               >
                 <div className="card">
-                  <h5 className="card-header">
-                    Cancel
-                  </h5>
+                  <h5 className="card-header">Cancel</h5>
                   <div className="card-block">
                     <form onSubmit={this.handleCancelSubmit}>
                       <div className="row">
                         <div className="col">
                           <p>
-                            {record.user.othernames}{' '}{record.user.surname}
+                            {record.user.othernames} {record.user.surname}
                           </p>
                           <div className="form-group">
                             <label htmlFor="reason">Reason</label>
@@ -622,12 +622,24 @@ export default class ApprovedLeaveList extends Component {
       })
       .map(data =>
         <tr key={data.id}>
-          <td>{data.user.othernames}{' '}{data.user.surname}</td>
-          <td>{data.leave_name}</td>
-          <td>{data.leave_type}</td>
-          <td>{data.start_date}</td>
-          <td>{data.end_date}</td>
-          <td>{data.leave_days}</td>
+          <td>
+            {data.user.othernames} {data.user.surname}
+          </td>
+          <td>
+            {data.leave_name}
+          </td>
+          <td>
+            {data.leave_type}
+          </td>
+          <td>
+            {data.start_date}
+          </td>
+          <td>
+            {data.end_date}
+          </td>
+          <td>
+            {data.leave_days}
+          </td>
           <td>
             <button
               className="btn btn-link text-primary"
