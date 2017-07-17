@@ -39,16 +39,12 @@ const PublicHolidays = (props: {
         />
         <div>
           {props.isAddPublicFetching
-            ? <div className="text-success">
-                ADDING...
-              </div>
+            ? <div className="text-success">ADDING...</div>
             : <p className="text-primary">
                 {props.addPublicMessage}
               </p>}
           {props.isDeletePublicFetching
-            ? <div className="text-danger">
-                DELETING...
-              </div>
+            ? <div className="text-danger">DELETING...</div>
             : <p className="text-primary">
                 {props.deletePublicMessage}
               </p>}
@@ -131,7 +127,9 @@ class AddPublicHoliday extends Component {
           </div>
         </form>
         <div className="text-danger">
-          <div>{this.state.errorMessage}</div>
+          <div>
+            {this.state.errorMessage}
+          </div>
         </div>
       </div>
     );
@@ -199,9 +197,15 @@ class DeletePublicHoliday extends Component {
     });
     return (
       <div className="DeletePublicHolidays">
-        <ul>{public_holidays}</ul>
+        <ul>
+          {public_holidays}
+        </ul>
         <div className="text-danger">
-          {this.state.errorMessage ? <div>{this.state.errorMessage}</div> : ''}
+          {this.state.errorMessage
+            ? <div>
+                {this.state.errorMessage}
+              </div>
+            : ''}
         </div>
       </div>
     );
