@@ -6,7 +6,7 @@ import { fetchLogin } from '../actions/AdminLogin';
 import Login from '../components/AdminLogin';
 import { Redirect } from 'react-router-dom';
 
-const AdminLogin = ({ dispatch, message, isAuthenticated, isFetching }) => (
+const AdminLogin = ({ dispatch, message, isAuthenticated, isFetching }) =>
   <div className="AdminLogin">
     {!isAuthenticated
       ? <div>
@@ -20,8 +20,7 @@ const AdminLogin = ({ dispatch, message, isAuthenticated, isFetching }) => (
           />
         </div>
       : <Redirect to="/" />}
-  </div>
-);
+  </div>;
 
 const mapStateToProps = state => {
   const { adminAuth } = state;
