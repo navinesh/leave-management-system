@@ -7,11 +7,21 @@ const PendingRecordList = ({ user_record }: { user_record: Array<any> }) => {
     .filter(data => data.leave_status === 'pending')
     .map(record =>
       <tr key={record.id}>
-        <td>{record.leave_name}</td>
-        <td>{record.leave_days}</td>
-        <td>{record.start_date}</td>
-        <td>{record.end_date}</td>
-        <td>{record.leave_reason}</td>
+        <td>
+          {record.leave_name}
+        </td>
+        <td>
+          {record.leave_days}
+        </td>
+        <td>
+          {record.start_date}
+        </td>
+        <td>
+          {record.end_date}
+        </td>
+        <td>
+          {record.leave_reason}
+        </td>
       </tr>
     );
 
@@ -48,11 +58,21 @@ const ApprovedRecordList = ({ user_record }: { user_record: Array<any> }) => {
     .filter(data => data.leave_status === 'approved')
     .map(record =>
       <tr key={record.id}>
-        <td>{record.leave_name}</td>
-        <td>{record.leave_days}</td>
-        <td>{record.start_date}</td>
-        <td>{record.end_date}</td>
-        <td>{record.leave_reason}</td>
+        <td>
+          {record.leave_name}
+        </td>
+        <td>
+          {record.leave_days}
+        </td>
+        <td>
+          {record.start_date}
+        </td>
+        <td>
+          {record.end_date}
+        </td>
+        <td>
+          {record.leave_reason}
+        </td>
       </tr>
     );
 
@@ -114,7 +134,7 @@ export const UserRecord = ({
           <div className="row justify-content-md-center">
             <div className="col-md-7">
               <p className="display-4">
-                {user_detail.othernames}{' '}{user_detail.surname}
+                {user_detail.othernames} {user_detail.surname}
               </p>
               <p>
                 <Link to="/changepassword" className="btn btn-primary">
