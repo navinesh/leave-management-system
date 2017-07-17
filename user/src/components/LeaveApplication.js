@@ -12,7 +12,7 @@ const moment = extendMoment(Moment);
 
 const UserName = props =>
   <h5>
-    {props.user_detail.othernames}{' '}{props.user_detail.surname}
+    {props.user_detail.othernames} {props.user_detail.surname}
   </h5>;
 
 const UserRecord = props => {
@@ -231,10 +231,10 @@ class LeaveApplication extends Component {
     }
 
     // if half day then subtract 0.5
-    const myLeaveDays = leaveType === 'half day am' ||
-      leaveType === 'half day pm'
-      ? leaveDays - 0.5
-      : leaveDays;
+    const myLeaveDays =
+      leaveType === 'half day am' || leaveType === 'half day pm'
+        ? leaveDays - 0.5
+        : leaveDays;
 
     // get total of approved single sick leave days
     const approvedSingleSickLeaves = user_record.filter(
@@ -253,7 +253,7 @@ class LeaveApplication extends Component {
         },
         sick: () => {
           return (myLeaveDays >= 2 || approvedSingleSickLeaves.length >= 4) &&
-            !sickSheet
+          !sickSheet
             ? null
             : sickDays - myLeaveDays;
         },
@@ -270,7 +270,7 @@ class LeaveApplication extends Component {
           const birthDate = moment.utc(dOB);
           // check date of birth
           return moment(startDate).isSame(birthDate) &&
-            moment(endDate).isSame(birthDate)
+          moment(endDate).isSame(birthDate)
             ? myLeaveDays
             : undefined;
         },
@@ -415,9 +415,7 @@ class LeaveApplication extends Component {
           <div className="row">
             <div className="col">
               <div className="form-group">
-                <label htmlFor="startDate-endDate">
-                  Start date - End date
-                </label>
+                <label htmlFor="startDate-endDate">Start date - End date</label>
                 <DateRangePicker
                   startDate={this.state.startDate}
                   endDate={this.state.endDate}
@@ -495,7 +493,9 @@ class LeaveApplication extends Component {
           {isFetching ? <div className="loader" /> : message}
         </div>
         <div className="text-danger text-center pt-2">
-          <div>{this.state.errorMessage}</div>
+          <div>
+            {this.state.errorMessage}
+          </div>
         </div>
       </div>
     );
