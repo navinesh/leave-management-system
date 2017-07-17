@@ -35,10 +35,10 @@ class SickSheetRecord extends Component {
       <div className="container">
         {isAuthenticated
           ? isFetching
-              ? <div className="text-center">
-                  <div className="loader1" />
-                </div>
-              : <SickSheetList sickSheet_items={sickSheet_items} />
+            ? <div className="text-center">
+                <div className="loader1" />
+              </div>
+            : <SickSheetList sickSheet_items={sickSheet_items} />
           : <Redirect to="/login" />}
       </div>
     );
