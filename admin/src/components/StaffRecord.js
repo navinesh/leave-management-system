@@ -38,7 +38,9 @@ const ArchiveUser = props =>
               >
                 <div className="row">
                   <div className="col">
-                    <p>{record.othernames}{' '}{record.surname}</p>
+                    <p>
+                      {record.othernames} {record.surname}
+                    </p>
                     <div className="form-group">
                       <label htmlFor="reason">Reason</label>
                       <input
@@ -66,7 +68,9 @@ const ArchiveUser = props =>
                 <div className="text-primary text-center">
                   {props.isArchiveFetching
                     ? <div className="loader2" />
-                    : <p className="mt-3">{props.archiveMessage}</p>}
+                    : <p className="mt-3">
+                        {props.archiveMessage}
+                      </p>}
                 </div>
                 <div className="text-danger text-center">
                   {props.errorMessage}
@@ -350,9 +354,7 @@ export default class StaffRecordList extends Component {
                           </div>
                           <div className="col-md-6">
                             <div className="form-group">
-                              <label htmlFor="otherNames">
-                                Other Names
-                              </label>
+                              <label htmlFor="otherNames">Other Names</label>
                               <input
                                 type="text"
                                 className="form-control"
@@ -363,9 +365,7 @@ export default class StaffRecordList extends Component {
                           </div>
                         </div>
                         <div className="form-group">
-                          <label htmlFor="staffEmail">
-                            Email address
-                          </label>
+                          <label htmlFor="staffEmail">Email address</label>
                           <input
                             type="email"
                             className="form-control"
@@ -376,55 +376,29 @@ export default class StaffRecordList extends Component {
                         <div className="row">
                           <div className="col-md-6">
                             <div className="form-group">
-                              <label htmlFor="designation">
-                                Designation
-                              </label>
+                              <label htmlFor="designation">Designation</label>
                               <select
                                 className="form-control"
                                 id="designation"
                                 defaultValue={record.designation}
                                 ref={select => (this.designation = select)}
                               >
-                                <option>{record.designation}</option>
                                 <option>
-                                  Admin
+                                  {record.designation}
                                 </option>
-                                <option>
-                                  Level 3 Lawyer
-                                </option>
-                                <option>
-                                  Level 4 Lawyer
-                                </option>
-                                <option>
-                                  Level 3 Secretary
-                                </option>
-                                <option>
-                                  Level 4 Secretary
-                                </option>
-                                <option>
-                                  TM
-                                </option>
-                                <option>
-                                  Accounts
-                                </option>
-                                <option>
-                                  Library
-                                </option>
-                                <option>
-                                  IT
-                                </option>
-                                <option>
-                                  Search Clerk Level 3
-                                </option>
-                                <option>
-                                  Search Clerk Level 4
-                                </option>
-                                <option>
-                                  Legal Executive
-                                </option>
-                                <option>
-                                  Partner
-                                </option>
+                                <option>Admin</option>
+                                <option>Level 3 Lawyer</option>
+                                <option>Level 4 Lawyer</option>
+                                <option>Level 3 Secretary</option>
+                                <option>Level 4 Secretary</option>
+                                <option>TM</option>
+                                <option>Accounts</option>
+                                <option>Library</option>
+                                <option>IT</option>
+                                <option>Search Clerk Level 3</option>
+                                <option>Search Clerk Level 4</option>
+                                <option>Legal Executive</option>
+                                <option>Partner</option>
                               </select>
                             </div>
                           </div>
@@ -437,13 +411,11 @@ export default class StaffRecordList extends Component {
                                 defaultValue={record.gender}
                                 ref={select => (this.gender = select)}
                               >
-                                <option>{record.gender}</option>
                                 <option>
-                                  Male
+                                  {record.gender}
                                 </option>
-                                <option>
-                                  Female
-                                </option>
+                                <option>Male</option>
+                                <option>Female</option>
                               </select>
                             </div>
                           </div>
@@ -451,9 +423,7 @@ export default class StaffRecordList extends Component {
                         <div className="row">
                           <div className="col-md-6">
                             <div className="form-group">
-                              <label htmlFor="annualLeave">
-                                Annual leave
-                              </label>
+                              <label htmlFor="annualLeave">Annual leave</label>
                               <input
                                 type="number"
                                 className="form-control"
@@ -571,7 +541,9 @@ export default class StaffRecordList extends Component {
                         <div className="text-primary text-center">
                           {isFetching
                             ? <div className="loader2" />
-                            : <p className="mt-3">{message}</p>}
+                            : <p className="mt-3">
+                                {message}
+                              </p>}
                         </div>
                         <div className="text-danger text-center">
                           {this.state.errorMessage}
@@ -617,7 +589,9 @@ export default class StaffRecordList extends Component {
             <div className="card mb-3">
               <ul className="list-group list-group-flush">
                 <li className="list-group-item">
-                  <p className="h5">{record.othernames}{' '}{record.surname}</p>
+                  <p className="h5">
+                    {record.othernames} {record.surname}
+                  </p>
                 </li>
                 <li className="list-group-item justify-content-between">
                   Annual
@@ -656,7 +630,9 @@ export default class StaffRecordList extends Component {
                         {record.maternity}
                       </span>
                     </li>
-                  : <p className="list-group-item"><br /></p>}
+                  : <p className="list-group-item">
+                      <br />
+                    </p>}
                 <li className="list-group-item">
                   <button
                     className="btn btn-primary btn-sm"
