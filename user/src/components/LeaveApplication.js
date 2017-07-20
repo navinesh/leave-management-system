@@ -358,7 +358,7 @@ class LeaveApplication extends Component {
       return (
         <div className="card">
           <div className="card-block text-center">
-            <p className="text-capitalize">
+            <p>
               {this.state.successMessage}
             </p>
             <button
