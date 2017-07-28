@@ -12,7 +12,7 @@
     "moment-range": "^3.0.3",
     "react": "^15.6.0",
     "react-addons-shallow-compare": "^15.5.2",
-    "react-dates": "^12.1.1",
+    "react-dates": "^12.3.0",
     "react-dom": "^15.6.0",
     "react-redux": "^5.0.5",
     "react-router-dom": "^4.1.2",
