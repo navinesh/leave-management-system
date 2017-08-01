@@ -43,6 +43,14 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
+# Import smtplib for the actual sending function
+import smtplib
+# Import email modules
+from email.MIMEMultipart import MIMEMultipart
+from email.MIMEText import MIMEText
+from email.MIMEBase import MIMEBase
+from email import encoders
+
 
 # Helper functions
 @auth.verify_password
