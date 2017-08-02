@@ -587,6 +587,30 @@ def approve_leave():
     session.add(leaveRecord)
     session.commit()
 
+    fromaddr = "FROM_EMAIL_ADDRESS"
+    server = smtplib.SMTP('SERVER_IP', PORT_NUMBER)
+    toaddr = "TO_EMAIL_ADDRESS"
+
+    msg = MIMEMultipart()
+
+    msg['From'] = fromaddr
+    msg['To'] = toaddr
+    msg['Subject'] = "SUBJECT"
+
+    html = """\
+    <font face="arial" size="2">
+    EMAIL MESSAGE
+    </font>
+    """
+
+    msg.attach(MIMEText(html, 'html'))
+
+    server.starttls()
+    server.login(fromaddr, "PASSWORD")
+    text = msg.as_string()
+    server.sendmail(fromaddr, toaddr, text)
+    server.quit()
+
     return jsonify({'message': 'Leave has been approved.'}), 201
 
 
