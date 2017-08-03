@@ -635,7 +635,7 @@ def decline_leave():
 
     leaveRecord = session.query(Leaverecord).filter_by(id=leave_id).one()
 
-    if leaveRecord is None:
+    if leaveRecord is None or leaveRecord.leave_status != 'pending':
         return jsonify({
             'message': 'Cannot find this record in the database.'
         }), 200
@@ -646,6 +646,15 @@ def decline_leave():
 
     session.add(leaveRecord)
     session.commit()
+
+    # Send email
+    send_email(
+        leaveRecord.user.email, "Leave application",
+        ("Your " + leave_name + " leave application for " + str(leave_days) +
+         " day(s) from " + leaveRecord.start_date + " to " +
+         leaveRecord.end_date + " has been declined. Reason for decline: " +
+         decline_reason + " ."))
+
     return jsonify({'message': 'Leave has been declined.'}), 201
 
 
