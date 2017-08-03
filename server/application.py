@@ -551,7 +551,7 @@ def approve_leave():
 
     leaveRecord = session.query(Leaverecord).filter_by(id=leave_id).one()
 
-    if leaveRecord is None:
+    if leaveRecord is None or leaveRecord.leave_status != 'pending':
         return jsonify({
             'message': 'Cannot find this record in the database.'
         }), 200
