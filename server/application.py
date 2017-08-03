@@ -614,15 +614,12 @@ def approve_leave():
     session.commit()
 
     # Send email
-    toaddr = leaveRecord.user.email
-    subject = "Leave application"
-    body = (
-        "Your " + leave_name + " leave application for " + str(leave_days) +
-        " day(s) from " + leaveRecord.start_date + " to " +
-        leaveRecord.end_date + " has been aprroved. " + "Your new " +
-        leave_name + " leave balance is " + str(leave_balance) + " day(s).")
-
-    send_email(toaddr, subject, body)
+    send_email(
+        leaveRecord.user.email, "Leave application",
+        ("Your " + leave_name + " leave application for " + str(leave_days) +
+         " day(s) from " + leaveRecord.start_date + " to " +
+         leaveRecord.end_date + " has been aprroved. " + "Your new " +
+         leave_name + " leave balance is " + str(leave_balance) + " day(s)."))
 
     return jsonify({'message': 'Leave has been approved.'}), 201
 
