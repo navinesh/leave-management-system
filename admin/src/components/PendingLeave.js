@@ -309,7 +309,8 @@ export default class PendingLeaveList extends Component {
 
     const declineLeaveData = {
       leaveID: listID,
-      reason: reason
+      LeaveStatus: 'declined',
+      DeclineReason: reason
     };
 
     this.props.onDeclineLeaveSubmit(declineLeaveData);
