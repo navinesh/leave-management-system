@@ -648,11 +648,11 @@ def decline_leave():
     session.commit()
 
     # Send email
-    send_email(leaveRecord.user.email, "Leave application", (
-        "Your " + leaveRecord.leave_name + " leave application for " + str(
-            leaveRecord.leave_days) + " day(s) from " + leaveRecord.start_date
-        + " to " + leaveRecord.end_date +
-        " has been declined. Reason for decline: " + decline_reason + "."))
+    send_email(leaveRecord.user.email, "Leave application",
+               ("Your " + leaveRecord.leave_name + " leave application for " +
+                str(leaveRecord.leave_days) + " day(s) from " +
+                leaveRecord.start_date + " to " + leaveRecord.end_date +
+                " has been declined. Reason for decline: " + decline_reason))
 
     return jsonify({'message': 'Leave has been declined.'}), 201
 
@@ -719,7 +719,7 @@ def edit_leave():
                 " has been modified. Your updated leave application is for " +
                 leave_name + " leave for " + str(leave_days) + " day(s) from "
                 + str(date_from) + " to " + str(date_to) +
-                ". Reason for decline: " + leave_reason + "."))
+                ". Reason for decline: " + leave_reason))
 
     return jsonify({'message': 'Leave record has been modified.'}), 201
 
