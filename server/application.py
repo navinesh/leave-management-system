@@ -712,14 +712,13 @@ def edit_leave():
     session.commit()
 
     # Send email
-    send_email(leaveRecord.user.email, "Leave application edited",
-               ("Your " + previous_leave_name + " leave application for " +
-                str(previous_leave_days) + " day(s) from " +
-                str(previous_start_date) + " to " + str(previous_end_date) +
-                " has been modified. Your updated leave application is for " +
-                leave_name + " leave for " + str(leave_days) + " day(s) from "
-                + str(date_from) + " to " + str(date_to) +
-                ". Reason for update: " + leave_reason))
+    send_email(leaveRecord.user.email, "Leave application edited", (
+        "Your " + previous_leave_name + " leave application for " +
+        str(previous_leave_days) + " day(s) from " + previous_start_date +
+        " to " + previous_end_date +
+        " has been modified. Your updated leave application is for " +
+        leave_name + " leave for " + str(leave_days) + " day(s) from " +
+        date_from + " to " + date_to + ". Reason for update: " + leave_reason))
 
     return jsonify({'message': 'Leave record has been modified.'}), 201
 
