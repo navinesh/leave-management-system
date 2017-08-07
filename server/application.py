@@ -615,7 +615,7 @@ def approve_leave():
 
     # Send email
     send_email(
-        leaveRecord.user.email, "Leave application",
+        leaveRecord.user.email, "Leave application approved",
         ("Your " + leave_name + " leave application for " + str(leave_days) +
          " day(s) from " + leaveRecord.start_date + " to " +
          leaveRecord.end_date + " has been aprroved. " + "Your new " +
@@ -648,7 +648,7 @@ def decline_leave():
     session.commit()
 
     # Send email
-    send_email(leaveRecord.user.email, "Leave application",
+    send_email(leaveRecord.user.email, "Leave application declined",
                ("Your " + leaveRecord.leave_name + " leave application for " +
                 str(leaveRecord.leave_days) + " day(s) from " +
                 leaveRecord.start_date + " to " + leaveRecord.end_date +
