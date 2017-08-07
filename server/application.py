@@ -719,7 +719,7 @@ def edit_leave():
                 " has been modified. Your updated leave application is for " +
                 leave_name + " leave for " + str(leave_days) + " day(s) from "
                 + str(date_from) + " to " + str(date_to) +
-                ". Reason for decline: " + leave_reason))
+                ". Reason for update: " + leave_reason))
 
     return jsonify({'message': 'Leave record has been modified.'}), 201
 
