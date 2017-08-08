@@ -33,7 +33,6 @@ export const submitEditLeave = (editLeaveData: Object) => async (
       endDate: editLeaveData.endDate,
       reason: editLeaveData.reason,
       leaveDays: editLeaveData.leaveDays,
-      applicationDays: editLeaveData.applicationDays,
       previousLeaveDays: editLeaveData.previousLeaveDays,
       previousLeaveName: editLeaveData.previousLeaveName,
       previousLeaveType: editLeaveData.previousLeaveType,
