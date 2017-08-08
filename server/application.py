@@ -840,6 +840,24 @@ def edit_approved_leave():
             session.commit()
             updated_leave_balance = float(userRecord.christmas) - leave_days
 
+        # Send email
+        send_email(
+            leaveRecord.user.email, "Leave application update",
+            ("Your " + previous_leave_name + " leave application for " +
+             str(previous_leave_days) + " day(s) from " + previous_start_date +
+             " to " + previous_end_date +
+             " has been modified. Your updated leave application is for " +
+             leave_name + " leave for " + str(leave_days) + " day(s) from " +
+             date_from + " to " + date_to + ". " + "Your previous " +
+             previous_leave_name + " leave balance was " +
+             str(previous_leave_balance) + " day(s). Your updated " +
+             previous_leave_name + " leave balance is " +
+             str(previous_updated_leave_balance) + " day(s). " +
+             "Your previous " + leave_name + " leave balance was " +
+             str(previous_new_leave_balance) + " day(s). Your updated " +
+             leave_name + " leave balance is " + str(updated_leave_balance) +
+             " day(s)." + " Reason for update: " + leave_reason))
+
     if leave_name == previous_leave_name:
         if leave_days != previous_leave_days:
             if leave_days > previous_leave_days:
@@ -967,18 +985,19 @@ def edit_approved_leave():
                 previous_leave_balance = userRecord.bereavement
                 updated_leave_balance = userRecord.bereavement
 
-    # Send email
-    send_email(leaveRecord.user.email, "Leave application update",
-               ("Your " + previous_leave_name + " leave application for " +
-                str(previous_leave_days) + " day(s) from " +
-                previous_start_date + " to " + previous_end_date +
-                " has been modified. Your updated leave application is for " +
-                leave_name + " leave for " + str(leave_days) + " day(s) from "
-                + date_from + " to " + date_to + ". Your previous " +
-                previous_leave_name + " leave balance was " +
-                str(previous_leave_balance) + " day(s). Your updated " +
-                leave_name + " leave balance is " + str(updated_leave_balance)
-                + " day(s). Reason for update: " + leave_reason))
+        # Send email
+        send_email(
+            leaveRecord.user.email, "Leave application update",
+            ("Your " + previous_leave_name + " leave application for " +
+             str(previous_leave_days) + " day(s) from " + previous_start_date +
+             " to " + previous_end_date +
+             " has been modified. Your updated leave application is for " +
+             leave_name + " leave for " + str(leave_days) + " day(s) from " +
+             date_from + " to " + date_to + ". Your previous " +
+             previous_leave_name + " leave balance was " +
+             str(previous_leave_balance) + " day(s). Your updated " +
+             leave_name + " leave balance is " + str(updated_leave_balance) +
+             " day(s). Reason for update: " + leave_reason))
 
     return jsonify({'message': 'Leave record has been modified.'}), 201
 
