@@ -292,7 +292,6 @@ export default class ApprovedLeaveList extends Component {
       endDate: eDate,
       reason: reason,
       leaveDays: myLeaveDays,
-      applicationDays: applicationDays,
       previousLeaveDays: previousLeaveDays,
       previousLeaveName: previousLeaveName,
       previousLeaveType: previousLeaveType,
