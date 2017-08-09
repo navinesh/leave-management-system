@@ -17,6 +17,8 @@ from sqlalchemy.ext.declarative import declarative_base
 
 from datetime import datetime
 
+from decimal import Decimal
+
 # https://pypi.python.org/pypi/Flask-Cors/1.10.3
 from flask_cors import cross_origin
 
@@ -50,6 +52,10 @@ from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
 from email.MIMEBase import MIMEBase
 from email import encoders
+
+
+def format_number(i):
+    return '%g' % (Decimal(str(i)))
 
 
 # Send email
