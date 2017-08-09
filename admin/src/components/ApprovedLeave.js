@@ -253,25 +253,19 @@ export default class ApprovedLeaveList extends Component {
       ) {
         const totalDays = {
           annual: () => {
-            return parseInt(annualDays, 10) + parseInt(previousLeaveDays, 10);
+            return annualDays + previousLeaveDays;
           },
           sick: () => {
-            return parseInt(sickDays, 10) + parseInt(previousLeaveDays, 10);
+            return sickDays + previousLeaveDays;
           },
           bereavement: () => {
-            return (
-              parseInt(bereavementDays, 10) + parseInt(previousLeaveDays, 10)
-            );
+            return bereavementDays + previousLeaveDays;
           },
           christmas: () => {
-            return (
-              parseInt(christmasDays, 10) + parseInt(previousLeaveDays, 10)
-            );
+            return christmasDays + previousLeaveDays;
           },
           maternity: () => {
-            return (
-              parseInt(maternityDays, 10) + parseInt(previousLeaveDays, 10)
-            );
+            return maternityDays + previousLeaveDays;
           }
         };
         return totalDays[type]();
