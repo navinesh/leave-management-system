@@ -870,6 +870,10 @@ def edit_approved_leave():
             session.add(userRecord)
             session.commit()
 
+        if leave_name == 'lwop' or leave_name == 'other':
+            previous_new_leave_balance = 0
+            updated_leave_balance = 0
+
         # Send email
         send_email(leaveRecord.user.email, "Leave application update", (
             "Your " + previous_leave_name + " leave application for " + str(
@@ -1015,6 +1019,10 @@ def edit_approved_leave():
             if leave_name == 'bereavement':
                 previous_leave_balance = userRecord.bereavement
                 updated_leave_balance = userRecord.bereavement
+
+            if leave_name == 'lwop' or leave_name == 'other':
+                previous_leave_balance = 0
+                updated_leave_balance = 0
 
         # Send email
         send_email(leaveRecord.user.email, "Leave application update", (
