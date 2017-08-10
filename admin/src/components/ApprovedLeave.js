@@ -565,7 +565,7 @@ export default class ApprovedLeaveList extends Component {
                           type="submit"
                           className="btn btn-primary ml-2 mr-3"
                         >
-                          Cancel
+                          Submit
                         </button>
                       </div>
                       <div className="text-primary text-center">
