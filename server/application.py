@@ -1070,6 +1070,9 @@ def cancel_approved_leave():
             'message': 'Cannot find this record in the database.'
         }), 200
 
+    start_date = leaveRecord.start_date
+    end_date = leaveRecord.end_date
+
     leaveRecord.leave_status = leave_status
     leaveRecord.date_reviewed = str(datetime.now().date())
     session.add(leaveRecord)
@@ -1083,29 +1086,59 @@ def cancel_approved_leave():
     session.commit()
 
     if leave_name == 'annual':
+        previous_leave_balance = userRecord.annual
+        updated_leave_balance = float(userRecord.annual) + leave_days
+
         userRecord.annual = float(userRecord.annual) + leave_days
         session.add(userRecord)
         session.commit()
 
     if leave_name == 'sick':
+        previous_leave_balance = userRecord.sick
+        updated_leave_balance = float(userRecord.sick) + leave_days
+
         userRecord.sick = float(userRecord.sick) + leave_days
         session.add(userRecord)
         session.commit()
 
     if leave_name == 'christmas':
+        previous_leave_balance = userRecord.christmas
+        updated_leave_balance = float(userRecord.christmas) + leave_days
+
         userRecord.christmas = float(userRecord.christmas) + leave_days
         session.add(userRecord)
         session.commit()
 
     if leave_name == 'maternity':
+        previous_leave_balance = userRecord.maternity
+        updated_leave_balance = float(userRecord.maternity) + leave_days
+
         userRecord.maternity = float(userRecord.maternity) + leave_days
         session.add(userRecord)
         session.commit()
 
     if leave_name == 'bereavement':
+        previous_leave_balance = userRecord.bereavement
+        updated_leave_balance = float(userRecord.bereavement) + leave_days
+
         userRecord.bereavement = float(userRecord.bereavement) + leave_days
         session.add(userRecord)
         session.commit()
+
+    if leave_name == 'lwop' or leave_name == 'other':
+        previous_leave_balance = 0
+        updated_leave_balance = 0
+
+    # Send email
+    send_email(
+        userRecord.email, "Leave application cancelled",
+        ("Your " + leave_name + " leave application for " + str(
+            format_number(leave_days)) + " day(s) from " + start_date + " to "
+         + end_date + " has been cancelled. Your previous " + leave_name +
+         " leave balance was " + str(format_number(previous_leave_balance)) +
+         " day(s). Your updated " + leave_name + " leave balance is " + str(
+             format_number(updated_leave_balance)) +
+         " day(s). Reason for update: " + cancel_reason))
 
     return jsonify({'message': 'Leave has been cancelled.'}), 201
 
