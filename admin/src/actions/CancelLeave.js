@@ -32,7 +32,7 @@ export const submitCancelLeave = (cancelLeaveData: Object) => async (
     dispatch(requestCancelLeave(cancelLeaveData));
     const response = await axios.post('http://localhost:8080/cancelleave', {
       leaveID: cancelLeaveData.leaveID,
-      cancelReason: cancelLeaveData.cancelReason,
+      cancelReason: cancelLeaveData.reason,
       userID: cancelLeaveData.userID,
       leaveDays: cancelLeaveData.leaveDays,
       leaveName: cancelLeaveData.leaveName,
