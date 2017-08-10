@@ -4,7 +4,7 @@
   "private": true,
   "devDependencies": {
     "flow-bin": "^0.47.0",
-    "react-scripts": "1.0.7"
+    "react-scripts": "1.0.11"
   },
   "dependencies": {
     "axios": "^0.16.2",
@@ -16,7 +16,7 @@
     "react-dom": "^15.6.0",
     "react-redux": "^5.0.5",
     "react-router-dom": "^4.1.2",
-    "react-scripts": "1.0.10",
+    "react-scripts": "1.0.11",
     "redux": "^3.6.0",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0"
