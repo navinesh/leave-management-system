@@ -635,14 +635,14 @@ export default class StaffRecordList extends Component {
                     </p>}
                 <li className="list-group-item">
                   <button
-                    className="btn btn-primary btn-sm"
+                    className="btn btn-link text-primary"
                     onClick={this.handleOpenEdit}
                     id={record.id}
                   >
                     Edit
                   </button>
                   <button
-                    className="btn btn-primary btn-sm ml-3"
+                    className="btn btn-link text-primary"
                     onClick={this.handleOpenArchive}
                     id={record.id}
                   >
