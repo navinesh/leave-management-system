@@ -489,8 +489,7 @@ def modify_user():
 @app.route('/archiveuser', methods=['POST'])
 @cross_origin()
 def archive_user():
-    "archive user record"
-
+    """Archive user"""
     user_id = request.json.get('user_id')
     isArchived = request.json.get('isArchived')
     archiveReason = request.json.get('archiveReason')
@@ -509,8 +508,7 @@ def archive_user():
 @app.route('/unarchiveuser', methods=['POST'])
 @cross_origin()
 def un_archive_user():
-    "unarchive user record"
-
+    """Unarchive user"""
     user_id = request.json.get('user_id')
     isArchived = request.json.get('isArchived')
 
@@ -527,8 +525,7 @@ def un_archive_user():
 @app.route('/public-holiday.api/')
 @cross_origin()
 def public_holiday_JSON():
-    '''view public holidays'''
-
+    """API to view public holidays"""
     public_holiday_record = session.query(Publicholiday).all()
 
     return jsonify(
@@ -1228,6 +1225,7 @@ def cancel_approved_leave():
 @app.route('/leave-updates.api')
 @cross_origin()
 def user_updates_JSON():
+    """API to view user record updates"""
     leaveUpdates = session.query(Userupdates).all()
 
     return jsonify(leave_updates=[x.serialize for x in leaveUpdates]), 201
@@ -1237,6 +1235,7 @@ def user_updates_JSON():
 @app.route('/leave-updates.api')
 @cross_origin()
 def leave_updates_JSON():
+    """API to view leave leave record updates"""
     leaveUpdates = session.query(Leaveupdates).all()
 
     return jsonify(leave_updates=[x.serialize for x in leaveUpdates]), 201
@@ -1247,6 +1246,7 @@ def leave_updates_JSON():
 @cross_origin()
 @auth.login_required
 def user_detail_JSON():
+    """API to view staffs record"""
     user = g.user
     '''if not user.user_id:
         return jsonify({'message': 'Missing arguments!'})
@@ -1264,6 +1264,7 @@ def user_detail_JSON():
 @cross_origin()
 @auth.login_required
 def user_record_JSON():
+    """API to view staff records"""
     user = g.user
     '''user_id = request.json.get('user_id')
     if not user_id:
@@ -1284,7 +1285,7 @@ def user_record_JSON():
 @app.route('/leave.api')
 @cross_origin()
 def leaveJSON():
-    """API to provide leave calendar"""
+    """API to view leave calendar"""
     leave_records = session.query(Leaverecord).filter_by(
         leave_status='approved')
     leave_list = []
@@ -1300,8 +1301,7 @@ def leaveJSON():
 @app.route('/pending-leave.api')
 @cross_origin()
 def pending_leave_record_JSON():
-    """API to pending leave"""
-
+    """API to view pending leave"""
     leave_records = session.query(Leaverecord).filter_by(
         leave_status='pending')
     leave_list = []
@@ -1318,7 +1318,7 @@ def pending_leave_record_JSON():
 @app.route('/approved-leave.api')
 @cross_origin()
 def approved_leave_record_JSON():
-    """API to approved leave"""
+    """API to view approved leave"""
     leave_records = session.query(Leaverecord).filter_by(
         leave_status='approved')
     leave_list = []
@@ -1335,6 +1335,7 @@ def approved_leave_record_JSON():
 @app.route('/staff-record.api')
 @cross_origin()
 def staff__record_JSON():
+    """API to view staff record"""
     user = session.query(User).filter_by(
         isArchived="False").order_by(User.othernames).all()
     return jsonify(staff_record=[u.serialize for u in user])
@@ -1344,6 +1345,7 @@ def staff__record_JSON():
 @app.route('/archived-staff-record.api')
 @cross_origin()
 def archived_staff__record_JSON():
+    """API to view archived staff record"""
     user = session.query(User).filter_by(
         isArchived="True").order_by(User.othernames).all()
     return jsonify(archived_staff_record=[u.serialize for u in user])
@@ -1353,6 +1355,7 @@ def archived_staff__record_JSON():
 @app.route('/leave-record.api')
 @cross_origin()
 def leaverecordJSON():
+    """API to view leave record"""
     leave_records = session.query(Leaverecord).all()
     leave_list = []
     for x in leave_records:
@@ -1368,8 +1371,7 @@ def leaverecordJSON():
 @app.route('/sicksheet-record.api')
 @cross_origin()
 def sick_sheet_record_JSON():
-    """API to sick sheet record"""
-
+    """API to view sick sheet record"""
     leave_records = session.query(Leaverecord).filter(
         Leaverecord.file_name != None)
 
