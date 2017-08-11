@@ -390,6 +390,12 @@ def new_user():
     user.hash_password(password)
     session.add(user)
     session.commit()
+
+    # Send email
+    send_email(email, "Leave Management System", (
+        "Your Leave Management System account has been created. Your password is: "
+        + password))
+
     return jsonify({'message': 'User has been successfully added.'}), 201
 
 
