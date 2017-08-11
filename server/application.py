@@ -354,6 +354,20 @@ def show_image_home(filename):
 @app.route('/adduser', methods=['POST'])
 @cross_origin()
 def new_user():
+    """Add new user
+    Args:
+        surname: surname of the user
+        othernames: othernames of the user
+        email: email address of the user
+        designation: deisgnation of the user
+        gender: gender of the user
+        annual: annual leave days balance
+        sick: sick leave days balance
+        christmas: christmas leave days balance
+        bereavement: bereavement leave days balance
+        date_of_birth: date of birth of the user
+        maternity: maternity leave days balance
+    """
     surname = request.json.get('surname')
     othernames = request.json.get('othernames')
     email = request.json.get('email')
