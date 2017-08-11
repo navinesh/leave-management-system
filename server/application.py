@@ -473,6 +473,7 @@ def modify_user():
     session.add(userUpdates)
     session.commit()
 
+    # Send email
     send_email(email, "Leave record update", message)
 
     return jsonify({'message': 'User record has been updated.'}), 201
