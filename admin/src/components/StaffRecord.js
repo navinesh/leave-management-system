@@ -425,7 +425,6 @@ export default class StaffRecordList extends Component {
                             <div className="form-group">
                               <label htmlFor="annualLeave">Annual leave</label>
                               <input
-                                type="number"
                                 className="form-control"
                                 defaultValue={record.annual}
                                 ref={input => (this.annual = input)}
@@ -436,7 +435,6 @@ export default class StaffRecordList extends Component {
                             <div className="form-group">
                               <label htmlFor="sickLeave">Sick leave</label>
                               <input
-                                type="number"
                                 className="form-control"
                                 defaultValue={record.sick}
                                 ref={input => (this.sick = input)}
@@ -451,7 +449,6 @@ export default class StaffRecordList extends Component {
                                 Christmas leave
                               </label>
                               <input
-                                type="number"
                                 className="form-control"
                                 defaultValue={record.christmas}
                                 ref={input => (this.christmas = input)}
@@ -464,7 +461,6 @@ export default class StaffRecordList extends Component {
                                 Bereavement leave
                               </label>
                               <input
-                                type="number"
                                 className="form-control"
                                 defaultValue={record.bereavement}
                                 ref={input => (this.bereavement = input)}
@@ -480,7 +476,6 @@ export default class StaffRecordList extends Component {
                                   Maternity leave
                                 </label>
                                 <input
-                                  type="number"
                                   className="form-control"
                                   defaultValue={record.maternity}
                                   ref={input => (this.maternity = input)}
