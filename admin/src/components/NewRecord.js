@@ -362,7 +362,7 @@ export default class NewRecordForm extends Component {
               </div>
             </form>
             <div className="text-primary text-center">
-              {isFetching ? <div className="loader1" /> : message}
+              {isFetching ? <div className="loader" /> : message}
             </div>
             <div className="text-danger text-center">
               <div>
