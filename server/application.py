@@ -1128,7 +1128,7 @@ def edit_approved_leave():
 def cancel_approved_leave():
     """Cancels approved leave.
     Args:
-        id (int): the approved leave id to delete
+        id (int): the approved leave id to cancel
     """
     id = request.json.get('leaveID')
     cancel_reason = request.json.get('cancelReason')
