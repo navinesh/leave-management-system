@@ -371,7 +371,7 @@ def new_user():
 
     if session.query(User).filter_by(email=email).first() is not None:
         user = session.query(User).filter_by(email=email).first()
-        return jsonify({'message': 'user already exists'}), 200
+        return jsonify({'message': 'User already exists'}), 200
 
     user = User(
         email=email,
