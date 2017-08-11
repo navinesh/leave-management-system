@@ -265,12 +265,20 @@ def apply_for_leave():
 @app.route('/archivedstaffrecord')
 @app.route('/publicholiday')
 def show_admin_home():
+    """Render admin index html"""
     return render_template('index.html')
 
 
 # Add admin user
 @app.route('/addadminuser', methods=['POST'])
 def new_admin_user():
+    """Add admin user
+    Args:
+        email: email address of the user
+        password: admin password
+        surname: surname of the user
+        othernames: othernames of the user
+    """
     email = request.json.get('email')
     password = request.json.get('password')
     surname = request.json.get('surname')
