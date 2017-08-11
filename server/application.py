@@ -294,7 +294,11 @@ def new_admin_user():
 @app.route('/adminlogin', methods=['POST'])
 @cross_origin()  # allow all origins all methods.
 def validate_admin():
-    """ """
+    """Admin login
+    Args:
+        email (string): admin email address
+        password (string): admin password
+    """
     email = request.json.get('email')
     password = request.json.get('password')
 
@@ -323,7 +327,10 @@ def validate_admin():
 @app.route('/admintoken', methods=['POST'])
 @cross_origin()  # allow all origins all methods.
 def validate_admin_token():
-    """ """
+    """Validates admin token
+    Args:
+        auth_token (string): auth token
+    """
     auth_token = request.json.get('admin_token')
     if auth_token is None:
         return jsonify({'message': 'Missing arguments!'})
@@ -343,7 +350,7 @@ def validate_admin_token():
 @app.route('/sicksheetrecord/<filename>')
 @cross_origin()
 def show_image_home(filename):
-    """Serves uploaded sick sheets for page view.
+    """Serves uploaded sick sheets for page view
     Args:
         filename (string): the file name to serve
     """
