@@ -276,7 +276,6 @@ export default class PendingLeaveList extends Component {
 
     const userRecord = pending_items.filter(e => e.id === leaveID);
 
-    const userID = userRecord[0].user_id;
     const leaveDays = userRecord[0].leave_days;
     const leaveName = userRecord[0].leave_name;
 
@@ -285,7 +284,6 @@ export default class PendingLeaveList extends Component {
     const approveLeaveData = {
       leaveID: leaveID,
       leaveStatus: leaveStatus,
-      userID: userID,
       leaveDays: leaveDays,
       leaveName: leaveName
     };
