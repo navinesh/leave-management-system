@@ -719,7 +719,22 @@ def decline_leave():
 @app.route('/editleave', methods=['POST'])
 @cross_origin()
 def edit_leave():
-    "edit leave"
+    """Edit leave
+    Args:
+        leave_id (int): the leave id to edit
+        leave_name: name of leave
+        leave_type: type of leave
+        date_from: leave start date
+        date_to: leave end date
+        leave_reason: reason for editing leave
+        leave_days: number of leave days
+        application_days: leave balance
+        previous_leave_days: number of previous leave days
+        previous_leave_name: name of previous leave
+        previous_leave_type: type pf previous leave
+        previous_start_date: previous leave start date
+        previous_end_date: previous leave end date
+    """
     leave_id = request.json.get('leave_id')
     leave_name = request.json.get('leave')
     leave_type = request.json.get('leaveType')
@@ -785,7 +800,21 @@ def edit_leave():
 @app.route('/editapprovedleave', methods=['POST'])
 @cross_origin()
 def edit_approved_leave():
-    "edit leave"
+    """Edit approved leave
+    Args:
+        leave_id (int): the leave id to edit
+        leave_name: name of leave
+        leave_type: type of leave
+        date_from: leave start date
+        date_to: leave end date
+        leave_reason: reason for editing leave
+        leave_days: number of leave days
+        previous_leave_days: number of previous leave days
+        previous_leave_name: name of previous leave
+        previous_leave_type: type pf previous leave
+        previous_start_date: previous leave start date
+        previous_end_date: previous leave end date
+    """
     leave_id = request.json.get('leave_id')
     leave_name = request.json.get('leave')
     leave_type = request.json.get('leaveType')
