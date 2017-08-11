@@ -589,7 +589,7 @@ def delete_public_holiday():
 def approve_leave():
     """Approve leave
     Args:
-        leave_id (int): the leave id to edit
+        leave_id (int): the leave id to approve
         leave_status: status of leave
         leave_days: number of leave days
         leave_name: name of the leave
@@ -683,7 +683,7 @@ def approve_leave():
 def decline_leave():
     """Decline leave
     Args:
-        leave_id (int): the leave id to edit
+        leave_id (int): the leave id to decline
         leave_status: status of leave
         decline_reason: reason for declining leave
     """
