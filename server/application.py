@@ -539,7 +539,10 @@ def public_holiday_JSON():
 @app.route('/addpublicholiday', methods=['POST'])
 @cross_origin()
 def add_public_holiday():
-    "add public holidays"
+    """Adds public holiday
+    Args:
+        holiday_date (date): date for public holiday
+    """
 
     holiday_date = request.json.get('holidayDate')
 
@@ -560,7 +563,7 @@ def add_public_holiday():
 @app.route('/deletepublicholiday', methods=['POST'])
 @cross_origin()
 def delete_public_holiday():
-    """Deletes public holiday.
+    """Deletes public holiday
     Args:
         id (int): the public holiday id to delete
     """
@@ -584,10 +587,15 @@ def delete_public_holiday():
 @app.route('/approveleave', methods=['POST'])
 @cross_origin()
 def approve_leave():
-    "approve leave"
+    """Approve leave
+    Args:
+        leave_id (int): the leave id to edit
+        leave_status: status of leave
+        leave_days: float(request.json.get('leaveDays'))
+        leave_name: request.json.get('leaveName')
+    """
     leave_id = request.json.get('leave_id')
     leave_status = request.json.get('leaveStatus')
-    user_id = request.json.get('userID')
     leave_days = float(request.json.get('leaveDays'))
     leave_name = request.json.get('leaveName')
 
@@ -598,7 +606,7 @@ def approve_leave():
             'message': 'Cannot find this record in the database.'
         }), 200
 
-    userRecord = session.query(User).filter_by(id=user_id).one()
+    userRecord = session.query(User).filter_by(id=leaveRecord.user_id).one()
 
     if leave_name == 'annual':
         annual = float(userRecord.annual) - leave_days
@@ -650,18 +658,21 @@ def approve_leave():
             session.add(userRecord)
             session.commit()
 
+    if leave_name == 'lwop' or leave_name == 'other':
+        leave_balance = 0
+
     leaveRecord.leave_status = leave_status
     leaveRecord.date_reviewed = str(datetime.now().date())
     session.add(leaveRecord)
     session.commit()
 
     # Send email
-    send_email(
-        leaveRecord.user.email, "Leave application approved",
-        ("Your " + leave_name + " leave application for " + str(leave_days) +
-         " day(s) from " + leaveRecord.start_date + " to " +
-         leaveRecord.end_date + " has been aprroved. " + "Your new " +
-         leave_name + " leave balance is " + str(leave_balance) + " day(s)."))
+    send_email(userRecord.email, "Leave application approved", (
+        "Your " + leave_name + " leave application for " + str(
+            format_number(leave_days)) + " day(s) from " +
+        leaveRecord.start_date + " to " + leaveRecord.end_date +
+        " has been aprroved. " + "Your new " + leave_name +
+        " leave balance is " + str(format_number(leave_balance)) + " day(s)."))
 
     return jsonify({'message': 'Leave has been approved.'}), 201
 
