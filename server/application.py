@@ -591,8 +591,8 @@ def approve_leave():
     Args:
         leave_id (int): the leave id to edit
         leave_status: status of leave
-        leave_days: float(request.json.get('leaveDays'))
-        leave_name: request.json.get('leaveName')
+        leave_days: number of leave days
+        leave_name: name of the leave
     """
     leave_id = request.json.get('leave_id')
     leave_status = request.json.get('leaveStatus')
@@ -681,7 +681,12 @@ def approve_leave():
 @app.route('/declineleave', methods=['POST'])
 @cross_origin()
 def decline_leave():
-    "decline leave"
+    """Decline leave
+    Args:
+        leave_id (int): the leave id to edit
+        leave_status: status of leave
+        decline_reason: reason for declining leave
+    """
     leave_id = request.json.get('leave_id')
     leave_status = request.json.get('LeaveStatus')
     decline_reason = request.json.get('DeclineReason')
