@@ -403,8 +403,22 @@ def new_user():
 @app.route('/modifyuser', methods=['POST'])
 @cross_origin()
 def modify_user():
-    "modify user record"
-
+    """Modify user leave records
+    Args:
+        user_id (int): the user id to edit
+        surname: surname of the user
+        othernames: othernames of the user
+        email: email address of the user
+        designation: deisgnation of the user
+        gender: gender of the user
+        annual: annual leave days balance
+        sick: sick leave days balance
+        christmas: christmas leave days balance
+        bereavement: bereavement leave days balance
+        date_of_birth: date of birth of the user
+        maternity: maternity leave days balance
+        editReason: reason for editing leave record
+    """
     user_id = request.json.get('user_id')
     surname = request.json.get('surname')
     othernames = request.json.get('othernames')
