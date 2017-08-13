@@ -123,7 +123,7 @@ export default class UserChange extends Component {
         </form>
         <div className="text-danger text-center">
           {this.props.isFetching
-            ? <div className="loader1" />
+            ? <div className="loader" />
             : this.props.message}
         </div>
         <div className="text-danger text-center">
