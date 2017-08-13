@@ -171,6 +171,11 @@ def validate_user_token():
 @auth.login_required
 @cross_origin()
 def change_user_password():
+    """Change password
+    Args:
+        old_password: old password
+        new_password: new password
+    """
     old_password = request.json.get('oldPassword')
     new_password = request.json.get('newPassword')
 
