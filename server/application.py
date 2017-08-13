@@ -225,6 +225,12 @@ def apply_for_leave():
     application_days = request.form['applicationDays']
     leave_status = 'pending'
 
+    if session.query(User).filter_by(id=user_id).one() is None:
+        return jsonify({
+            'message':
+            'This user could not be found in the database.'
+        }), 200
+
     userRecord = session.query(User).filter_by(id=user_id).one()
 
     if leave_name == 'annual':
