@@ -195,6 +195,10 @@ def change_user_password():
     session.add(user)
     session.commit()
 
+    # Send email
+    send_email([user.email], "Leave application",
+               ("Your password has been reset to: " + new_password))
+
     return jsonify({
         'message': 'Your password has been successfully changed.'
     }), 201
