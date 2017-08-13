@@ -198,7 +198,21 @@ def change_user_password():
 @app.route('/applyforleave', methods=['POST'])
 @cross_origin()
 def apply_for_leave():
-    """ """
+    """Apply for leave
+    Args:
+        user_id (int): the user id
+        leave_name: name of leave
+        leave_type: type of leave
+        date_from: leave start date
+        date_to: leave end date
+        supervisor_email: supervisor email address
+        secretary_email: secretary email address
+        leave_reason: reason for leave
+        leave_days: number of leave days
+        application_days: leave balance
+        leave_status: leave status
+        sickSheet: sick sheet file
+    """
     user_id = request.form['user_id']
     leave_name = request.form['leave']
     leave_type = request.form['leaveType']
@@ -583,7 +597,6 @@ def add_public_holiday():
     Args:
         holiday_date (date): date for public holiday
     """
-
     holiday_date = request.json.get('holidayDate')
 
     if session.query(Publicholiday).filter_by(
@@ -1438,7 +1451,7 @@ def show_home(path):
 @app.errorhandler(404)
 def page_not_found(error):
     """Redirect user to error page if requested
-    page does not exist."""
+    page does not exist"""
     return render_template('error.html'), 404
 
 
