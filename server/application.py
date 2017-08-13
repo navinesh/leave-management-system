@@ -309,6 +309,8 @@ def apply_for_leave():
     session.commit()
 
     # Send email
+    to_address_list = [userRecord.email, supervisor_email, secretary_email]
+
     send_email(
         to_address_list, "Leave application",
         (userRecord.othernames + " " + userRecord.surname + " applied for " +
@@ -489,7 +491,7 @@ def new_user():
     session.commit()
 
     # Send email
-    send_email(email, "Leave Management System", (
+    send_email([email], "Leave Management System", (
         "Your Leave Management System account has been created. Your password is: "
         + password))
 
@@ -591,7 +593,7 @@ def modify_user():
     session.commit()
 
     # Send email
-    send_email(email, "Leave record update", message)
+    send_email([email], "Leave record update", message)
 
     return jsonify({'message': 'User record has been updated.'}), 201
 
@@ -774,7 +776,7 @@ def approve_leave():
     session.commit()
 
     # Send email
-    send_email(userRecord.email, "Leave application approved", (
+    send_email([userRecord.email], "Leave application approved", (
         "Your " + leave_name + " leave application for " + str(
             format_number(leave_days)) + " day(s) from " +
         leaveRecord.start_date + " to " + leaveRecord.end_date +
@@ -813,7 +815,7 @@ def decline_leave():
     session.commit()
 
     # Send email
-    send_email(leaveRecord.user.email, "Leave application declined",
+    send_email([leaveRecord.user.email], "Leave application declined",
                ("Your " + leaveRecord.leave_name + " leave application for " +
                 str(leaveRecord.leave_days) + " day(s) from " +
                 leaveRecord.start_date + " to " + leaveRecord.end_date +
@@ -892,7 +894,7 @@ def edit_leave():
     session.commit()
 
     # Send email
-    send_email(leaveRecord.user.email, "Leave application edited", (
+    send_email([leaveRecord.user.email], "Leave application edited", (
         "Your " + previous_leave_name + " leave application for " +
         str(previous_leave_days) + " day(s) from " + previous_start_date +
         " to " + previous_end_date +
@@ -1063,7 +1065,7 @@ def edit_approved_leave():
             updated_leave_balance = 0
 
         # Send email
-        send_email(leaveRecord.user.email, "Leave application update", (
+        send_email([leaveRecord.user.email], "Leave application update", (
             "Your " + previous_leave_name + " leave application for " + str(
                 format_number(previous_leave_days)) + " day(s) from " +
             previous_start_date + " to " + previous_end_date +
@@ -1213,7 +1215,7 @@ def edit_approved_leave():
                 updated_leave_balance = 0
 
         # Send email
-        send_email(leaveRecord.user.email, "Leave application update", (
+        send_email([leaveRecord.user.email], "Leave application update", (
             "Your " + previous_leave_name + " leave application for " + str(
                 format_number(previous_leave_days)) + " day(s) from " +
             previous_start_date + " to " + previous_end_date +
@@ -1319,7 +1321,7 @@ def cancel_approved_leave():
 
     # Send email
     send_email(
-        userRecord.email, "Leave application cancelled",
+        [userRecord.email], "Leave application cancelled",
         ("Your " + leave_name + " leave application for " + str(
             format_number(leave_days)) + " day(s) from " + start_date + " to "
          + end_date + " has been cancelled. Your previous " + leave_name +
