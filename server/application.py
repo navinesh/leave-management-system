@@ -54,6 +54,7 @@ from email.MIMEBase import MIMEBase
 from email import encoders
 
 
+# Remove trailing zeros from decimal
 def format_number(i):
     return '%g' % (Decimal(str(i)))
 
