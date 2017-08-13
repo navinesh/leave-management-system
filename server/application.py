@@ -66,7 +66,7 @@ def send_email(toaddr, subject, body):
     msg = MIMEMultipart()
 
     msg['From'] = fromaddr
-    msg['To'] = toaddr
+    msg['To'] = ", ".join(toaddr)
     msg['Subject'] = subject
 
     html = """\
@@ -225,6 +225,32 @@ def apply_for_leave():
     application_days = request.form['applicationDays']
     leave_status = 'pending'
 
+    userRecord = session.query(User).filter_by(id=user_id).one()
+
+    if leave_name == 'annual':
+        current_leave_balance = userRecord.annual
+        new_leave_balance = application_days
+
+    if leave_name == 'sick':
+        current_leave_balance = userRecord.sick
+        new_leave_balance = application_days
+
+    if leave_name == 'christmas':
+        current_leave_balance = userRecord.christmas
+        new_leave_balance = application_days
+
+    if leave_name == 'bereavement':
+        current_leave_balance = userRecord.bereavement
+        new_leave_balance = application_days
+
+    if leave_name == 'maternity':
+        current_leave_balance = userRecord.maternity
+        new_leave_balance = application_days
+
+    if leave_name == 'lwop' or leave_name == 'other' or leave_name == 'birthday':
+        current_leave_balance = 0
+        new_leave_balance = 0
+
     # fetch sick sheet file
     if 'sickSheet' not in request.files:
         new_file_name = None
@@ -265,6 +291,18 @@ def apply_for_leave():
             session.add(leaverecord)
 
     session.commit()
+
+    # Send email
+    send_email(
+        to_address_list, "Leave application",
+        (userRecord.othernames + " " + userRecord.surname + " applied for " +
+         str(format_number(leave_days)) + " day(s) of " + leave_name +
+         " leave from " + date_from + " to " + date_to + ". Current " +
+         leave_name + " leave balance is " + str(
+             format_number(current_leave_balance)) +
+         " day(s) and uppon approval new balance will be " +
+         str(new_leave_balance) + " day(s)."))
+
     return jsonify({'message': 'Your application has been submitted.'}), 201
 
 
