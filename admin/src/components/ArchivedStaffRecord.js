@@ -224,7 +224,7 @@ export default class ArchivedStaffRecordList extends Component {
                     </p>}
                 <li className="list-group-item">
                   <button
-                    className="btn btn-primary btn-sm"
+                    className="btn btn-link text-primary"
                     onClick={this.handleOpenUnarchive}
                     id={record.id}
                   >
