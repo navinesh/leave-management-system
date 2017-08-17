@@ -62,7 +62,7 @@ const ArchiveUser = props =>
                     Close
                   </button>
                   <button type="submit" className="btn btn-primary ml-2 mr-3">
-                    Save changes
+                    Confirm
                   </button>
                 </div>
                 <div className="text-primary text-center">
