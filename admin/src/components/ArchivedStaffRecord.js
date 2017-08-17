@@ -239,7 +239,7 @@ export default class ArchivedStaffRecordList extends Component {
 
     return (
       <div className="ArchivedStaffRecordList">
-        <Search />
+        <Search handleSearchChange={this.handleSearchChange} />
         <div className="row">
           {filteredElements}
         </div>
