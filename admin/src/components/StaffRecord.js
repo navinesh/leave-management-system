@@ -115,6 +115,7 @@ export default class StaffRecordList extends Component {
   handleCloseEdit: Function;
   handleOpenArchive: Function;
   handleCloseArchive: Function;
+  handleSearchChange: Function;
 
   surname: HTMLInputElement;
   othernames: HTMLInputElement;
