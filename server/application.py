@@ -454,6 +454,44 @@ def validate_admin_token():
             abort(401)
 
 
+# Admin reset password
+@app.route('/admin-reset-password', methods=['POST'])
+@cross_origin()
+def change_admin_password():
+    """Change password
+    Args:
+        email: email address
+    """
+    email = request.json.get('email')
+
+    if email is None:
+        return jsonify({'message': 'Missing argument!'})
+        abort(400)
+
+    admin = session.query(Adminuser).filter_by(email=email).first()
+
+    if not admin:
+        return jsonify({
+            'message':
+            'The username and password you entered did not match our records. \
+            Please double-check and try again.'
+        })
+        abort(401)
+
+    password = ''.join(
+        random.SystemRandom().choice(string.ascii_uppercase + string.digits)
+        for _ in range(8))
+
+    admin.hash_password(password)
+    session.add(admin)
+    session.commit()
+
+    return jsonify({
+        'message':
+        'Your password has been reset. Check your mailbox for new login details.'
+    }), 201
+
+
 # Image function
 @app.route('/<filename>')
 @app.route('/sicksheetrecord/<filename>')
