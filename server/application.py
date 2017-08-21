@@ -19,6 +19,14 @@ from datetime import datetime
 
 from decimal import Decimal
 
+# Import smtplib for the actual sending function
+import smtplib
+# Import email modules
+from email.MIMEMultipart import MIMEMultipart
+from email.MIMEText import MIMEText
+from email.MIMEBase import MIMEBase
+from email import encoders
+
 # https://pypi.python.org/pypi/Flask-Cors/1.10.3
 from flask_cors import cross_origin
 
@@ -45,14 +53,6 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
-# Import smtplib for the actual sending function
-import smtplib
-# Import email modules
-from email.MIMEMultipart import MIMEMultipart
-from email.MIMEText import MIMEText
-from email.MIMEBase import MIMEBase
-from email import encoders
-
 
 # Remove trailing zeros from decimal
 def format_number(i):
@@ -60,7 +60,7 @@ def format_number(i):
 
 
 # Send email
-def send_email(toaddr, subject, body):
+def send_email(toaddr, subject, body, file):
     fromaddr = "FROM_EMAIL_ADDRESS"
     server = smtplib.SMTP('SERVER_IP', PORT_NUMBER)
 
@@ -77,6 +77,18 @@ def send_email(toaddr, subject, body):
     </html>""".format(body=body)
 
     msg.attach(MIMEText(html, 'html'))
+
+    # attach file if available
+    if file:
+        attachment = open(
+            os.path.join(app.config['UPLOAD_FOLDER'], file), "rb")
+        part = MIMEBase('application', 'octet-stream')
+        part.set_payload((attachment).read())
+        encoders.encode_base64(part)
+        part.add_header('Content-Disposition',
+                        "attachment; filename= %s" % file)
+
+        msg.attach(part)
 
     server.starttls()
     server.login(fromaddr, "PASSWORD")
@@ -284,6 +296,22 @@ def apply_for_leave():
             date_posted=str(datetime.now().date()))
 
         session.add(leaverecord)
+        session.commit()
+
+        # Send email
+        to_address_list = [userRecord.email, supervisor_email, secretary_email]
+
+        send_email(
+            to_address_list,
+            "Leave application",
+            (userRecord.othernames + " " + userRecord.surname + " applied for "
+             + str(format_number(leave_days)) + " day(s) of " + leave_name +
+             " leave from " + date_from + " to " + date_to + ". Current " +
+             leave_name + " leave balance is " + str(
+                 format_number(current_leave_balance)) +
+             " day(s) and uppon approval new balance will be " +
+             str(new_leave_balance) + " day(s)."),
+            file=None)
     else:
         file = request.files['sickSheet']  # check if an image was posted
         if file and allowed_file(file.filename):  # check extension
@@ -305,21 +333,23 @@ def apply_for_leave():
                 date_posted=str(datetime.now().date()))
 
             session.add(leaverecord)
+            session.commit()
 
-    session.commit()
+            # Send email
+            to_address_list = [
+                userRecord.email, supervisor_email, secretary_email
+            ]
 
-    # Send email
-    to_address_list = [userRecord.email, supervisor_email, secretary_email]
-
-    send_email(
-        to_address_list, "Leave application",
-        (userRecord.othernames + " " + userRecord.surname + " applied for " +
-         str(format_number(leave_days)) + " day(s) of " + leave_name +
-         " leave from " + date_from + " to " + date_to + ". Current " +
-         leave_name + " leave balance is " + str(
-             format_number(current_leave_balance)) +
-         " day(s) and uppon approval new balance will be " +
-         str(new_leave_balance) + " day(s)."))
+            send_email(
+                to_address_list, "Leave application",
+                (userRecord.othernames + " " +
+                 userRecord.surname + " applied for " + str(
+                     format_number(leave_days)) + " day(s) of " + leave_name +
+                 " leave from " + date_from + " to " + date_to + ". Current " +
+                 leave_name + " leave balance is " + str(
+                     format_number(current_leave_balance)) +
+                 " day(s) and uppon approval new balance will be " +
+                 str(new_leave_balance) + " day(s)."), new_file_name)
 
     return jsonify({'message': 'Your application has been submitted.'}), 201
 
