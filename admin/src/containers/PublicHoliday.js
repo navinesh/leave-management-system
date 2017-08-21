@@ -23,8 +23,7 @@ class PublicHoliday extends Component {
 
   componentDidMount() {
     if (this.props.isAuthenticated) {
-      const { dispatch } = this.props;
-      dispatch(fetchPublicHoliday());
+      this.props.dispatch(fetchPublicHoliday());
     }
   }
 
