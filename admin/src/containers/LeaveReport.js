@@ -23,8 +23,7 @@ class LeaveReport extends Component {
 
   componentDidMount() {
     if (this.props.isAuthenticated) {
-      const { dispatch } = this.props;
-      dispatch(fetchLeaveRecord());
+      this.props.dispatch(fetchLeaveRecord());
     }
   }
 
