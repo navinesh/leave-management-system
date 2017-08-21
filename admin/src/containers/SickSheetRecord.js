@@ -23,8 +23,7 @@ class SickSheetRecord extends Component {
 
   componentDidMount() {
     if (this.props.isAuthenticated) {
-      const { dispatch } = this.props;
-      dispatch(fetchSickSheetRecord());
+      this.props.dispatch(fetchSickSheetRecord());
     }
   }
 
