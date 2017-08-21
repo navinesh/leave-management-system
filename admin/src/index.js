@@ -17,6 +17,7 @@ import LeaveReport from './containers/LeaveReport';
 import SickSheetRecord from './containers/SickSheetRecord';
 import NewRecord from './containers/NewRecord';
 import PublicHoliday from './containers/PublicHoliday';
+import AdminResetPassword from './containers/AdminResetPassword';
 import Error from './components/Error';
 
 import { Provider } from 'react-redux';
@@ -59,6 +60,7 @@ const App = () =>
           <PrivateRoute path="/newrecord" component={NewRecord} />
           <PrivateRoute path="/publicholiday" component={PublicHoliday} />
           <Route path="/login" component={AdminLogin} />
+          <Route path="/resetpassword" component={AdminResetPassword} />
           <Route component={Error} />
         </Switch>
       </div>
