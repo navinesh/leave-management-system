@@ -102,6 +102,7 @@ def send_email(toaddr, subject, body, file):
 def verify_password(email_or_token, password):
     # Try to see if it's a token first
     user_id = User.verify_auth_token(email_or_token)
+
     if user_id:
         user = session.query(User).filter_by(id=user_id).one()
     else:
@@ -111,6 +112,7 @@ def verify_password(email_or_token, password):
             return False
 
     g.user = user
+
     return True
 
 
@@ -144,6 +146,7 @@ def validate_user():
         abort(400)
 
     user = session.query(User).filter_by(email=email).first()
+
     if not user or not user.verify_password(password):
         return jsonify({
             'message':
@@ -441,9 +444,11 @@ def validate_admin_token():
         auth_token (string): auth token
     """
     auth_token = request.json.get('admin_token')
+
     if auth_token is None:
         return jsonify({'message': 'Missing arguments!'})
         abort(400)
+
     if auth_token:
         admin_id = Adminuser.verify_auth_token(auth_token)
         if admin_id:
