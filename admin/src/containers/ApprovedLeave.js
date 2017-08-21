@@ -25,8 +25,7 @@ class ApprovedLeave extends Component {
 
   componentDidMount() {
     if (this.props.isAuthenticated) {
-      const { dispatch } = this.props;
-      dispatch(fetchApprovedLeave());
+      this.props.dispatch(fetchApprovedLeave());
     }
   }
 
