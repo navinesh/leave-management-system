@@ -26,8 +26,7 @@ class StaffRecord extends Component {
 
   componentDidMount() {
     if (this.props.isAuthenticated) {
-      const { dispatch } = this.props;
-      dispatch(fetchStaffRecord());
+      this.props.dispatch(fetchStaffRecord());
     }
   }
 
