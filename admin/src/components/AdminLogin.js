@@ -57,48 +57,51 @@ export default class Login extends Component {
     const { isFetching, message } = this.props;
 
     return (
-      <div className="col-md-4 offset-md-4">
-        <div className="card card-block">
-          <form onSubmit={this.handleSubmit}>
-            <div className="form-group">
-              <label htmlFor="email">Email address</label>
-              <input
-                type="email"
-                className="form-control"
-                placeholder="Enter email"
-                id="email"
-                onChange={this.handleEmailChange}
-              />
+      <div className="Login">
+        <h1 className="display-4 text-center pb-4">Leave Management System</h1>
+        <div className="col-md-4 offset-md-4">
+          <div className="card card-block">
+            <form onSubmit={this.handleSubmit}>
+              <div className="form-group">
+                <label htmlFor="email">Email address</label>
+                <input
+                  type="email"
+                  className="form-control"
+                  placeholder="Enter email"
+                  id="email"
+                  onChange={this.handleEmailChange}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="password">Password</label>
+                <input
+                  type="password"
+                  className="form-control"
+                  placeholder="Password"
+                  id="password"
+                  onChange={this.handlePasswordChange}
+                />
+              </div>
+              <div className="form-group">
+                <button type="submit" className="btn btn-primary col">
+                  Log in
+                </button>
+              </div>
+            </form>
+            <div className="text-danger text-center">
+              {isFetching ? <div className="loader" /> : message}
             </div>
-            <div className="form-group">
-              <label htmlFor="password">Password</label>
-              <input
-                type="password"
-                className="form-control"
-                placeholder="Password"
-                id="password"
-                onChange={this.handlePasswordChange}
-              />
+            <div className="text-danger text-center">
+              <div>
+                {this.state.errorMessage}
+              </div>
             </div>
-            <div className="form-group">
-              <button type="submit" className="btn btn-primary col">
-                Log in
-              </button>
-            </div>
-          </form>
-          <div className="text-danger text-center">
-            {isFetching ? <div className="loader" /> : message}
           </div>
-          <div className="text-danger text-center">
-            <div>
-              {this.state.errorMessage}
-            </div>
+          <div className="card card-block mt-3">
+            <Link to="/resetpassword" className="btn">
+              Forgot your password?
+            </Link>
           </div>
-        </div>
-        <div className="card card-block mt-3">
-          <Link to="/resetpassword" className="btn">
-            Forgot your password?
-          </Link>
         </div>
       </div>
     );
