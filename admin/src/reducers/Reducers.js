@@ -19,6 +19,12 @@ import {
 } from '../actions/AdminLogout';
 
 import {
+  REQUEST_PASSWORD_RESET,
+  PASSWORD_RESET_SUCCESS,
+  PASSWORD_RESET_ERROR
+} from '../actions/AdminResetPassword';
+
+import {
   REQUEST_PENDING_LEAVE,
   RECEIVE_PENDING_LEAVE,
   ERROR_PENDING_LEAVE
@@ -191,6 +197,41 @@ const adminAuth = (
         isAuthenticated: false,
         message: '',
         auth_info: ''
+      };
+    default:
+      return state;
+  }
+};
+
+type ResetPassword = {
+  isFetching: boolean,
+  message: string
+};
+
+const resetPassword = (
+  state: ResetPassword = {
+    isFetching: false,
+    message: ''
+  },
+  action
+) => {
+  switch (action.type) {
+    case REQUEST_PASSWORD_RESET:
+      return {
+        ...state,
+        isFetching: true
+      };
+    case PASSWORD_RESET_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        message: action.message
+      };
+    case PASSWORD_RESET_ERROR:
+      return {
+        ...state,
+        isFetching: false,
+        message: action.message
       };
     default:
       return state;
@@ -734,6 +775,7 @@ const cancelLeave = (
 
 const rootReducer = combineReducers({
   adminAuth,
+  resetPassword,
   pendingLeave,
   approvedLeave,
   staffRecord,
