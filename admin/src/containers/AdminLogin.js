@@ -9,16 +9,11 @@ import { Redirect } from 'react-router-dom';
 const AdminLogin = ({ dispatch, message, isAuthenticated, isFetching }) =>
   <div className="AdminLogin">
     {!isAuthenticated
-      ? <div>
-          <h1 className="display-4 text-center pb-4">
-            Leave Management System
-          </h1>
-          <Login
-            isFetching={isFetching}
-            message={message}
-            onLoginClick={creds => dispatch(fetchLogin(creds))}
-          />
-        </div>
+      ? <Login
+          isFetching={isFetching}
+          message={message}
+          onLoginClick={creds => dispatch(fetchLogin(creds))}
+        />
       : <Redirect to="/" />}
   </div>;
 
