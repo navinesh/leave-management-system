@@ -12,7 +12,16 @@ import Moment from 'moment';
 import { extendMoment } from 'moment-range';
 const moment = extendMoment(Moment);
 
-const ApproveLeave = props =>
+type approvedLeaveProps = {
+  pending_items: Array<any>,
+  listID: number,
+  handleApproveLeaveSubmit: Function,
+  handleCloseApproveLeave: Function,
+  isApproveLeaveFetching: boolean,
+  approveLeavemessage: string
+};
+
+const ApproveLeave = (props: approvedLeaveProps) =>
   <div className="col-md-10 offset-md-1">
     {props.pending_items.filter(e => e.id === props.listID).map(record =>
       <div key={record.id}>
@@ -107,36 +116,36 @@ const ApproveLeave = props =>
     )}
   </div>;
 
-export default class PendingLeaveList extends Component {
-  props: {
-    pending_items: Array<any>,
-    public_holiday: Array<any>,
-    onApproveLeaveSubmit: Function,
-    onDeclineLeaveSubmit: Function,
-    onEditLeaveSubmit: Function,
-    isApproveLeaveFetching: boolean,
-    approveLeavemessage: string,
-    isEditLeaveFetching: boolean,
-    editLeaveMessage: string,
-    isDeclineLeaveFetching: boolean,
-    declineLeaveMessage: string,
-    dispatch: Function
-  };
+type Props = {
+  pending_items: Array<any>,
+  public_holiday: Array<any>,
+  onApproveLeaveSubmit: Function,
+  onDeclineLeaveSubmit: Function,
+  onEditLeaveSubmit: Function,
+  isApproveLeaveFetching: boolean,
+  approveLeavemessage: string,
+  isEditLeaveFetching: boolean,
+  editLeaveMessage: string,
+  isDeclineLeaveFetching: boolean,
+  declineLeaveMessage: string,
+  dispatch: Function
+};
 
-  state: {
-    errorMessage: string,
-    declineReason: string,
-    editReason: string,
-    listID: number,
-    startDate: any,
-    endDate: any,
-    isApproving: boolean,
-    approveSuccess: boolean,
-    isEditing: boolean,
-    isDeclining: boolean,
-    focusedInput: ?boolean
-  };
+type State = {
+  errorMessage: string,
+  declineReason: string,
+  editReason: string,
+  listID: number,
+  startDate: any,
+  endDate: any,
+  isApproving: boolean,
+  approveSuccess: boolean,
+  isEditing: boolean,
+  isDeclining: boolean,
+  focusedInput: ?boolean
+};
 
+export default class PendingLeaveList extends Component<Props, State> {
   handleOpenEdit: Function;
   handleCloseEdit: Function;
   handleOpenDecline: Function;
@@ -149,10 +158,10 @@ export default class PendingLeaveList extends Component {
   handleEditReason: Function;
   handleEditSubmit: Function;
 
-  leave_name: HTMLInputElement;
-  leave_type: HTMLInputElement;
-  startDate: HTMLInputElement;
-  endDate: HTMLInputElement;
+  leave_name: any;
+  leave_type: any;
+  startDate: any;
+  endDate: any;
 
   constructor() {
     super();
@@ -207,11 +216,11 @@ export default class PendingLeaveList extends Component {
     }
   }
 
-  handleDeclineReason({ target }: SyntheticInputEvent) {
+  handleDeclineReason({ target }: SyntheticInputEvent<>) {
     this.setState({ declineReason: target.value });
   }
 
-  handleEditReason({ target }: SyntheticInputEvent) {
+  handleEditReason({ target }: SyntheticInputEvent<>) {
     this.setState({ editReason: target.value });
   }
 
