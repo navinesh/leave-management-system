@@ -7,7 +7,15 @@ import { fetchLoginFromToken } from '../actions/AdminLogin';
 import NewRecordForm from '../components/NewRecord';
 import { submitNewUserRecord, clearNewUserRecord } from '../actions/NewRecord';
 
-class NewRecord extends Component {
+type Props = {
+  isAuthenticated: boolean,
+  auth_info: Object,
+  dispatch: Function,
+  isFetching: boolean,
+  message: string
+};
+
+class NewRecord extends Component<Props> {
   componentWillMount() {
     const { dispatch, auth_info } = this.props;
     let admin_token = auth_info.admin_token
