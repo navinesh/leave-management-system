@@ -1,4 +1,3 @@
-// @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
@@ -9,7 +8,14 @@ import { fetchLoginFromToken } from '../actions/AdminLogin';
 import { fetchSickSheetRecord } from '../actions/SickSheetRecord';
 import SickSheetList from '../components/SickSheetRecord';
 
-class SickSheetRecord extends Component {
+type Props = {
+  isAuthenticated: boolean,
+  auth_info: Object,
+  isFetching: boolean,
+  sickSheet_items: Array<any>
+};
+
+class SickSheetRecord extends Component<Props> {
   componentWillMount() {
     const { dispatch, auth_info } = this.props;
     let admin_token = auth_info.admin_token
