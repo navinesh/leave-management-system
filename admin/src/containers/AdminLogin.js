@@ -6,13 +6,20 @@ import { fetchLogin } from '../actions/AdminLogin';
 import Login from '../components/AdminLogin';
 import { Redirect } from 'react-router-dom';
 
-const AdminLogin = ({ dispatch, message, isAuthenticated, isFetching }) =>
+type Props = {
+  isAuthenticated: boolean,
+  isFetching: boolean,
+  dispatch: Function,
+  message: string
+};
+
+const AdminLogin = (props: Props) =>
   <div className="AdminLogin">
-    {!isAuthenticated
+    {!props.isAuthenticated
       ? <Login
-          isFetching={isFetching}
-          message={message}
-          onLoginClick={creds => dispatch(fetchLogin(creds))}
+          isFetching={props.isFetching}
+          message={props.message}
+          onLoginClick={creds => props.dispatch(fetchLogin(creds))}
         />
       : <Redirect to="/" />}
   </div>;
