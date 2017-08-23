@@ -1,4 +1,3 @@
-// @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
@@ -9,7 +8,17 @@ import { clearSearchStaffRecord } from '../actions/StaffRecord';
 import ArchivedStaffRecordList from '../components/ArchivedStaffRecord';
 import { submitUnArchiveUser } from '../actions/UnArchiveUser';
 
-class ArchivedStaffRecord extends Component {
+type Props = {
+  isAuthenticated: boolean,
+  auth_info: Object,
+  archived_staff_record: Array<any>,
+  searchTerm: string,
+  dispatch: Function,
+  isUnArchiveFetching: boolean,
+  unArchiveMessage: string
+};
+
+class ArchivedStaffRecord extends Component<Props> {
   componentWillMount() {
     const { dispatch, auth_info } = this.props;
     let admin_token = auth_info.admin_token
