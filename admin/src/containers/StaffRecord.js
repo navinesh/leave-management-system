@@ -12,7 +12,19 @@ import StaffRecordList from '../components/StaffRecord';
 import { submitModifyUserRecord } from '../actions/ModifyRecord';
 import { submitArchiveUser } from '../actions/ArchiveUser';
 
-class StaffRecord extends Component {
+type Props = {
+  isAuthenticated: boolean,
+  auth_info: Object,
+  staff_record: Array<any>,
+  searchTerm: string,
+  dispatch: Function,
+  isFetching: boolean,
+  message: string,
+  isArchiveFetching: boolean,
+  archiveMessage: string
+};
+
+class StaffRecord extends Component<Props> {
   componentWillMount() {
     const { dispatch, auth_info } = this.props;
     let admin_token = auth_info.admin_token
