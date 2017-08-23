@@ -2,7 +2,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const SickSheetList = (props: { sickSheet_items: Array<any> }) => {
+type Props = {
+  sickSheet_items: Array<any>
+};
+
+const SickSheetList = (props: Props) => {
   const itemNodes = props.sickSheet_items.map(record =>
     <tr key={record.id}>
       <td>
