@@ -4,9 +4,11 @@ import { Link } from 'react-router-dom';
 
 import { logoutAdmin } from '../actions/AdminLogout';
 
-export default class Header extends Component {
-  props: { dispatch: Function };
+type Props = {
+  dispatch: Function
+};
 
+export default class Header extends Component<Props> {
   adminLogout(e: Event) {
     e.preventDefault();
     this.props.dispatch(logoutAdmin());
