@@ -8,7 +8,11 @@ import '../spinners.css';
 
 const moment = require('moment');
 
-const Search = props =>
+type searchProps = {
+  handleSearchChange: Function
+};
+
+const Search = (props: searchProps) =>
   <div className="row">
     <div className="col-md-3">
       <div className="form-group">
@@ -22,7 +26,17 @@ const Search = props =>
     </div>
   </div>;
 
-const UnArchiveLeave = props =>
+type unArchiveProps = {
+  archived_staff_record: Array<any>,
+  listID: number,
+  isUnArchiveFetching: boolean,
+  handleSubmit: Function,
+  handleCloseUnarchive: Function,
+  unArchiveMessage: string,
+  errorMessage: string
+};
+
+const UnArchiveLeave = (props: unArchiveProps) =>
   <div className="col-md-10 offset-md-1">
     {props.archived_staff_record
       .filter(e => e.id === props.listID)
@@ -72,22 +86,22 @@ const UnArchiveLeave = props =>
       )}
   </div>;
 
-export default class ArchivedStaffRecordList extends Component {
-  props: {
-    archived_staff_record: Array<any>,
-    searchTerm: string,
-    onUnArchiveUserSubmit: Function,
-    dispatch: Function,
-    isUnArchiveFetching: boolean,
-    unArchiveMessage: string
-  };
+type Props = {
+  archived_staff_record: Array<any>,
+  searchTerm: string,
+  onUnArchiveUserSubmit: Function,
+  dispatch: Function,
+  isUnArchiveFetching: boolean,
+  unArchiveMessage: string
+};
 
-  state: {
-    errorMessage: string,
-    isUnarchive: boolean,
-    listID: number
-  };
+type State = {
+  errorMessage: string,
+  isUnarchive: boolean,
+  listID: number
+};
 
+export default class ArchivedStaffRecordList extends Component<Props, State> {
   handleSearchChange: Function;
   handleOpenUnarchive: Function;
   handleCloseUnarchive: Function;
@@ -107,7 +121,7 @@ export default class ArchivedStaffRecordList extends Component {
     this.handleSearchChange = this.handleSearchChange.bind(this);
   }
 
-  handleSearchChange({ target }: SyntheticInputEvent) {
+  handleSearchChange({ target }: SyntheticInputEvent<>) {
     this.props.dispatch(searchStaffRecord(target.value.toLowerCase()));
   }
 
