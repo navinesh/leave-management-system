@@ -1,4 +1,3 @@
-// @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
@@ -13,7 +12,22 @@ import { submitEditLeave } from '../actions/EditLeave';
 import PendingLeaveList from '../components/PendingLeave';
 import { Redirect } from 'react-router-dom';
 
-class PendingLeave extends Component {
+type Props = {
+  isAuthenticated: boolean,
+  auth_info: Object,
+  isFetching: boolean,
+  pending_items: Array<any>,
+  public_holiday: Array<any>,
+  dispatch: Function,
+  isApproveLeaveFetching: boolean,
+  approveLeavemessage: string,
+  isEditLeaveFetching: boolean,
+  editLeaveMessage: string,
+  isDeclineLeaveFetching: boolean,
+  declineLeaveMessage: string
+};
+
+class PendingLeave extends Component<Props> {
   componentWillMount() {
     const { dispatch, auth_info } = this.props;
     let admin_token = auth_info.admin_token
