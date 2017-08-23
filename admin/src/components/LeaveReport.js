@@ -1,7 +1,11 @@
 // @flow
 import React from 'react';
 
-const LeaveReportList = (props: { leave_record: Array<any> }) => {
+type Props = {
+  leave_record: Array<any>
+};
+
+const LeaveReportList = (props: Props) => {
   const itemNodes = props.leave_record.map(record =>
     <tr key={record.id}>
       <td>
