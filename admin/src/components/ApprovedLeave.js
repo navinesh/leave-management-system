@@ -12,31 +12,31 @@ import Moment from 'moment';
 import { extendMoment } from 'moment-range';
 const moment = extendMoment(Moment);
 
-export default class ApprovedLeaveList extends Component {
-  props: {
-    approved_items: Array<any>,
-    public_holiday: Array<any>,
-    dispatch: Function,
-    onEditApprovedLeaveSubmit: Function,
-    onCancelLeaveSubmit: Function,
-    isEditLeaveFetching: boolean,
-    editLeaveMessage: string,
-    isCancelLeaveFetching: boolean,
-    cancelLeaveMessage: string
-  };
+type Props = {
+  approved_items: Array<any>,
+  public_holiday: Array<any>,
+  dispatch: Function,
+  onEditApprovedLeaveSubmit: Function,
+  onCancelLeaveSubmit: Function,
+  isEditLeaveFetching: boolean,
+  editLeaveMessage: string,
+  isCancelLeaveFetching: boolean,
+  cancelLeaveMessage: string
+};
 
-  state: {
-    errorMessage: string,
-    editReason: string,
-    cancelReason: string,
-    listID: number,
-    startDate: any,
-    endDate: any,
-    isEditing: boolean,
-    isCancel: boolean,
-    focusedInput: ?boolean
-  };
+type State = {
+  errorMessage: string,
+  editReason: string,
+  cancelReason: string,
+  listID: number,
+  startDate: any,
+  endDate: any,
+  isEditing: boolean,
+  isCancel: boolean,
+  focusedInput: ?boolean
+};
 
+export default class ApprovedLeaveList extends Component<Props, State> {
   handleOpenEdit: Function;
   handleEditReason: Function;
   handleEditSubmit: Function;
@@ -46,10 +46,10 @@ export default class ApprovedLeaveList extends Component {
   handleCancelSubmit: Function;
   handleCloseCancel: Function;
 
-  leave_name: HTMLInputElement;
-  leave_type: HTMLInputElement;
-  startDate: HTMLInputElement;
-  endDate: HTMLInputElement;
+  leave_name: any;
+  leave_type: any;
+  startDate: any;
+  endDate: any;
 
   constructor() {
     super();
@@ -82,7 +82,7 @@ export default class ApprovedLeaveList extends Component {
     });
   }
 
-  handleEditReason({ target }: SyntheticInputEvent) {
+  handleEditReason({ target }: SyntheticInputEvent<>) {
     this.setState({ editReason: target.value });
   }
 
@@ -315,7 +315,7 @@ export default class ApprovedLeaveList extends Component {
     });
   }
 
-  handleCancelReason({ target }: SyntheticInputEvent) {
+  handleCancelReason({ target }: SyntheticInputEvent<>) {
     this.setState({ cancelReason: target.value });
   }
 
