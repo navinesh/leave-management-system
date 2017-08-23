@@ -4,15 +4,19 @@ import { Link } from 'react-router-dom';
 
 import '../spinners.css';
 
-export default class Login extends Component {
-  props: {
-    onLoginClick: Function,
-    message: string,
-    isFetching: boolean
-  };
+type Props = {
+  onLoginClick: Function,
+  message: string,
+  isFetching: boolean
+};
 
-  state: { errorMessage: string, email: string, password: string };
+type State = {
+  errorMessage: string,
+  email: string,
+  password: string
+};
 
+export default class Login extends Component<Props, State> {
   handleSubmit: Function;
   handleEmailChange: Function;
   handlePasswordChange: Function;
@@ -26,11 +30,11 @@ export default class Login extends Component {
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
   }
 
-  handleEmailChange({ target }: SyntheticInputEvent) {
+  handleEmailChange({ target }: SyntheticInputEvent<>) {
     this.setState({ email: target.value });
   }
 
-  handlePasswordChange({ target }: SyntheticInputEvent) {
+  handlePasswordChange({ target }: SyntheticInputEvent<>) {
     this.setState({ password: target.value });
   }
 
