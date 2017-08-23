@@ -11,7 +11,20 @@ import { submitEditApprovedLeave } from '../actions/EditLeave';
 import { submitCancelLeave } from '../actions/CancelLeave';
 import ApprovedLeaveList from '../components/ApprovedLeave';
 
-class ApprovedLeave extends Component {
+type Props = {
+  isAuthenticated: boolean,
+  auth_info: Object,
+  approved_items: Array<any>,
+  public_holiday: Array<any>,
+  isFetching: boolean,
+  dispatch: Function,
+  isEditLeaveFetching: boolean,
+  editLeaveMessage: string,
+  isCancelLeaveFetching: boolean,
+  cancelLeaveMessage: string
+};
+
+class ApprovedLeave extends Component<Props> {
   componentWillMount() {
     const { dispatch, auth_info } = this.props;
     let admin_token = auth_info.admin_token
