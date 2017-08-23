@@ -8,7 +8,7 @@ import '../spinners.css';
 
 const moment = require('moment');
 
-const PublicHolidays = (props: {
+type publicHolidayProps = {
   public_holiday: Array<any>,
   dispatch: Function,
   onAddPublicHolidaySubmit: Function,
@@ -17,7 +17,9 @@ const PublicHolidays = (props: {
   addPublicMessage: string,
   isDeletePublicFetching: boolean,
   deletePublicMessage: string
-}) =>
+};
+
+const PublicHolidays = (props: publicHolidayProps) =>
   <div className="col-md-10 offset-md-1 card card-block">
     <div className="row">
       <div className="col">
@@ -53,16 +55,34 @@ const PublicHolidays = (props: {
     </div>
   </div>;
 
-class AddPublicHoliday extends Component {
-  state: { date: any, errorMessage: string, focused: boolean };
+type addPublicHolidayProps = {
+  dispatch: Function,
+  onAddPublicHolidaySubmit: Function
+};
 
+type addPublicHolidayState = {
+  date: any,
+  focused: any,
+  holidayDate: any,
+  errorMessage: string
+};
+
+class AddPublicHoliday extends Component<
+  addPublicHolidayProps,
+  addPublicHolidayState
+> {
   handleSubmit: Function;
   onDateChange: Function;
   onFocusChange: Function;
 
   constructor() {
     super();
-    this.state = { date: null, errorMessage: '', focused: false };
+    this.state = {
+      date: null,
+      focused: false,
+      holidayDate: null,
+      errorMessage: ''
+    };
 
     this.onDateChange = this.onDateChange.bind(this);
     this.onFocusChange = this.onFocusChange.bind(this);
@@ -136,14 +156,26 @@ class AddPublicHoliday extends Component {
   }
 }
 
-class DeletePublicHoliday extends Component {
-  state: { errorMessage: string };
+type deletePublicHolidayProps = {
+  public_holiday: Array<any>,
+  dispatch: Function,
+  onDeletePublicHolidaySubmit: Function
+};
 
+type deletePublicHolidayState = {
+  id: string,
+  errorMessage: string
+};
+
+class DeletePublicHoliday extends Component<
+  deletePublicHolidayProps,
+  deletePublicHolidayState
+> {
   handleDelete: Function;
 
   constructor() {
     super();
-    this.state = { errorMessage: '' };
+    this.state = { id: '', errorMessage: '' };
     this.handleDelete = this.handleDelete.bind(this);
   }
 
