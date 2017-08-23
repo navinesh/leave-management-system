@@ -5,12 +5,18 @@ import { connect } from 'react-redux';
 import AdminResetPassword from '../components/AdminResetPassword';
 import { resetPassword } from '../actions/AdminResetPassword';
 
-const ResetPassword = ({ dispatch, message, isFetching }) =>
+type Props = {
+  dispatch: Function,
+  isFetching: boolean,
+  message: string
+};
+
+const ResetPassword = (props: Props) =>
   <div className="ResetPassword">
     <AdminResetPassword
-      isFetching={isFetching}
-      message={message}
-      onResetClick={email => dispatch(resetPassword(email))}
+      isFetching={props.isFetching}
+      message={props.message}
+      onResetClick={email => props.dispatch(resetPassword(email))}
     />
   </div>;
 
