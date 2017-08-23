@@ -8,31 +8,31 @@ import '../spinners.css';
 
 const moment = require('moment');
 
-export default class NewRecordForm extends Component {
-  props: {
-    dispatch: Function,
-    onNewUserRecordSubmit: Function,
-    message: string,
-    isFetching: boolean
-  };
+type Props = {
+  dispatch: Function,
+  onNewUserRecordSubmit: Function,
+  message: string,
+  isFetching: boolean
+};
 
-  state: {
-    errorMessage: string,
-    successMessage: string,
-    surname: string,
-    otherNames: string,
-    annualLeave: string,
-    staffEmail: string,
-    designation: string,
-    gender: string,
-    annualLeave: string,
-    sickLeave: string,
-    bereavementLeave: string,
-    christmasLeave: string,
-    maternityLeave: string,
-    dob: any
-  };
+type State = {
+  errorMessage: string,
+  successMessage: string,
+  surname: string,
+  otherNames: string,
+  annualLeave: string,
+  staffEmail: string,
+  designation: string,
+  gender: string,
+  annualLeave: string,
+  sickLeave: string,
+  bereavementLeave: string,
+  christmasLeave: string,
+  maternityLeave: string,
+  dob: any
+};
 
+export default class NewRecordForm extends Component<Props, State> {
   handleSurnameChange: Function;
   handleOtherNamesChange: Function;
   handleStaffEmailChange: Function;
@@ -84,43 +84,43 @@ export default class NewRecordForm extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleSurnameChange({ target }: SyntheticInputEvent) {
+  handleSurnameChange({ target }: SyntheticInputEvent<>) {
     this.setState({ surname: target.value });
   }
 
-  handleOtherNamesChange({ target }: SyntheticInputEvent) {
+  handleOtherNamesChange({ target }: SyntheticInputEvent<>) {
     this.setState({ otherNames: target.value });
   }
 
-  handleStaffEmailChange({ target }: SyntheticInputEvent) {
+  handleStaffEmailChange({ target }: SyntheticInputEvent<>) {
     this.setState({ staffEmail: target.value });
   }
 
-  handleDesignationChange({ target }: SyntheticInputEvent) {
+  handleDesignationChange({ target }: SyntheticInputEvent<>) {
     this.setState({ designation: target.value });
   }
 
-  handleGenderChange({ target }: SyntheticInputEvent) {
+  handleGenderChange({ target }: SyntheticInputEvent<>) {
     this.setState({ gender: target.value });
   }
 
-  handleAnnualLeaveChange({ target }: SyntheticInputEvent) {
+  handleAnnualLeaveChange({ target }: SyntheticInputEvent<>) {
     this.setState({ annualLeave: target.value });
   }
 
-  handleSickLeaveChange({ target }: SyntheticInputEvent) {
+  handleSickLeaveChange({ target }: SyntheticInputEvent<>) {
     this.setState({ sickLeave: target.value });
   }
 
-  handleChristmasLeaveChange({ target }: SyntheticInputEvent) {
+  handleChristmasLeaveChange({ target }: SyntheticInputEvent<>) {
     this.setState({ christmasLeave: target.value });
   }
 
-  handleBereavementLeaveChange({ target }: SyntheticInputEvent) {
+  handleBereavementLeaveChange({ target }: SyntheticInputEvent<>) {
     this.setState({ bereavementLeave: target.value });
   }
 
-  handleMaternityLeaveChange({ target }: SyntheticInputEvent) {
+  handleMaternityLeaveChange({ target }: SyntheticInputEvent<>) {
     this.setState({ maternityLeave: target.value });
   }
 
