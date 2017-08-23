@@ -1,4 +1,3 @@
-// @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
@@ -9,7 +8,18 @@ import { fetchPublicHoliday } from '../actions/PublicHoliday';
 import { submitAddPublicHoliday } from '../actions/NewPublicHoliday';
 import { submitDeletePublicHoliday } from '../actions/DeletePublicHoliday';
 
-class PublicHoliday extends Component {
+type Props = {
+  isAuthenticated: boolean,
+  auth_info: Object,
+  public_holiday: Array<any>,
+  dispatch: Function,
+  isAddPublicFetching: boolean,
+  addPublicMessage: string,
+  isDeletePublicFetching: boolean,
+  deletePublicMessage: string
+};
+
+class PublicHoliday extends Component<Props> {
   componentWillMount() {
     const { dispatch, auth_info } = this.props;
     let admin_token = auth_info.admin_token
