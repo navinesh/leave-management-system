@@ -10,7 +10,9 @@ import '../spinners.css';
 
 const moment = require('moment');
 
-const Search = props =>
+type searchProps = { handleSearchChange: Function };
+
+const Search = (props: searchProps) =>
   <div className="row">
     <div className="col-md-3">
       <div className="form-group">
@@ -24,7 +26,17 @@ const Search = props =>
     </div>
   </div>;
 
-const ArchiveUser = props =>
+type archiveProps = {
+  staff_record: Array<any>,
+  listID: number,
+  handleArchiveSubmit: Function,
+  handleArchiveReason: Function,
+  handleCloseArchive: Function,
+  archiveMessage: string,
+  errorMessage: string
+};
+
+const ArchiveUser = (props: archiveProps) =>
   <div>
     {props.staff_record.filter(e => e.id === props.listID).map(record =>
       <div key={record.id}>
@@ -83,29 +95,29 @@ const ArchiveUser = props =>
     )}
   </div>;
 
-export default class StaffRecordList extends Component {
-  props: {
-    staff_record: Array<any>,
-    searchTerm: string,
-    dispatch: Function,
-    onModifyUserRecordSubmit: Function,
-    onArchiveUserSubmit: Function,
-    message: string,
-    isFetching: boolean,
-    isArchiveFetching: boolean,
-    archiveMessage: string
-  };
+type Props = {
+  staff_record: Array<any>,
+  searchTerm: string,
+  dispatch: Function,
+  onModifyUserRecordSubmit: Function,
+  onArchiveUserSubmit: Function,
+  message: string,
+  isFetching: boolean,
+  isArchiveFetching: boolean,
+  archiveMessage: string
+};
 
-  state: {
-    errorMessage: string,
-    listID: string,
-    dob: any,
-    archiveReason: string,
-    isEditing: boolean,
-    isArchive: boolean,
-    editReason: string
-  };
+type State = {
+  errorMessage: string,
+  listID: string,
+  dob: any,
+  archiveReason: string,
+  isEditing: boolean,
+  isArchive: boolean,
+  editReason: string
+};
 
+export default class StaffRecordList extends Component<Props, State> {
   handleDateChange: Function;
   handleEditReason: Function;
   handleSubmit: Function;
@@ -117,17 +129,17 @@ export default class StaffRecordList extends Component {
   handleCloseArchive: Function;
   handleSearchChange: Function;
 
-  surname: HTMLInputElement;
-  othernames: HTMLInputElement;
-  designation: HTMLInputElement;
-  email: HTMLInputElement;
-  annual: HTMLInputElement;
-  sick: HTMLInputElement;
-  bereavement: HTMLInputElement;
-  christmas: HTMLInputElement;
-  gender: HTMLInputElement;
-  dob: HTMLInputElement;
-  maternity: HTMLInputElement;
+  surname: any;
+  othernames: any;
+  designation: any;
+  email: any;
+  annual: any;
+  sick: any;
+  bereavement: any;
+  christmas: any;
+  gender: any;
+  dob: any;
+  maternity: any;
 
   constructor() {
     super();
@@ -153,7 +165,7 @@ export default class StaffRecordList extends Component {
     this.handleSearchChange = this.handleSearchChange.bind(this);
   }
 
-  handleSearchChange({ target }: SyntheticInputEvent) {
+  handleSearchChange({ target }: SyntheticInputEvent<>) {
     this.props.dispatch(searchStaffRecord(target.value.toLowerCase()));
   }
 
@@ -161,7 +173,7 @@ export default class StaffRecordList extends Component {
     this.setState({ dob: e });
   }
 
-  handleEditReason({ target }: SyntheticInputEvent) {
+  handleEditReason({ target }: SyntheticInputEvent<>) {
     this.setState({ editReason: target.value });
   }
 
@@ -187,7 +199,7 @@ export default class StaffRecordList extends Component {
     }
   }
 
-  handleArchiveReason({ target }: SyntheticInputEvent) {
+  handleArchiveReason({ target }: SyntheticInputEvent<>) {
     this.setState({ archiveReason: target.value });
   }
 
