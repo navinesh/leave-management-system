@@ -4,9 +4,14 @@ import { connect } from 'react-redux';
 
 import Header from '../components/AdminHeader';
 
-const AdminHeader = ({ isAuthenticated, dispatch }) =>
+type Props = {
+  isAuthenticated: boolean,
+  dispatch: Function
+};
+
+const AdminHeader = (props: Props) =>
   <div className="AdminHeader">
-    {isAuthenticated && <Header dispatch={dispatch} />}
+    {props.isAuthenticated && <Header dispatch={props.dispatch} />}
   </div>;
 
 const mapStateToProps = state => {
