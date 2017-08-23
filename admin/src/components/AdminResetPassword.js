@@ -1,27 +1,27 @@
-// @flow
+//  @flow
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 import '../spinners.css';
 
-export default class AdminResetPassword extends Component {
-  props: {
-    onResetClick: Function,
-    message: string,
-    isFetching: boolean
-  };
+type Props = {
+  onResetClick: Function,
+  message: string,
+  isFetching: boolean
+};
 
-  state: {
-    errorMessage: string,
-    email: string
-  };
+type State = {
+  errorMessage: string,
+  email: string
+};
 
+export default class AdminResetPassword extends Component<Props, State> {
   constructor() {
     super();
     this.state = { errorMessage: '', email: '' };
   }
 
-  handleEmailChange({ target }: SyntheticInputEvent) {
+  handleEmailChange({ target }: SyntheticInputEvent<>) {
     this.setState({ email: target.value });
   }
 
