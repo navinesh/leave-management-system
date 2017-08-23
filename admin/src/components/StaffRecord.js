@@ -10,7 +10,9 @@ import '../spinners.css';
 
 const moment = require('moment');
 
-type searchProps = { handleSearchChange: Function };
+type searchProps = {
+  handleSearchChange: Function
+};
 
 const Search = (props: searchProps) =>
   <div className="row">
@@ -29,6 +31,7 @@ const Search = (props: searchProps) =>
 type archiveProps = {
   staff_record: Array<any>,
   listID: number,
+  isArchiveFetching: boolean,
   handleArchiveSubmit: Function,
   handleArchiveReason: Function,
   handleCloseArchive: Function,
