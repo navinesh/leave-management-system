@@ -616,30 +616,35 @@ def modify_user():
 
     # Email message
     if gender == 'male':
-        message = (
-            "Your leave records have been updated. Your previous leave records were: "
-            + str(userRecord.annual) + " annual day(s), " + str(
-                userRecord.sick) + " sick day(s), " + str(
-                    userRecord.bereavement) + " bereavement day(s) and " + str(
-                        userRecord.christmas) +
-            " christmas day(s). Your updated leave records are: " + str(annual)
-            + " annual day(s), " + str(sick) + " sick day(s), " +
-            str(bereavement) + " bereavement day(s) and " + str(christmas) +
-            " christmas day(s). " + "Reason for update: " + editReason)
-
-    if gender == "female":
-        message = (
-            "Your leave records have been updated. Your previous leave records were: "
-            + str(userRecord.annual) + " annual day(s), " + str(
-                userRecord.sick) + " sick day(s), " + str(
-                    userRecord.bereavement) + " bereavement day(s), " + str(
-                        userRecord.christmas) + " christmas day(s) and " + str(
-                            userRecord.maternity) +
-            " maternity day(s). Your updated leave records are: " + str(annual)
-            + " annual day(s), " + str(sick) + " sick day(s), " +
-            str(bereavement) + " bereavement day(s), " + str(christmas) +
-            " christmas day(s) and " + str(maternity) + " maternity day(s). " +
-            "Reason for update: " + editReason)
+        send_email(
+            [email],
+            "Leave record update",
+            ("Your leave records have been updated. Your previous leave records were: "
+             + str(userRecord.annual) + " annual day(s), " +
+             str(userRecord.sick) + " sick day(s), " + str(
+                 userRecord.bereavement) + " bereavement day(s) and " + str(
+                     userRecord.christmas) +
+             " christmas day(s). Your updated leave records are: " +
+             str(annual) + " annual day(s), " + str(sick) + " sick day(s), " +
+             str(bereavement) + " bereavement day(s) and " + str(christmas) +
+             " christmas day(s). " + "Reason for update: " + editReason),
+            file=None)
+    else:
+        send_email(
+            [email],
+            "Leave record update",
+            ("Your leave records have been updated. Your previous leave records were: "
+             + str(userRecord.annual) + " annual day(s), " +
+             str(userRecord.sick) + " sick day(s), " + str(
+                 userRecord.bereavement) + " bereavement day(s), " + str(
+                     userRecord.christmas) + " christmas day(s) and " + str(
+                         userRecord.maternity) +
+             " maternity day(s). Your updated leave records are: " +
+             str(annual) + " annual day(s), " + str(sick) + " sick day(s), " +
+             str(bereavement) + " bereavement day(s), " + str(christmas) +
+             " christmas day(s) and " + str(maternity) + " maternity day(s). "
+             + "Reason for update: " + editReason),
+            file=None)
 
     userRecord.surname = surname
     userRecord.othernames = othernames
@@ -671,9 +676,6 @@ def modify_user():
 
     session.add(userUpdates)
     session.commit()
-
-    # Send email
-    send_email([email], "Leave record update", message, file=None)
 
     return jsonify({'message': 'User record has been updated.'}), 201
 
