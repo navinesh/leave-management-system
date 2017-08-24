@@ -7,7 +7,13 @@ import LeaveCalendar from './LeaveCalendar';
 import UserLogin from './UserLogin';
 import UserRecord from './UserRecord';
 
-class Main extends Component {
+type Props = {
+  auth_info: Object,
+  dispatch: Function,
+  isAuthenticated: boolean
+};
+
+class Main extends Component<Props> {
   componentDidMount() {
     const { dispatch, auth_info } = this.props;
     let auth_token = auth_info.auth_token
@@ -20,10 +26,9 @@ class Main extends Component {
   }
 
   render() {
-    const { isAuthenticated } = this.props;
     return (
       <div className="Main">
-        {isAuthenticated
+        {this.props.isAuthenticated
           ? <UserRecord />
           : <div className="container">
               <div className="row">
