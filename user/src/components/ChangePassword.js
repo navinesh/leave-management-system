@@ -3,21 +3,21 @@ import React, { Component } from 'react';
 
 import '../spinners.css';
 
-export default class UserChange extends Component {
-  props: {
-    onChangeClick: Function,
-    message: string,
-    isFetching: boolean,
-    auth_info: Object
-  };
+type Props = {
+  onChangeClick: Function,
+  message: string,
+  isFetching: boolean,
+  auth_info: Object
+};
 
-  state: {
-    errorMessage: string,
-    currentPassword: string,
-    newPassword: string,
-    newPasswordConfirm: string
-  };
+type State = {
+  errorMessage: string,
+  currentPassword: string,
+  newPassword: string,
+  newPasswordConfirm: string
+};
 
+export default class UserChange extends Component<Props, State> {
   constructor() {
     super();
     this.state = {
@@ -28,23 +28,23 @@ export default class UserChange extends Component {
     };
   }
 
-  handleCurrentPasswordChange({ target }: SyntheticInputEvent) {
+  handleCurrentPasswordChange({ target }: SyntheticInputEvent<>) {
     this.setState({ currentPassword: target.value });
   }
 
-  handleNewPasswordChange({ target }: SyntheticInputEvent) {
+  handleNewPasswordChange({ target }: SyntheticInputEvent<>) {
     this.setState({ newPassword: target.value });
   }
 
-  handleNewPasswordConfirmChange({ target }: SyntheticInputEvent) {
+  handleNewPasswordConfirmChange({ target }: SyntheticInputEvent<>) {
     this.setState({ newPasswordConfirm: target.value });
   }
 
   handleSubmit(e: Event) {
     e.preventDefault();
     this.setState({ errorMessage: '' });
-    const { auth_info } = this.props;
-    let auth_token = auth_info.auth_token;
+
+    let auth_token = this.props.auth_info.auth_token;
     if (!auth_token) {
       auth_token = localStorage.getItem('auth_token');
     }
