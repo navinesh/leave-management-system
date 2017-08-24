@@ -5,13 +5,20 @@ import { connect } from 'react-redux';
 import { fetchLogin } from '../actions/UserLogin';
 import Login from '../components/UserLogin';
 
-const UserLogin = ({ dispatch, isAuthenticated, message, isFetching }) =>
+type Props = {
+  dispatch: Function,
+  isAuthenticated: boolean,
+  message: string,
+  isFetching: boolean
+};
+
+const UserLogin = (props: Props) =>
   <div className="UserLogin">
-    {!isAuthenticated &&
+    {!props.isAuthenticated &&
       <Login
-        isFetching={isFetching}
-        message={message}
-        onLoginClick={creds => dispatch(fetchLogin(creds))}
+        isFetching={props.isFetching}
+        message={props.message}
+        onLoginClick={creds => props.dispatch(fetchLogin(creds))}
       />}
   </div>;
 
