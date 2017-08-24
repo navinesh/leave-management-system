@@ -10,12 +10,20 @@ import Moment from 'moment';
 import { extendMoment } from 'moment-range';
 const moment = extendMoment(Moment);
 
-const UserName = props =>
+type userNameProps = {
+  user_detail: Object
+};
+
+const UserName = (props: userNameProps) =>
   <h5>
     {props.user_detail.othernames} {props.user_detail.surname}
   </h5>;
 
-const UserRecord = props => {
+type userRecordProps = {
+  user_detail: Object
+};
+
+const UserRecord = (props: userRecordProps) => {
   let gender = props.user_detail.gender
     ? props.user_detail.gender.toLowerCase()
     : null;
@@ -57,21 +65,33 @@ const UserRecord = props => {
   );
 };
 
-class LeaveApplication extends Component {
-  state: {
-    leave: string,
-    leaveType: string,
-    startDate: any,
-    endDate: any,
-    supervisorEmail: string,
-    secretaryEmail: string,
-    reason: string,
-    sickSheet: any,
-    errorMessage: string,
-    successMessage: string,
-    focusedInput: ?boolean
-  };
+type leaveApplicationProps = {
+  user_detail: Object,
+  user_record: Array<any>,
+  public_holiday: Array<any>,
+  isFetching: boolean,
+  message: string,
+  onLeaveApplicationClick: Function
+};
 
+type leaveApplicationState = {
+  leave: string,
+  leaveType: string,
+  startDate: any,
+  endDate: any,
+  supervisorEmail: string,
+  secretaryEmail: string,
+  reason: string,
+  sickSheet: any,
+  errorMessage: string,
+  successMessage: string,
+  focusedInput: ?boolean
+};
+
+class LeaveApplication extends Component<
+  leaveApplicationProps,
+  leaveApplicationState
+> {
   handleLeaveChange: Function;
   handleLeaveTypeChange: Function;
   handleSupervisorEmailChange: Function;
@@ -111,27 +131,27 @@ class LeaveApplication extends Component {
     this.handleUserConfirm = this.handleUserConfirm.bind(this);
   }
 
-  handleLeaveChange({ target }: SyntheticInputEvent) {
+  handleLeaveChange({ target }: SyntheticInputEvent<>) {
     this.setState({ leave: target.value });
   }
 
-  handleLeaveTypeChange({ target }: SyntheticInputEvent) {
+  handleLeaveTypeChange({ target }: SyntheticInputEvent<>) {
     this.setState({ leaveType: target.value });
   }
 
-  handleSupervisorEmailChange({ target }: SyntheticInputEvent) {
+  handleSupervisorEmailChange({ target }: SyntheticInputEvent<>) {
     this.setState({ supervisorEmail: target.value });
   }
 
-  handleSecretaryEmailChange({ target }: SyntheticInputEvent) {
+  handleSecretaryEmailChange({ target }: SyntheticInputEvent<>) {
     this.setState({ secretaryEmail: target.value });
   }
 
-  handleReasonChange({ target }: SyntheticInputEvent) {
+  handleReasonChange({ target }: SyntheticInputEvent<>) {
     this.setState({ reason: target.value });
   }
 
-  handleFileChange({ target }: SyntheticInputEvent) {
+  handleFileChange({ target }: SyntheticInputEvent<>) {
     this.setState({ sickSheet: target.files[0] });
   }
 
@@ -502,39 +522,34 @@ class LeaveApplication extends Component {
   }
 }
 
-export default ({
-  user_detail,
-  onLeaveApplicationClick,
-  message,
-  isFetching,
-  user_record,
-  public_holiday
-}: {
+type Props = {
   user_detail: Object,
   onLeaveApplicationClick: Function,
   message: string,
   isFetching: boolean,
-  user_record: Object,
+  user_record: Array<any>,
   public_holiday: Array<any>
-}) =>
+};
+
+export default (props: Props) =>
   <div className="container" style={{ marginTop: '80px' }}>
     <div className="row">
       <div className="col-md-12 pb-2">
         <div className="col-md-11 offset-md-1">
-          <UserName user_detail={user_detail} />
+          <UserName user_detail={props.user_detail} />
         </div>
       </div>
       <div className="col-md-3 offset-md-1">
-        <UserRecord user_detail={user_detail} />
+        <UserRecord user_detail={props.user_detail} />
       </div>
       <div className="col-md-6 mb-2">
         <LeaveApplication
-          user_detail={user_detail}
-          user_record={user_record}
-          onLeaveApplicationClick={onLeaveApplicationClick}
-          message={message}
-          isFetching={isFetching}
-          public_holiday={public_holiday}
+          user_detail={props.user_detail}
+          user_record={props.user_record}
+          onLeaveApplicationClick={props.onLeaveApplicationClick}
+          message={props.message}
+          isFetching={props.isFetching}
+          public_holiday={props.public_holiday}
         />
       </div>
     </div>
