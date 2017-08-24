@@ -9,10 +9,17 @@ import {
   clearChangePasswordError
 } from '../actions/ChangePassword';
 
-class UserChangePassword extends Component {
+type Props = {
+  auth_info: Object,
+  dispatch: Function,
+  isAuthenticated: boolean,
+  message: string,
+  isFetching: boolean
+};
+
+class UserChangePassword extends Component<Props> {
   componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch(clearChangePasswordError());
+    this.props.dispatch(clearChangePasswordError());
   }
 
   render() {
