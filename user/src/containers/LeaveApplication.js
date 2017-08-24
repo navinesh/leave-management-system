@@ -10,7 +10,18 @@ import { fetchLeaveApplication } from '../actions/LeaveApplication';
 import LeaveApplications from '../components/LeaveApplication';
 import { fetchPublicHoliday } from '../actions/PublicHoliday';
 
-class LeaveApplication extends Component {
+type Props = {
+  auth_info: Object,
+  dispatch: Function,
+  isAuthenticated: boolean,
+  message: string,
+  isFetching: boolean,
+  user_detail: Object,
+  user_record: Array<any>,
+  public_holiday: Array<any>
+};
+
+class LeaveApplication extends Component<Props> {
   componentDidMount() {
     const { dispatch, auth_info } = this.props;
     let auth_token = auth_info.auth_token
