@@ -2,8 +2,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const PendingRecordList = ({ user_record }: { user_record: Array<any> }) => {
-  const pendingList = user_record
+type pendingRecordProps = {
+  user_record: Array<any>
+};
+
+const PendingRecordList = (props: pendingRecordProps) => {
+  const pendingList = props.user_record
     .filter(data => data.leave_status === 'pending')
     .map(record =>
       <tr key={record.id}>
@@ -53,8 +57,12 @@ const PendingRecordList = ({ user_record }: { user_record: Array<any> }) => {
   }
 };
 
-const ApprovedRecordList = ({ user_record }: { user_record: Array<any> }) => {
-  const approvedList = user_record
+type approvedRecordProps = {
+  user_record: Array<any>
+};
+
+const ApprovedRecordList = (props: approvedRecordProps) => {
+  const approvedList = props.user_record
     .filter(data => data.leave_status === 'approved')
     .map(record =>
       <tr key={record.id}>
@@ -104,16 +112,17 @@ const ApprovedRecordList = ({ user_record }: { user_record: Array<any> }) => {
   }
 };
 
-export const UserRecord = ({
-  user_detail,
-  message
-}: {
+type userRecordProps = {
   user_detail: Object,
   message: string
-}) => {
-  let gender = user_detail.gender ? user_detail.gender.toLowerCase() : null;
+};
 
-  if (message) {
+export const UserRecord = (props: userRecordProps) => {
+  let gender = props.user_detail.gender
+    ? props.user_detail.gender.toLowerCase()
+    : null;
+
+  if (props.message) {
     return (
       <div className="container text-center" style={{ paddingTop: '100px' }}>
         <div className="col-md-8 offset-md-2 ">
@@ -134,7 +143,7 @@ export const UserRecord = ({
           <div className="row justify-content-md-center">
             <div className="col-md-7">
               <p className="display-4">
-                {user_detail.othernames} {user_detail.surname}
+                {props.user_detail.othernames} {props.user_detail.surname}
               </p>
               <p>
                 <Link to="/changepassword" className="btn btn-primary">
@@ -147,32 +156,32 @@ export const UserRecord = ({
                 <li className="list-group-item justify-content-between">
                   Annual
                   <span className="badge badge-primary badge-pill">
-                    {user_detail.annual}
+                    {props.user_detail.annual}
                   </span>
                 </li>
                 <li className="list-group-item justify-content-between">
                   Sick
                   <span className="badge badge-primary badge-pill">
-                    {user_detail.sick}
+                    {props.user_detail.sick}
                   </span>
                 </li>
                 <li className="list-group-item justify-content-between">
                   Bereavement
                   <span className="badge badge-primary badge-pill">
-                    {user_detail.bereavement}
+                    {props.user_detail.bereavement}
                   </span>
                 </li>
                 <li className="list-group-item justify-content-between">
                   Christmas
                   <span className="badge badge-primary badge-pill">
-                    {user_detail.christmas}
+                    {props.user_detail.christmas}
                   </span>
                 </li>
                 {gender === 'female' &&
                   <li className="list-group-item justify-content-between">
                     Maternity
                     <span className="badge badge-primary badge-pill">
-                      {user_detail.maternity}
+                      {props.user_detail.maternity}
                     </span>
                   </li>}
               </ul>
@@ -189,10 +198,14 @@ export const UserRecord = ({
   }
 };
 
-export const RecordList = ({ user_record }: { user_record: Array<any> }) =>
+type Props = {
+  user_record: Array<any>
+};
+
+export const RecordList = (props: Props) =>
   <div className="container">
     <div className="row">
-      <PendingRecordList user_record={user_record} />
-      <ApprovedRecordList user_record={user_record} />
+      <PendingRecordList user_record={props.user_record} />
+      <ApprovedRecordList user_record={props.user_record} />
     </div>
   </div>;
