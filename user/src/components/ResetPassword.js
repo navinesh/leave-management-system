@@ -3,24 +3,24 @@ import React, { Component } from 'react';
 
 import '../spinners.css';
 
-export default class UserResetPassword extends Component {
-  props: {
-    onResetClick: Function,
-    message: string,
-    isFetching: boolean
-  };
+type Props = {
+  onResetClick: Function,
+  message: string,
+  isFetching: boolean
+};
 
-  state: {
-    errorMessage: string,
-    email: string
-  };
+type State = {
+  errorMessage: string,
+  email: string
+};
 
+export default class UserResetPassword extends Component<Props, State> {
   constructor() {
     super();
     this.state = { errorMessage: '', email: '' };
   }
 
-  handleEmailChange({ target }: SyntheticInputEvent) {
+  handleEmailChange({ target }: SyntheticInputEvent<>) {
     this.setState({ email: target.value });
   }
 
