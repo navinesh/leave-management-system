@@ -4,9 +4,14 @@ import { connect } from 'react-redux';
 
 import Navs from '../components/Header';
 
-const Header = ({ isAuthenticated, dispatch }) =>
+type Props = {
+  isAuthenticated: boolean,
+  dispatch: Function
+};
+
+const Header = (props: Props) =>
   <div className="Header">
-    <Navs isAuthenticated={isAuthenticated} dispatch={dispatch} />
+    <Navs isAuthenticated={props.isAuthenticated} dispatch={props.dispatch} />
   </div>;
 
 const mapStateToProps = state => {
