@@ -7,21 +7,25 @@ import '../spinners.css';
 import { fetchLeaveIfNeeded } from '../actions/LeaveCalendar';
 import Leaves from '../components/LeaveCalendar';
 
-class LeaveCalendar extends Component {
+type Props = {
+  dispatch: Function,
+  records: Array<any>,
+  isFetching: boolean
+};
+
+class LeaveCalendar extends Component<Props> {
   componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch(fetchLeaveIfNeeded());
+    this.props.dispatch(fetchLeaveIfNeeded());
   }
 
   render() {
-    const { records, isFetching } = this.props;
     return (
       <div className="container">
-        {isFetching
+        {this.props.isFetching
           ? <div className="text-center">
               <div className="loader1" />
             </div>
-          : <Leaves records={records} />}
+          : <Leaves records={this.props.records} />}
       </div>
     );
   }
