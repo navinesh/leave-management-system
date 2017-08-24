@@ -3,8 +3,12 @@ import React from 'react';
 
 const moment = require('moment');
 
-export default ({ records }: { records: Array<any> }) => {
-  const leaveRecord = records
+type Props = {
+  records: Array<any>
+};
+
+export default (props: Props) => {
+  const leaveRecord = props.records
     .filter(record => {
       // get current date and format it
       let dateToday = moment();
