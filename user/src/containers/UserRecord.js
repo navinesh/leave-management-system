@@ -8,7 +8,17 @@ import { fetchUserDetailsIfNeeded } from '../actions/UserDetails';
 import { fetchUserRecordIfNeeded } from '../actions/UserRecord';
 import { UserRecord, RecordList } from '../components/UserRecord';
 
-class UserRecords extends Component {
+type Props = {
+  auth_info: Object,
+  isFetching: boolean,
+  isRecordFetching: boolean,
+  user_detail: Object,
+  user_record: Array<any>,
+  message: string,
+  dispatch: Function
+};
+
+class UserRecords extends Component<Props> {
   componentDidMount() {
     const { dispatch, auth_info } = this.props;
     let auth_token = auth_info.auth_token
