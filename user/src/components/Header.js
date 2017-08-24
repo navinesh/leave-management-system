@@ -4,20 +4,18 @@ import { Link } from 'react-router-dom';
 
 import { logoutUser } from '../actions/UserLogout';
 
-export default class Navs extends Component {
-  props: {
-    isAuthenticated: boolean,
-    dispatch: Function
-  };
+type Props = {
+  isAuthenticated: boolean,
+  dispatch: Function
+};
 
+export default class Navs extends Component<Props> {
   userLogout(e: Event) {
     e.preventDefault();
     this.props.dispatch(logoutUser());
   }
 
   render() {
-    const { isAuthenticated } = this.props;
-
     return (
       <nav className="navbar fixed-top navbar-toggleable-md">
         <div className="container">
@@ -35,7 +33,7 @@ export default class Navs extends Component {
           <Link className="navbar-brand" to="/" style={{ color: '#707070' }}>
             Leave Management System
           </Link>
-          {isAuthenticated &&
+          {this.props.isAuthenticated &&
             <div
               className="collapse navbar-collapse justify-content-end"
               id="navbarNav"
