@@ -194,7 +194,7 @@ export default class NewRecordForm extends Component<Props, State> {
     return (
       <div className="container">
         <div className="col-md-6 offset-md-3 pb-2">
-          <div className="card card-block">
+          <div className="card card-body">
             <form encType="multipart/form-data" onSubmit={this.handleSubmit}>
               <div className="row">
                 <div className="col-md-6">
