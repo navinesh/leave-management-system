@@ -45,7 +45,7 @@ const UnArchiveLeave = (props: unArchiveProps) =>
           <div className="col-md-6 offset-md-3" style={{ paddingTop: '10px' }}>
             <div className="card">
               <h5 className="card-header">Unarchive</h5>
-              <div className="card-block">
+              <div className="card-body">
                 <form
                   encType="multipart/form-data"
                   onSubmit={props.handleSubmit}
