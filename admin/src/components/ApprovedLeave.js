@@ -380,7 +380,7 @@ export default class ApprovedLeaveList extends Component<Props, State> {
               >
                 <div className="card">
                   <h5 className="card-header">Edit</h5>
-                  <div className="card-block">
+                  <div className="card-body">
                     <form
                       encType="multipart/form-data"
                       onSubmit={this.handleEditSubmit}
@@ -535,7 +535,7 @@ export default class ApprovedLeaveList extends Component<Props, State> {
               >
                 <div className="card">
                   <h5 className="card-header">Cancel</h5>
-                  <div className="card-block">
+                  <div className="card-body">
                     <form onSubmit={this.handleCancelSubmit}>
                       <div className="row">
                         <div className="col">
