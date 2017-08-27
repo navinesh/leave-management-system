@@ -494,6 +494,14 @@ def change_admin_password():
     session.add(admin)
     session.commit()
 
+    # Send email
+    send_email(
+        [email],
+        "Leave Management System update",
+        ("Your Leave Management System admin password has been reset to: " +
+         password),
+        file=None)
+
     return jsonify({
         'message':
         'Your password has been reset. Check your mailbox for new login details.'
