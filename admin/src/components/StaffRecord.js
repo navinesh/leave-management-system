@@ -46,7 +46,7 @@ const ArchiveUser = (props: archiveProps) =>
         <div className="col-md-6 offset-md-3" style={{ paddingTop: '10px' }}>
           <div className="card">
             <h5 className="card-header">Archive</h5>
-            <div className="card-block">
+            <div className="card-body">
               <form
                 encType="multipart/form-data"
                 onSubmit={props.handleArchiveSubmit}
@@ -351,7 +351,7 @@ export default class StaffRecordList extends Component<Props, State> {
                 <div className="col-md-6 offset-md-3 pb-2">
                   <div className="card">
                     <h5 className="card-header">Edit</h5>
-                    <div className="card-block">
+                    <div className="card-body">
                       <form
                         encType="multipart/form-data"
                         onSubmit={this.handleSubmit}
