@@ -28,7 +28,7 @@ const ApproveLeave = (props: approvedLeaveProps) =>
         <div className="col-md-6 offset-md-3" style={{ paddingTop: '10px' }}>
           <div className="card">
             <h5 className="card-header">Approve</h5>
-            <div className="card-block">
+            <div className="card-body">
               <p>
                 {record.user.othernames} {record.user.surname}
               </p>
@@ -523,7 +523,7 @@ export default class PendingLeaveList extends Component<Props, State> {
                 >
                   <div className="card">
                     <h5 className="card-header">Edit</h5>
-                    <div className="card-block">
+                    <div className="card-body">
                       <p>
                         {record.user.othernames} {record.user.surname}
                       </p>
@@ -680,7 +680,7 @@ export default class PendingLeaveList extends Component<Props, State> {
                 >
                   <div className="card">
                     <h5 className="card-header">Decline</h5>
-                    <div className="card-block">
+                    <div className="card-body">
                       <p>
                         {record.user.othernames} {record.user.surname}
                       </p>
