@@ -63,8 +63,8 @@ export default class Login extends Component<Props, State> {
     return (
       <div className="Login">
         <h1 className="display-4 text-center pb-4">Leave Management System</h1>
-        <div className="col-md-4 offset-md-4">
-          <div className="card card-block">
+        <div className="col-4 ml-auto mr-auto">
+          <div className="card card-body">
             <form onSubmit={this.handleSubmit}>
               <div className="form-group">
                 <label htmlFor="email">Email address</label>
@@ -87,7 +87,7 @@ export default class Login extends Component<Props, State> {
                 />
               </div>
               <div className="form-group">
-                <button type="submit" className="btn btn-primary col">
+                <button type="submit" className="btn btn-primary col btn-lg">
                   Log in
                 </button>
               </div>
@@ -101,7 +101,7 @@ export default class Login extends Component<Props, State> {
               </div>
             </div>
           </div>
-          <div className="card card-block mt-3">
+          <div className="card card-body mt-3">
             <Link to="/resetpassword" className="btn">
               Forgot your password?
             </Link>
