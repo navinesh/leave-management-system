@@ -20,36 +20,38 @@ type publicHolidayProps = {
 };
 
 const PublicHolidays = (props: publicHolidayProps) =>
-  <div className="col-md-10 offset-md-1 card card-block">
-    <div className="row">
-      <div className="col">
-        <h4>Public Holidays</h4>
+  <div className="col-11 ml-auto mr-auto">
+    <div className="card card-body">
+      <div className="row">
+        <div className="col">
+          <h4>Public Holidays</h4>
+        </div>
       </div>
-    </div>
-    <div className="row">
-      <div className="col">
-        <DeletePublicHoliday
-          public_holiday={props.public_holiday}
-          dispatch={props.dispatch}
-          onDeletePublicHolidaySubmit={props.onDeletePublicHolidaySubmit}
-        />
-      </div>
-      <div className="col">
-        <AddPublicHoliday
-          dispatch={props.dispatch}
-          onAddPublicHolidaySubmit={props.onAddPublicHolidaySubmit}
-        />
-        <div>
-          {props.isAddPublicFetching
-            ? <div className="text-success">ADDING...</div>
-            : <p className="text-primary">
-                {props.addPublicMessage}
-              </p>}
-          {props.isDeletePublicFetching
-            ? <div className="text-danger">DELETING...</div>
-            : <p className="text-primary">
-                {props.deletePublicMessage}
-              </p>}
+      <div className="row">
+        <div className="col">
+          <DeletePublicHoliday
+            public_holiday={props.public_holiday}
+            dispatch={props.dispatch}
+            onDeletePublicHolidaySubmit={props.onDeletePublicHolidaySubmit}
+          />
+        </div>
+        <div className="col">
+          <AddPublicHoliday
+            dispatch={props.dispatch}
+            onAddPublicHolidaySubmit={props.onAddPublicHolidaySubmit}
+          />
+          <div>
+            {props.isAddPublicFetching
+              ? <div className="text-success">ADDING...</div>
+              : <p className="text-primary">
+                  {props.addPublicMessage}
+                </p>}
+            {props.isDeletePublicFetching
+              ? <div className="text-danger">DELETING...</div>
+              : <p className="text-primary">
+                  {props.deletePublicMessage}
+                </p>}
+          </div>
         </div>
       </div>
     </div>
