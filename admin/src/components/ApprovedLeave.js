@@ -375,7 +375,7 @@ export default class ApprovedLeaveList extends Component<Props, State> {
           {approved_items.filter(e => e.id === listID).map(record =>
             <div key={record.id}>
               <div
-                className="col-md-6 offset-md-3"
+                className="col-md-6 ml-auto mr-auto"
                 style={{ paddingTop: '10px' }}
               >
                 <div className="card">
@@ -530,7 +530,7 @@ export default class ApprovedLeaveList extends Component<Props, State> {
           {approved_items.filter(e => e.id === listID).map(record =>
             <div key={record.id}>
               <div
-                className="col-md-6 offset-md-3"
+                className="col-md-6 ml-auto mr-auto"
                 style={{ paddingTop: '10px' }}
               >
                 <div className="card">
