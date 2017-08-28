@@ -16,13 +16,11 @@ type Props = {
 const ResetPassword = (props: Props) =>
   <div className="ResetPassword">
     {!props.isAuthenticated
-      ? <div className="col col-md-4 offset-md-4">
-          <UserResetPassword
-            isFetching={props.isFetching}
-            message={props.message}
-            onResetClick={email => props.dispatch(resetPassword(email))}
-          />
-        </div>
+      ? <UserResetPassword
+          isFetching={props.isFetching}
+          message={props.message}
+          onResetClick={email => props.dispatch(resetPassword(email))}
+        />
       : <Redirect to="/" />}
   </div>;
 
