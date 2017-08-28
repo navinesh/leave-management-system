@@ -83,52 +83,54 @@ export default class UserChange extends Component<Props, State> {
 
   render() {
     return (
-      <div className="card card-block" style={{ marginTop: '100px' }}>
-        <form onSubmit={this.handleSubmit.bind(this)}>
-          <div className="form-group">
-            <label htmlFor="currentPassword">Current password</label>
-            <input
-              type="password"
-              className="form-control"
-              placeholder="Current password"
-              id="currentPassword"
-              onChange={this.handleCurrentPasswordChange.bind(this)}
-            />
+      <div className="col-md-4 ml-auto mr-auto" style={{ marginTop: '100px' }}>
+        <div className="card card-body">
+          <form onSubmit={this.handleSubmit.bind(this)}>
+            <div className="form-group">
+              <label htmlFor="currentPassword">Current password</label>
+              <input
+                type="password"
+                className="form-control"
+                placeholder="Current password"
+                id="currentPassword"
+                onChange={this.handleCurrentPasswordChange.bind(this)}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="newPassword">New password</label>
+              <input
+                type="password"
+                className="form-control"
+                placeholder="New password"
+                id="newPassword"
+                onChange={this.handleNewPasswordChange.bind(this)}
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="newPasswordConfirm">Confirm new password</label>
+              <input
+                type="password"
+                className="form-control"
+                placeholder="Confirm new password"
+                id="newPasswordConfirm"
+                onChange={this.handleNewPasswordConfirmChange.bind(this)}
+              />
+            </div>
+            <div className="form-group">
+              <button type="submit" className="btn btn-primary col">
+                Update password
+              </button>
+            </div>
+          </form>
+          <div className="text-danger text-center">
+            {this.props.isFetching
+              ? <div className="loader" />
+              : this.props.message}
           </div>
-          <div className="form-group">
-            <label htmlFor="newPassword">New password</label>
-            <input
-              type="password"
-              className="form-control"
-              placeholder="New password"
-              id="newPassword"
-              onChange={this.handleNewPasswordChange.bind(this)}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="newPasswordConfirm">Confirm new password</label>
-            <input
-              type="password"
-              className="form-control"
-              placeholder="Confirm new password"
-              id="newPasswordConfirm"
-              onChange={this.handleNewPasswordConfirmChange.bind(this)}
-            />
-          </div>
-          <div className="form-group">
-            <button type="submit" className="btn btn-primary col">
-              Update password
-            </button>
-          </div>
-        </form>
-        <div className="text-danger text-center">
-          {this.props.isFetching
-            ? <div className="loader" />
-            : this.props.message}
-        </div>
-        <div className="text-danger text-center">
-          <div>
-            {this.state.errorMessage}
+          <div className="text-danger text-center">
+            <div>
+              {this.state.errorMessage}
+            </div>
           </div>
         </div>
       </div>
