@@ -22,10 +22,13 @@ type approvedLeaveProps = {
 };
 
 const ApproveLeave = (props: approvedLeaveProps) =>
-  <div className="col-md-10 offset-md-1">
+  <div className="col-md-10 ml-auto mr-auto">
     {props.pending_items.filter(e => e.id === props.listID).map(record =>
       <div key={record.id}>
-        <div className="col-md-6 offset-md-3" style={{ paddingTop: '10px' }}>
+        <div
+          className="col-md-6 ml-auto mr-auto"
+          style={{ paddingTop: '10px' }}
+        >
           <div className="card">
             <h5 className="card-header">Approve</h5>
             <div className="card-body">
@@ -518,7 +521,7 @@ export default class PendingLeaveList extends Component<Props, State> {
             .map(record =>
               <div key={record.id}>
                 <div
-                  className="col-md-6 offset-md-3"
+                  className="col-md-6 ml-auto mr-auto"
                   style={{ paddingTop: '10px' }}
                 >
                   <div className="card">
@@ -675,7 +678,7 @@ export default class PendingLeaveList extends Component<Props, State> {
             .map(record =>
               <div key={record.id}>
                 <div
-                  className="col-md-6 offset-md-3 pb-2"
+                  className="col-md-6 ml-auto mr-auto pb-2"
                   style={{ paddingTop: '10px' }}
                 >
                   <div className="card">
