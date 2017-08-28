@@ -37,12 +37,15 @@ type unArchiveProps = {
 };
 
 const UnArchiveLeave = (props: unArchiveProps) =>
-  <div className="col-md-10 offset-md-1">
+  <div className="col-md-10 ml-auto mr-auto">
     {props.archived_staff_record
       .filter(e => e.id === props.listID)
       .map(record =>
         <div key={record.id}>
-          <div className="col-md-6 offset-md-3" style={{ paddingTop: '10px' }}>
+          <div
+            className="col-md-6 ml-auto mr-auto"
+            style={{ paddingTop: '10px' }}
+          >
             <div className="card">
               <h5 className="card-header">Unarchive</h5>
               <div className="card-body">
@@ -65,7 +68,7 @@ const UnArchiveLeave = (props: unArchiveProps) =>
                     >
                       Close
                     </button>
-                    <button type="submit" className="btn btn-primary ml-2 mr-3">
+                    <button type="submit" className="btn btn-primary ml-3 mr-3">
                       Yes
                     </button>
                   </div>
@@ -196,40 +199,40 @@ export default class ArchivedStaffRecordList extends Component<Props, State> {
                     {record.othernames} {record.surname}
                   </p>
                 </li>
-                <li className="list-group-item justify-content-between">
+                <li className="list-group-item">
                   Annual
-                  <span className="badge badge-primary badge-pill">
+                  <span className="badge badge-primary badge-pill float-right">
                     {record.annual}
                   </span>
                 </li>
-                <li className="list-group-item justify-content-between">
+                <li className="list-group-item">
                   Sick
-                  <span className="badge badge-primary badge-pill">
+                  <span className="badge badge-primary badge-pill float-right">
                     {record.sick}
                   </span>
                 </li>
-                <li className="list-group-item justify-content-between">
+                <li className="list-group-item">
                   Bereavement
-                  <span className="badge badge-primary badge-pill">
+                  <span className="badge badge-primary badge-pill float-right">
                     {record.bereavement}
                   </span>
                 </li>
-                <li className="list-group-item justify-content-between">
+                <li className="list-group-item">
                   Christmas
-                  <span className="badge badge-primary badge-pill">
+                  <span className="badge badge-primary badge-pill float-right">
                     {record.christmas}
                   </span>
                 </li>
-                <li className="list-group-item justify-content-between">
+                <li className="list-group-item">
                   DOB
-                  <span className="badge badge-primary badge-pill">
+                  <span className="badge badge-primary badge-pill float-right">
                     {dateOfBirth}
                   </span>
                 </li>
                 {record.gender.toLowerCase() === 'female'
-                  ? <li className="list-group-item justify-content-between">
+                  ? <li className="list-group-item">
                       Maternity
-                      <span className="badge badge-primary badge-pill">
+                      <span className="badge badge-primary badge-pill float-right">
                         {record.maternity}
                       </span>
                     </li>
