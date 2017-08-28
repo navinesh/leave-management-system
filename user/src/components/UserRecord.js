@@ -125,7 +125,7 @@ export const UserRecord = (props: userRecordProps) => {
   if (props.message) {
     return (
       <div className="container text-center" style={{ paddingTop: '100px' }}>
-        <div className="col-md-8 offset-md-2 ">
+        <div className="col-md-8 ml-auto mr-auto">
           <h1 className="display-4">
             The site configured at this address does not contain the requested
             resource.
@@ -140,8 +140,8 @@ export const UserRecord = (props: userRecordProps) => {
         style={{ backgroundColor: '#FFFFFF', paddingTop: '80px' }}
       >
         <div className="container">
-          <div className="row justify-content-md-center">
-            <div className="col-md-7">
+          <div className="row">
+            <div className="col-md-8">
               <p className="display-4">
                 {props.user_detail.othernames} {props.user_detail.surname}
               </p>
@@ -151,36 +151,36 @@ export const UserRecord = (props: userRecordProps) => {
                 </Link>
               </p>
             </div>
-            <div className="col-md-3">
+            <div className="col-md-4">
               <ul className="list-group">
-                <li className="list-group-item justify-content-between">
+                <li className="list-group-item">
                   Annual
-                  <span className="badge badge-primary badge-pill">
+                  <span className="badge badge-primary badge-pill float-right">
                     {props.user_detail.annual}
                   </span>
                 </li>
-                <li className="list-group-item justify-content-between">
+                <li className="list-group-item">
                   Sick
-                  <span className="badge badge-primary badge-pill">
+                  <span className="badge badge-primary badge-pill float-right">
                     {props.user_detail.sick}
                   </span>
                 </li>
-                <li className="list-group-item justify-content-between">
+                <li className="list-group-item">
                   Bereavement
-                  <span className="badge badge-primary badge-pill">
+                  <span className="badge badge-primary badge-pill float-right">
                     {props.user_detail.bereavement}
                   </span>
                 </li>
-                <li className="list-group-item justify-content-between">
+                <li className="list-group-item">
                   Christmas
-                  <span className="badge badge-primary badge-pill">
+                  <span className="badge badge-primary badge-pill float-right">
                     {props.user_detail.christmas}
                   </span>
                 </li>
                 {gender === 'female' &&
-                  <li className="list-group-item justify-content-between">
+                  <li className="list-group-item">
                     Maternity
-                    <span className="badge badge-primary badge-pill">
+                    <span className="badge badge-primary badge-pill float-right">
                       {props.user_detail.maternity}
                     </span>
                   </li>}
