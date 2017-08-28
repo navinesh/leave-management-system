@@ -70,7 +70,7 @@ export default class Login extends Component<Props, State> {
   render() {
     return (
       <div className="Login" style={{ marginTop: '80px' }}>
-        <div className="card card-block">
+        <div className="card card-body">
           <form onSubmit={this.handleSubmit.bind(this)}>
             <div className="form-group">
               <label htmlFor="email">Email address</label>
@@ -108,7 +108,7 @@ export default class Login extends Component<Props, State> {
             {this.state.errorMessage}
           </div>
         </div>
-        <div className="card card-block mt-3">
+        <div className="card card-body mt-3">
           <Link to="/reset" className="btn">
             Forgot your password?
           </Link>
