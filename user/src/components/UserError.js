@@ -2,7 +2,7 @@ import React from 'react';
 
 export default () =>
   <div className="container text-md-center" style={{ marginTop: '80px' }}>
-    <div className="offset-md-2 col-md-8">
+    <div className="col-md-8 ml-auto mr-auto">
       <h2 className="display-2">404</h2>
       <h4 className="display-3">That's an error.</h4>
       <h5 className="display-4">
