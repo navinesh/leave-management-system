@@ -38,29 +38,31 @@ export default class UserResetPassword extends Component<Props, State> {
 
   render() {
     return (
-      <div className="card card-block" style={{ marginTop: '100px' }}>
-        <form onSubmit={this.handleSubmit.bind(this)}>
-          <div className="form-group">
-            <label htmlFor="email">Email address</label>
-            <input
-              type="email"
-              className="form-control"
-              placeholder="Enter email"
-              id="email"
-              onChange={this.handleEmailChange.bind(this)}
-            />
+      <div className="col-md-4 ml-auto mr-auto" style={{ marginTop: '150px' }}>
+        <div className="card card-body">
+          <form onSubmit={this.handleSubmit.bind(this)}>
+            <div className="form-group">
+              <label htmlFor="email">Email address</label>
+              <input
+                type="email"
+                className="form-control"
+                placeholder="Enter email"
+                id="email"
+                onChange={this.handleEmailChange.bind(this)}
+              />
+            </div>
+            <div className="form-group">
+              <button type="submit" className="btn btn-primary col">
+                Reset
+              </button>
+            </div>
+          </form>
+          <div className="text-danger text-center">
+            {this.props.isFetching
+              ? <div className="loader1" />
+              : this.props.message}
+            {this.state.errorMessage}
           </div>
-          <div className="form-group">
-            <button type="submit" className="btn btn-primary col">
-              Reset
-            </button>
-          </div>
-        </form>
-        <div className="text-danger text-center">
-          {this.props.isFetching
-            ? <div className="loader1" />
-            : this.props.message}
-          {this.state.errorMessage}
         </div>
       </div>
     );
