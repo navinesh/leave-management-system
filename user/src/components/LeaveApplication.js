@@ -30,34 +30,34 @@ const UserRecord = (props: userRecordProps) => {
 
   return (
     <ul className="list-group">
-      <li className="list-group-item justify-content-between">
+      <li className="list-group-item">
         Annual
-        <span className="badge badge-primary badge-pill">
+        <span className="badge badge-primary badge-pill float-right">
           {props.user_detail.annual}
         </span>
       </li>
-      <li className="list-group-item justify-content-between">
+      <li className="list-group-item">
         Sick
-        <span className="badge badge-primary badge-pill">
+        <span className="badge badge-primary badge-pill float-right">
           {props.user_detail.sick}
         </span>
       </li>
-      <li className="list-group-item justify-content-between">
+      <li className="list-group-item">
         Bereavement
-        <span className="badge badge-primary badge-pill">
+        <span className="badge badge-primary badge-pill float-right">
           {props.user_detail.bereavement}
         </span>
       </li>
-      <li className="list-group-item justify-content-between">
+      <li className="list-group-item">
         Christmas
-        <span className="badge badge-primary badge-pill">
+        <span className="badge badge-primary badge-pill float-right">
           {props.user_detail.christmas}
         </span>
       </li>
       {gender === 'female' &&
-        <li className="list-group-item justify-content-between">
+        <li className="list-group-item">
           Maternity
-          <span className="badge badge-primary badge-pill">
+          <span className="badge badge-primary badge-pill float-right">
             {props.user_detail.maternity}
           </span>
         </li>}
@@ -377,7 +377,7 @@ class LeaveApplication extends Component<
     if (this.state.successMessage) {
       return (
         <div className="card">
-          <div className="card-block text-center">
+          <div className="card-body text-center">
             <p>
               {this.state.successMessage}
             </p>
@@ -393,7 +393,7 @@ class LeaveApplication extends Component<
     }
 
     return (
-      <div className="card card-block">
+      <div className="card card-body">
         <form encType="multipart/form-data" onSubmit={this.handleSubmit}>
           <div className="row">
             <div className="col-md-6">
@@ -535,14 +535,14 @@ export default (props: Props) =>
   <div className="container" style={{ marginTop: '80px' }}>
     <div className="row">
       <div className="col-md-12 pb-2">
-        <div className="col-md-11 offset-md-1">
+        <div className="col-md-9 ml-auto mr-auto">
           <UserName user_detail={props.user_detail} />
         </div>
       </div>
-      <div className="col-md-3 offset-md-1">
+      <div className="col-md-3 ml-auto">
         <UserRecord user_detail={props.user_detail} />
       </div>
-      <div className="col-md-6 mb-2">
+      <div className="col-md-6 mr-auto mb-2">
         <LeaveApplication
           user_detail={props.user_detail}
           user_record={props.user_record}
