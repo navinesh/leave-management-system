@@ -37,7 +37,7 @@ class LeaveReport extends Component<Props> {
     const { isAuthenticated, isFetching, leave_record } = this.props;
 
     return (
-      <div className="container">
+      <div className="LeaveReport">
         {isAuthenticated
           ? isFetching
             ? <div className="text-center">
