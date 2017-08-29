@@ -671,10 +671,21 @@ export default class StaffRecordList extends Component<Props, State> {
 
     return (
       <div className="StaffRecordList">
-        <Search handleSearchChange={this.handleSearchChange} />
-        <div className="row">
-          {filteredElements}
-        </div>
+        {staff_record.length > 0
+          ? <div>
+              <Search handleSearchChange={this.handleSearchChange} />
+              <div className="row">
+                {filteredElements}
+              </div>
+            </div>
+          : <div
+              className="card card-body border-0"
+              style={{ paddingTop: '100px', paddingBottom: '260px' }}
+            >
+              <h1 className="display-4 text-center">
+                <em>There is no record to display.</em>
+              </h1>
+            </div>}
       </div>
     );
   }
