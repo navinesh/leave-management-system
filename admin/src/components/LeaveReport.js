@@ -38,31 +38,40 @@ const LeaveReportList = (props: Props) => {
     </tr>
   );
 
-  return (
-    <div className="table-responsive">
-      <table
-        className="table table-bordered table-hover"
-        style={{ backgroundColor: '#FFFFFF' }}
+  return itemNodes.length > 0
+    ? <div className="container">
+        <div className="table-responsive">
+          <table
+            className="table table-bordered table-hover"
+            style={{ backgroundColor: '#FFFFFF' }}
+          >
+            <thead className="thead-default">
+              <tr>
+                <th>Name</th>
+                <th>Leave</th>
+                <th>Type</th>
+                <th>Start date</th>
+                <th>End date</th>
+                <th>Status</th>
+                <th>Date posted</th>
+                <th>Date reviewed</th>
+                <th>Reason</th>
+              </tr>
+            </thead>
+            <tbody>
+              {itemNodes}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    : <div
+        className="card card-body border-0"
+        style={{ paddingTop: '100px', paddingBottom: '260px' }}
       >
-        <thead className="thead-default">
-          <tr>
-            <th>Name</th>
-            <th>Leave</th>
-            <th>Type</th>
-            <th>Start date</th>
-            <th>End date</th>
-            <th>Status</th>
-            <th>Date posted</th>
-            <th>Date reviewed</th>
-            <th>Reason</th>
-          </tr>
-        </thead>
-        <tbody>
-          {itemNodes}
-        </tbody>
-      </table>
-    </div>
-  );
+        <h1 className="display-4 text-center">
+          <em>There is no record to display.</em>
+        </h1>
+      </div>;
 };
 
 export default LeaveReportList;
