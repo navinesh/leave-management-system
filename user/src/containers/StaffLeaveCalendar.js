@@ -20,7 +20,7 @@ class LeaveCalendar extends Component<Props> {
 
   render() {
     return (
-      <div>
+      <div className="container">
         {this.props.isFetching
           ? <div className="text-center">
               <div className="loader1" />
