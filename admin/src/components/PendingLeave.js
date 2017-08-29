@@ -40,7 +40,9 @@ const ApproveLeave = (props: approvedLeaveProps) =>
                   <div className="form-group">
                     <label>Leave</label>
                     <div className="form-control">
-                      {record.leave_name}
+                      <em>
+                        {record.leave_name}
+                      </em>
                     </div>
                   </div>
                 </div>
@@ -48,7 +50,9 @@ const ApproveLeave = (props: approvedLeaveProps) =>
                   <div className="form-group">
                     <label>Leave type</label>
                     <div className="form-control">
-                      {record.leave_type}
+                      <em>
+                        {record.leave_type}
+                      </em>
                     </div>
                   </div>
                 </div>
@@ -58,7 +62,9 @@ const ApproveLeave = (props: approvedLeaveProps) =>
                   <div className="form-group">
                     <label>Start date</label>
                     <div className="form-control">
-                      {record.start_date}
+                      <em>
+                        {record.start_date}
+                      </em>
                     </div>
                   </div>
                 </div>
@@ -66,7 +72,9 @@ const ApproveLeave = (props: approvedLeaveProps) =>
                   <div className="form-group">
                     <label>End date</label>
                     <div className="form-control">
-                      {record.end_date}
+                      <em>
+                        {record.end_date}
+                      </em>
                     </div>
                   </div>
                 </div>
@@ -75,8 +83,10 @@ const ApproveLeave = (props: approvedLeaveProps) =>
                 <div className="col-md-6">
                   <div className="form-group">
                     <label>Leave days</label>
-                    <div className="form-control">
-                      {record.leave_days}
+                    <div className="form-control text-muted">
+                      <em>
+                        {record.leave_days}
+                      </em>
                     </div>
                   </div>
                 </div>
@@ -85,8 +95,10 @@ const ApproveLeave = (props: approvedLeaveProps) =>
                 <div className="col">
                   <div className="form-group">
                     <label>Leave reason</label>
-                    <div className="form-control">
-                      {record.leave_reason}
+                    <div className="form-control text-muted">
+                      <em>
+                        {record.leave_reason}
+                      </em>
                     </div>
                   </div>
                 </div>
@@ -692,7 +704,9 @@ export default class PendingLeaveList extends Component<Props, State> {
                           <div className="form-group">
                             <label>Leave</label>
                             <div className="form-control">
-                              {record.leave_name}
+                              <em>
+                                {record.leave_name}
+                              </em>
                             </div>
                           </div>
                         </div>
@@ -700,7 +714,9 @@ export default class PendingLeaveList extends Component<Props, State> {
                           <div className="form-group">
                             <label>Leave type</label>
                             <div className="form-control">
-                              {record.leave_type}
+                              <em>
+                                {record.leave_type}
+                              </em>
                             </div>
                           </div>
                         </div>
@@ -710,7 +726,9 @@ export default class PendingLeaveList extends Component<Props, State> {
                           <div className="form-group">
                             <label>Start date</label>
                             <div className="form-control">
-                              {record.start_date}
+                              <em>
+                                {record.start_date}
+                              </em>
                             </div>
                           </div>
                         </div>
@@ -718,7 +736,9 @@ export default class PendingLeaveList extends Component<Props, State> {
                           <div className="form-group">
                             <label>End date</label>
                             <div className="form-control">
-                              {record.end_date}
+                              <em>
+                                {record.end_date}
+                              </em>
                             </div>
                           </div>
                         </div>
@@ -728,7 +748,9 @@ export default class PendingLeaveList extends Component<Props, State> {
                           <div className="form-group">
                             <label>Leave days</label>
                             <div className="form-control">
-                              {record.leave_days}
+                              <em>
+                                {record.leave_days}
+                              </em>
                             </div>
                           </div>
                         </div>
@@ -738,7 +760,9 @@ export default class PendingLeaveList extends Component<Props, State> {
                           <div className="form-group">
                             <label>Leave reason</label>
                             <div className="form-control">
-                              {record.leave_reason}
+                              <em>
+                                {record.leave_reason}
+                              </em>
                             </div>
                           </div>
                         </div>
@@ -869,8 +893,13 @@ export default class PendingLeaveList extends Component<Props, State> {
             </tbody>
           </table>
         </div>
-      : <div className="text-center" style={{ paddingTop: '40px' }}>
-          <h1 className="display-4">There are no pending leave record.</h1>
+      : <div
+          className="card card-body border-0"
+          style={{ paddingTop: '100px', paddingBottom: '260px' }}
+        >
+          <h1 className="display-4 text-center">
+            <em>There is no record to display.</em>
+          </h1>
         </div>;
   }
 }
