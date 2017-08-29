@@ -26,7 +26,7 @@ export default class Header extends Component<Props> {
       <div>
         <nav className="navbar fixed-top navbar-expand-lg">
           <div className="container">
-            <Link className="navbar-brand" to="/" style={{ color: '#707070' }}>
+            <Link className="navbar-brand" to="/">
               Leave Management System
             </Link>
             <button
