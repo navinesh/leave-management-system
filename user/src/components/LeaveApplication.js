@@ -15,9 +15,9 @@ type userNameProps = {
 };
 
 const UserName = (props: userNameProps) =>
-  <h5>
+  <p>
     {props.user_detail.othernames} {props.user_detail.surname}
-  </h5>;
+  </p>;
 
 type userRecordProps = {
   user_detail: Object
@@ -534,7 +534,7 @@ type Props = {
 export default (props: Props) =>
   <div className="container" style={{ marginTop: '80px' }}>
     <div className="row">
-      <div className="col-md-12 pb-2">
+      <div className="col-md-12">
         <div className="col-md-9 ml-auto mr-auto">
           <UserName user_detail={props.user_detail} />
         </div>
