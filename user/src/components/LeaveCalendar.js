@@ -53,28 +53,33 @@ export default (props: Props) => {
     );
 
   return leaveRecord.length > 0
-    ? <div className="container">
-        <div className="table-responsive" style={{ marginTop: '80px' }}>
-          <table
-            className="table table-bordered table-hover"
-            style={{ backgroundColor: '#FFFFFF' }}
-          >
-            <thead className="thead-default">
-              <tr>
-                <th>Name</th>
-                <th>Leave type</th>
-                <th>Start date</th>
-                <th>End date</th>
-                <th>Leave days</th>
-              </tr>
-            </thead>
-            <tbody>
-              {leaveRecord}
-            </tbody>
-          </table>
-        </div>
+    ? <div className="table-responsive" style={{ marginTop: '80px' }}>
+        <table
+          className="table table-bordered table-hover"
+          style={{ backgroundColor: '#FFFFFF' }}
+        >
+          <thead className="thead-default">
+            <tr>
+              <th>Name</th>
+              <th>Leave type</th>
+              <th>Start date</th>
+              <th>End date</th>
+              <th>Leave days</th>
+            </tr>
+          </thead>
+          <tbody>
+            {leaveRecord}
+          </tbody>
+        </table>
       </div>
-    : <div className="container text-center" style={{ paddingTop: '100px' }}>
-        <h2 className="display-4">There are no approved leave record.</h2>
+    : <div style={{ marginTop: '80px' }}>
+        <div
+          className="card card-body border-0"
+          style={{ paddingTop: '100px', paddingBottom: '220px' }}
+        >
+          <h1 className="display-4 text-center">
+            <em>There is no record to display.</em>
+          </h1>
+        </div>
       </div>;
 };
