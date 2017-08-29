@@ -56,9 +56,12 @@ const SickSheetList = (props: Props) => {
           </tbody>
         </table>
       </div>
-    : <div className="text-center" style={{ paddingTop: '40px' }}>
-        <h1 className="display-4">
-          There are no approved sick leave record with medical certificate.
+    : <div
+        className="card card-body border-0"
+        style={{ paddingTop: '100px', paddingBottom: '260px' }}
+      >
+        <h1 className="display-4 text-center">
+          <em>There is no record to display.</em>
         </h1>
       </div>;
 };
