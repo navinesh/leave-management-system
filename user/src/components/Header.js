@@ -10,6 +10,13 @@ type Props = {
 };
 
 export default class Navs extends Component<Props> {
+  userLogout: Function;
+
+  constructor() {
+    super();
+    this.userLogout = this.userLogout.bind(this);
+  }
+
   userLogout(e: Event) {
     e.preventDefault();
     this.props.dispatch(logoutUser());
@@ -19,7 +26,7 @@ export default class Navs extends Component<Props> {
     return (
       <nav className="navbar fixed-top navbar-expand-lg">
         <div className="container">
-          <Link className="navbar-brand" to="/" style={{ color: '#707070' }}>
+          <Link className="navbar-brand" to="/">
             Leave Management System
           </Link>
           <button
@@ -41,13 +48,13 @@ export default class Navs extends Component<Props> {
               >
                 <div className="navbar-nav">
                   <Link className="nav-item nav-link" to="/leaveapplication">
-                    Leave application
+                    Apply for leave
                   </Link>
                   <Link className="nav-item nav-link" to="/leavecalendar">
                     Leave calendar
                   </Link>
                   <button
-                    onClick={this.userLogout.bind(this)}
+                    onClick={this.userLogout}
                     className="btn btn-primary ml-2"
                   >
                     Sign out
