@@ -21,7 +21,8 @@ type Props = {
   isFetching: boolean,
   message: string,
   isArchiveFetching: boolean,
-  archiveMessage: string
+  archiveMessage: string,
+  isDataFetching: boolean
 };
 
 class StaffRecord extends Component<Props> {
@@ -55,25 +56,30 @@ class StaffRecord extends Component<Props> {
       isFetching,
       message,
       isArchiveFetching,
-      archiveMessage
+      archiveMessage,
+      isDataFetching
     } = this.props;
 
     return (
       <div className="container">
         {isAuthenticated
-          ? <StaffRecordList
-              staff_record={staff_record}
-              searchTerm={searchTerm}
-              dispatch={dispatch}
-              isFetching={isFetching}
-              message={message}
-              isArchiveFetching={isArchiveFetching}
-              archiveMessage={archiveMessage}
-              onModifyUserRecordSubmit={modifyUserDetails =>
-                dispatch(submitModifyUserRecord(modifyUserDetails))}
-              onArchiveUserSubmit={archiveUser =>
-                dispatch(submitArchiveUser(archiveUser))}
-            />
+          ? isDataFetching
+            ? <div className="text-center">
+                <div className="loader1" />
+              </div>
+            : <StaffRecordList
+                staff_record={staff_record}
+                searchTerm={searchTerm}
+                dispatch={dispatch}
+                isFetching={isFetching}
+                message={message}
+                isArchiveFetching={isArchiveFetching}
+                archiveMessage={archiveMessage}
+                onModifyUserRecordSubmit={modifyUserDetails =>
+                  dispatch(submitModifyUserRecord(modifyUserDetails))}
+                onArchiveUserSubmit={archiveUser =>
+                  dispatch(submitArchiveUser(archiveUser))}
+              />
           : <Redirect to="/login" />}
       </div>
     );
@@ -90,7 +96,7 @@ const mapStateToProps = state => {
   } = state;
 
   const { auth_info, isAuthenticated } = adminAuth;
-  const { staff_record } = staffRecord;
+  const { staff_record, isFetching: isDataFetching } = staffRecord;
   const { searchTerm } = searchStaffRecord;
   const { isFetching, message } = modifyUser;
   const { isArchiveFetching, archiveMessage } = archiveUser;
@@ -103,7 +109,8 @@ const mapStateToProps = state => {
     isFetching,
     message,
     isArchiveFetching,
-    archiveMessage
+    archiveMessage,
+    isDataFetching
   };
 };
 
