@@ -1,6 +1,5 @@
 // @flow
 import axios from 'axios';
-import { fetchStaffRecord } from '../actions/StaffRecord';
 
 export const MODIFY_USER_RECORD_REQUEST = 'MODIFY_USER_RECORD_REQUEST';
 export const MODIFY_USER_RECORD_SUCCESS = 'MODIFY_USER_RECORD_SUCCESS';
@@ -46,7 +45,6 @@ export const submitModifyUserRecord = (modifyUserDetails: Object) => async (
       dispatch(failureModifyUserRecord(response.data));
     } else {
       dispatch(successModifyUserRecord(response.data));
-      dispatch(fetchStaffRecord());
     }
   } catch (error) {
     console.log(error);
