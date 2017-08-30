@@ -6,12 +6,11 @@ import { searchStaffRecord, fetchStaffRecord } from '../actions/StaffRecord';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-import '../spinners.css';
-
 const moment = require('moment');
 
 type searchProps = {
-  handleSearchChange: Function
+  handleSearchChange: Function,
+  handleClearSearch: Function
 };
 
 const Search = (props: searchProps) =>
@@ -25,6 +24,14 @@ const Search = (props: searchProps) =>
           onChange={props.handleSearchChange}
         />
       </div>
+    </div>
+    <div className="col-md-3">
+      <button
+        className="btn btn-outline-primary"
+        onClick={props.handleClearSearch}
+      >
+        Reset view
+      </button>
     </div>
   </div>;
 
@@ -134,6 +141,7 @@ export default class StaffRecordList extends Component<Props, State> {
   handleOpenArchive: Function;
   handleCloseArchive: Function;
   handleSearchChange: Function;
+  handleClearSearch: Function;
 
   surname: any;
   othernames: any;
@@ -169,10 +177,15 @@ export default class StaffRecordList extends Component<Props, State> {
     this.handleOpenArchive = this.handleOpenArchive.bind(this);
     this.handleCloseArchive = this.handleCloseArchive.bind(this);
     this.handleSearchChange = this.handleSearchChange.bind(this);
+    this.handleClearSearch = this.handleClearSearch.bind(this);
   }
 
   handleSearchChange({ target }: SyntheticInputEvent<>) {
     this.props.dispatch(searchStaffRecord(target.value.toLowerCase()));
+  }
+
+  handleClearSearch() {
+    this.props.dispatch({ type: 'CLEAR_STAFF_RECORD_SEARCH' });
   }
 
   handleDateChange(e: Event) {
@@ -191,8 +204,6 @@ export default class StaffRecordList extends Component<Props, State> {
   }
 
   handleCloseEdit() {
-    const { dispatch } = this.props;
-
     this.setState({
       isEditing: !this.state.isEditing,
       errorMessage: '',
@@ -200,8 +211,8 @@ export default class StaffRecordList extends Component<Props, State> {
     });
 
     if (this.state.editReason) {
-      dispatch(fetchStaffRecord());
-      dispatch({ type: 'CLEAR_MODIFY_USER_MESSAGE' });
+      this.props.dispatch(fetchStaffRecord());
+      this.props.dispatch({ type: 'CLEAR_MODIFY_USER_MESSAGE' });
     }
   }
 
@@ -217,11 +228,9 @@ export default class StaffRecordList extends Component<Props, State> {
   }
 
   handleCloseArchive() {
-    const { dispatch } = this.props;
-
     if (this.state.archiveReason) {
-      dispatch(fetchStaffRecord());
-      dispatch({ type: 'CLEAR_ARCHIVE_MESSAGE' });
+      this.props.dispatch(fetchStaffRecord());
+      this.props.dispatch({ type: 'CLEAR_ARCHIVE_MESSAGE' });
     }
 
     this.setState({
@@ -253,7 +262,7 @@ export default class StaffRecordList extends Component<Props, State> {
       : dob;
 
     const mDays = gender => {
-      if (gender.toLowerCase() === 'female') {
+      if (gender.toLowerCase() === 'female' && this.maternity) {
         return this.maternity.value ? this.maternity.value : 0;
       } else {
         return 0;
@@ -673,7 +682,10 @@ export default class StaffRecordList extends Component<Props, State> {
       <div className="StaffRecordList">
         {staff_record.length > 0
           ? <div>
-              <Search handleSearchChange={this.handleSearchChange} />
+              <Search
+                handleSearchChange={this.handleSearchChange}
+                handleClearSearch={this.handleClearSearch}
+              />
               <div className="row">
                 {filteredElements}
               </div>
