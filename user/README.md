@@ -1,25 +1,38 @@
-#Leave management system
+# Leave management system
 
-Python web application.
+ReactJS web application.
 
-to-do
+### Required Libraries and Dependencies
 
-##Required Libraries and Dependencies
-to-do
+* ReactJS
+* React-Router
+* Redux
+* Redux-thunk
+* Flow
+* Axios
+* MomentJS
+* Moment-range
+* React-dates
+* Bootstrap 4 CSS
 
-**What's included**
+### How to Run the Project
 
-Within the download you will find the following directory and files.
+Clone the repo and do ```npm install``` or ```yarn install```.
 
-```
-to-do
-```
+And then run your project using ```npm start``` or ```yarn start```.
 
-##How to Run the Project
+**OR**
 
-to-do
+User module is developed using Create React App tool https://github.com/facebookincubator/create-react-app
 
-##Creator
+You can create an app using this tool and replace the src folder with the folder in user module.
+
+Install required libraries and dependencies.
+
+And then run your project using ```npm start``` or ```yarn start```.
+
+## Creator
+
 Navinesh Chand
 * https://twitter.com/navinesh
 * https://github.com/navinesh
