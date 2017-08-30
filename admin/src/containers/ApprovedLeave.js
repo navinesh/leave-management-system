@@ -3,8 +3,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-import '../spinners.css';
-
 import { fetchLoginFromToken } from '../actions/AdminLogin';
 import { fetchApprovedLeave } from '../actions/ApprovedLeave';
 import { submitEditApprovedLeave } from '../actions/EditLeave';
