@@ -1,8 +1,7 @@
+// @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-
-import '../spinners.css';
 
 import { fetchLoginFromToken } from '../actions/AdminLogin';
 import { fetchSickSheetRecord } from '../actions/SickSheetRecord';
@@ -12,7 +11,8 @@ type Props = {
   isAuthenticated: boolean,
   auth_info: Object,
   isFetching: boolean,
-  sickSheet_items: Array<any>
+  sickSheet_items: Array<any>,
+  dispatch: Function
 };
 
 class SickSheetRecord extends Component<Props> {
