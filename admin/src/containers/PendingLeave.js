@@ -1,7 +1,6 @@
+// @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
-import '../spinners.css';
 
 import { fetchLoginFromToken } from '../actions/AdminLogin';
 import { fetchPendingLeave } from '../actions/PendingLeave';
