@@ -46,9 +46,6 @@ export default class Header extends Component<Props> {
                 id="navbarSupportedContent"
               >
                 <div className="navbar-nav">
-                  <Link className="nav-item nav-link" to="/">
-                    Pending
-                  </Link>
                   <Link className="nav-item nav-link" to="/approvedleave">
                     Approved
                   </Link>
