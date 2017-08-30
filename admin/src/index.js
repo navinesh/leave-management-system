@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 import './index.css';
 import './bootstrap.min.css';
+import './spinners.css';
 
 import AdminHeader from './containers/AdminHeader';
 import AdminLogin from './containers/AdminLogin';
