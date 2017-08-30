@@ -6,8 +6,6 @@ import { fetchPendingLeave } from '../actions/PendingLeave';
 import { DateRangePicker } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
 
-import '../spinners.css';
-
 import Moment from 'moment';
 import { extendMoment } from 'moment-range';
 const moment = extendMoment(Moment);
@@ -215,8 +213,6 @@ export default class PendingLeaveList extends Component<Props, State> {
   }
 
   handleCloseEdit() {
-    const { dispatch } = this.props;
-
     this.setState({
       isEditing: !this.state.isEditing,
       errorMessage: '',
@@ -226,8 +222,8 @@ export default class PendingLeaveList extends Component<Props, State> {
     });
 
     if (this.state.editReason) {
-      dispatch({ type: 'CLEAR_EDIT_LEAVE' });
-      dispatch(fetchPendingLeave());
+      this.props.dispatch({ type: 'CLEAR_EDIT_LEAVE' });
+      this.props.dispatch(fetchPendingLeave());
     }
   }
 
@@ -247,8 +243,6 @@ export default class PendingLeaveList extends Component<Props, State> {
   }
 
   handleCloseDecline() {
-    const { dispatch } = this.props;
-
     this.setState({
       isDeclining: !this.state.isDeclining,
       errorMessage: '',
@@ -256,8 +250,8 @@ export default class PendingLeaveList extends Component<Props, State> {
     });
 
     if (this.state.declineReason) {
-      dispatch({ type: 'CLEAR_DECLINE_LEAVE' });
-      dispatch(fetchPendingLeave());
+      this.props.dispatch({ type: 'CLEAR_DECLINE_LEAVE' });
+      this.props.dispatch(fetchPendingLeave());
     }
   }
 
@@ -269,8 +263,6 @@ export default class PendingLeaveList extends Component<Props, State> {
   }
 
   handleCloseApproveLeave() {
-    const { dispatch } = this.props;
-
     this.setState({
       isApproving: !this.state.isApproving,
       errorMessage: '',
@@ -278,8 +270,8 @@ export default class PendingLeaveList extends Component<Props, State> {
     });
 
     if (this.state.approveSuccess) {
-      dispatch({ type: 'CLEAR_APPROVE_LEAVE' });
-      dispatch(fetchPendingLeave());
+      this.props.dispatch({ type: 'CLEAR_APPROVE_LEAVE' });
+      this.props.dispatch(fetchPendingLeave());
     }
 
     this.setState({ approveSuccess: false });
