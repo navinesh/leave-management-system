@@ -150,7 +150,8 @@ def validate_user():
     if not user or not user.verify_password(password):
         return jsonify({
             'message':
-            'The username and password you entered did not match our records. Please double-check and try again.'
+            'The username and password you entered did not match our records. \
+            Please double-check and try again.'
         })
         abort(401)
 
@@ -623,7 +624,8 @@ def modify_user():
     userRecord = session.query(User).filter_by(id=user_id).one()
 
     # Email message
-    if gender == 'male':
+    if gender == 'male' or (float(maternity) <= 0 and
+                            userRecord.maternity <= 0):
         send_email(
             [email],
             "Leave record update",
@@ -632,10 +634,10 @@ def modify_user():
              str(userRecord.sick) + " sick day(s), " + str(
                  userRecord.bereavement) + " bereavement day(s) and " + str(
                      userRecord.christmas) +
-             " christmas day(s). Your updated leave records are: " +
-             str(annual) + " annual day(s), " + str(sick) + " sick day(s), " +
-             str(bereavement) + " bereavement day(s) and " + str(christmas) +
-             " christmas day(s). " + "Reason for update: " + editReason),
+             " christmas day(s). Your updated leave records are: " + annual +
+             " annual day(s), " + sick + " sick day(s), " + bereavement +
+             " bereavement day(s) and " + christmas + " christmas day(s). " +
+             "Reason for update: " + editReason),
             file=None)
     else:
         send_email(
@@ -647,11 +649,11 @@ def modify_user():
                  userRecord.bereavement) + " bereavement day(s), " + str(
                      userRecord.christmas) + " christmas day(s) and " + str(
                          userRecord.maternity) +
-             " maternity day(s). Your updated leave records are: " +
-             str(annual) + " annual day(s), " + str(sick) + " sick day(s), " +
-             str(bereavement) + " bereavement day(s), " + str(christmas) +
-             " christmas day(s) and " + str(maternity) + " maternity day(s). "
-             + "Reason for update: " + editReason),
+             " maternity day(s). Your updated leave records are: " + annual +
+             " annual day(s), " + sick + " sick day(s), " + bereavement +
+             " bereavement day(s), " + christmas + " christmas day(s) and " +
+             maternity + " maternity day(s). " + "Reason for update: " +
+             editReason),
             file=None)
 
     userRecord.surname = surname
