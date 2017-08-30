@@ -4,12 +4,11 @@ import React, { Component } from 'react';
 import { searchStaffRecord } from '../actions/StaffRecord';
 import { fetchArchivedStaffRecord } from '../actions/ArchivedStaffRecord';
 
-import '../spinners.css';
-
 const moment = require('moment');
 
 type searchProps = {
-  handleSearchChange: Function
+  handleSearchChange: Function,
+  handleClearSearch: Function
 };
 
 const Search = (props: searchProps) =>
@@ -23,6 +22,14 @@ const Search = (props: searchProps) =>
           onChange={props.handleSearchChange}
         />
       </div>
+    </div>
+    <div className="col-md-3">
+      <button
+        className="btn btn-outline-primary"
+        onClick={props.handleClearSearch}
+      >
+        Reset view
+      </button>
     </div>
   </div>;
 
@@ -106,6 +113,7 @@ type State = {
 
 export default class ArchivedStaffRecordList extends Component<Props, State> {
   handleSearchChange: Function;
+  handleClearSearch: Function;
   handleOpenUnarchive: Function;
   handleCloseUnarchive: Function;
   handleSubmit: Function;
@@ -122,10 +130,15 @@ export default class ArchivedStaffRecordList extends Component<Props, State> {
     this.handleCloseUnarchive = this.handleCloseUnarchive.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleSearchChange = this.handleSearchChange.bind(this);
+    this.handleClearSearch = this.handleClearSearch.bind(this);
   }
 
   handleSearchChange({ target }: SyntheticInputEvent<>) {
     this.props.dispatch(searchStaffRecord(target.value.toLowerCase()));
+  }
+
+  handleClearSearch() {
+    this.props.dispatch({ type: 'CLEAR_STAFF_RECORD_SEARCH' });
   }
 
   handleOpenUnarchive(e: Event & { currentTarget: HTMLElement }) {
@@ -135,12 +148,10 @@ export default class ArchivedStaffRecordList extends Component<Props, State> {
     });
   }
 
-  handleCloseUnarchive(e: Event) {
-    const { dispatch } = this.props;
-
+  handleCloseUnarchive() {
     this.setState({ isUnarchive: false, errorMessage: '' });
-    dispatch(fetchArchivedStaffRecord());
-    dispatch({ type: 'CLEAR_UNARCHIVE_MESSAGE' });
+    this.props.dispatch(fetchArchivedStaffRecord());
+    this.props.dispatch({ type: 'CLEAR_UNARCHIVE_MESSAGE' });
   }
 
   handleSubmit(e: Event) {
@@ -258,7 +269,10 @@ export default class ArchivedStaffRecordList extends Component<Props, State> {
       <div className="ArchivedStaffRecordList">
         {archived_staff_record.length > 0
           ? <div>
-              <Search handleSearchChange={this.handleSearchChange} />
+              <Search
+                handleSearchChange={this.handleSearchChange}
+                handleClearSearch={this.handleClearSearch}
+              />
               <div className="row">
                 {filteredElements}
               </div>
