@@ -4,8 +4,6 @@ import React, { Component } from 'react';
 import { SingleDatePicker } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
 
-import '../spinners.css';
-
 const moment = require('moment');
 
 type publicHolidayProps = {
