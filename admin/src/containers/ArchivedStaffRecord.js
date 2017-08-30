@@ -1,3 +1,4 @@
+// @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
@@ -15,7 +16,8 @@ type Props = {
   searchTerm: string,
   dispatch: Function,
   isUnArchiveFetching: boolean,
-  unArchiveMessage: string
+  unArchiveMessage: string,
+  isDataFetching: boolean
 };
 
 class ArchivedStaffRecord extends Component<Props> {
@@ -47,21 +49,26 @@ class ArchivedStaffRecord extends Component<Props> {
       searchTerm,
       dispatch,
       isUnArchiveFetching,
-      unArchiveMessage
+      unArchiveMessage,
+      isDataFetching
     } = this.props;
 
     return (
       <div className="container">
         {isAuthenticated
-          ? <ArchivedStaffRecordList
-              archived_staff_record={archived_staff_record}
-              searchTerm={searchTerm}
-              dispatch={dispatch}
-              isUnArchiveFetching={isUnArchiveFetching}
-              unArchiveMessage={unArchiveMessage}
-              onUnArchiveUserSubmit={unArchiveUser =>
-                dispatch(submitUnArchiveUser(unArchiveUser))}
-            />
+          ? isDataFetching
+            ? <div className="text-center">
+                <div className="loader1" />
+              </div>
+            : <ArchivedStaffRecordList
+                archived_staff_record={archived_staff_record}
+                searchTerm={searchTerm}
+                dispatch={dispatch}
+                isUnArchiveFetching={isUnArchiveFetching}
+                unArchiveMessage={unArchiveMessage}
+                onUnArchiveUserSubmit={unArchiveUser =>
+                  dispatch(submitUnArchiveUser(unArchiveUser))}
+              />
           : <Redirect to="/login" />}
       </div>
     );
@@ -77,7 +84,10 @@ const mapStateToProps = state => {
   } = state;
 
   const { auth_info, isAuthenticated } = adminAuth;
-  const { archived_staff_record } = archivedStaffRecord;
+  const {
+    archived_staff_record,
+    isFetching: isDataFetching
+  } = archivedStaffRecord;
   const { searchTerm } = searchStaffRecord;
   const { isUnArchiveFetching, unArchiveMessage } = unArchiveUser;
 
@@ -87,7 +97,8 @@ const mapStateToProps = state => {
     archived_staff_record,
     searchTerm,
     isUnArchiveFetching,
-    unArchiveMessage
+    unArchiveMessage,
+    isDataFetching
   };
 };
 
