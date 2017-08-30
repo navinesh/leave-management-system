@@ -3,21 +3,20 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "flow-bin": "^0.53.1",
-    "react-scripts": "1.0.11"
+    "flow-bin": "^0.53.1"
   },
   "dependencies": {
     "axios": "^0.16.2",
     "moment": "^2.18.1",
     "moment-range": "^3.0.3",
-    "react": "^15.6.0",
+    "react": "^15.6.1",
     "react-addons-shallow-compare": "^15.5.2",
     "react-datepicker": "^0.47.0",
     "react-dates": "^12.4.0",
-    "react-dom": "^15.6.0",
+    "react-dom": "^15.6.1",
     "react-redux": "^5.0.5",
     "react-router-dom": "^4.2.0",
-    "react-scripts": "1.0.11",
+    "react-scripts": "1.0.12",
     "redux": "^3.6.0",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0"
