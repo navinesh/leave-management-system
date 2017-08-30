@@ -5,20 +5,20 @@ ReactJS web application.
 ### Required Libraries and Dependencies
 
 * ReactJS
-* Redux
 * React-Router
-* Flow
-* React-Modal
-* MomentJS
-* React-datepicker
-* Moment-range
-* Axios
+* Redux
 * Redux-thunk
-* Bootstrap CSS
+* Flow
+* Axios
+* MomentJS
+* Moment-range
+* React-dates
+* React-datepicker
+* Bootstrap 4 CSS
 
 ### How to Run the Project
 
-Close the repo and do ```npm install``` or ```yarn install```.
+Clone the repo and do ```npm install``` or ```yarn install```.
 
 And then run your project using ```npm start``` or ```yarn start```.
 
