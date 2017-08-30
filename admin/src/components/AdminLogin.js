@@ -2,8 +2,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import '../spinners.css';
-
 type Props = {
   onLoginClick: Function,
   message: string,
