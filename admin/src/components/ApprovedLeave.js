@@ -6,8 +6,6 @@ import { fetchApprovedLeave } from '../actions/ApprovedLeave';
 import { DateRangePicker } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
 
-import '../spinners.css';
-
 import Moment from 'moment';
 import { extendMoment } from 'moment-range';
 const moment = extendMoment(Moment);
@@ -298,13 +296,11 @@ export default class ApprovedLeaveList extends Component<Props, State> {
   }
 
   handleCloseEdit() {
-    const { dispatch } = this.props;
-
     this.setState({ isEditing: !this.state.isEditing, errorMessage: '' });
 
     if (this.state.editReason) {
-      dispatch(fetchApprovedLeave());
-      dispatch({ type: 'CLEAR_EDIT_LEAVE' });
+      this.props.dispatch(fetchApprovedLeave());
+      this.props.dispatch({ type: 'CLEAR_EDIT_LEAVE' });
     }
   }
 
@@ -355,13 +351,11 @@ export default class ApprovedLeaveList extends Component<Props, State> {
   }
 
   handleCloseCancel(e: Event) {
-    const { dispatch } = this.props;
-
     this.setState({ isCancel: !this.state.isCancel, errorMessage: '' });
 
     if (this.state.cancelReason) {
-      dispatch(fetchApprovedLeave());
-      dispatch({ type: 'CLEAR_CANCEL_LEAVE' });
+      this.props.dispatch(fetchApprovedLeave());
+      this.props.dispatch({ type: 'CLEAR_CANCEL_LEAVE' });
     }
   }
 
