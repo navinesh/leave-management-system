@@ -649,29 +649,27 @@ export default class ApprovedLeaveList extends Component<Props, State> {
       );
 
     return items.length > 0
-      ? <div>
-          <div className="table-responsive">
-            <table
-              className="table table-bordered table-hover"
-              style={{ backgroundColor: '#FFFFFF' }}
-            >
-              <thead className="thead-default">
-                <tr>
-                  <th>Name</th>
-                  <th>Leave</th>
-                  <th>Type</th>
-                  <th>Start date</th>
-                  <th>End date</th>
-                  <th>Leave days</th>
-                  <th>Edit</th>
-                  <th>Delete</th>
-                </tr>
-              </thead>
-              <tbody>
-                {items}
-              </tbody>
-            </table>
-          </div>
+      ? <div className="table-responsive">
+          <table
+            className="table table-bordered table-hover"
+            style={{ backgroundColor: '#FFFFFF' }}
+          >
+            <thead className="thead-default">
+              <tr>
+                <th>Name</th>
+                <th>Leave</th>
+                <th>Type</th>
+                <th>Start date</th>
+                <th>End date</th>
+                <th>Leave days</th>
+                <th>Edit</th>
+                <th>Delete</th>
+              </tr>
+            </thead>
+            <tbody>
+              {items}
+            </tbody>
+          </table>
         </div>
       : <div
           className="card card-body border-0"
