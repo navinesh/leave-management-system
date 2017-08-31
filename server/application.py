@@ -1445,7 +1445,7 @@ def cancel_approved_leave():
 
 
 # JSON API to view user updates
-@app.route('/leave-updates.api')
+@app.route('/user-updates.api')
 @cross_origin()
 def user_updates_JSON():
     """API to view user record updates"""
@@ -1471,10 +1471,7 @@ def leave_updates_JSON():
 def user_detail_JSON():
     """API to view staffs record"""
     user = g.user
-    '''if not user.user_id:
-        return jsonify({'message': 'Missing arguments!'})
-        abort(400)'''
-    '''user = session.query(User).filter_by(id=user_id).first()'''
+
     if not user:
         return jsonify({'message': 'User not found!'})
         abort(401)
@@ -1487,14 +1484,8 @@ def user_detail_JSON():
 @cross_origin()
 @auth.login_required
 def user_record_JSON():
-    """API to view staff records"""
+    """API to view staff leave records"""
     user = g.user
-    '''user_id = request.json.get('user_id')
-    if not user_id:
-        return jsonify({'message': 'Missing arguments!'})
-        abort(400)
-
-    user = session.query(User).filter_by(id=user_id).first()'''
 
     if not user:
         return jsonify({'message': 'User not found!'})
@@ -1503,21 +1494,6 @@ def user_record_JSON():
     leaveRecord = session.query(Leaverecord).filter_by(user_id=user.id).all()
 
     return jsonify(user_record=[x.serialize for x in leaveRecord]), 201
-
-
-@app.route('/leave.api')
-@cross_origin()
-def leaveJSON():
-    """API to view leave calendar"""
-    leave_records = session.query(Leaverecord).filter_by(
-        leave_status='approved')
-    leave_list = []
-    for x in leave_records:
-        leave_record = x.serialize
-        user = session.query(User).filter_by(id=x.user_id).one()
-        leave_record['user'] = user.serialize
-        leave_list.append(leave_record)
-    return jsonify(leave_records=leave_list)
 
 
 # JSON API to view pending leaves
@@ -1606,13 +1582,6 @@ def sick_sheet_record_JSON():
         sick_sheet_list.append(leave_record)
 
     return jsonify(sick_sheet_records=sick_sheet_list)
-
-
-'''@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def show_home(path):
-    """"""
-    return render_template('userhome.html')'''
 
 
 @app.errorhandler(404)
