@@ -14,6 +14,8 @@ type Props = {
   auth_info: Object,
   isFetching: boolean,
   leave_record: Array<any>,
+  approved_items: Array<any>,
+  pending_items: Array<any>,
   dispatch: Function
 };
 
