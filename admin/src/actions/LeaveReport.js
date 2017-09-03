@@ -1,11 +1,15 @@
 // @flow
-export const REQUEST_LEAVE_RECORD = "REQUEST_LEAVE_RECORD";
-export const RECEIVE_LEAVE_RECORD = "RECEIVE_LEAVE_RECORD";
-export const ERROR_LEAVE_RECORD = "ERROR_LEAVE_RECORD";
+export const REQUEST_LEAVE_RECORD = 'REQUEST_LEAVE_RECORD';
+export const RECEIVE_LEAVE_RECORD = 'RECEIVE_LEAVE_RECORD';
+export const ERROR_LEAVE_RECORD = 'ERROR_LEAVE_RECORD';
 
-export const REQUEST_USER_UPDATES = "REQUEST_USER_UPDATES";
-export const RECEIVE_USER_UPDATES = "RECEIVE_USER_UPDATES";
-export const ERROR_USER_UPDATES = "ERROR_USER_UPDATES";
+export const REQUEST_USER_UPDATES = 'REQUEST_USER_UPDATES';
+export const RECEIVE_USER_UPDATES = 'RECEIVE_USER_UPDATES';
+export const ERROR_USER_UPDATES = 'ERROR_USER_UPDATES';
+
+export const REQUEST_LEAVE_UPDATES = 'REQUEST_LEAVE_UPDATES';
+export const RECEIVE_LEAVE_UPDATES = 'RECEIVE_LEAVE_UPDATES';
+export const ERROR_LEAVE_UPDATES = 'ERROR_LEAVE_UPDATES';
 
 export const requestLeaveRecord = () => ({
   type: REQUEST_LEAVE_RECORD
@@ -54,5 +58,30 @@ export const fetchUserUpdates = () => async (dispatch: Function) => {
     dispatch(receiveUserUpdates(data));
   } catch (error) {
     dispatch(errorUserUpdates());
+  }
+};
+
+export const requestLeaveUpdates = () => ({
+  type: REQUEST_LEAVE_UPDATES
+});
+
+export const receiveLeaveUpdates = (data: Object) => ({
+  type: RECEIVE_LEAVE_UPDATES,
+  leave_updates: data.leave_updates,
+  receivedAt: Date.now()
+});
+
+export const errorLeaveUpdates = () => ({
+  type: ERROR_LEAVE_UPDATES
+});
+
+export const fetchLeaveUpdates = () => async (dispatch: Function) => {
+  try {
+    dispatch(requestLeaveUpdates());
+    const response = await fetch(`http://localhost:8080/leave-updates.api`);
+    const data = await response.json();
+    dispatch(receiveLeaveUpdates(data));
+  } catch (error) {
+    dispatch(errorLeaveUpdates());
   }
 };
