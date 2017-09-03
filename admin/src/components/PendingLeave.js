@@ -10,16 +10,7 @@ import Moment from 'moment';
 import { extendMoment } from 'moment-range';
 const moment = extendMoment(Moment);
 
-type approvedLeaveProps = {
-  pending_items: Array<any>,
-  listID: number,
-  handleApproveLeaveSubmit: Function,
-  handleCloseApproveLeave: Function,
-  isApproveLeaveFetching: boolean,
-  approveLeavemessage: string
-};
-
-const ApproveLeave = (props: approvedLeaveProps) =>
+const ApproveLeave = props =>
   <div className="col-md-10 ml-auto mr-auto">
     {props.pending_items.filter(e => e.id === props.listID).map(record =>
       <div key={record.id}>
