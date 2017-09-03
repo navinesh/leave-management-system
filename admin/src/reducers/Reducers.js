@@ -1,40 +1,40 @@
 // @flow
-import { combineReducers } from "redux";
+import { combineReducers } from 'redux';
 
 import {
   LOGIN_ADMIN_REQUEST,
   LOGIN_ADMIN_SUCCESS,
   LOGIN_ADMIN_FAILURE
-} from "../actions/AdminLogin";
+} from '../actions/AdminLogin';
 
 import {
   LOGIN_ADMIN_REQUEST_FROM_TOKEN,
   LOGIN_ADMIN_SUCCESS_FROM_TOKEN,
   LOGIN_ADMIN_FAILURE_FROM_TOKEN
-} from "../actions/AdminLogin";
+} from '../actions/AdminLogin';
 
 import {
   LOGOUT_ADMIN_REQUEST,
   LOGOUT_ADMIN_SUCCESS
-} from "../actions/AdminLogout";
+} from '../actions/AdminLogout';
 
 import {
   REQUEST_PASSWORD_RESET,
   PASSWORD_RESET_SUCCESS,
   PASSWORD_RESET_ERROR
-} from "../actions/AdminResetPassword";
+} from '../actions/AdminResetPassword';
 
 import {
   REQUEST_PENDING_LEAVE,
   RECEIVE_PENDING_LEAVE,
   ERROR_PENDING_LEAVE
-} from "../actions/PendingLeave";
+} from '../actions/PendingLeave';
 
 import {
   REQUEST_APPROVED_LEAVE,
   RECEIVE_APPROVED_LEAVE,
   ERROR_APPROVED_LEAVE
-} from "../actions/ApprovedLeave";
+} from '../actions/ApprovedLeave';
 
 import {
   REQUEST_STAFF_RECORD,
@@ -42,107 +42,113 @@ import {
   ERROR_STAFF_RECORD,
   STAFF_RECORD_SEARCH,
   CLEAR_STAFF_RECORD_SEARCH
-} from "../actions/StaffRecord";
+} from '../actions/StaffRecord';
 
 import {
   REQUEST_ARCHIVED_STAFF_RECORD,
   RECEIVE_ARCHIVED_STAFF_RECORD,
   ERROR_ARCHIVED_STAFF_RECORD
-} from "../actions/ArchivedStaffRecord";
+} from '../actions/ArchivedStaffRecord';
 
 import {
   REQUEST_SICKSHEET_RECORD,
   RECEIVE_SICKSHEET_RECORD,
   ERROR_SICKSHEET_RECORD
-} from "../actions/SickSheetRecord";
+} from '../actions/SickSheetRecord';
 
 import {
   REQUEST_LEAVE_RECORD,
   RECEIVE_LEAVE_RECORD,
   ERROR_LEAVE_RECORD
-} from "../actions/LeaveReport";
+} from '../actions/LeaveReport';
 
 import {
   REQUEST_USER_UPDATES,
   RECEIVE_USER_UPDATES,
   ERROR_USER_UPDATES
-} from "../actions/LeaveReport";
+} from '../actions/LeaveReport';
+
+import {
+  REQUEST_LEAVE_UPDATES,
+  RECEIVE_LEAVE_UPDATES,
+  ERROR_LEAVE_UPDATES
+} from '../actions/LeaveReport';
 
 import {
   NEW_USER_RECORD_REQUEST,
   NEW_USER_RECORD_SUCCESS,
   NEW_USER_RECORD_FAILURE,
   CLEAR_NEW_USER_RECORD
-} from "../actions/NewRecord";
+} from '../actions/NewRecord';
 
 import {
   MODIFY_USER_RECORD_REQUEST,
   MODIFY_USER_RECORD_SUCCESS,
   MODIFY_USER_RECORD_FAILURE,
   CLEAR_MODIFY_USER_MESSAGE
-} from "../actions/ModifyRecord";
+} from '../actions/ModifyRecord';
 
 import {
   ARCHIVE_USER_REQUEST,
   ARCHIVE_USER_SUCCESS,
   ARCHIVE_USER_FAILURE,
   CLEAR_ARCHIVE_MESSAGE
-} from "../actions/ArchiveUser";
+} from '../actions/ArchiveUser';
 
 import {
   UNARCHIVE_USER_REQUEST,
   UNARCHIVE_USER_SUCCESS,
   UNARCHIVE_USER_FAILURE,
   CLEAR_UNARCHIVE_MESSAGE
-} from "../actions/UnArchiveUser";
+} from '../actions/UnArchiveUser';
 
 import {
   REQUEST_PUBLIC_HOLIDAY,
   RECEIVE_PUBLIC_HOLIDAY,
   ERROR_PUBLIC_HOLIDAY
-} from "../actions/PublicHoliday";
+} from '../actions/PublicHoliday';
 
 import {
   ADD_PUBLIC_HOLIDAY_REQUEST,
   ADD_PUBLIC_HOLIDAY_SUCCESS,
   ADD_PUBLIC_HOLIDAY_FAILURE,
   CLEAR_ADD_PUBLIC_MESSAGE
-} from "../actions/NewPublicHoliday";
+} from '../actions/NewPublicHoliday';
 
 import {
   DELETE_PUBLIC_HOLIDAY_REQUEST,
   DELETE_PUBLIC_HOLIDAY_SUCCESS,
   DELETE_PUBLIC_HOLIDAY_FAILURE,
   CLEAR_DELETE_PUBLIC_MESSAGE
-} from "../actions/DeletePublicHoliday";
+} from '../actions/DeletePublicHoliday';
 
 import {
   APPROVE_LEAVE_REQUEST,
   APPROVE_LEAVE_SUCCESS,
   APPROVE_LEAVE_ERROR,
   CLEAR_APPROVE_LEAVE
-} from "../actions/ApproveLeave";
+} from '../actions/ApproveLeave';
 
 import {
   DECLINE_LEAVE_REQUEST,
   DECLINE_LEAVE_SUCCESS,
   DECLINE_LEAVE_ERROR,
   CLEAR_DECLINE_LEAVE
-} from "../actions/DeclineLeave";
+} from '../actions/DeclineLeave';
 
 import {
   EDIT_LEAVE_REQUEST,
   EDIT_LEAVE_SUCCESS,
   EDIT_LEAVE_FAILURE,
   CLEAR_EDIT_LEAVE
-} from "../actions/EditLeave";
+} from '../actions/EditLeave';
 
 import {
   CANCEL_LEAVE_REQUEST,
   CANCEL_LEAVE_SUCCESS,
   CANCEL_LEAVE_ERROR,
   CLEAR_CANCEL_LEAVE
-} from "../actions/CancelLeave";
+} from '../actions/CancelLeave';
 
 type adminState = {
   isFetching: boolean,
@@ -154,8 +160,8 @@ type adminState = {
 const adminAuth = (
   state: adminState = {
     isFetching: false,
-    isAuthenticated: localStorage.getItem("admin_token") ? true : false,
-    message: "",
+    isAuthenticated: localStorage.getItem('admin_token') ? true : false,
+    message: '',
     auth_info: {}
   },
   action
@@ -169,7 +175,7 @@ const adminAuth = (
         isFetching: false,
         isAuthenticated: true,
         auth_info: action.auth_info,
-        message: "Login successful!"
+        message: 'Login successful!'
       };
     case LOGIN_ADMIN_FAILURE:
       return {
@@ -201,8 +207,8 @@ const adminAuth = (
         ...state,
         isFetching: false,
         isAuthenticated: false,
-        message: "",
-        auth_info: ""
+        message: '',
+        auth_info: ''
       };
     default:
       return state;
@@ -217,7 +223,7 @@ type ResetPassword = {
 const resetPassword = (
   state: ResetPassword = {
     isFetching: false,
-    message: ""
+    message: ''
   },
   action
 ) => {
@@ -350,14 +356,14 @@ type searchStaffRecordState = {
 };
 
 const searchStaffRecord = (
-  state: searchStaffRecordState = { isSearching: false, searchTerm: "" },
+  state: searchStaffRecordState = { isSearching: false, searchTerm: '' },
   action
 ) => {
   switch (action.type) {
     case STAFF_RECORD_SEARCH:
       return { ...state, isSearching: true, searchTerm: action.searchTerm };
     case CLEAR_STAFF_RECORD_SEARCH:
-      return { ...state, isSearching: false, searchTerm: "" };
+      return { ...state, isSearching: false, searchTerm: '' };
     default:
       return state;
   }
@@ -409,6 +415,31 @@ const userUpdates = (
   }
 };
 
+type leaveUpdateState = {
+  isFetching: boolean,
+  leave_updates: Array<any>
+};
+
+const leaveUpdates = (
+  state: leaveUpdateState = { isFetching: false, leave_updates: [] },
+  action
+) => {
+  switch (action.type) {
+    case REQUEST_LEAVE_UPDATES:
+      return { ...state, isFetching: true };
+    case RECEIVE_LEAVE_UPDATES:
+      return {
+        ...state,
+        isFetching: false,
+        leave_updates: action.leave_updates
+      };
+    case ERROR_LEAVE_UPDATES:
+      return { ...state, isFetching: false };
+    default:
+      return state;
+  }
+};
+
 type sickSheetState = {
   isFetching: boolean,
   sickSheet_items: Array<any>
@@ -440,7 +471,7 @@ type addUserState = {
 };
 
 const addUser = (
-  state: addUserState = { isFetching: false, message: "" },
+  state: addUserState = { isFetching: false, message: '' },
   action
 ) => {
   switch (action.type) {
@@ -451,7 +482,7 @@ const addUser = (
     case NEW_USER_RECORD_FAILURE:
       return { ...state, isFetching: false, message: action.message };
     case CLEAR_NEW_USER_RECORD:
-      return { ...state, isFetching: false, message: "" };
+      return { ...state, isFetching: false, message: '' };
     default:
       return state;
   }
@@ -463,7 +494,7 @@ type modifyUserState = {
 };
 
 const modifyUser = (
-  state: modifyUserState = { isFetching: false, message: "" },
+  state: modifyUserState = { isFetching: false, message: '' },
   action
 ) => {
   switch (action.type) {
@@ -474,7 +505,7 @@ const modifyUser = (
     case MODIFY_USER_RECORD_FAILURE:
       return { ...state, isFetching: false, message: action.message };
     case CLEAR_MODIFY_USER_MESSAGE:
-      return { ...state, isFetching: false, message: "" };
+      return { ...state, isFetching: false, message: '' };
     default:
       return state;
   }
@@ -486,7 +517,7 @@ type archivedUserState = {
 };
 
 const archiveUser = (
-  state: archivedUserState = { isArchiveFetching: false, archiveMessage: "" },
+  state: archivedUserState = { isArchiveFetching: false, archiveMessage: '' },
   action
 ) => {
   switch (action.type) {
@@ -508,7 +539,7 @@ const archiveUser = (
       return {
         ...state,
         isArchiveFetching: false,
-        archiveMessage: ""
+        archiveMessage: ''
       };
     default:
       return state;
@@ -523,7 +554,7 @@ type unArchivedUserState = {
 const unArchiveUser = (
   state: unArchivedUserState = {
     isUnArchiveFetching: false,
-    unArchiveMessage: ""
+    unArchiveMessage: ''
   },
   action
 ) => {
@@ -546,7 +577,7 @@ const unArchiveUser = (
       return {
         ...state,
         isUnArchiveFetching: false,
-        unArchiveMessage: ""
+        unArchiveMessage: ''
       };
     default:
       return state;
@@ -586,7 +617,7 @@ type addPublicHolidayState = {
 const addPublicHoliday = (
   state: addPublicHolidayState = {
     isAddPublicFetching: false,
-    addPublicMessage: ""
+    addPublicMessage: ''
   },
   action
 ) => {
@@ -609,7 +640,7 @@ const addPublicHoliday = (
       return {
         ...state,
         isAddPublicFetching: false,
-        addPublicMessage: ""
+        addPublicMessage: ''
       };
     default:
       return state;
@@ -624,7 +655,7 @@ type deletePublicHolidayState = {
 const deletePublicHoliday = (
   state: deletePublicHolidayState = {
     isDeletePublicFetching: false,
-    deletePublicMessage: ""
+    deletePublicMessage: ''
   },
   action
 ) => {
@@ -647,7 +678,7 @@ const deletePublicHoliday = (
       return {
         ...state,
         isDeletePublicFetching: false,
-        deletePublicMessage: ""
+        deletePublicMessage: ''
       };
     default:
       return state;
@@ -662,7 +693,7 @@ type approveLeaveState = {
 const approveLeave = (
   state: approveLeaveState = {
     isApproveLeaveFetching: false,
-    approveLeavemessage: ""
+    approveLeavemessage: ''
   },
   action
 ) => {
@@ -685,7 +716,7 @@ const approveLeave = (
       return {
         ...state,
         isApproveLeaveFetching: false,
-        approveLeavemessage: ""
+        approveLeavemessage: ''
       };
     default:
       return state;
@@ -698,7 +729,7 @@ type declineLeaveState = {
 };
 
 const declineLeave = (
-  state: declineLeaveState = { isDeclineLeaveFetching: false, message: "" },
+  state: declineLeaveState = { isDeclineLeaveFetching: false, message: '' },
   action
 ) => {
   switch (action.type) {
@@ -720,7 +751,7 @@ const declineLeave = (
       return {
         ...state,
         isDeclineLeaveFetching: false,
-        declineLeaveMessage: ""
+        declineLeaveMessage: ''
       };
     default:
       return state;
@@ -733,7 +764,7 @@ type editLeaveState = {
 };
 
 const editLeave = (
-  state: editLeaveState = { isEditLeaveFetching: false, editLeaveMessage: "" },
+  state: editLeaveState = { isEditLeaveFetching: false, editLeaveMessage: '' },
   action
 ) => {
   switch (action.type) {
@@ -755,7 +786,7 @@ const editLeave = (
       return {
         ...state,
         isEditLeaveFetching: false,
-        editLeaveMessage: ""
+        editLeaveMessage: ''
       };
     default:
       return state;
@@ -770,7 +801,7 @@ type cancelLeaveState = {
 const cancelLeave = (
   state: cancelLeaveState = {
     isCancelLeaveFetching: false,
-    cancelLeaveMessage: ""
+    cancelLeaveMessage: ''
   },
   action
 ) => {
@@ -793,7 +824,7 @@ const cancelLeave = (
       return {
         ...state,
         isCancelLeaveFetching: false,
-        cancelLeaveMessage: ""
+        cancelLeaveMessage: ''
       };
     default:
       return state;
@@ -810,6 +841,7 @@ const rootReducer = combineReducers({
   archivedStaffRecord,
   leaveReport,
   userUpdates,
+  leaveUpdates,
   sickSheet,
   addUser,
   modifyUser,
