@@ -8,12 +8,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 const moment = require('moment');
 
-type searchProps = {
-  handleSearchChange: Function,
-  handleClearSearch: Function
-};
-
-const Search = (props: searchProps) =>
+const Search = props =>
   <div className="row">
     <div className="col-md-3">
       <div className="form-group">
@@ -35,18 +30,7 @@ const Search = (props: searchProps) =>
     </div>
   </div>;
 
-type archiveProps = {
-  staff_record: Array<any>,
-  listID: number,
-  isArchiveFetching: boolean,
-  handleArchiveSubmit: Function,
-  handleArchiveReason: Function,
-  handleCloseArchive: Function,
-  archiveMessage: string,
-  errorMessage: string
-};
-
-const ArchiveUser = (props: archiveProps) =>
+const ArchiveUser = props =>
   <div>
     {props.staff_record.filter(e => e.id === props.listID).map(record =>
       <div key={record.id}>
@@ -196,7 +180,7 @@ export default class StaffRecordList extends Component<Props, State> {
     this.setState({ editReason: target.value });
   }
 
-  handleOpenEdit(e: Event & { currentTarget: HTMLElement }) {
+  handleOpenEdit(e: SyntheticEvent<HTMLElement>) {
     this.setState({
       isEditing: !this.state.isEditing,
       listID: e.currentTarget.id
@@ -220,7 +204,7 @@ export default class StaffRecordList extends Component<Props, State> {
     this.setState({ archiveReason: target.value });
   }
 
-  handleOpenArchive(e: Event & { currentTarget: HTMLElement }) {
+  handleOpenArchive(e: SyntheticEvent<HTMLElement>) {
     this.setState({
       isArchive: !this.state.isArchive,
       listID: e.currentTarget.id
