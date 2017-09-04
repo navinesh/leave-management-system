@@ -1,7 +1,11 @@
 // @flow
-export const REQUEST_LEAVE_RECORD = 'REQUEST_LEAVE_RECORD';
-export const RECEIVE_LEAVE_RECORD = 'RECEIVE_LEAVE_RECORD';
-export const ERROR_LEAVE_RECORD = 'ERROR_LEAVE_RECORD';
+export const REQUEST_CANCELLED_RECORD = 'REQUEST_CANCELLED_RECORD';
+export const RECEIVE_CANCELLED_RECORD = 'RECEIVE_CANCELLED_RECORD';
+export const ERROR_CANCELLED_RECORD = 'ERROR_CANCELLED_RECORD';
+
+export const REQUEST_DECLINED_RECORD = 'REQUEST_DECLINED_RECORD';
+export const RECEIVE_DECLINED_RECORD = 'RECEIVE_DECLINED_RECORD';
+export const ERROR_DECLINED_RECORD = 'ERROR_DECLINED_RECORD';
 
 export const REQUEST_USER_UPDATES = 'REQUEST_USER_UPDATES';
 export const RECEIVE_USER_UPDATES = 'RECEIVE_USER_UPDATES';
@@ -11,28 +15,57 @@ export const REQUEST_LEAVE_UPDATES = 'REQUEST_LEAVE_UPDATES';
 export const RECEIVE_LEAVE_UPDATES = 'RECEIVE_LEAVE_UPDATES';
 export const ERROR_LEAVE_UPDATES = 'ERROR_LEAVE_UPDATES';
 
-export const requestLeaveRecord = () => ({
-  type: REQUEST_LEAVE_RECORD
+export const requestCancelledRecord = () => ({
+  type: REQUEST_CANCELLED_RECORD
 });
 
-export const receiveLeaveRecord = (data: Object) => ({
-  type: RECEIVE_LEAVE_RECORD,
-  leave_record: data.leave_record,
+export const receiveCancelledRecord = (data: Object) => ({
+  type: RECEIVE_CANCELLED_RECORD,
+  cancelled_record: data.cancelled_record,
   receivedAt: Date.now()
 });
 
-export const errorLeaveRecord = () => ({
-  type: ERROR_LEAVE_RECORD
+export const errorCancelledRecord = () => ({
+  type: ERROR_CANCELLED_RECORD
 });
 
-export const fetchLeaveRecord = () => async (dispatch: Function) => {
+export const fetchCancelledRecord = () => async (dispatch: Function) => {
   try {
-    dispatch(requestLeaveRecord());
-    const response = await fetch(`http://localhost:8080/leave-record.api`);
+    dispatch(requestCancelledRecord());
+    const response = await fetch(
+      `http://localhost:8080/cancelled-leave-record.api`
+    );
     const data = await response.json();
-    dispatch(receiveLeaveRecord(data));
+    dispatch(receiveCancelledRecord(data));
   } catch (error) {
-    dispatch(errorLeaveRecord());
+    dispatch(errorCancelledRecord());
+  }
+};
+
+export const requestDeclinedRecord = () => ({
+  type: REQUEST_DECLINED_RECORD
+});
+
+export const receiveDeclinedRecord = (data: Object) => ({
+  type: RECEIVE_DECLINED_RECORD,
+  declined_record: data.declined_record,
+  receivedAt: Date.now()
+});
+
+export const errorDeclinedRecord = () => ({
+  type: ERROR_DECLINED_RECORD
+});
+
+export const fetchDeclinedRecord = () => async (dispatch: Function) => {
+  try {
+    dispatch(requestDeclinedRecord());
+    const response = await fetch(
+      `http://localhost:8080/declined-leave-record.api`
+    );
+    const data = await response.json();
+    dispatch(receiveDeclinedRecord(data));
+  } catch (error) {
+    dispatch(errorDeclinedRecord());
   }
 };
 
