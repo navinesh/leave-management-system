@@ -172,10 +172,12 @@ class Leaveupdates(Base):
     previous_leave_type = Column(String)
     previous_start_date = Column(String)
     previous_end_date = Column(String)
+    user_id = Column(Integer)
     leaverecord = relationship(
         Leaverecord,
         backref=backref("leaveupdates", cascade="all, delete-orphan"))
     leave_id = Column(Integer, ForeignKey('leaverecord.id'))
+    user_id = Column(Integer, ForeignKey('user.id'))
 
     @property
     def serialize(self):
@@ -194,7 +196,8 @@ class Leaveupdates(Base):
             'previous_start_date': self.previous_start_date,
             'previous_end_date': self.previous_end_date,
             'date_posted': self.date_posted,
-            'leave_id': self.leave_id
+            'leave_id': self.leave_id,
+            'user_id': self.user_id
         }
 
 
