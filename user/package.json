@@ -13,7 +13,7 @@
     "react-addons-shallow-compare": "^15.5.2",
     "react-dates": "^12.4.0",
     "react-dom": "^15.6.1",
-    "react-redux": "^5.0.5",
+    "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.0",
     "react-scripts": "1.0.12",
     "redux": "^3.6.0",
