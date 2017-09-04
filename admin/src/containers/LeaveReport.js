@@ -21,6 +21,8 @@ type Props = {
   leave_record: Array<any>,
   approved_items: Array<any>,
   pending_items: Array<any>,
+  cancelled_record: Array<any>,
+  declined_record: Array<any>,
   user_updates: Array<any>,
   leave_updates: Array<any>,
   dispatch: Function
