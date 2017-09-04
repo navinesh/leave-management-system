@@ -1467,8 +1467,15 @@ def leave_updates_JSON():
     """API to view leave leave record updates"""
     leaveUpdates = session.query(Leaveupdates).all()
 
-    return jsonify(leave_updates=[x.serialize for x in leaveUpdates]), 201
+    record_list = []
+    for x in leaveUpdates:
+        leave_updates = x.serialize
+        user=session.query(User).filter_by(id=x.user_id).one()
+        leave_updates['othernames'] = user.othernames
+        leave_updates['surname'] = user.surname
+        record_list.append(leave_updates)
 
+    return jsonify(leave_updates=record_list), 201
 
 # JSON API to view user detail
 @app.route('/user-detail.api')
