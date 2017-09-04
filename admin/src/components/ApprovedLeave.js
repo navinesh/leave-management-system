@@ -73,7 +73,7 @@ export default class ApprovedLeaveList extends Component<Props, State> {
     this.handleCloseCancel = this.handleCloseCancel.bind(this);
   }
 
-  handleOpenEdit(e: Event & { currentTarget: HTMLElement }) {
+  handleOpenEdit(e: SyntheticEvent<HTMLElement>) {
     this.setState({
       isEditing: !this.state.isEditing,
       listID: parseInt(e.currentTarget.id, 10)
@@ -304,7 +304,7 @@ export default class ApprovedLeaveList extends Component<Props, State> {
     }
   }
 
-  handleOpenCancel(e: Event & { currentTarget: HTMLElement }) {
+  handleOpenCancel(e: SyntheticEvent<HTMLElement>) {
     this.setState({
       isCancel: !this.state.isCancel,
       listID: parseInt(e.currentTarget.id, 10)
