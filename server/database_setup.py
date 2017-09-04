@@ -130,6 +130,7 @@ class Leaverecord(Base):
     leave_reason = Column(String)
     leave_status = Column(String)
     date_posted = Column(String)
+    cancelled_reason = Column(String)
     date_reviewed = Column(String)
     declined_reason = Column(String)
     file_name = Column(Text, nullable=True, unique=True)
@@ -150,6 +151,7 @@ class Leaverecord(Base):
             'leave_reason': self.leave_reason,
             'leave_status': self.leave_status,
             'date_posted': self.date_posted,
+            'cancelled_reason': self.cancelled_reason,
             'date_reviewed': self.date_reviewed,
             'declined_reason': self.declined_reason,
             'file_name': self.file_name,
