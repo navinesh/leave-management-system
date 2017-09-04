@@ -59,7 +59,7 @@ export default class Header extends Component<Props> {
                     New
                   </Link>
                   <Link className="nav-item nav-link" to="/leavereport">
-                    Report
+                    Reports
                   </Link>
                   <Link className="nav-item nav-link" to="/sicksheetrecord">
                     Sick sheet
