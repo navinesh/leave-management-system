@@ -5157,7 +5157,7 @@ react-addons-shallow-compare@^15.5.2:
     fbjs "^0.8.4"
     object-assign "^4.1.0"
 
-react-dates@^12.4.0:
+react-dates@^12.5.1:
   version "12.5.1"
   resolved "https://registry.yarnpkg.com/react-dates/-/react-dates-12.5.1.tgz#8902776d70c1b9591a32322b5ad02b1445580adc"
   dependencies:
