@@ -6,12 +6,7 @@ import { fetchArchivedStaffRecord } from '../actions/ArchivedStaffRecord';
 
 const moment = require('moment');
 
-type searchProps = {
-  handleSearchChange: Function,
-  handleClearSearch: Function
-};
-
-const Search = (props: searchProps) =>
+const Search = props =>
   <div className="row">
     <div className="col-md-3">
       <div className="form-group">
@@ -141,7 +136,7 @@ export default class ArchivedStaffRecordList extends Component<Props, State> {
     this.props.dispatch({ type: 'CLEAR_STAFF_RECORD_SEARCH' });
   }
 
-  handleOpenUnarchive(e: Event & { currentTarget: HTMLElement }) {
+  handleOpenUnarchive(e: SyntheticEvent<HTMLElement>) {
     this.setState({
       isUnarchive: true,
       listID: parseInt(e.currentTarget.id, 10)
