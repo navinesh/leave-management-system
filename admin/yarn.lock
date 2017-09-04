@@ -5167,7 +5167,7 @@ react-datepicker@^0.47.0:
     react-onclickoutside "^5.11.1"
     tether "^1.4.0"
 
-react-dates@^12.4.0:
+react-dates@^12.5.1:
   version "12.5.1"
   resolved "https://registry.yarnpkg.com/react-dates/-/react-dates-12.5.1.tgz#8902776d70c1b9591a32322b5ad02b1445580adc"
   dependencies:
