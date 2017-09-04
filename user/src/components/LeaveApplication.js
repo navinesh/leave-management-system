@@ -10,20 +10,12 @@ import Moment from 'moment';
 import { extendMoment } from 'moment-range';
 const moment = extendMoment(Moment);
 
-type userNameProps = {
-  user_detail: Object
-};
-
-const UserName = (props: userNameProps) =>
+const UserName = props =>
   <p>
     {props.user_detail.othernames} {props.user_detail.surname}
   </p>;
 
-type userRecordProps = {
-  user_detail: Object
-};
-
-const UserRecord = (props: userRecordProps) => {
+const UserRecord = props => {
   let gender = props.user_detail.gender
     ? props.user_detail.gender.toLowerCase()
     : null;
@@ -162,7 +154,6 @@ class LeaveApplication extends Component<
   handleSubmit(e: Event) {
     e.preventDefault();
     const { user_detail, user_record } = this.props;
-    console.log(this.props);
 
     const user_id = user_detail.id;
     const annualDays = user_detail.annual;
