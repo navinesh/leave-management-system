@@ -682,7 +682,8 @@ def modify_user():
         christmas=christmas,
         maternity=maternity,
         editReason=editReason,
-        user_id=userRecord.id)
+        user_id=userRecord.id,
+        date_posted=str(datetime.now().date()))
 
     session.add(userUpdates)
     session.commit()
@@ -1470,12 +1471,13 @@ def leave_updates_JSON():
     record_list = []
     for x in leaveUpdates:
         leave_updates = x.serialize
-        user=session.query(User).filter_by(id=x.user_id).one()
+        user = session.query(User).filter_by(id=x.user_id).one()
         leave_updates['othernames'] = user.othernames
         leave_updates['surname'] = user.surname
         record_list.append(leave_updates)
 
     return jsonify(leave_updates=record_list), 201
+
 
 # JSON API to view user detail
 @app.route('/user-detail.api')
@@ -1563,12 +1565,13 @@ def archived_staff__record_JSON():
     return jsonify(archived_staff_record=[u.serialize for u in user])
 
 
-# JSON API to leave record
-@app.route('/leave-record.api')
+# JSON API to cancelled leave record
+@app.route('/cancelled-leave-record.api')
 @cross_origin()
-def leaverecordJSON():
+def cancelled_leave_recordJSON():
     """API to view leave record"""
-    leave_records = session.query(Leaverecord).all()
+    leave_records = session.query(Leaverecord).filter_by(
+        leave_status="cancelled").all()
     leave_list = []
     for x in leave_records:
         leave_record = x.serialize
@@ -1576,7 +1579,24 @@ def leaverecordJSON():
         leave_record['user'] = user.serialize
         leave_list.append(leave_record)
 
-    return jsonify(leave_record=leave_list)
+    return jsonify(cancelled_record=leave_list)
+
+
+# JSON API to declined leave record
+@app.route('/declined-leave-record.api')
+@cross_origin()
+def declined_leave_recordJSON():
+    """API to view leave record"""
+    leave_records = session.query(Leaverecord).filter_by(
+        leave_status="declined").all()
+    leave_list = []
+    for x in leave_records:
+        leave_record = x.serialize
+        user = session.query(User).filter_by(id=x.user_id).one()
+        leave_record['user'] = user.serialize
+        leave_list.append(leave_record)
+
+    return jsonify(declined_record=leave_list)
 
 
 # JSON API to sicksheet record
