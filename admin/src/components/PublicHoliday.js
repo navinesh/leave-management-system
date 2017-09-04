@@ -7,10 +7,10 @@ import 'react-dates/lib/css/_datepicker.css';
 const moment = require('moment');
 
 type publicHolidayProps = {
-  public_holiday: Array<any>,
   dispatch: Function,
-  onAddPublicHolidaySubmit: Function,
+  public_holiday: Array<any>,
   onDeletePublicHolidaySubmit: Function,
+  onAddPublicHolidaySubmit: Function,
   isAddPublicFetching: boolean,
   addPublicMessage: string,
   isDeletePublicFetching: boolean,
@@ -28,8 +28,8 @@ const PublicHolidays = (props: publicHolidayProps) =>
       <div className="row">
         <div className="col">
           <DeletePublicHoliday
-            public_holiday={props.public_holiday}
             dispatch={props.dispatch}
+            public_holiday={props.public_holiday}
             onDeletePublicHolidaySubmit={props.onDeletePublicHolidaySubmit}
           />
         </div>
