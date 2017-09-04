@@ -2,11 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-type pendingRecordProps = {
-  user_record: Array<any>
-};
-
-const PendingRecordList = (props: pendingRecordProps) => {
+const PendingRecordList = props => {
   const pendingList = props.user_record
     .filter(data => data.leave_status === 'pending')
     .map(record =>
@@ -57,11 +53,7 @@ const PendingRecordList = (props: pendingRecordProps) => {
   }
 };
 
-type approvedRecordProps = {
-  user_record: Array<any>
-};
-
-const ApprovedRecordList = (props: approvedRecordProps) => {
+const ApprovedRecordList = props => {
   const approvedList = props.user_record
     .filter(data => data.leave_status === 'approved')
     .map(record =>
@@ -111,6 +103,18 @@ const ApprovedRecordList = (props: approvedRecordProps) => {
     return <div />;
   }
 };
+
+type Props = {
+  user_record: Array<any>
+};
+
+export const RecordList = (props: Props) =>
+  <div className="container">
+    <div className="row">
+      <PendingRecordList user_record={props.user_record} />
+      <ApprovedRecordList user_record={props.user_record} />
+    </div>
+  </div>;
 
 type userRecordProps = {
   user_detail: Object,
@@ -178,6 +182,7 @@ export const UserRecord = (props: userRecordProps) => {
                   </span>
                 </li>
                 {gender === 'female' &&
+                  props.user_detail.maternity > 0 &&
                   <li className="list-group-item">
                     Maternity
                     <span className="badge badge-primary badge-pill float-right">
@@ -197,15 +202,3 @@ export const UserRecord = (props: userRecordProps) => {
     );
   }
 };
-
-type Props = {
-  user_record: Array<any>
-};
-
-export const RecordList = (props: Props) =>
-  <div className="container">
-    <div className="row">
-      <PendingRecordList user_record={props.user_record} />
-      <ApprovedRecordList user_record={props.user_record} />
-    </div>
-  </div>;
