@@ -93,6 +93,7 @@ class Userupdates(Base):
     christmas = Column(Numeric)
     maternity = Column(Numeric)
     editReason = Column(Text)
+    date_posted = Column(String)
     user = relationship(
         User, backref=backref("userupdates", cascade="all, delete-orphan"))
     user_id = Column(Integer, ForeignKey('user.id'))
@@ -111,6 +112,8 @@ class Userupdates(Base):
             'christmas': self.christmas,
             'maternity': self.maternity,
             'editReason': self.archiveReason,
+            'user_id': self.user_id,
+            'dated_posted': self.dated_posted
         }
 
 
@@ -177,7 +180,6 @@ class Leaveupdates(Base):
         Leaverecord,
         backref=backref("leaveupdates", cascade="all, delete-orphan"))
     leave_id = Column(Integer, ForeignKey('leaverecord.id'))
-    user_id = Column(Integer, ForeignKey('user.id'))
 
     @property
     def serialize(self):
