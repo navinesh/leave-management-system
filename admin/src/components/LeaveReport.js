@@ -521,7 +521,7 @@ class Tabs extends Component<tabsProps, tabsState> {
 }
 
 type Props = {
-  canclled_record: Array<any>,
+  cancelled_record: Array<any>,
   declined_record: Array<any>,
   approved_items: Array<any>,
   pending_items: Array<any>,
