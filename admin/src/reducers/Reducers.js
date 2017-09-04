@@ -57,9 +57,15 @@ import {
 } from '../actions/SickSheetRecord';
 
 import {
-  REQUEST_LEAVE_RECORD,
-  RECEIVE_LEAVE_RECORD,
-  ERROR_LEAVE_RECORD
+  REQUEST_CANCELLED_RECORD,
+  RECEIVE_CANCELLED_RECORD,
+  ERROR_CANCELLED_RECORD
+} from '../actions/LeaveReport';
+
+import {
+  REQUEST_DECLINED_RECORD,
+  RECEIVE_DECLINED_RECORD,
+  ERROR_DECLINED_RECORD
 } from '../actions/LeaveReport';
 
 import {
@@ -369,25 +375,50 @@ const searchStaffRecord = (
   }
 };
 
-type leaveReportState = {
+type cancelledReportState = {
   isFetching: boolean,
-  leave_record: Array<any>
+  cancelled_record: Array<any>
 };
 
-const leaveReport = (
-  state: leaveReportState = { isFetching: false, leave_record: [] },
+const cancelledReport = (
+  state: cancelledReportState = { isFetching: false, cancelled_record: [] },
   action
 ) => {
   switch (action.type) {
-    case REQUEST_LEAVE_RECORD:
+    case REQUEST_CANCELLED_RECORD:
       return { ...state, isFetching: true };
-    case RECEIVE_LEAVE_RECORD:
+    case RECEIVE_CANCELLED_RECORD:
       return {
         ...state,
         isFetching: false,
-        leave_record: action.leave_record
+        cancelled_record: action.cancelled_record
       };
-    case ERROR_LEAVE_RECORD:
+    case ERROR_CANCELLED_RECORD:
+      return { ...state, isFetching: false };
+    default:
+      return state;
+  }
+};
+
+type declinedReportState = {
+  isFetching: boolean,
+  declined_record: Array<any>
+};
+
+const declinedReport = (
+  state: declinedReportState = { isFetching: false, declined_record: [] },
+  action
+) => {
+  switch (action.type) {
+    case REQUEST_DECLINED_RECORD:
+      return { ...state, isFetching: true };
+    case RECEIVE_DECLINED_RECORD:
+      return {
+        ...state,
+        isFetching: false,
+        declined_record: action.declined_record
+      };
+    case ERROR_DECLINED_RECORD:
       return { ...state, isFetching: false };
     default:
       return state;
@@ -839,7 +870,8 @@ const rootReducer = combineReducers({
   staffRecord,
   searchStaffRecord,
   archivedStaffRecord,
-  leaveReport,
+  cancelledReport,
+  declinedReport,
   userUpdates,
   leaveUpdates,
   sickSheet,
