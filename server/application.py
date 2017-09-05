@@ -282,10 +282,6 @@ def apply_for_leave():
         current_leave_balance = userRecord.maternity
         new_leave_balance = application_days
 
-    if leave_name == 'lwop' or leave_name == 'other' or leave_name == 'birthday':
-        current_leave_balance = 0
-        new_leave_balance = 0
-
     # fetch sick sheet file
     if 'sickSheet' not in request.files:
         new_file_name = None
@@ -308,17 +304,28 @@ def apply_for_leave():
         # Send email
         to_address_list = [userRecord.email, supervisor_email, secretary_email]
 
-        send_email(
-            to_address_list,
-            "Leave application",
-            (userRecord.othernames + " " + userRecord.surname + " applied for "
-             + str(format_number(leave_days)) + " day(s) of " + leave_name +
-             " leave from " + date_from + " to " + date_to + ". Current " +
-             leave_name + " leave balance is " + str(
-                 format_number(current_leave_balance)) +
-             " day(s) and uppon approval new balance will be " +
-             str(new_leave_balance) + " day(s). Reason: " + leave_reason),
-            file=None)
+        if leave_name == 'lwop' or leave_name == 'other' or leave_name == 'birthday':
+            send_email(
+                to_address_list,
+                "Leave application",
+                (userRecord.othernames + " " + userRecord.surname +
+                 " applied for " + str(format_number(leave_days)) +
+                 " day(s) of " + leave_name + " leave from " + date_from +
+                 " to " + date_to + ". Reason: " + leave_reason),
+                file=None)
+        else:
+            send_email(
+                to_address_list,
+                "Leave application",
+                (userRecord.othernames + " " +
+                 userRecord.surname + " applied for " + str(
+                     format_number(leave_days)) + " day(s) of " + leave_name +
+                 " leave from " + date_from + " to " + date_to + ". Current " +
+                 leave_name + " leave balance is " + str(
+                     format_number(current_leave_balance)) +
+                 " day(s) and uppon approval new balance will be " +
+                 str(new_leave_balance) + " day(s). Reason: " + leave_reason),
+                file=None)
     else:
         file = request.files['sickSheet']  # check if an image was posted
         if file and allowed_file(file.filename):  # check extension
@@ -1328,21 +1335,35 @@ def edit_approved_leave():
                 updated_leave_balance = 0
 
         # Send email
-        send_email(
-            [leaveRecord.user.email],
-            "Leave application update",
-            ("Your " + previous_leave_name + " leave application for " + str(
-                format_number(previous_leave_days)) + " day(s) from " +
-             previous_start_date + " to " + previous_end_date +
-             " has been modified. Your updated leave application is for " +
-             leave_name + " leave for " + str(format_number(leave_days)) +
-             " day(s) from " + date_from + " to " + date_to +
-             ". Your previous " + previous_leave_name + " leave balance was " +
-             str(format_number(previous_leave_balance)) +
-             " day(s). Your updated " + leave_name + " leave balance is " +
-             str(format_number(updated_leave_balance)) +
-             " day(s). Reason for update: " + leave_reason),
-            file=None)
+        if leave_name == 'lwop' or leave_name == 'other':
+            send_email(
+                [leaveRecord.user.email],
+                "Leave application update",
+                ("Your " + previous_leave_name + " leave application for " +
+                 str(format_number(previous_leave_days)) + " day(s) from " +
+                 previous_start_date + " to " + previous_end_date +
+                 " has been modified. Your updated leave application is for " +
+                 leave_name + " leave for " + str(
+                     format_number(leave_days)) + " day(s) from " + date_from +
+                 " to " + date_to + ". Reason for update: " + leave_reason),
+                file=None)
+        else:
+            send_email(
+                [leaveRecord.user.email],
+                "Leave application update",
+                ("Your " + previous_leave_name + " leave application for " +
+                 str(format_number(previous_leave_days)) + " day(s) from " +
+                 previous_start_date + " to " + previous_end_date +
+                 " has been modified. Your updated leave application is for " +
+                 leave_name + " leave for " + str(
+                     format_number(leave_days)) + " day(s) from " + date_from +
+                 " to " + date_to + ". Your previous " + previous_leave_name +
+                 " leave balance was " + str(
+                     format_number(previous_leave_balance)) +
+                 " day(s). Your updated " + leave_name + " leave balance is " +
+                 str(format_number(updated_leave_balance)) +
+                 " day(s). Reason for update: " + leave_reason),
+                file=None)
 
     return jsonify({'message': 'Leave record has been modified.'}), 201
 
@@ -1380,15 +1401,9 @@ def cancel_approved_leave():
     end_date = leaveRecord.end_date
 
     leaveRecord.leave_status = leave_status
+    leaveRecord.cancelled_reason = cancel_reason
     leaveRecord.date_reviewed = str(datetime.now().date())
     session.add(leaveRecord)
-    session.commit()
-
-    updateLog = Leaveupdates(
-        date_posted=str(datetime.now().date()),
-        editReason=cancel_reason,
-        leave_id=id)
-    session.add(updateLog)
     session.commit()
 
     if leave_name == 'annual':
@@ -1431,22 +1446,33 @@ def cancel_approved_leave():
         session.add(userRecord)
         session.commit()
 
-    if leave_name == 'lwop' or leave_name == 'other':
-        previous_leave_balance = 0
-        updated_leave_balance = 0
-
     # Send email
-    send_email(
-        [userRecord.email],
-        "Leave application cancelled",
-        ("Your " + leave_name + " leave application for " + str(
-            format_number(leave_days)) + " day(s) from " + start_date + " to "
-         + end_date + " has been cancelled. Your previous " + leave_name +
-         " leave balance was " + str(format_number(previous_leave_balance)) +
-         " day(s). Your updated " + leave_name + " leave balance is " + str(
-             format_number(updated_leave_balance)) +
-         " day(s). Reason for update: " + cancel_reason),
-        file=None)
+    if leave_name == 'lwop' or leave_name == 'other' or leave_name == 'birthday':
+        send_email(
+            [userRecord.email],
+            "Leave application cancelled",
+            ("Your " + leave_name + " leave application for " + str(
+                format_number(leave_days)) + " day(s) from " + start_date +
+             " to " + end_date + " has been cancelled. Your previous " +
+             leave_name + " leave balance was " + str(
+                 format_number(previous_leave_balance)) +
+             " day(s). Your updated " + leave_name + " leave balance is " +
+             str(format_number(updated_leave_balance)) +
+             " day(s). Reason for update: " + cancel_reason),
+            file=None)
+    else:
+        send_email(
+            [userRecord.email],
+            "Leave application cancelled",
+            ("Your " + leave_name + " leave application for " + str(
+                format_number(leave_days)) + " day(s) from " + start_date +
+             " to " + end_date + " has been cancelled. Your previous " +
+             leave_name + " leave balance was " + str(
+                 format_number(previous_leave_balance)) +
+             " day(s). Your updated " + leave_name + " leave balance is " +
+             str(format_number(updated_leave_balance)) +
+             " day(s). Reason for update: " + cancel_reason),
+            file=None)
 
     return jsonify({'message': 'Leave has been cancelled.'}), 201
 
