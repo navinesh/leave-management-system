@@ -47,6 +47,7 @@ const UserRecord = props => {
         </span>
       </li>
       {gender === 'female' &&
+        props.user_detail.maternity > 0 &&
         <li className="list-group-item">
           Maternity
           <span className="badge badge-primary badge-pill float-right">
