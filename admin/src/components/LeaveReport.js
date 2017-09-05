@@ -35,7 +35,7 @@ const ApprovedLeaveReportList = props => {
         {record.date_reviewed}
       </td>
       <td>
-        {record.declined_reason}
+        {record.leave_reason}
       </td>
     </tr>
   );
@@ -106,7 +106,7 @@ const PendingLeaveReportList = props => {
         {record.date_reviewed}
       </td>
       <td>
-        {record.declined_reason}
+        {record.leave_reason}
       </td>
     </tr>
   );
@@ -177,7 +177,7 @@ const CancelledLeaveReportList = props => {
         {record.date_reviewed}
       </td>
       <td>
-        {record.declined_reason}
+        {record.cancelled_reason}
       </td>
     </tr>
   );
