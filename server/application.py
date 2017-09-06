@@ -1602,7 +1602,8 @@ def cancelled_leave_recordJSON():
     for x in leave_records:
         leave_record = x.serialize
         user = session.query(User).filter_by(id=x.user_id).one()
-        leave_record['user'] = user.serialize
+        leave_record['othernames'] = user.othernames
+        leave_record['surname'] = user.surname
         leave_list.append(leave_record)
 
     return jsonify(cancelled_record=leave_list)
@@ -1619,7 +1620,8 @@ def declined_leave_recordJSON():
     for x in leave_records:
         leave_record = x.serialize
         user = session.query(User).filter_by(id=x.user_id).one()
-        leave_record['user'] = user.serialize
+        leave_record['othernames'] = user.othernames
+        leave_record['surname'] = user.surname
         leave_list.append(leave_record)
 
     return jsonify(declined_record=leave_list)
