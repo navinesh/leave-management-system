@@ -1,6 +1,8 @@
 // @flow
 import React, { Component } from 'react';
 
+import { CSVLink } from 'react-csv';
+
 const moment = require('moment');
 
 const ApprovedLeaveReportList = props => {
@@ -153,7 +155,7 @@ const CancelledLeaveReportList = props => {
   const itemNodes = cancelledRecord.map(record =>
     <tr key={record.id}>
       <td>
-        {record.user.othernames} {record.user.surname}
+        {record.othernames} {record.surname}
       </td>
       <td>
         {record.leave_name}
@@ -183,28 +185,37 @@ const CancelledLeaveReportList = props => {
   );
 
   return itemNodes.length > 0
-    ? <div className="table-responsive">
-        <table
-          className="table table-bordered table-hover"
-          style={{ backgroundColor: '#FFFFFF' }}
+    ? <div>
+        <CSVLink
+          data={cancelledRecord}
+          filename={'Cancelled-leave.csv'}
+          className="btn btn-outline-primary mb-2"
         >
-          <thead className="thead-default">
-            <tr>
-              <th>Name</th>
-              <th>Leave</th>
-              <th>Type</th>
-              <th>Start date</th>
-              <th>End date</th>
-              <th>Status</th>
-              <th>Date posted</th>
-              <th>Date reviewed</th>
-              <th>Reason</th>
-            </tr>
-          </thead>
-          <tbody>
-            {itemNodes}
-          </tbody>
-        </table>
+          Download
+        </CSVLink>
+        <div className="table-responsive">
+          <table
+            className="table table-bordered table-hover"
+            style={{ backgroundColor: '#FFFFFF' }}
+          >
+            <thead className="thead-default">
+              <tr>
+                <th>Name</th>
+                <th>Leave</th>
+                <th>Type</th>
+                <th>Start date</th>
+                <th>End date</th>
+                <th>Status</th>
+                <th>Date posted</th>
+                <th>Date reviewed</th>
+                <th>Reason</th>
+              </tr>
+            </thead>
+            <tbody>
+              {itemNodes}
+            </tbody>
+          </table>
+        </div>
       </div>
     : <div
         className="card card-body border-0"
@@ -224,7 +235,7 @@ const DeclinedLeaveReportList = props => {
   const itemNodes = declinedRecord.map(record =>
     <tr key={record.id}>
       <td>
-        {record.user.othernames} {record.user.surname}
+        {record.othernames} {record.surname}
       </td>
       <td>
         {record.leave_name}
@@ -254,28 +265,37 @@ const DeclinedLeaveReportList = props => {
   );
 
   return itemNodes.length > 0
-    ? <div className="table-responsive">
-        <table
-          className="table table-bordered table-hover"
-          style={{ backgroundColor: '#FFFFFF' }}
+    ? <div>
+        <CSVLink
+          data={declinedRecord}
+          filename={'Declined-leave.csv'}
+          className="btn btn-outline-primary mb-2"
         >
-          <thead className="thead-default">
-            <tr>
-              <th>Name</th>
-              <th>Leave</th>
-              <th>Type</th>
-              <th>Start date</th>
-              <th>End date</th>
-              <th>Status</th>
-              <th>Date posted</th>
-              <th>Date reviewed</th>
-              <th>Reason</th>
-            </tr>
-          </thead>
-          <tbody>
-            {itemNodes}
-          </tbody>
-        </table>
+          Download
+        </CSVLink>
+        <div className="table-responsive">
+          <table
+            className="table table-bordered table-hover"
+            style={{ backgroundColor: '#FFFFFF' }}
+          >
+            <thead className="thead-default">
+              <tr>
+                <th>Name</th>
+                <th>Leave</th>
+                <th>Type</th>
+                <th>Start date</th>
+                <th>End date</th>
+                <th>Status</th>
+                <th>Date posted</th>
+                <th>Date reviewed</th>
+                <th>Reason</th>
+              </tr>
+            </thead>
+            <tbody>
+              {itemNodes}
+            </tbody>
+          </table>
+        </div>
       </div>
     : <div
         className="card card-body border-0"
@@ -336,30 +356,39 @@ const UserUpdatesReportList = props => {
   });
 
   return itemNodes.length > 0
-    ? <div className="table-responsive">
-        <table
-          className="table table-bordered table-hover"
-          style={{ backgroundColor: '#FFFFFF' }}
+    ? <div>
+        <CSVLink
+          data={userUpdates}
+          filename={'User-updates.csv'}
+          className="btn btn-outline-primary mb-2"
         >
-          <thead className="thead-default">
-            <tr>
-              <th>Name</th>
-              <th>Annual </th>
-              <th>Sick</th>
-              <th>Bereavement</th>
-              <th>Christmas</th>
-              <th>Maternity</th>
-              <th>Designation</th>
-              <th>DOB</th>
-              <th>Gender</th>
-              <th>Reason</th>
-              <th>Date posted</th>
-            </tr>
-          </thead>
-          <tbody>
-            {itemNodes}
-          </tbody>
-        </table>
+          Download
+        </CSVLink>
+        <div className="table-responsive">
+          <table
+            className="table table-bordered table-hover"
+            style={{ backgroundColor: '#FFFFFF' }}
+          >
+            <thead className="thead-default">
+              <tr>
+                <th>Name</th>
+                <th>Annual </th>
+                <th>Sick</th>
+                <th>Bereavement</th>
+                <th>Christmas</th>
+                <th>Maternity</th>
+                <th>Designation</th>
+                <th>DOB</th>
+                <th>Gender</th>
+                <th>Reason</th>
+                <th>Date posted</th>
+              </tr>
+            </thead>
+            <tbody>
+              {itemNodes}
+            </tbody>
+          </table>
+        </div>
       </div>
     : <div
         className="card card-body border-0"
@@ -418,31 +447,40 @@ const LeaveUpdatesReportList = props => {
   );
 
   return itemNodes.length > 0
-    ? <div className="table-responsive">
-        <table
-          className="table table-bordered table-hover"
-          style={{ backgroundColor: '#FFFFFF' }}
+    ? <div>
+        <CSVLink
+          data={leaveUpdates}
+          filename={'Leave-updates.csv'}
+          className="btn btn-outline-primary mb-2"
         >
-          <thead className="thead-default">
-            <tr>
-              <th>ID</th>
-              <th>Name</th>
-              <th>Previous start date</th>
-              <th>Previous end date</th>
-              <th>Previous leave</th>
-              <th>Previous leave days</th>
-              <th>Updated start date</th>
-              <th>Updated end date</th>
-              <th>Updated leave</th>
-              <th>Updated leave days</th>
-              <th>Date posted</th>
-              <th>Reason</th>
-            </tr>
-          </thead>
-          <tbody>
-            {itemNodes}
-          </tbody>
-        </table>
+          Download
+        </CSVLink>
+        <div className="table-responsive">
+          <table
+            className="table table-bordered table-hover"
+            style={{ backgroundColor: '#FFFFFF' }}
+          >
+            <thead className="thead-default">
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Previous start date</th>
+                <th>Previous end date</th>
+                <th>Previous leave</th>
+                <th>Previous leave days</th>
+                <th>Updated start date</th>
+                <th>Updated end date</th>
+                <th>Updated leave</th>
+                <th>Updated leave days</th>
+                <th>Date posted</th>
+                <th>Reason</th>
+              </tr>
+            </thead>
+            <tbody>
+              {itemNodes}
+            </tbody>
+          </table>
+        </div>
       </div>
     : <div
         className="card card-body border-0"
