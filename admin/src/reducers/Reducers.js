@@ -57,24 +57,21 @@ import {
 } from '../actions/SickSheetRecord';
 
 import {
+  REQUEST_APPROVED_LEAVE_REPORT,
+  RECEIVE_APPROVED_LEAVE_REPORT,
+  ERROR_APPROVED_LEAVE_REPORT,
+  REQUEST_PENDING_LEAVE_REPORT,
+  RECEIVE_PENDING_LEAVE_REPORT,
+  ERROR_PENDING_LEAVE_REPORT,
   REQUEST_CANCELLED_RECORD,
   RECEIVE_CANCELLED_RECORD,
-  ERROR_CANCELLED_RECORD
-} from '../actions/LeaveReport';
-
-import {
+  ERROR_CANCELLED_RECORD,
   REQUEST_DECLINED_RECORD,
   RECEIVE_DECLINED_RECORD,
-  ERROR_DECLINED_RECORD
-} from '../actions/LeaveReport';
-
-import {
+  ERROR_DECLINED_RECORD,
   REQUEST_USER_UPDATES,
   RECEIVE_USER_UPDATES,
-  ERROR_USER_UPDATES
-} from '../actions/LeaveReport';
-
-import {
+  ERROR_USER_UPDATES,
   REQUEST_LEAVE_UPDATES,
   RECEIVE_LEAVE_UPDATES,
   ERROR_LEAVE_UPDATES
@@ -370,6 +367,56 @@ const searchStaffRecord = (
       return { ...state, isSearching: true, searchTerm: action.searchTerm };
     case CLEAR_STAFF_RECORD_SEARCH:
       return { ...state, isSearching: false, searchTerm: '' };
+    default:
+      return state;
+  }
+};
+
+type approvedLeaveReportState = {
+  isFetching: boolean,
+  approved_record: Array<any>
+};
+
+const approvedLeaveReport = (
+  state: approvedLeaveReportState = { isFetching: false, approved_record: [] },
+  action
+) => {
+  switch (action.type) {
+    case REQUEST_APPROVED_LEAVE_REPORT:
+      return { ...state, isFetching: true };
+    case RECEIVE_APPROVED_LEAVE_REPORT:
+      return {
+        ...state,
+        isFetching: false,
+        approved_record: action.approved_record
+      };
+    case ERROR_APPROVED_LEAVE_REPORT:
+      return { ...state, isFetching: false };
+    default:
+      return state;
+  }
+};
+
+type pendingLeaveReportState = {
+  isFetching: boolean,
+  pending_record: Array<any>
+};
+
+const pendingLeaveReport = (
+  state: pendingLeaveReportState = { isFetching: false, pending_record: [] },
+  action
+) => {
+  switch (action.type) {
+    case REQUEST_PENDING_LEAVE_REPORT:
+      return { ...state, isFetching: true };
+    case RECEIVE_PENDING_LEAVE_REPORT:
+      return {
+        ...state,
+        isFetching: false,
+        pending_record: action.pending_record
+      };
+    case ERROR_PENDING_LEAVE_REPORT:
+      return { ...state, isFetching: false };
     default:
       return state;
   }
@@ -870,6 +917,8 @@ const rootReducer = combineReducers({
   staffRecord,
   searchStaffRecord,
   archivedStaffRecord,
+  approvedLeaveReport,
+  pendingLeaveReport,
   cancelledReport,
   declinedReport,
   userUpdates,
