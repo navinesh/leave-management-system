@@ -73,12 +73,9 @@ export default (props: Props) => {
         </table>
       </div>
     : <div style={{ marginTop: '80px' }}>
-        <div
-          className="card card-body border-0"
-          style={{ paddingTop: '100px', paddingBottom: '220px' }}
-        >
-          <h1 className="display-4 text-center">
-            <em>There is no record to display.</em>
+        <div style={{ paddingTop: '100px', paddingBottom: '220px' }}>
+          <h1 className="display-4">
+            <em>There is no data to display.</em>
           </h1>
         </div>
       </div>;
