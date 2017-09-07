@@ -5,13 +5,14 @@ import { Redirect } from 'react-router-dom';
 
 import { fetchLoginFromToken } from '../actions/AdminLogin';
 import {
+  fetchApprovedLeaveReport,
+  fetchPendingLeaveReport,
   fetchCancelledRecord,
   fetchDeclinedRecord,
   fetchUserUpdates,
   fetchLeaveUpdates
 } from '../actions/LeaveReport';
-import { fetchApprovedLeave } from '../actions/ApprovedLeave';
-import { fetchPendingLeave } from '../actions/PendingLeave';
+
 import LeaveReportList from '../components/LeaveReport';
 
 type Props = {
@@ -19,8 +20,8 @@ type Props = {
   auth_info: Object,
   isFetching: boolean,
   leave_record: Array<any>,
-  approved_items: Array<any>,
-  pending_items: Array<any>,
+  approved_record: Array<any>,
+  pending_record: Array<any>,
   cancelled_record: Array<any>,
   declined_record: Array<any>,
   user_updates: Array<any>,
@@ -42,8 +43,8 @@ class LeaveReport extends Component<Props> {
 
   componentDidMount() {
     if (this.props.isAuthenticated) {
-      this.props.dispatch(fetchApprovedLeave());
-      this.props.dispatch(fetchPendingLeave());
+      this.props.dispatch(fetchApprovedLeaveReport());
+      this.props.dispatch(fetchPendingLeaveReport());
       this.props.dispatch(fetchCancelledRecord());
       this.props.dispatch(fetchDeclinedRecord());
       this.props.dispatch(fetchUserUpdates());
@@ -55,8 +56,8 @@ class LeaveReport extends Component<Props> {
     const {
       isAuthenticated,
       isFetching,
-      approved_items,
-      pending_items,
+      approved_record,
+      pending_record,
       cancelled_record,
       declined_record,
       user_updates,
@@ -71,10 +72,10 @@ class LeaveReport extends Component<Props> {
                 <div className="loader1" />
               </div>
             : <LeaveReportList
+                approved_record={approved_record}
+                pending_record={pending_record}
                 cancelled_record={cancelled_record}
                 declined_record={declined_record}
-                approved_items={approved_items}
-                pending_items={pending_items}
                 user_updates={user_updates}
                 leave_updates={leave_updates}
               />
@@ -87,16 +88,16 @@ class LeaveReport extends Component<Props> {
 const mapStateToProps = state => {
   const {
     adminAuth,
-    approvedLeave,
-    pendingLeave,
+    approvedLeaveReport,
+    pendingLeaveReport,
     cancelledReport,
     declinedReport,
     userUpdates,
     leaveUpdates
   } = state;
   const { auth_info, isAuthenticated } = adminAuth;
-  const { isFetching, approved_items } = approvedLeave;
-  const { pending_items } = pendingLeave;
+  const { isFetching, approved_record } = approvedLeaveReport;
+  const { pending_record } = pendingLeaveReport;
   const { cancelled_record } = cancelledReport;
   const { declined_record } = declinedReport;
   const { user_updates } = userUpdates;
@@ -106,8 +107,8 @@ const mapStateToProps = state => {
     auth_info,
     isAuthenticated,
     isFetching,
-    approved_items,
-    pending_items,
+    approved_record,
+    pending_record,
     cancelled_record,
     declined_record,
     user_updates,
