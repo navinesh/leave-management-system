@@ -6,14 +6,14 @@ import { CSVLink } from 'react-csv';
 const moment = require('moment');
 
 const ApprovedLeaveReportList = props => {
-  const approvedRecord = props.approved_items.sort((a, b) => {
+  const approvedRecord = props.approved_record.sort((a, b) => {
     return a.user_id - b.user_id;
   });
 
   const itemNodes = approvedRecord.map(record =>
     <tr key={record.id}>
       <td>
-        {record.user.othernames} {record.user.surname}
+        {record.othernames} {record.surname}
       </td>
       <td>
         {record.leave_name}
@@ -77,14 +77,14 @@ const ApprovedLeaveReportList = props => {
 };
 
 const PendingLeaveReportList = props => {
-  const pendingRecord = props.pending_items.sort((a, b) => {
+  const pendingRecord = props.pending_record.sort((a, b) => {
     return a.user_id - b.user_id;
   });
 
   const itemNodes = pendingRecord.map(record =>
     <tr key={record.id}>
       <td>
-        {record.user.othernames} {record.user.surname}
+        {record.othernames} {record.surname}
       </td>
       <td>
         {record.leave_name}
@@ -561,8 +561,8 @@ class Tabs extends Component<tabsProps, tabsState> {
 type Props = {
   cancelled_record: Array<any>,
   declined_record: Array<any>,
-  approved_items: Array<any>,
-  pending_items: Array<any>,
+  approved_record: Array<any>,
+  pending_record: Array<any>,
   user_updates: Array<any>,
   leave_updates: Array<any>
 };
@@ -573,13 +573,15 @@ class LeaveReportList extends Component<Props> {
       {
         label: 'Approved',
         content: (
-          <ApprovedLeaveReportList approved_items={this.props.approved_items} />
+          <ApprovedLeaveReportList
+            approved_record={this.props.approved_record}
+          />
         )
       },
       {
         label: 'Pending',
         content: (
-          <PendingLeaveReportList pending_items={this.props.pending_items} />
+          <PendingLeaveReportList pending_record={this.props.pending_record} />
         )
       },
       {
