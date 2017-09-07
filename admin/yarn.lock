@@ -5157,6 +5157,10 @@ react-addons-shallow-compare@^15.5.2:
     fbjs "^0.8.4"
     object-assign "^4.1.0"
 
+react-csv@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/react-csv/-/react-csv-1.0.8.tgz#92bacdb5edbc52cd2ed50f31bbd1d946e8e32acf"
+
 react-datepicker@^0.47.0:
   version "0.47.0"
   resolved "https://registry.yarnpkg.com/react-datepicker/-/react-datepicker-0.47.0.tgz#bb002929e870e6bd7c9a92f95d5cd7c95051f629"
