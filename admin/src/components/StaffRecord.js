@@ -106,7 +106,7 @@ type Props = {
 
 type State = {
   errorMessage: string,
-  listID: string,
+  listID: number,
   dob: any,
   archiveReason: string,
   isEditing: boolean,
@@ -143,7 +143,7 @@ export default class StaffRecordList extends Component<Props, State> {
     super();
     this.state = {
       errorMessage: '',
-      listID: '',
+      listID: 0,
       dob: '',
       archiveReason: '',
       editReason: '',
@@ -183,7 +183,7 @@ export default class StaffRecordList extends Component<Props, State> {
   handleOpenEdit(e: SyntheticEvent<HTMLElement>) {
     this.setState({
       isEditing: !this.state.isEditing,
-      listID: e.currentTarget.id
+      listID: parseInt(e.currentTarget.id, 10)
     });
   }
 
@@ -191,7 +191,8 @@ export default class StaffRecordList extends Component<Props, State> {
     this.setState({
       isEditing: !this.state.isEditing,
       errorMessage: '',
-      dob: ''
+      dob: '',
+      listID: 0
     });
 
     if (this.state.editReason) {
@@ -207,7 +208,7 @@ export default class StaffRecordList extends Component<Props, State> {
   handleOpenArchive(e: SyntheticEvent<HTMLElement>) {
     this.setState({
       isArchive: !this.state.isArchive,
-      listID: e.currentTarget.id
+      listID: parseInt(e.currentTarget.id, 10)
     });
   }
 
@@ -221,7 +222,8 @@ export default class StaffRecordList extends Component<Props, State> {
       isArchive: !this.state.isArchive,
       errorMessage: '',
       dob: '',
-      archiveReason: ''
+      archiveReason: '',
+      listID: 0
     });
   }
 
@@ -333,7 +335,7 @@ export default class StaffRecordList extends Component<Props, State> {
       archiveMessage
     } = this.props;
 
-    const listID = parseInt(this.state.listID, 10);
+    const listID = this.state.listID;
 
     if (this.state.isEditing) {
       return (
