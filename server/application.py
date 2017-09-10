@@ -1477,34 +1477,6 @@ def cancel_approved_leave():
     return jsonify({'message': 'Leave has been cancelled.'}), 201
 
 
-# JSON API to view user updates
-@app.route('/user-updates.api')
-@cross_origin()
-def user_updates_JSON():
-    """API to view user record updates"""
-    leaveUpdates = session.query(Userupdates).all()
-
-    return jsonify(leave_updates=[x.serialize for x in leaveUpdates]), 201
-
-
-# JSON API to view leave updates
-@app.route('/leave-updates.api')
-@cross_origin()
-def leave_updates_JSON():
-    """API to view leave leave record updates"""
-    leaveUpdates = session.query(Leaveupdates).all()
-
-    record_list = []
-    for x in leaveUpdates:
-        leave_updates = x.serialize
-        user = session.query(User).filter_by(id=x.user_id).one()
-        leave_updates['othernames'] = user.othernames
-        leave_updates['surname'] = user.surname
-        record_list.append(leave_updates)
-
-    return jsonify(leave_updates=record_list), 201
-
-
 # JSON API to view user detail
 @app.route('/user-detail.api')
 @cross_origin()
@@ -1591,6 +1563,42 @@ def archived_staff__record_JSON():
     return jsonify(archived_staff_record=[u.serialize for u in user])
 
 
+# JSON API to view approved leave report
+@app.route('/approved-leave-report.api')
+@cross_origin()
+def approved_leave_report_JSON():
+    """API to view approved leave"""
+    leave_records = session.query(Leaverecord).filter_by(
+        leave_status='approved')
+    leave_list = []
+    for x in leave_records:
+        leave_record = x.serialize
+        user = session.query(User).filter_by(id=x.user_id).one()
+        leave_record['othernames'] = user.othernames
+        leave_record['surname'] = user.surname
+        leave_list.append(leave_record)
+
+    return jsonify(approved_leave_report=leave_list)
+
+
+# JSON API to view pending leave report
+@app.route('/pending-leave-report.api')
+@cross_origin()
+def pending_leave_report_JSON():
+    """API to view pending leave"""
+    leave_records = session.query(Leaverecord).filter_by(
+        leave_status='pending')
+    leave_list = []
+    for x in leave_records:
+        leave_record = x.serialize
+        user = session.query(User).filter_by(id=x.user_id).one()
+        leave_record['othernames'] = user.othernames
+        leave_record['surname'] = user.surname
+        leave_list.append(leave_record)
+
+    return jsonify(pending_leave_report=leave_list)
+
+
 # JSON API to cancelled leave record
 @app.route('/cancelled-leave-record.api')
 @cross_origin()
@@ -1625,6 +1633,34 @@ def declined_leave_recordJSON():
         leave_list.append(leave_record)
 
     return jsonify(declined_record=leave_list)
+
+
+# JSON API to view user updates
+@app.route('/user-updates.api')
+@cross_origin()
+def user_updates_JSON():
+    """API to view user record updates"""
+    leaveUpdates = session.query(Userupdates).all()
+
+    return jsonify(leave_updates=[x.serialize for x in leaveUpdates]), 201
+
+
+# JSON API to view leave updates
+@app.route('/leave-updates.api')
+@cross_origin()
+def leave_updates_JSON():
+    """API to view leave leave record updates"""
+    leaveUpdates = session.query(Leaveupdates).all()
+
+    record_list = []
+    for x in leaveUpdates:
+        leave_updates = x.serialize
+        user = session.query(User).filter_by(id=x.user_id).one()
+        leave_updates['othernames'] = user.othernames
+        leave_updates['surname'] = user.surname
+        record_list.append(leave_updates)
+
+    return jsonify(leave_updates=record_list), 201
 
 
 # JSON API to sicksheet record
