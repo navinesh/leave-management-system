@@ -3,10 +3,6 @@ declare module 'react-router-dom' {
   declare var exports: any;
 }
 
-declare module 'react-modal' {
-  declare var exports: any;
-}
-
 declare module 'redux' {
   declare var exports: any;
 }
@@ -40,5 +36,9 @@ declare module 'react-dates' {
 }
 
 declare module 'react-dates/lib/css/_datepicker.css' {
+  declare var exports: any;
+}
+
+declare module 'react-csv' {
   declare var exports: any;
 }
