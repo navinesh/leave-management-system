@@ -10,7 +10,7 @@ const ApprovedLeaveReportList = props => {
     return a.user_id - b.user_id;
   });
 
-  const itemNodes = approvedRecord.map(record =>
+  const approvedRecordItems = approvedRecord.map(record =>
     <tr key={record.id}>
       <td>
         {record.othernames} {record.surname}
@@ -42,29 +42,38 @@ const ApprovedLeaveReportList = props => {
     </tr>
   );
 
-  return itemNodes.length > 0
-    ? <div className="table-responsive">
-        <table
-          className="table table-bordered table-hover"
-          style={{ backgroundColor: '#FFFFFF' }}
+  return approvedRecordItems.length > 0
+    ? <div>
+        <CSVLink
+          data={approvedRecord}
+          filename={'Approved-leave.csv'}
+          className="btn btn-outline-primary mb-2"
         >
-          <thead className="thead-default">
-            <tr>
-              <th>Name</th>
-              <th>Leave</th>
-              <th>Type</th>
-              <th>Start date</th>
-              <th>End date</th>
-              <th>Status</th>
-              <th>Date posted</th>
-              <th>Date reviewed</th>
-              <th>Reason</th>
-            </tr>
-          </thead>
-          <tbody>
-            {itemNodes}
-          </tbody>
-        </table>
+          Download
+        </CSVLink>
+        <div className="table-responsive">
+          <table
+            className="table table-bordered table-hover"
+            style={{ backgroundColor: '#FFFFFF' }}
+          >
+            <thead className="thead-default">
+              <tr>
+                <th>Name</th>
+                <th>Leave</th>
+                <th>Type</th>
+                <th>Start date</th>
+                <th>End date</th>
+                <th>Status</th>
+                <th>Date posted</th>
+                <th>Date reviewed</th>
+                <th>Reason</th>
+              </tr>
+            </thead>
+            <tbody>
+              {approvedRecordItems}
+            </tbody>
+          </table>
+        </div>
       </div>
     : <div
         className="card card-body border-0"
@@ -81,7 +90,7 @@ const PendingLeaveReportList = props => {
     return a.user_id - b.user_id;
   });
 
-  const itemNodes = pendingRecord.map(record =>
+  const pendingRecordItems = pendingRecord.map(record =>
     <tr key={record.id}>
       <td>
         {record.othernames} {record.surname}
@@ -113,29 +122,38 @@ const PendingLeaveReportList = props => {
     </tr>
   );
 
-  return itemNodes.length > 0
-    ? <div className="table-responsive">
-        <table
-          className="table table-bordered table-hover"
-          style={{ backgroundColor: '#FFFFFF' }}
+  return pendingRecordItems.length > 0
+    ? <div>
+        <CSVLink
+          data={pendingRecord}
+          filename={'Pending-leave.csv'}
+          className="btn btn-outline-primary mb-2"
         >
-          <thead className="thead-default">
-            <tr>
-              <th>Name</th>
-              <th>Leave</th>
-              <th>Type</th>
-              <th>Start date</th>
-              <th>End date</th>
-              <th>Status</th>
-              <th>Date posted</th>
-              <th>Date reviewed</th>
-              <th>Reason</th>
-            </tr>
-          </thead>
-          <tbody>
-            {itemNodes}
-          </tbody>
-        </table>
+          Download
+        </CSVLink>
+        <div className="table-responsive">
+          <table
+            className="table table-bordered table-hover"
+            style={{ backgroundColor: '#FFFFFF' }}
+          >
+            <thead className="thead-default">
+              <tr>
+                <th>Name</th>
+                <th>Leave</th>
+                <th>Type</th>
+                <th>Start date</th>
+                <th>End date</th>
+                <th>Status</th>
+                <th>Date posted</th>
+                <th>Date reviewed</th>
+                <th>Reason</th>
+              </tr>
+            </thead>
+            <tbody>
+              {pendingRecordItems}
+            </tbody>
+          </table>
+        </div>
       </div>
     : <div
         className="card card-body border-0"
@@ -152,7 +170,7 @@ const CancelledLeaveReportList = props => {
     return a.user_id - b.user_id;
   });
 
-  const itemNodes = cancelledRecord.map(record =>
+  const cancelledRecordItems = cancelledRecord.map(record =>
     <tr key={record.id}>
       <td>
         {record.othernames} {record.surname}
@@ -184,7 +202,7 @@ const CancelledLeaveReportList = props => {
     </tr>
   );
 
-  return itemNodes.length > 0
+  return cancelledRecordItems.length > 0
     ? <div>
         <CSVLink
           data={cancelledRecord}
@@ -212,7 +230,7 @@ const CancelledLeaveReportList = props => {
               </tr>
             </thead>
             <tbody>
-              {itemNodes}
+              {cancelledRecordItems}
             </tbody>
           </table>
         </div>
@@ -232,7 +250,7 @@ const DeclinedLeaveReportList = props => {
     return a.user_id - b.user_id;
   });
 
-  const itemNodes = declinedRecord.map(record =>
+  const declinedRecordItems = declinedRecord.map(record =>
     <tr key={record.id}>
       <td>
         {record.othernames} {record.surname}
@@ -264,7 +282,7 @@ const DeclinedLeaveReportList = props => {
     </tr>
   );
 
-  return itemNodes.length > 0
+  return declinedRecordItems.length > 0
     ? <div>
         <CSVLink
           data={declinedRecord}
@@ -292,7 +310,7 @@ const DeclinedLeaveReportList = props => {
               </tr>
             </thead>
             <tbody>
-              {itemNodes}
+              {declinedRecordItems}
             </tbody>
           </table>
         </div>
@@ -312,7 +330,7 @@ const UserUpdatesReportList = props => {
     return a.user_id - b.user_id;
   });
 
-  const itemNodes = userUpdates.map(record => {
+  const userUpdateItems = userUpdates.map(record => {
     let dob = new Date(record.date_of_birth);
     let dateOfBirth = moment(dob).format('DD/MM/YYYY');
 
@@ -355,7 +373,7 @@ const UserUpdatesReportList = props => {
     );
   });
 
-  return itemNodes.length > 0
+  return userUpdateItems.length > 0
     ? <div>
         <CSVLink
           data={userUpdates}
@@ -385,7 +403,7 @@ const UserUpdatesReportList = props => {
               </tr>
             </thead>
             <tbody>
-              {itemNodes}
+              {userUpdateItems}
             </tbody>
           </table>
         </div>
@@ -405,7 +423,7 @@ const LeaveUpdatesReportList = props => {
     return a.leave_id - b.leave_id;
   });
 
-  const itemNodes = leaveUpdates.map(record =>
+  const leaveUpdateItems = leaveUpdates.map(record =>
     <tr key={record.id}>
       <td>
         {record.leave_id}
@@ -446,7 +464,7 @@ const LeaveUpdatesReportList = props => {
     </tr>
   );
 
-  return itemNodes.length > 0
+  return leaveUpdateItems.length > 0
     ? <div>
         <CSVLink
           data={leaveUpdates}
@@ -477,7 +495,7 @@ const LeaveUpdatesReportList = props => {
               </tr>
             </thead>
             <tbody>
-              {itemNodes}
+              {leaveUpdateItems}
             </tbody>
           </table>
         </div>
