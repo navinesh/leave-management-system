@@ -163,7 +163,6 @@ type deletePublicHolidayProps = {
 };
 
 type deletePublicHolidayState = {
-  id: string,
   errorMessage: string
 };
 
@@ -175,13 +174,13 @@ class DeletePublicHoliday extends Component<
 
   constructor() {
     super();
-    this.state = { id: '', errorMessage: '' };
+    this.state = { errorMessage: '' };
     this.handleDelete = this.handleDelete.bind(this);
   }
 
-  handleDelete(e: Event & { currentTarget: HTMLElement }) {
+  handleDelete(e: SyntheticEvent<HTMLElement>) {
     e.preventDefault();
-    const id = e.currentTarget.id ? e.currentTarget.id : null;
+    const id = parseInt(e.currentTarget.id, 10);
 
     if (!id) {
       this.setState({
@@ -199,7 +198,7 @@ class DeletePublicHoliday extends Component<
     };
 
     this.props.onDeletePublicHolidaySubmit(deletePublicHolidayDate);
-    this.setState({ id: '', errorMessage: '' });
+    this.setState({ errorMessage: '' });
 
     setTimeout(() => {
       this.props.dispatch({ type: 'CLEAR_DELETE_PUBLIC_MESSAGE' });
