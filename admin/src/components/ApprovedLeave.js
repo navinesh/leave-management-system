@@ -296,7 +296,11 @@ export default class ApprovedLeaveList extends Component<Props, State> {
   }
 
   handleCloseEdit() {
-    this.setState({ isEditing: !this.state.isEditing, errorMessage: '' });
+    this.setState({
+      isEditing: !this.state.isEditing,
+      errorMessage: '',
+      listID: 0
+    });
 
     if (this.state.editReason) {
       this.props.dispatch(fetchApprovedLeave());
@@ -351,7 +355,11 @@ export default class ApprovedLeaveList extends Component<Props, State> {
   }
 
   handleCloseCancel(e: Event) {
-    this.setState({ isCancel: !this.state.isCancel, errorMessage: '' });
+    this.setState({
+      isCancel: !this.state.isCancel,
+      errorMessage: '',
+      listID: 0
+    });
 
     if (this.state.cancelReason) {
       this.props.dispatch(fetchApprovedLeave());
@@ -361,7 +369,7 @@ export default class ApprovedLeaveList extends Component<Props, State> {
 
   render() {
     const { approved_items } = this.props;
-    const listID = parseInt(this.state.listID, 10);
+    const listID = this.state.listID;
 
     if (this.state.isEditing) {
       return (
