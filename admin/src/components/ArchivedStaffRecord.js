@@ -144,7 +144,7 @@ export default class ArchivedStaffRecordList extends Component<Props, State> {
   }
 
   handleCloseUnarchive() {
-    this.setState({ isUnarchive: false, errorMessage: '' });
+    this.setState({ isUnarchive: false, errorMessage: '', listID: 0 });
     this.props.dispatch(fetchArchivedStaffRecord());
     this.props.dispatch({ type: 'CLEAR_UNARCHIVE_MESSAGE' });
   }
