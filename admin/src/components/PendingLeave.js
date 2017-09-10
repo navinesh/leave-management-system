@@ -196,10 +196,10 @@ export default class PendingLeaveList extends Component<Props, State> {
     this.handleEditSubmit = this.handleEditSubmit.bind(this);
   }
 
-  handleOpenEdit(e: Event & { currentTarget: HTMLElement }) {
+  handleOpenEdit(e: SyntheticEvent<HTMLElement>) {
     this.setState({
       isEditing: !this.state.isEditing,
-      listID: e.currentTarget.id ? parseInt(e.currentTarget.id, 10) : 0
+      listID: parseInt(e.currentTarget.id, 10)
     });
   }
 
@@ -226,10 +226,10 @@ export default class PendingLeaveList extends Component<Props, State> {
     this.setState({ editReason: target.value });
   }
 
-  handleOpenDecline(e: Event & { currentTarget: HTMLElement }) {
+  handleOpenDecline(e: SyntheticEvent<HTMLElement>) {
     this.setState({
       isDeclining: !this.state.isDeclining,
-      listID: e.currentTarget.id ? parseInt(e.currentTarget.id, 10) : 0
+      listID: parseInt(e.currentTarget.id, 10)
     });
   }
 
@@ -246,10 +246,10 @@ export default class PendingLeaveList extends Component<Props, State> {
     }
   }
 
-  handleOpenApproveLeave(e: Event & { currentTarget: HTMLElement }) {
+  handleOpenApproveLeave(e: SyntheticEvent<HTMLElement>) {
     this.setState({
       isApproving: !this.state.isApproving,
-      listID: e.currentTarget.id ? parseInt(e.currentTarget.id, 10) : 0
+      listID: parseInt(e.currentTarget.id, 10)
     });
   }
 
@@ -324,7 +324,7 @@ export default class PendingLeaveList extends Component<Props, State> {
   handleEditSubmit(e: Event) {
     e.preventDefault();
     const { pending_items } = this.props;
-    const listID = parseInt(this.state.listID, 10);
+    const listID = this.state.listID;
     const startDate = this.state.startDate
       ? this.state.startDate
       : moment(this.startDate.value, 'DD/MM/YYYY');
