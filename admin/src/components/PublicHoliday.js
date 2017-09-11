@@ -175,11 +175,11 @@ class DeletePublicHoliday extends Component<
   constructor() {
     super();
     this.state = { errorMessage: '' };
+
     this.handleDelete = this.handleDelete.bind(this);
   }
 
   handleDelete(e: SyntheticEvent<HTMLElement>) {
-    e.preventDefault();
     const id = parseInt(e.currentTarget.id, 10);
 
     if (!id) {
