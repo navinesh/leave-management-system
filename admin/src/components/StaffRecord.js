@@ -172,14 +172,6 @@ export default class StaffRecordList extends Component<Props, State> {
     this.props.dispatch({ type: 'CLEAR_STAFF_RECORD_SEARCH' });
   }
 
-  handleDateChange(e: Event) {
-    this.setState({ dob: e });
-  }
-
-  handleEditReason({ target }: SyntheticInputEvent<>) {
-    this.setState({ editReason: target.value });
-  }
-
   handleOpenEdit(e: SyntheticEvent<HTMLElement>) {
     this.setState({
       isEditing: !this.state.isEditing,
@@ -187,44 +179,12 @@ export default class StaffRecordList extends Component<Props, State> {
     });
   }
 
-  handleCloseEdit() {
-    this.setState({
-      isEditing: !this.state.isEditing,
-      errorMessage: '',
-      dob: '',
-      listID: 0
-    });
-
-    if (this.state.editReason) {
-      this.props.dispatch(fetchStaffRecord());
-      this.props.dispatch({ type: 'CLEAR_MODIFY_USER_MESSAGE' });
-    }
+  handleDateChange(e: Event) {
+    this.setState({ dob: e });
   }
 
-  handleArchiveReason({ target }: SyntheticInputEvent<>) {
-    this.setState({ archiveReason: target.value });
-  }
-
-  handleOpenArchive(e: SyntheticEvent<HTMLElement>) {
-    this.setState({
-      isArchive: !this.state.isArchive,
-      listID: parseInt(e.currentTarget.id, 10)
-    });
-  }
-
-  handleCloseArchive() {
-    if (this.state.archiveReason) {
-      this.props.dispatch(fetchStaffRecord());
-      this.props.dispatch({ type: 'CLEAR_ARCHIVE_MESSAGE' });
-    }
-
-    this.setState({
-      isArchive: !this.state.isArchive,
-      errorMessage: '',
-      dob: '',
-      archiveReason: '',
-      listID: 0
-    });
+  handleEditReason({ target }: SyntheticInputEvent<>) {
+    this.setState({ editReason: target.value });
   }
 
   handleSubmit(e: Event) {
@@ -301,6 +261,31 @@ export default class StaffRecordList extends Component<Props, State> {
     this.props.onModifyUserRecordSubmit(modifyUserDetails);
   }
 
+  handleCloseEdit() {
+    this.setState({
+      isEditing: !this.state.isEditing,
+      errorMessage: '',
+      dob: '',
+      listID: 0
+    });
+
+    if (this.state.editReason) {
+      this.props.dispatch(fetchStaffRecord());
+      this.props.dispatch({ type: 'CLEAR_MODIFY_USER_MESSAGE' });
+    }
+  }
+
+  handleOpenArchive(e: SyntheticEvent<HTMLElement>) {
+    this.setState({
+      isArchive: !this.state.isArchive,
+      listID: parseInt(e.currentTarget.id, 10)
+    });
+  }
+
+  handleArchiveReason({ target }: SyntheticInputEvent<>) {
+    this.setState({ archiveReason: target.value });
+  }
+
   handleArchiveSubmit(e: Event) {
     e.preventDefault();
     const id = this.state.listID;
@@ -323,6 +308,21 @@ export default class StaffRecordList extends Component<Props, State> {
     };
 
     this.props.onArchiveUserSubmit(archiveUser);
+  }
+
+  handleCloseArchive() {
+    if (this.state.archiveReason) {
+      this.props.dispatch(fetchStaffRecord());
+      this.props.dispatch({ type: 'CLEAR_ARCHIVE_MESSAGE' });
+    }
+
+    this.setState({
+      isArchive: !this.state.isArchive,
+      errorMessage: '',
+      dob: '',
+      archiveReason: '',
+      listID: 0
+    });
   }
 
   render() {
@@ -632,7 +632,8 @@ export default class StaffRecordList extends Component<Props, State> {
                     {dateOfBirth}
                   </span>
                 </li>
-                {record.gender.toLowerCase() === 'female' && record.maternity
+                {record.gender.toLowerCase() === 'female' &&
+                record.maternity > 0
                   ? <li className="list-group-item">
                       Maternity
                       <span className="badge badge-primary badge-pill float-right">
