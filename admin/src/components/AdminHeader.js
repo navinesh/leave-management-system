@@ -17,7 +17,6 @@ export default class Header extends Component<Props> {
   }
 
   adminLogout(e: Event) {
-    e.preventDefault();
     this.props.dispatch(logoutAdmin());
   }
 
