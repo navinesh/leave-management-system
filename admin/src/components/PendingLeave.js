@@ -196,76 +196,11 @@ export default class PendingLeaveList extends Component<Props, State> {
     this.handleEditSubmit = this.handleEditSubmit.bind(this);
   }
 
-  handleOpenEdit(e: SyntheticEvent<HTMLElement>) {
-    this.setState({
-      isEditing: !this.state.isEditing,
-      listID: parseInt(e.currentTarget.id, 10)
-    });
-  }
-
-  handleCloseEdit() {
-    this.setState({
-      isEditing: !this.state.isEditing,
-      errorMessage: '',
-      startDate: null,
-      endDate: null,
-      listID: 0
-    });
-
-    if (this.state.editReason) {
-      this.props.dispatch({ type: 'CLEAR_EDIT_LEAVE' });
-      this.props.dispatch(fetchPendingLeave());
-    }
-  }
-
-  handleDeclineReason({ target }: SyntheticInputEvent<>) {
-    this.setState({ declineReason: target.value });
-  }
-
-  handleEditReason({ target }: SyntheticInputEvent<>) {
-    this.setState({ editReason: target.value });
-  }
-
-  handleOpenDecline(e: SyntheticEvent<HTMLElement>) {
-    this.setState({
-      isDeclining: !this.state.isDeclining,
-      listID: parseInt(e.currentTarget.id, 10)
-    });
-  }
-
-  handleCloseDecline() {
-    this.setState({
-      isDeclining: !this.state.isDeclining,
-      errorMessage: '',
-      listID: 0
-    });
-
-    if (this.state.declineReason) {
-      this.props.dispatch({ type: 'CLEAR_DECLINE_LEAVE' });
-      this.props.dispatch(fetchPendingLeave());
-    }
-  }
-
   handleOpenApproveLeave(e: SyntheticEvent<HTMLElement>) {
     this.setState({
       isApproving: !this.state.isApproving,
       listID: parseInt(e.currentTarget.id, 10)
     });
-  }
-
-  handleCloseApproveLeave() {
-    this.setState({
-      isApproving: !this.state.isApproving,
-      errorMessage: '',
-      listID: 0
-    });
-
-    if (this.state.approveSuccess) {
-      this.props.dispatch({ type: 'CLEAR_APPROVE_LEAVE' });
-      this.props.dispatch(fetchPendingLeave());
-    }
-
-    this.setState({ approveSuccess: false });
   }
 
   handleApproveLeaveSubmit(e: Event) {
@@ -298,6 +233,32 @@ export default class PendingLeaveList extends Component<Props, State> {
     this.props.onApproveLeaveSubmit(approveLeaveData);
   }
 
+  handleCloseApproveLeave() {
+    this.setState({
+      isApproving: !this.state.isApproving,
+      errorMessage: '',
+      listID: 0
+    });
+
+    if (this.state.approveSuccess) {
+      this.props.dispatch({ type: 'CLEAR_APPROVE_LEAVE' });
+      this.props.dispatch(fetchPendingLeave());
+    }
+
+    this.setState({ approveSuccess: false });
+  }
+
+  handleOpenDecline(e: SyntheticEvent<HTMLElement>) {
+    this.setState({
+      isDeclining: !this.state.isDeclining,
+      listID: parseInt(e.currentTarget.id, 10)
+    });
+  }
+
+  handleDeclineReason({ target }: SyntheticInputEvent<>) {
+    this.setState({ declineReason: target.value });
+  }
+
   handleDeclineSubmit(e: Event) {
     e.preventDefault();
     const listID = this.state.listID;
@@ -319,6 +280,30 @@ export default class PendingLeaveList extends Component<Props, State> {
     };
 
     this.props.onDeclineLeaveSubmit(declineLeaveData);
+  }
+
+  handleCloseDecline() {
+    this.setState({
+      isDeclining: !this.state.isDeclining,
+      errorMessage: '',
+      listID: 0
+    });
+
+    if (this.state.declineReason) {
+      this.props.dispatch({ type: 'CLEAR_DECLINE_LEAVE' });
+      this.props.dispatch(fetchPendingLeave());
+    }
+  }
+
+  handleOpenEdit(e: SyntheticEvent<HTMLElement>) {
+    this.setState({
+      isEditing: !this.state.isEditing,
+      listID: parseInt(e.currentTarget.id, 10)
+    });
+  }
+
+  handleEditReason({ target }: SyntheticInputEvent<>) {
+    this.setState({ editReason: target.value });
   }
 
   handleEditSubmit(e: Event) {
@@ -492,6 +477,21 @@ export default class PendingLeaveList extends Component<Props, State> {
     };
 
     this.props.onEditLeaveSubmit(editLeaveData);
+  }
+
+  handleCloseEdit() {
+    this.setState({
+      isEditing: !this.state.isEditing,
+      errorMessage: '',
+      startDate: null,
+      endDate: null,
+      listID: 0
+    });
+
+    if (this.state.editReason) {
+      this.props.dispatch({ type: 'CLEAR_EDIT_LEAVE' });
+      this.props.dispatch(fetchPendingLeave());
+    }
   }
 
   render() {
