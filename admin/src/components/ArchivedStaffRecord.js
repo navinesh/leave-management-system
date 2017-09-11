@@ -28,17 +28,7 @@ const Search = props =>
     </div>
   </div>;
 
-type unArchiveProps = {
-  archived_staff_record: Array<any>,
-  listID: number,
-  isUnArchiveFetching: boolean,
-  handleSubmit: Function,
-  handleCloseUnarchive: Function,
-  unArchiveMessage: string,
-  errorMessage: string
-};
-
-const UnArchiveLeave = (props: unArchiveProps) =>
+const UnArchiveLeave = props =>
   <div className="col-md-10 ml-auto mr-auto">
     {props.archived_staff_record
       .filter(e => e.id === props.listID)
@@ -143,12 +133,6 @@ export default class ArchivedStaffRecordList extends Component<Props, State> {
     });
   }
 
-  handleCloseUnarchive() {
-    this.setState({ isUnarchive: false, errorMessage: '', listID: 0 });
-    this.props.dispatch(fetchArchivedStaffRecord());
-    this.props.dispatch({ type: 'CLEAR_UNARCHIVE_MESSAGE' });
-  }
-
   handleSubmit(e: Event) {
     e.preventDefault();
     const id = this.state.listID;
@@ -167,6 +151,12 @@ export default class ArchivedStaffRecordList extends Component<Props, State> {
     };
 
     this.props.onUnArchiveUserSubmit(unArchiveUser);
+  }
+
+  handleCloseUnarchive() {
+    this.setState({ isUnarchive: false, errorMessage: '', listID: 0 });
+    this.props.dispatch(fetchArchivedStaffRecord());
+    this.props.dispatch({ type: 'CLEAR_UNARCHIVE_MESSAGE' });
   }
 
   render() {
