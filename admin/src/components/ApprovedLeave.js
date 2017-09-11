@@ -336,6 +336,7 @@ export default class ApprovedLeaveList extends Component<Props, State> {
     }
 
     const userRecord = approved_items.filter(e => e.id === listID);
+
     const userID = userRecord[0].user.id;
     const leaveDays = userRecord[0].leave_days;
     const leaveName = userRecord[0].leave_name;
