@@ -2617,9 +2617,9 @@ flatten@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/flatten/-/flatten-1.0.2.tgz#dae46a9d78fbe25292258cc1e780a41d95c03782"
 
-flow-bin@^0.54.0:
-  version "0.54.0"
-  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.54.0.tgz#f2fb0478e9e99702b623c9ed84079a39903bba77"
+flow-bin@^0.54.1:
+  version "0.54.1"
+  resolved "https://registry.yarnpkg.com/flow-bin/-/flow-bin-0.54.1.tgz#7101bcccf006dc0652714a8aef0c72078a760510"
 
 follow-redirects@^1.2.3:
   version "1.2.4"
@@ -5171,9 +5171,9 @@ react-datepicker@^0.47.0:
     react-onclickoutside "^5.11.1"
     tether "^1.4.0"
 
-react-dates@^12.5.1:
-  version "12.5.1"
-  resolved "https://registry.yarnpkg.com/react-dates/-/react-dates-12.5.1.tgz#8902776d70c1b9591a32322b5ad02b1445580adc"
+react-dates@^12.6.0:
+  version "12.6.0"
+  resolved "https://registry.yarnpkg.com/react-dates/-/react-dates-12.6.0.tgz#dfb23ff0d1366768b36b70180e48e8e52992e6fa"
   dependencies:
     airbnb-prop-types "^2.8.1"
     classnames "^2.2.5"
