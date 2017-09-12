@@ -6,55 +6,6 @@ import 'react-dates/lib/css/_datepicker.css';
 
 const moment = require('moment');
 
-type publicHolidayProps = {
-  dispatch: Function,
-  public_holiday: Array<any>,
-  onDeletePublicHolidaySubmit: Function,
-  onAddPublicHolidaySubmit: Function,
-  isAddPublicFetching: boolean,
-  addPublicMessage: string,
-  isDeletePublicFetching: boolean,
-  deletePublicMessage: string
-};
-
-const PublicHolidays = (props: publicHolidayProps) =>
-  <div className="col-11 ml-auto mr-auto">
-    <div className="card card-body">
-      <div className="row">
-        <div className="col">
-          <h4>Public Holidays</h4>
-        </div>
-      </div>
-      <div className="row">
-        <div className="col">
-          <DeletePublicHoliday
-            dispatch={props.dispatch}
-            public_holiday={props.public_holiday}
-            onDeletePublicHolidaySubmit={props.onDeletePublicHolidaySubmit}
-          />
-        </div>
-        <div className="col">
-          <AddPublicHoliday
-            dispatch={props.dispatch}
-            onAddPublicHolidaySubmit={props.onAddPublicHolidaySubmit}
-          />
-          <div>
-            {props.isAddPublicFetching
-              ? <div className="text-success">ADDING...</div>
-              : <p className="text-primary">
-                  {props.addPublicMessage}
-                </p>}
-            {props.isDeletePublicFetching
-              ? <div className="text-danger">DELETING...</div>
-              : <p className="text-primary">
-                  {props.deletePublicMessage}
-                </p>}
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>;
-
 type addPublicHolidayProps = {
   dispatch: Function,
   onAddPublicHolidaySubmit: Function
@@ -243,4 +194,51 @@ class DeletePublicHoliday extends Component<
   }
 }
 
-export default PublicHolidays;
+type publicHolidayProps = {
+  dispatch: Function,
+  public_holiday: Array<any>,
+  onDeletePublicHolidaySubmit: Function,
+  onAddPublicHolidaySubmit: Function,
+  isAddPublicFetching: boolean,
+  addPublicMessage: string,
+  isDeletePublicFetching: boolean,
+  deletePublicMessage: string
+};
+
+export default (props: publicHolidayProps) =>
+  <div className="col-11 ml-auto mr-auto">
+    <div className="card card-body">
+      <div className="row">
+        <div className="col">
+          <h4>Public Holidays</h4>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col">
+          <DeletePublicHoliday
+            dispatch={props.dispatch}
+            public_holiday={props.public_holiday}
+            onDeletePublicHolidaySubmit={props.onDeletePublicHolidaySubmit}
+          />
+        </div>
+        <div className="col">
+          <AddPublicHoliday
+            dispatch={props.dispatch}
+            onAddPublicHolidaySubmit={props.onAddPublicHolidaySubmit}
+          />
+          <div>
+            {props.isAddPublicFetching
+              ? <div className="text-success">ADDING...</div>
+              : <p className="text-primary">
+                  {props.addPublicMessage}
+                </p>}
+            {props.isDeletePublicFetching
+              ? <div className="text-danger">DELETING...</div>
+              : <p className="text-primary">
+                  {props.deletePublicMessage}
+                </p>}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>;
