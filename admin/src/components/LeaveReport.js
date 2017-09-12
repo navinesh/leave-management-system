@@ -528,9 +528,9 @@ class Tabs extends Component<tabsProps, tabsState> {
     this.selectTabIndex = this.selectTabIndex.bind(this);
   }
 
-  selectTabIndex(e: Event & { currentTarget: HTMLElement }) {
+  selectTabIndex(e: SyntheticEvent<HTMLElement>) {
     this.setState({
-      activeIndex: e.currentTarget.id ? parseInt(e.currentTarget.id, 10) : 0
+      activeIndex: parseInt(e.currentTarget.id, 10)
     });
   }
 
@@ -585,7 +585,7 @@ type Props = {
   leave_updates: Array<any>
 };
 
-class LeaveReportList extends Component<Props> {
+export default class LeaveReportList extends Component<Props> {
   render() {
     const tabData = [
       {
@@ -635,5 +635,3 @@ class LeaveReportList extends Component<Props> {
     return <Tabs data={tabData} />;
   }
 }
-
-export default LeaveReportList;
