@@ -6,7 +6,7 @@ type Props = {
   sickSheet_items: Array<any>
 };
 
-const SickSheetList = (props: Props) => {
+export default (props: Props) => {
   const itemNodes = props.sickSheet_items.map(record =>
     <tr key={record.id}>
       <td>
@@ -65,5 +65,3 @@ const SickSheetList = (props: Props) => {
         </h1>
       </div>;
 };
-
-export default SickSheetList;
