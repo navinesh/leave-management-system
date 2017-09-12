@@ -18,7 +18,6 @@ export default class Navs extends Component<Props> {
   }
 
   userLogout(e: Event) {
-    e.preventDefault();
     this.props.dispatch(logoutUser());
   }
 
