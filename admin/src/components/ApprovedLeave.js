@@ -63,9 +63,9 @@ export default class ApprovedLeaveList extends Component<Props, State> {
       focusedInput: null
     };
 
+    this.handleOpenEdit = this.handleOpenEdit.bind(this);
     this.handleEditReason = this.handleEditReason.bind(this);
     this.handleEditSubmit = this.handleEditSubmit.bind(this);
-    this.handleOpenEdit = this.handleOpenEdit.bind(this);
     this.handleCloseEdit = this.handleCloseEdit.bind(this);
     this.handleOpenCancel = this.handleOpenCancel.bind(this);
     this.handleCancelReason = this.handleCancelReason.bind(this);
