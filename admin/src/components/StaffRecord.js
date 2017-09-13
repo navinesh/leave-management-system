@@ -151,17 +151,17 @@ export default class StaffRecordList extends Component<Props, State> {
       isArchive: false
     };
 
+    this.handleSearchChange = this.handleSearchChange.bind(this);
+    this.handleClearSearch = this.handleClearSearch.bind(this);
+    this.handleOpenEdit = this.handleOpenEdit.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
     this.handleEditReason = this.handleEditReason.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleArchiveReason = this.handleArchiveReason.bind(this);
-    this.handleArchiveSubmit = this.handleArchiveSubmit.bind(this);
-    this.handleOpenEdit = this.handleOpenEdit.bind(this);
     this.handleCloseEdit = this.handleCloseEdit.bind(this);
     this.handleOpenArchive = this.handleOpenArchive.bind(this);
+    this.handleArchiveReason = this.handleArchiveReason.bind(this);
+    this.handleArchiveSubmit = this.handleArchiveSubmit.bind(this);
     this.handleCloseArchive = this.handleCloseArchive.bind(this);
-    this.handleSearchChange = this.handleSearchChange.bind(this);
-    this.handleClearSearch = this.handleClearSearch.bind(this);
   }
 
   handleSearchChange({ target }: SyntheticInputEvent<>) {
