@@ -23,9 +23,9 @@ export default class Login extends Component<Props, State> {
     super();
     this.state = { errorMessage: '', email: '', password: '' };
 
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleEmailChange({ target }: SyntheticInputEvent<>) {
