@@ -17,9 +17,17 @@ type State = {
 };
 
 export default class Login extends Component<Props, State> {
+  handleEmailChange: Function;
+  handlePasswordChange: Function;
+  handleSubmit: Function;
+
   constructor() {
     super();
     this.state = { email: '', password: '', errorMessage: '' };
+
+    this.handleEmailChange = this.handleEmailChange.bind(this);
+    this.handlePasswordChange = this.handlePasswordChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleEmailChange({ target }: SyntheticInputEvent<>) {
@@ -71,7 +79,7 @@ export default class Login extends Component<Props, State> {
     return (
       <div className="Login" style={{ marginTop: '80px' }}>
         <div className="card card-body">
-          <form onSubmit={this.handleSubmit.bind(this)}>
+          <form onSubmit={this.handleSubmit}>
             <div className="form-group">
               <label htmlFor="email">Email address</label>
               <input
@@ -79,7 +87,7 @@ export default class Login extends Component<Props, State> {
                 className="form-control"
                 placeholder="Enter email"
                 id="email"
-                onChange={this.handleEmailChange.bind(this)}
+                onChange={this.handleEmailChange}
               />
             </div>
             <div className="form-group">
@@ -89,7 +97,7 @@ export default class Login extends Component<Props, State> {
                 className="form-control"
                 placeholder="Password"
                 id="password"
-                onChange={this.handlePasswordChange.bind(this)}
+                onChange={this.handlePasswordChange}
               />
               <small className="text-muted">
                 Enter your leave management system password.
