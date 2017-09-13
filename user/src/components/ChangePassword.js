@@ -18,6 +18,11 @@ type State = {
 };
 
 export default class UserChange extends Component<Props, State> {
+  handleCurrentPasswordChange: Function;
+  handleNewPasswordChange: Function;
+  handleNewPasswordConfirmChange: Function;
+  handleSubmit: Function;
+
   constructor() {
     super();
     this.state = {
@@ -26,6 +31,15 @@ export default class UserChange extends Component<Props, State> {
       newPassword: '',
       newPasswordConfirm: ''
     };
+
+    this.handleCurrentPasswordChange = this.handleCurrentPasswordChange.bind(
+      this
+    );
+    this.handleNewPasswordChange = this.handleNewPasswordChange.bind(this);
+    this.handleNewPasswordConfirmChange = this.handleNewPasswordConfirmChange.bind(
+      this
+    );
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleCurrentPasswordChange({ target }: SyntheticInputEvent<>) {
@@ -85,7 +99,7 @@ export default class UserChange extends Component<Props, State> {
     return (
       <div className="col-md-4 ml-auto mr-auto" style={{ marginTop: '100px' }}>
         <div className="card card-body">
-          <form onSubmit={this.handleSubmit.bind(this)}>
+          <form onSubmit={this.handleSubmit}>
             <div className="form-group">
               <label htmlFor="currentPassword">Current password</label>
               <input
@@ -93,7 +107,7 @@ export default class UserChange extends Component<Props, State> {
                 className="form-control"
                 placeholder="Current password"
                 id="currentPassword"
-                onChange={this.handleCurrentPasswordChange.bind(this)}
+                onChange={this.handleCurrentPasswordChange}
               />
             </div>
             <div className="form-group">
@@ -103,7 +117,7 @@ export default class UserChange extends Component<Props, State> {
                 className="form-control"
                 placeholder="New password"
                 id="newPassword"
-                onChange={this.handleNewPasswordChange.bind(this)}
+                onChange={this.handleNewPasswordChange}
               />
             </div>
             <div className="form-group">
@@ -113,7 +127,7 @@ export default class UserChange extends Component<Props, State> {
                 className="form-control"
                 placeholder="Confirm new password"
                 id="newPasswordConfirm"
-                onChange={this.handleNewPasswordConfirmChange.bind(this)}
+                onChange={this.handleNewPasswordConfirmChange}
               />
             </div>
             <div className="form-group">
