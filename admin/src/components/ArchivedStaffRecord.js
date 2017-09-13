@@ -111,11 +111,11 @@ export default class ArchivedStaffRecordList extends Component<Props, State> {
       isUnarchive: false
     };
 
-    this.handleOpenUnarchive = this.handleOpenUnarchive.bind(this);
-    this.handleCloseUnarchive = this.handleCloseUnarchive.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.handleSearchChange = this.handleSearchChange.bind(this);
     this.handleClearSearch = this.handleClearSearch.bind(this);
+    this.handleOpenUnarchive = this.handleOpenUnarchive.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleCloseUnarchive = this.handleCloseUnarchive.bind(this);
   }
 
   handleSearchChange({ target }: SyntheticInputEvent<>) {
