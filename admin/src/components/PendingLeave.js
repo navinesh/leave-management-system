@@ -184,16 +184,16 @@ export default class PendingLeaveList extends Component<Props, State> {
     };
 
     this.handleOpenEdit = this.handleOpenEdit.bind(this);
-    this.handleCloseEdit = this.handleCloseEdit.bind(this);
-    this.handleOpenDecline = this.handleOpenDecline.bind(this);
-    this.handleCloseDecline = this.handleCloseDecline.bind(this);
-    this.handleOpenApproveLeave = this.handleOpenApproveLeave.bind(this);
-    this.handleCloseApproveLeave = this.handleCloseApproveLeave.bind(this);
-    this.handleApproveLeaveSubmit = this.handleApproveLeaveSubmit.bind(this);
-    this.handleDeclineReason = this.handleDeclineReason.bind(this);
-    this.handleDeclineSubmit = this.handleDeclineSubmit.bind(this);
     this.handleEditReason = this.handleEditReason.bind(this);
     this.handleEditSubmit = this.handleEditSubmit.bind(this);
+    this.handleCloseEdit = this.handleCloseEdit.bind(this);
+    this.handleOpenDecline = this.handleOpenDecline.bind(this);
+    this.handleDeclineReason = this.handleDeclineReason.bind(this);
+    this.handleDeclineSubmit = this.handleDeclineSubmit.bind(this);
+    this.handleCloseDecline = this.handleCloseDecline.bind(this);
+    this.handleOpenApproveLeave = this.handleOpenApproveLeave.bind(this);
+    this.handleApproveLeaveSubmit = this.handleApproveLeaveSubmit.bind(this);
+    this.handleCloseApproveLeave = this.handleCloseApproveLeave.bind(this);
   }
 
   handleOpenApproveLeave(e: SyntheticEvent<HTMLElement>) {
