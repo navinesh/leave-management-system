@@ -15,9 +15,15 @@ type State = {
 };
 
 export default class UserResetPassword extends Component<Props, State> {
+  handleEmailChange: Function;
+  handleSubmit: Function;
+
   constructor() {
     super();
     this.state = { errorMessage: '', email: '' };
+
+    this.handleEmailChange = this.handleEmailChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleEmailChange({ target }: SyntheticInputEvent<>) {
@@ -40,7 +46,7 @@ export default class UserResetPassword extends Component<Props, State> {
     return (
       <div className="col-md-4 ml-auto mr-auto" style={{ marginTop: '150px' }}>
         <div className="card card-body">
-          <form onSubmit={this.handleSubmit.bind(this)}>
+          <form onSubmit={this.handleSubmit}>
             <div className="form-group">
               <label htmlFor="email">Email address</label>
               <input
@@ -48,7 +54,7 @@ export default class UserResetPassword extends Component<Props, State> {
                 className="form-control"
                 placeholder="Enter email"
                 id="email"
-                onChange={this.handleEmailChange.bind(this)}
+                onChange={this.handleEmailChange}
               />
             </div>
             <div className="form-group">
