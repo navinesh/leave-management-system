@@ -31,13 +31,13 @@ const ApprovedLeaveReportList = props => {
         {record.leave_status}
       </td>
       <td>
+        {record.leave_reason}
+      </td>
+      <td>
         {record.date_posted}
       </td>
       <td>
         {record.date_reviewed}
-      </td>
-      <td>
-        {record.leave_reason}
       </td>
     </tr>
   );
@@ -64,9 +64,9 @@ const ApprovedLeaveReportList = props => {
                 <th>Start date</th>
                 <th>End date</th>
                 <th>Status</th>
+                <th>Reason</th>
                 <th>Date posted</th>
                 <th>Date reviewed</th>
-                <th>Reason</th>
               </tr>
             </thead>
             <tbody>
@@ -111,13 +111,13 @@ const PendingLeaveReportList = props => {
         {record.leave_status}
       </td>
       <td>
+        {record.leave_reason}
+      </td>
+      <td>
         {record.date_posted}
       </td>
       <td>
         {record.date_reviewed}
-      </td>
-      <td>
-        {record.leave_reason}
       </td>
     </tr>
   );
@@ -144,9 +144,9 @@ const PendingLeaveReportList = props => {
                 <th>Start date</th>
                 <th>End date</th>
                 <th>Status</th>
+                <th>Reason</th>
                 <th>Date posted</th>
                 <th>Date reviewed</th>
-                <th>Reason</th>
               </tr>
             </thead>
             <tbody>
@@ -191,13 +191,13 @@ const CancelledLeaveReportList = props => {
         {record.leave_status}
       </td>
       <td>
+        {record.cancelled_reason}
+      </td>
+      <td>
         {record.date_posted}
       </td>
       <td>
         {record.date_reviewed}
-      </td>
-      <td>
-        {record.cancelled_reason}
       </td>
     </tr>
   );
@@ -224,9 +224,9 @@ const CancelledLeaveReportList = props => {
                 <th>Start date</th>
                 <th>End date</th>
                 <th>Status</th>
+                <th>Reason</th>
                 <th>Date posted</th>
                 <th>Date reviewed</th>
-                <th>Reason</th>
               </tr>
             </thead>
             <tbody>
@@ -271,13 +271,13 @@ const DeclinedLeaveReportList = props => {
         {record.leave_status}
       </td>
       <td>
+        {record.declined_reason}
+      </td>
+      <td>
         {record.date_posted}
       </td>
       <td>
         {record.date_reviewed}
-      </td>
-      <td>
-        {record.declined_reason}
       </td>
     </tr>
   );
@@ -304,9 +304,9 @@ const DeclinedLeaveReportList = props => {
                 <th>Start date</th>
                 <th>End date</th>
                 <th>Status</th>
+                <th>Reason</th>
                 <th>Date posted</th>
                 <th>Date reviewed</th>
-                <th>Reason</th>
               </tr>
             </thead>
             <tbody>
@@ -456,10 +456,10 @@ const LeaveUpdatesReportList = props => {
         {record.updated_leave_days}
       </td>
       <td>
-        {record.date_posted}
+        {record.editReason}
       </td>
       <td>
-        {record.editReason}
+        {record.date_posted}
       </td>
     </tr>
   );
@@ -490,8 +490,8 @@ const LeaveUpdatesReportList = props => {
                 <th>Updated end date</th>
                 <th>Updated leave</th>
                 <th>Updated leave days</th>
-                <th>Date posted</th>
                 <th>Reason</th>
+                <th>Date posted</th>
               </tr>
             </thead>
             <tbody>
