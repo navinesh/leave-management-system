@@ -56,8 +56,6 @@ export default class Login extends Component<Props, State> {
   }
 
   render() {
-    const { isFetching, message } = this.props;
-
     return (
       <div className="Login">
         <h1 className="display-4 text-center pb-4">Leave Management System</h1>
@@ -91,7 +89,9 @@ export default class Login extends Component<Props, State> {
               </div>
             </form>
             <div className="text-danger text-center">
-              {isFetching ? <div className="loader" /> : message}
+              {this.props.isFetching
+                ? <div className="loader" />
+                : this.props.message}
             </div>
             <div className="text-danger text-center">
               <div>
