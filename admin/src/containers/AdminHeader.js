@@ -9,10 +9,11 @@ type Props = {
   dispatch: Function
 };
 
-const AdminHeader = (props: Props) =>
+const AdminHeader = (props: Props) => (
   <div className="AdminHeader">
     {props.isAuthenticated && <Header dispatch={props.dispatch} />}
-  </div>;
+  </div>
+);
 
 const mapStateToProps = state => {
   const { adminAuth } = state;
