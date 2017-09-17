@@ -62,25 +62,29 @@ class StaffRecord extends Component<Props> {
 
     return (
       <div className="container">
-        {isAuthenticated
-          ? isDataFetching
-            ? <div className="text-center">
-                <div className="loader1" />
-              </div>
-            : <StaffRecordList
-                staff_record={staff_record}
-                searchTerm={searchTerm}
-                dispatch={dispatch}
-                isFetching={isFetching}
-                message={message}
-                isArchiveFetching={isArchiveFetching}
-                archiveMessage={archiveMessage}
-                onModifyUserRecordSubmit={modifyUserDetails =>
-                  dispatch(submitModifyUserRecord(modifyUserDetails))}
-                onArchiveUserSubmit={archiveUser =>
-                  dispatch(submitArchiveUser(archiveUser))}
-              />
-          : <Redirect to="/login" />}
+        {isAuthenticated ? (
+          isDataFetching ? (
+            <div className="text-center">
+              <div className="loader1" />
+            </div>
+          ) : (
+            <StaffRecordList
+              staff_record={staff_record}
+              searchTerm={searchTerm}
+              dispatch={dispatch}
+              isFetching={isFetching}
+              message={message}
+              isArchiveFetching={isArchiveFetching}
+              archiveMessage={archiveMessage}
+              onModifyUserRecordSubmit={modifyUserDetails =>
+                dispatch(submitModifyUserRecord(modifyUserDetails))}
+              onArchiveUserSubmit={archiveUser =>
+                dispatch(submitArchiveUser(archiveUser))}
+            />
+          )
+        ) : (
+          <Redirect to="/login" />
+        )}
       </div>
     );
   }
