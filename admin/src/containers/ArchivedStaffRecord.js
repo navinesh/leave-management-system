@@ -55,21 +55,25 @@ class ArchivedStaffRecord extends Component<Props> {
 
     return (
       <div className="container">
-        {isAuthenticated
-          ? isDataFetching
-            ? <div className="text-center">
-                <div className="loader1" />
-              </div>
-            : <ArchivedStaffRecordList
-                archived_staff_record={archived_staff_record}
-                searchTerm={searchTerm}
-                dispatch={dispatch}
-                isUnArchiveFetching={isUnArchiveFetching}
-                unArchiveMessage={unArchiveMessage}
-                onUnArchiveUserSubmit={unArchiveUser =>
-                  dispatch(submitUnArchiveUser(unArchiveUser))}
-              />
-          : <Redirect to="/login" />}
+        {isAuthenticated ? (
+          isDataFetching ? (
+            <div className="text-center">
+              <div className="loader1" />
+            </div>
+          ) : (
+            <ArchivedStaffRecordList
+              archived_staff_record={archived_staff_record}
+              searchTerm={searchTerm}
+              dispatch={dispatch}
+              isUnArchiveFetching={isUnArchiveFetching}
+              unArchiveMessage={unArchiveMessage}
+              onUnArchiveUserSubmit={unArchiveUser =>
+                dispatch(submitUnArchiveUser(unArchiveUser))}
+            />
+          )
+        ) : (
+          <Redirect to="/login" />
+        )}
       </div>
     );
   }
