@@ -55,25 +55,29 @@ class ApprovedLeave extends Component<Props> {
 
     return (
       <div className="container">
-        {isAuthenticated
-          ? isFetching
-            ? <div className="text-center">
-                <div className="loader1" />
-              </div>
-            : <ApprovedLeaveList
-                approved_items={approved_items}
-                public_holiday={public_holiday}
-                dispatch={dispatch}
-                isEditLeaveFetching={isEditLeaveFetching}
-                editLeaveMessage={editLeaveMessage}
-                isCancelLeaveFetching={isCancelLeaveFetching}
-                cancelLeaveMessage={cancelLeaveMessage}
-                onEditApprovedLeaveSubmit={editLeaveData =>
-                  dispatch(submitEditApprovedLeave(editLeaveData))}
-                onCancelLeaveSubmit={cancelLeaveData =>
-                  dispatch(submitCancelLeave(cancelLeaveData))}
-              />
-          : <Redirect to="/login" />}
+        {isAuthenticated ? (
+          isFetching ? (
+            <div className="text-center">
+              <div className="loader1" />
+            </div>
+          ) : (
+            <ApprovedLeaveList
+              approved_items={approved_items}
+              public_holiday={public_holiday}
+              dispatch={dispatch}
+              isEditLeaveFetching={isEditLeaveFetching}
+              editLeaveMessage={editLeaveMessage}
+              isCancelLeaveFetching={isCancelLeaveFetching}
+              cancelLeaveMessage={cancelLeaveMessage}
+              onEditApprovedLeaveSubmit={editLeaveData =>
+                dispatch(submitEditApprovedLeave(editLeaveData))}
+              onCancelLeaveSubmit={cancelLeaveData =>
+                dispatch(submitCancelLeave(cancelLeaveData))}
+            />
+          )
+        ) : (
+          <Redirect to="/login" />
+        )}
       </div>
     );
   }
