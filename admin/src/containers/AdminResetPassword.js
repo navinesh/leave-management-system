@@ -11,14 +11,15 @@ type Props = {
   message: string
 };
 
-const ResetPassword = (props: Props) =>
+const ResetPassword = (props: Props) => (
   <div className="ResetPassword">
     <AdminResetPassword
       isFetching={props.isFetching}
       message={props.message}
       onResetClick={email => props.dispatch(resetPassword(email))}
     />
-  </div>;
+  </div>
+);
 
 const mapStateToProps = state => {
   const { resetPassword } = state;
