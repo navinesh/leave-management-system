@@ -38,13 +38,17 @@ class SickSheetRecord extends Component<Props> {
 
     return (
       <div className="container">
-        {isAuthenticated
-          ? isFetching
-            ? <div className="text-center">
-                <div className="loader1" />
-              </div>
-            : <SickSheetList sickSheet_items={sickSheet_items} />
-          : <Redirect to="/login" />}
+        {isAuthenticated ? (
+          isFetching ? (
+            <div className="text-center">
+              <div className="loader1" />
+            </div>
+          ) : (
+            <SickSheetList sickSheet_items={sickSheet_items} />
+          )
+        ) : (
+          <Redirect to="/login" />
+        )}
       </div>
     );
   }
