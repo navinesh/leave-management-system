@@ -62,29 +62,33 @@ class PendingLeave extends Component<Props> {
 
     return (
       <div className="container">
-        {isAuthenticated
-          ? isFetching
-            ? <div className="text-center">
-                <div className="loader1" />
-              </div>
-            : <PendingLeaveList
-                pending_items={pending_items}
-                public_holiday={public_holiday}
-                dispatch={dispatch}
-                isApproveLeaveFetching={isApproveLeaveFetching}
-                approveLeavemessage={approveLeavemessage}
-                isEditLeaveFetching={isEditLeaveFetching}
-                editLeaveMessage={editLeaveMessage}
-                isDeclineLeaveFetching={isDeclineLeaveFetching}
-                declineLeaveMessage={declineLeaveMessage}
-                onApproveLeaveSubmit={approveLeaveData =>
-                  dispatch(submitApproveLeave(approveLeaveData))}
-                onDeclineLeaveSubmit={declineLeaveData =>
-                  dispatch(submitDeclineLeave(declineLeaveData))}
-                onEditLeaveSubmit={editLeaveData =>
-                  dispatch(submitEditLeave(editLeaveData))}
-              />
-          : <Redirect to="/login" />}
+        {isAuthenticated ? (
+          isFetching ? (
+            <div className="text-center">
+              <div className="loader1" />
+            </div>
+          ) : (
+            <PendingLeaveList
+              pending_items={pending_items}
+              public_holiday={public_holiday}
+              dispatch={dispatch}
+              isApproveLeaveFetching={isApproveLeaveFetching}
+              approveLeavemessage={approveLeavemessage}
+              isEditLeaveFetching={isEditLeaveFetching}
+              editLeaveMessage={editLeaveMessage}
+              isDeclineLeaveFetching={isDeclineLeaveFetching}
+              declineLeaveMessage={declineLeaveMessage}
+              onApproveLeaveSubmit={approveLeaveData =>
+                dispatch(submitApproveLeave(approveLeaveData))}
+              onDeclineLeaveSubmit={declineLeaveData =>
+                dispatch(submitDeclineLeave(declineLeaveData))}
+              onEditLeaveSubmit={editLeaveData =>
+                dispatch(submitEditLeave(editLeaveData))}
+            />
+          )
+        ) : (
+          <Redirect to="/login" />
+        )}
       </div>
     );
   }
