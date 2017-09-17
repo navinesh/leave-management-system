@@ -25,21 +25,24 @@ import { Provider } from 'react-redux';
 import configureStore from './stores/ConfigureStore';
 const store = configureStore();
 
-const PrivateRoute = ({ component, ...rest }) =>
+const PrivateRoute = ({ component, ...rest }) => (
   <Route
     {...rest}
     render={props =>
-      store.getState().adminAuth.isAuthenticated
-        ? React.createElement(component, props)
-        : <Redirect
-            to={{
-              pathname: '/login',
-              state: { from: props.location }
-            }}
-          />}
-  />;
+      store.getState().adminAuth.isAuthenticated ? (
+        React.createElement(component, props)
+      ) : (
+        <Redirect
+          to={{
+            pathname: '/login',
+            state: { from: props.location }
+          }}
+        />
+      )}
+  />
+);
 
-const App = () =>
+const App = () => (
   <Provider store={store}>
     <BrowserRouter>
       <div>
@@ -66,6 +69,7 @@ const App = () =>
         </Switch>
       </div>
     </BrowserRouter>
-  </Provider>;
+  </Provider>
+);
 
 render(<App />, document.getElementById('root'));
