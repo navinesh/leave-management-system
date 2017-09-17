@@ -13,16 +13,19 @@ type Props = {
   message: string
 };
 
-const AdminLogin = (props: Props) =>
+const AdminLogin = (props: Props) => (
   <div className="AdminLogin">
-    {!props.isAuthenticated
-      ? <Login
-          isFetching={props.isFetching}
-          message={props.message}
-          onLoginClick={creds => props.dispatch(fetchLogin(creds))}
-        />
-      : <Redirect to="/" />}
-  </div>;
+    {!props.isAuthenticated ? (
+      <Login
+        isFetching={props.isFetching}
+        message={props.message}
+        onLoginClick={creds => props.dispatch(fetchLogin(creds))}
+      />
+    ) : (
+      <Redirect to="/" />
+    )}
+  </div>
+);
 
 const mapStateToProps = state => {
   const { adminAuth } = state;
