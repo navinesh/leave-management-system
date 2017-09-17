@@ -36,15 +36,17 @@ class NewRecord extends Component<Props> {
 
     return (
       <div className="NewRecord">
-        {isAuthenticated
-          ? <NewRecordForm
-              isFetching={isFetching}
-              message={message}
-              dispatch={dispatch}
-              onNewUserRecordSubmit={newUserDetails =>
-                dispatch(submitNewUserRecord(newUserDetails))}
-            />
-          : <Redirect to="/login" />}
+        {isAuthenticated ? (
+          <NewRecordForm
+            isFetching={isFetching}
+            message={message}
+            dispatch={dispatch}
+            onNewUserRecordSubmit={newUserDetails =>
+              dispatch(submitNewUserRecord(newUserDetails))}
+          />
+        ) : (
+          <Redirect to="/login" />
+        )}
       </div>
     );
   }
