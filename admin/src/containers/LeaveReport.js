@@ -66,20 +66,24 @@ class LeaveReport extends Component<Props> {
 
     return (
       <div className="LeaveReport">
-        {isAuthenticated
-          ? isFetching
-            ? <div className="text-center">
-                <div className="loader1" />
-              </div>
-            : <LeaveReportList
-                approved_record={approved_record}
-                pending_record={pending_record}
-                cancelled_record={cancelled_record}
-                declined_record={declined_record}
-                user_updates={user_updates}
-                leave_updates={leave_updates}
-              />
-          : <Redirect to="/login" />}
+        {isAuthenticated ? (
+          isFetching ? (
+            <div className="text-center">
+              <div className="loader1" />
+            </div>
+          ) : (
+            <LeaveReportList
+              approved_record={approved_record}
+              pending_record={pending_record}
+              cancelled_record={cancelled_record}
+              declined_record={declined_record}
+              user_updates={user_updates}
+              leave_updates={leave_updates}
+            />
+          )
+        ) : (
+          <Redirect to="/login" />
+        )}
       </div>
     );
   }
