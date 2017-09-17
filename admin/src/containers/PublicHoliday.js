@@ -51,20 +51,22 @@ class PublicHoliday extends Component<Props> {
 
     return (
       <div className="container">
-        {isAuthenticated
-          ? <PublicHolidays
-              public_holiday={public_holiday}
-              dispatch={dispatch}
-              isAddPublicFetching={isAddPublicFetching}
-              addPublicMessage={addPublicMessage}
-              isDeletePublicFetching={isDeletePublicFetching}
-              deletePublicMessage={deletePublicMessage}
-              onAddPublicHolidaySubmit={publicHolidayDate =>
-                dispatch(submitAddPublicHoliday(publicHolidayDate))}
-              onDeletePublicHolidaySubmit={deletePublicHolidayDate =>
-                dispatch(submitDeletePublicHoliday(deletePublicHolidayDate))}
-            />
-          : <Redirect to="/login" />}
+        {isAuthenticated ? (
+          <PublicHolidays
+            public_holiday={public_holiday}
+            dispatch={dispatch}
+            isAddPublicFetching={isAddPublicFetching}
+            addPublicMessage={addPublicMessage}
+            isDeletePublicFetching={isDeletePublicFetching}
+            deletePublicMessage={deletePublicMessage}
+            onAddPublicHolidaySubmit={publicHolidayDate =>
+              dispatch(submitAddPublicHoliday(publicHolidayDate))}
+            onDeletePublicHolidaySubmit={deletePublicHolidayDate =>
+              dispatch(submitDeletePublicHoliday(deletePublicHolidayDate))}
+          />
+        ) : (
+          <Redirect to="/login" />
+        )}
       </div>
     );
   }
