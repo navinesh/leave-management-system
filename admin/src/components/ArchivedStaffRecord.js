@@ -1,31 +1,29 @@
 // @flow
 import React, { Component } from 'react';
 
-import { searchStaffRecord } from '../actions/StaffRecord';
 import { fetchArchivedStaffRecord } from '../actions/ArchivedStaffRecord';
 
 const moment = require('moment');
 
 const Search = props => (
-  <div className="row">
-    <div className="col-md-3">
-      <div className="form-group">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Search"
-          onChange={props.handleSearchChange}
-        />
-      </div>
+  <div className="col-md-3">
+    <div className="form-group">
+      <input
+        type="text"
+        className="form-control"
+        placeholder="Search"
+        value={props.searchTerm}
+        onChange={props.handleSearchChange}
+      />
     </div>
-    <div className="col-md-3">
-      <button
-        className="btn btn-outline-primary"
-        onClick={props.handleClearSearch}
-      >
-        Reset view
-      </button>
-    </div>
+  </div>
+);
+
+const ClearSearch = props => (
+  <div className="col-md-3">
+    <button className="btn btn-primary" onClick={props.handleClearSearch}>
+      Clear
+    </button>
   </div>
 );
 
@@ -85,7 +83,6 @@ const UnArchiveLeave = props => (
 
 type Props = {
   archived_staff_record: Array<any>,
-  searchTerm: string,
   onUnArchiveUserSubmit: Function,
   dispatch: Function,
   isUnArchiveFetching: boolean,
@@ -95,7 +92,8 @@ type Props = {
 type State = {
   errorMessage: string,
   isUnarchive: boolean,
-  listID: number
+  listID: number,
+  searchTerm: string
 };
 
 export default class ArchivedStaffRecordList extends Component<Props, State> {
@@ -110,7 +108,8 @@ export default class ArchivedStaffRecordList extends Component<Props, State> {
     this.state = {
       errorMessage: '',
       listID: 0,
-      isUnarchive: false
+      isUnarchive: false,
+      searchTerm: ''
     };
 
     this.handleSearchChange = this.handleSearchChange.bind(this);
@@ -121,11 +120,11 @@ export default class ArchivedStaffRecordList extends Component<Props, State> {
   }
 
   handleSearchChange({ target }: SyntheticInputEvent<>) {
-    this.props.dispatch(searchStaffRecord(target.value.toLowerCase()));
+    this.setState({ searchTerm: target.value.toLowerCase() });
   }
 
   handleClearSearch() {
-    this.props.dispatch({ type: 'CLEAR_STAFF_RECORD_SEARCH' });
+    this.setState({ searchTerm: '' });
   }
 
   handleOpenUnarchive(e: SyntheticEvent<HTMLElement>) {
@@ -157,12 +156,14 @@ export default class ArchivedStaffRecordList extends Component<Props, State> {
 
   handleCloseUnarchive() {
     this.setState({ isUnarchive: false, errorMessage: '', listID: 0 });
-    this.props.dispatch(fetchArchivedStaffRecord());
     this.props.dispatch({ type: 'CLEAR_UNARCHIVE_MESSAGE' });
+    if (this.props.unArchiveMessage) {
+      this.props.dispatch(fetchArchivedStaffRecord());
+    }
   }
 
   render() {
-    const { archived_staff_record, searchTerm } = this.props;
+    const { archived_staff_record } = this.props;
 
     if (this.state.isUnarchive) {
       return (
@@ -181,8 +182,8 @@ export default class ArchivedStaffRecordList extends Component<Props, State> {
     const filteredElements = archived_staff_record
       .filter(
         e =>
-          e.othernames.toLowerCase().includes(searchTerm) ||
-          e.surname.toLowerCase().includes(searchTerm)
+          e.othernames.toLowerCase().includes(this.state.searchTerm) ||
+          e.surname.toLowerCase().includes(this.state.searchTerm)
       )
       .map(record => {
         let dob = new Date(record.date_of_birth);
@@ -258,10 +259,15 @@ export default class ArchivedStaffRecordList extends Component<Props, State> {
       <div className="ArchivedStaffRecordList">
         {archived_staff_record.length > 0 ? (
           <div>
-            <Search
-              handleSearchChange={this.handleSearchChange}
-              handleClearSearch={this.handleClearSearch}
-            />
+            <div className="row">
+              <Search
+                handleSearchChange={this.handleSearchChange}
+                searchTerm={this.state.searchTerm}
+              />
+              {this.state.searchTerm && (
+                <ClearSearch handleClearSearch={this.handleClearSearch} />
+              )}
+            </div>
             <div className="row">{filteredElements}</div>
           </div>
         ) : (
