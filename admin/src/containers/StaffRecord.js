@@ -4,10 +4,7 @@ import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import { fetchLoginFromToken } from '../actions/AdminLogin';
-import {
-  fetchStaffRecord,
-  clearSearchStaffRecord
-} from '../actions/StaffRecord';
+import { fetchStaffRecord } from '../actions/StaffRecord';
 import StaffRecordList from '../components/StaffRecord';
 import { submitModifyUserRecord } from '../actions/ModifyRecord';
 import { submitArchiveUser } from '../actions/ArchiveUser';
@@ -16,7 +13,6 @@ type Props = {
   isAuthenticated: boolean,
   auth_info: Object,
   staff_record: Array<any>,
-  searchTerm: string,
   dispatch: Function,
   isFetching: boolean,
   message: string,
@@ -43,15 +39,10 @@ class StaffRecord extends Component<Props> {
     }
   }
 
-  componentWillUnmount() {
-    this.props.dispatch(clearSearchStaffRecord());
-  }
-
   render() {
     const {
       isAuthenticated,
       staff_record,
-      searchTerm,
       dispatch,
       isFetching,
       message,
@@ -70,7 +61,6 @@ class StaffRecord extends Component<Props> {
           ) : (
             <StaffRecordList
               staff_record={staff_record}
-              searchTerm={searchTerm}
               dispatch={dispatch}
               isFetching={isFetching}
               message={message}
@@ -91,17 +81,10 @@ class StaffRecord extends Component<Props> {
 }
 
 const mapStateToProps = state => {
-  const {
-    adminAuth,
-    staffRecord,
-    searchStaffRecord,
-    modifyUser,
-    archiveUser
-  } = state;
+  const { adminAuth, staffRecord, modifyUser, archiveUser } = state;
 
   const { auth_info, isAuthenticated } = adminAuth;
   const { staff_record, isFetching: isDataFetching } = staffRecord;
-  const { searchTerm } = searchStaffRecord;
   const { isFetching, message } = modifyUser;
   const { isArchiveFetching, archiveMessage } = archiveUser;
 
@@ -109,7 +92,6 @@ const mapStateToProps = state => {
     auth_info,
     isAuthenticated,
     staff_record,
-    searchTerm,
     isFetching,
     message,
     isArchiveFetching,
