@@ -98,9 +98,7 @@ class AddPublicHoliday extends Component<
           </div>
         </form>
         <div className="text-danger">
-          <div>
-            {this.state.errorMessage}
-          </div>
+          <div>{this.state.errorMessage}</div>
         </div>
       </div>
     );
@@ -179,15 +177,9 @@ class DeletePublicHoliday extends Component<
     });
     return (
       <div className="DeletePublicHolidays">
-        <ul>
-          {public_holidays}
-        </ul>
+        <ul>{public_holidays}</ul>
         <div className="text-danger">
-          {this.state.errorMessage
-            ? <div>
-                {this.state.errorMessage}
-              </div>
-            : ''}
+          {this.state.errorMessage ? <div>{this.state.errorMessage}</div> : ''}
         </div>
       </div>
     );
@@ -205,7 +197,7 @@ type publicHolidayProps = {
   deletePublicMessage: string
 };
 
-export default (props: publicHolidayProps) =>
+export default (props: publicHolidayProps) => (
   <div className="col-11 ml-auto mr-auto">
     <div className="card card-body">
       <div className="row">
@@ -227,18 +219,19 @@ export default (props: publicHolidayProps) =>
             onAddPublicHolidaySubmit={props.onAddPublicHolidaySubmit}
           />
           <div>
-            {props.isAddPublicFetching
-              ? <div className="text-success">ADDING...</div>
-              : <p className="text-primary">
-                  {props.addPublicMessage}
-                </p>}
-            {props.isDeletePublicFetching
-              ? <div className="text-danger">DELETING...</div>
-              : <p className="text-primary">
-                  {props.deletePublicMessage}
-                </p>}
+            {props.isAddPublicFetching ? (
+              <div className="text-success">ADDING...</div>
+            ) : (
+              <p className="text-primary">{props.addPublicMessage}</p>
+            )}
+            {props.isDeletePublicFetching ? (
+              <div className="text-danger">DELETING...</div>
+            ) : (
+              <p className="text-primary">{props.deletePublicMessage}</p>
+            )}
           </div>
         </div>
       </div>
     </div>
-  </div>;
+  </div>
+);
