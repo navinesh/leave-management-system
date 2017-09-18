@@ -10,79 +10,63 @@ const ApprovedLeaveReportList = props => {
     return a.user_id - b.user_id;
   });
 
-  const approvedRecordItems = approvedRecord.map(record =>
+  const approvedRecordItems = approvedRecord.map(record => (
     <tr key={record.id}>
       <td>
         {record.othernames} {record.surname}
       </td>
-      <td>
-        {record.leave_name}
-      </td>
-      <td>
-        {record.leave_type}
-      </td>
-      <td>
-        {record.start_date}
-      </td>
-      <td>
-        {record.end_date}
-      </td>
-      <td>
-        {record.leave_status}
-      </td>
-      <td>
-        {record.leave_reason}
-      </td>
-      <td>
-        {record.date_posted}
-      </td>
-      <td>
-        {record.date_reviewed}
-      </td>
+      <td>{record.leave_name}</td>
+      <td>{record.leave_type}</td>
+      <td>{record.start_date}</td>
+      <td>{record.end_date}</td>
+      <td>{record.leave_status}</td>
+      <td>{record.leave_reason}</td>
+      <td>{record.date_posted}</td>
+      <td>{record.date_reviewed}</td>
     </tr>
-  );
+  ));
 
-  return approvedRecordItems.length > 0
-    ? <div>
-        <CSVLink
-          data={approvedRecord}
-          filename={'Approved-leave.csv'}
-          className="btn btn-outline-primary mb-2"
-        >
-          Download
-        </CSVLink>
-        <div className="table-responsive">
-          <table
-            className="table table-bordered table-hover"
-            style={{ backgroundColor: '#FFFFFF' }}
-          >
-            <thead className="thead-default">
-              <tr>
-                <th>Name</th>
-                <th>Leave</th>
-                <th>Type</th>
-                <th>Start date</th>
-                <th>End date</th>
-                <th>Status</th>
-                <th>Reason</th>
-                <th>Date posted</th>
-                <th>Date reviewed</th>
-              </tr>
-            </thead>
-            <tbody>
-              {approvedRecordItems}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    : <div
-        className="card card-body border-0"
-        style={{ paddingTop: '100px', paddingBottom: '260px' }}
+  return approvedRecordItems.length > 0 ? (
+    <div>
+      <CSVLink
+        data={approvedRecord}
+        filename={'Approved-leave.csv'}
+        className="btn btn-outline-primary mb-2"
       >
-        <h1 className="display-4 text-center">
-          <em>There is no record to display.</em>
-        </h1>
-      </div>;
+        Download
+      </CSVLink>
+      <div className="table-responsive">
+        <table
+          className="table table-bordered table-hover"
+          style={{ backgroundColor: '#FFFFFF' }}
+        >
+          <thead className="thead-default">
+            <tr>
+              <th>Name</th>
+              <th>Leave</th>
+              <th>Type</th>
+              <th>Start date</th>
+              <th>End date</th>
+              <th>Status</th>
+              <th>Reason</th>
+              <th>Date posted</th>
+              <th>Date reviewed</th>
+            </tr>
+          </thead>
+          <tbody>{approvedRecordItems}</tbody>
+        </table>
+      </div>
+    </div>
+  ) : (
+    <div
+      className="card card-body border-0"
+      style={{ paddingTop: '100px', paddingBottom: '260px' }}
+    >
+      <h1 className="display-4 text-center">
+        <em>There is no record to display.</em>
+      </h1>
+    </div>
+  );
 };
 
 const PendingLeaveReportList = props => {
@@ -90,79 +74,63 @@ const PendingLeaveReportList = props => {
     return a.user_id - b.user_id;
   });
 
-  const pendingRecordItems = pendingRecord.map(record =>
+  const pendingRecordItems = pendingRecord.map(record => (
     <tr key={record.id}>
       <td>
         {record.othernames} {record.surname}
       </td>
-      <td>
-        {record.leave_name}
-      </td>
-      <td>
-        {record.leave_type}
-      </td>
-      <td>
-        {record.start_date}
-      </td>
-      <td>
-        {record.end_date}
-      </td>
-      <td>
-        {record.leave_status}
-      </td>
-      <td>
-        {record.leave_reason}
-      </td>
-      <td>
-        {record.date_posted}
-      </td>
-      <td>
-        {record.date_reviewed}
-      </td>
+      <td>{record.leave_name}</td>
+      <td>{record.leave_type}</td>
+      <td>{record.start_date}</td>
+      <td>{record.end_date}</td>
+      <td>{record.leave_status}</td>
+      <td>{record.leave_reason}</td>
+      <td>{record.date_posted}</td>
+      <td>{record.date_reviewed}</td>
     </tr>
-  );
+  ));
 
-  return pendingRecordItems.length > 0
-    ? <div>
-        <CSVLink
-          data={pendingRecord}
-          filename={'Pending-leave.csv'}
-          className="btn btn-outline-primary mb-2"
-        >
-          Download
-        </CSVLink>
-        <div className="table-responsive">
-          <table
-            className="table table-bordered table-hover"
-            style={{ backgroundColor: '#FFFFFF' }}
-          >
-            <thead className="thead-default">
-              <tr>
-                <th>Name</th>
-                <th>Leave</th>
-                <th>Type</th>
-                <th>Start date</th>
-                <th>End date</th>
-                <th>Status</th>
-                <th>Reason</th>
-                <th>Date posted</th>
-                <th>Date reviewed</th>
-              </tr>
-            </thead>
-            <tbody>
-              {pendingRecordItems}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    : <div
-        className="card card-body border-0"
-        style={{ paddingTop: '100px', paddingBottom: '260px' }}
+  return pendingRecordItems.length > 0 ? (
+    <div>
+      <CSVLink
+        data={pendingRecord}
+        filename={'Pending-leave.csv'}
+        className="btn btn-outline-primary mb-2"
       >
-        <h1 className="display-4 text-center">
-          <em>There is no record to display.</em>
-        </h1>
-      </div>;
+        Download
+      </CSVLink>
+      <div className="table-responsive">
+        <table
+          className="table table-bordered table-hover"
+          style={{ backgroundColor: '#FFFFFF' }}
+        >
+          <thead className="thead-default">
+            <tr>
+              <th>Name</th>
+              <th>Leave</th>
+              <th>Type</th>
+              <th>Start date</th>
+              <th>End date</th>
+              <th>Status</th>
+              <th>Reason</th>
+              <th>Date posted</th>
+              <th>Date reviewed</th>
+            </tr>
+          </thead>
+          <tbody>{pendingRecordItems}</tbody>
+        </table>
+      </div>
+    </div>
+  ) : (
+    <div
+      className="card card-body border-0"
+      style={{ paddingTop: '100px', paddingBottom: '260px' }}
+    >
+      <h1 className="display-4 text-center">
+        <em>There is no record to display.</em>
+      </h1>
+    </div>
+  );
 };
 
 const CancelledLeaveReportList = props => {
@@ -170,79 +138,63 @@ const CancelledLeaveReportList = props => {
     return a.user_id - b.user_id;
   });
 
-  const cancelledRecordItems = cancelledRecord.map(record =>
+  const cancelledRecordItems = cancelledRecord.map(record => (
     <tr key={record.id}>
       <td>
         {record.othernames} {record.surname}
       </td>
-      <td>
-        {record.leave_name}
-      </td>
-      <td>
-        {record.leave_type}
-      </td>
-      <td>
-        {record.start_date}
-      </td>
-      <td>
-        {record.end_date}
-      </td>
-      <td>
-        {record.leave_status}
-      </td>
-      <td>
-        {record.cancelled_reason}
-      </td>
-      <td>
-        {record.date_posted}
-      </td>
-      <td>
-        {record.date_reviewed}
-      </td>
+      <td>{record.leave_name}</td>
+      <td>{record.leave_type}</td>
+      <td>{record.start_date}</td>
+      <td>{record.end_date}</td>
+      <td>{record.leave_status}</td>
+      <td>{record.cancelled_reason}</td>
+      <td>{record.date_posted}</td>
+      <td>{record.date_reviewed}</td>
     </tr>
-  );
+  ));
 
-  return cancelledRecordItems.length > 0
-    ? <div>
-        <CSVLink
-          data={cancelledRecord}
-          filename={'Cancelled-leave.csv'}
-          className="btn btn-outline-primary mb-2"
-        >
-          Download
-        </CSVLink>
-        <div className="table-responsive">
-          <table
-            className="table table-bordered table-hover"
-            style={{ backgroundColor: '#FFFFFF' }}
-          >
-            <thead className="thead-default">
-              <tr>
-                <th>Name</th>
-                <th>Leave</th>
-                <th>Type</th>
-                <th>Start date</th>
-                <th>End date</th>
-                <th>Status</th>
-                <th>Reason</th>
-                <th>Date posted</th>
-                <th>Date reviewed</th>
-              </tr>
-            </thead>
-            <tbody>
-              {cancelledRecordItems}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    : <div
-        className="card card-body border-0"
-        style={{ paddingTop: '100px', paddingBottom: '260px' }}
+  return cancelledRecordItems.length > 0 ? (
+    <div>
+      <CSVLink
+        data={cancelledRecord}
+        filename={'Cancelled-leave.csv'}
+        className="btn btn-outline-primary mb-2"
       >
-        <h1 className="display-4 text-center">
-          <em>There is no record to display.</em>
-        </h1>
-      </div>;
+        Download
+      </CSVLink>
+      <div className="table-responsive">
+        <table
+          className="table table-bordered table-hover"
+          style={{ backgroundColor: '#FFFFFF' }}
+        >
+          <thead className="thead-default">
+            <tr>
+              <th>Name</th>
+              <th>Leave</th>
+              <th>Type</th>
+              <th>Start date</th>
+              <th>End date</th>
+              <th>Status</th>
+              <th>Reason</th>
+              <th>Date posted</th>
+              <th>Date reviewed</th>
+            </tr>
+          </thead>
+          <tbody>{cancelledRecordItems}</tbody>
+        </table>
+      </div>
+    </div>
+  ) : (
+    <div
+      className="card card-body border-0"
+      style={{ paddingTop: '100px', paddingBottom: '260px' }}
+    >
+      <h1 className="display-4 text-center">
+        <em>There is no record to display.</em>
+      </h1>
+    </div>
+  );
 };
 
 const DeclinedLeaveReportList = props => {
@@ -250,79 +202,63 @@ const DeclinedLeaveReportList = props => {
     return a.user_id - b.user_id;
   });
 
-  const declinedRecordItems = declinedRecord.map(record =>
+  const declinedRecordItems = declinedRecord.map(record => (
     <tr key={record.id}>
       <td>
         {record.othernames} {record.surname}
       </td>
-      <td>
-        {record.leave_name}
-      </td>
-      <td>
-        {record.leave_type}
-      </td>
-      <td>
-        {record.start_date}
-      </td>
-      <td>
-        {record.end_date}
-      </td>
-      <td>
-        {record.leave_status}
-      </td>
-      <td>
-        {record.declined_reason}
-      </td>
-      <td>
-        {record.date_posted}
-      </td>
-      <td>
-        {record.date_reviewed}
-      </td>
+      <td>{record.leave_name}</td>
+      <td>{record.leave_type}</td>
+      <td>{record.start_date}</td>
+      <td>{record.end_date}</td>
+      <td>{record.leave_status}</td>
+      <td>{record.declined_reason}</td>
+      <td>{record.date_posted}</td>
+      <td>{record.date_reviewed}</td>
     </tr>
-  );
+  ));
 
-  return declinedRecordItems.length > 0
-    ? <div>
-        <CSVLink
-          data={declinedRecord}
-          filename={'Declined-leave.csv'}
-          className="btn btn-outline-primary mb-2"
-        >
-          Download
-        </CSVLink>
-        <div className="table-responsive">
-          <table
-            className="table table-bordered table-hover"
-            style={{ backgroundColor: '#FFFFFF' }}
-          >
-            <thead className="thead-default">
-              <tr>
-                <th>Name</th>
-                <th>Leave</th>
-                <th>Type</th>
-                <th>Start date</th>
-                <th>End date</th>
-                <th>Status</th>
-                <th>Reason</th>
-                <th>Date posted</th>
-                <th>Date reviewed</th>
-              </tr>
-            </thead>
-            <tbody>
-              {declinedRecordItems}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    : <div
-        className="card card-body border-0"
-        style={{ paddingTop: '100px', paddingBottom: '260px' }}
+  return declinedRecordItems.length > 0 ? (
+    <div>
+      <CSVLink
+        data={declinedRecord}
+        filename={'Declined-leave.csv'}
+        className="btn btn-outline-primary mb-2"
       >
-        <h1 className="display-4 text-center">
-          <em>There is no record to display.</em>
-        </h1>
-      </div>;
+        Download
+      </CSVLink>
+      <div className="table-responsive">
+        <table
+          className="table table-bordered table-hover"
+          style={{ backgroundColor: '#FFFFFF' }}
+        >
+          <thead className="thead-default">
+            <tr>
+              <th>Name</th>
+              <th>Leave</th>
+              <th>Type</th>
+              <th>Start date</th>
+              <th>End date</th>
+              <th>Status</th>
+              <th>Reason</th>
+              <th>Date posted</th>
+              <th>Date reviewed</th>
+            </tr>
+          </thead>
+          <tbody>{declinedRecordItems}</tbody>
+        </table>
+      </div>
+    </div>
+  ) : (
+    <div
+      className="card card-body border-0"
+      style={{ paddingTop: '100px', paddingBottom: '260px' }}
+    >
+      <h1 className="display-4 text-center">
+        <em>There is no record to display.</em>
+      </h1>
+    </div>
+  );
 };
 
 const UserUpdatesReportList = props => {
@@ -339,83 +275,63 @@ const UserUpdatesReportList = props => {
         <td>
           {record.othernames} {record.surname}
         </td>
-        <td>
-          {record.annual}
-        </td>
-        <td>
-          {record.sick}
-        </td>
-        <td>
-          {record.bereavement}
-        </td>
-        <td>
-          {record.christmas}
-        </td>
-        <td>
-          {record.maternity}
-        </td>
-        <td>
-          {record.designation}
-        </td>
-        <td>
-          {dateOfBirth}
-        </td>
-        <td>
-          {record.gender}
-        </td>
-        <td>
-          {record.editReason}
-        </td>
-        <td>
-          {record.date_posted}
-        </td>
+        <td>{record.annual}</td>
+        <td>{record.sick}</td>
+        <td>{record.bereavement}</td>
+        <td>{record.christmas}</td>
+        <td>{record.maternity}</td>
+        <td>{record.designation}</td>
+        <td>{dateOfBirth}</td>
+        <td>{record.gender}</td>
+        <td>{record.editReason}</td>
+        <td>{record.date_posted}</td>
       </tr>
     );
   });
 
-  return userUpdateItems.length > 0
-    ? <div>
-        <CSVLink
-          data={userUpdates}
-          filename={'User-updates.csv'}
-          className="btn btn-outline-primary mb-2"
-        >
-          Download
-        </CSVLink>
-        <div className="table-responsive">
-          <table
-            className="table table-bordered table-hover"
-            style={{ backgroundColor: '#FFFFFF' }}
-          >
-            <thead className="thead-default">
-              <tr>
-                <th>Name</th>
-                <th>Annual </th>
-                <th>Sick</th>
-                <th>Bereavement</th>
-                <th>Christmas</th>
-                <th>Maternity</th>
-                <th>Designation</th>
-                <th>DOB</th>
-                <th>Gender</th>
-                <th>Reason</th>
-                <th>Date posted</th>
-              </tr>
-            </thead>
-            <tbody>
-              {userUpdateItems}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    : <div
-        className="card card-body border-0"
-        style={{ paddingTop: '100px', paddingBottom: '260px' }}
+  return userUpdateItems.length > 0 ? (
+    <div>
+      <CSVLink
+        data={userUpdates}
+        filename={'User-updates.csv'}
+        className="btn btn-outline-primary mb-2"
       >
-        <h1 className="display-4 text-center">
-          <em>There is no record to display.</em>
-        </h1>
-      </div>;
+        Download
+      </CSVLink>
+      <div className="table-responsive">
+        <table
+          className="table table-bordered table-hover"
+          style={{ backgroundColor: '#FFFFFF' }}
+        >
+          <thead className="thead-default">
+            <tr>
+              <th>Name</th>
+              <th>Annual </th>
+              <th>Sick</th>
+              <th>Bereavement</th>
+              <th>Christmas</th>
+              <th>Maternity</th>
+              <th>Designation</th>
+              <th>DOB</th>
+              <th>Gender</th>
+              <th>Reason</th>
+              <th>Date posted</th>
+            </tr>
+          </thead>
+          <tbody>{userUpdateItems}</tbody>
+        </table>
+      </div>
+    </div>
+  ) : (
+    <div
+      className="card card-body border-0"
+      style={{ paddingTop: '100px', paddingBottom: '260px' }}
+    >
+      <h1 className="display-4 text-center">
+        <em>There is no record to display.</em>
+      </h1>
+    </div>
+  );
 };
 
 const LeaveUpdatesReportList = props => {
@@ -423,91 +339,69 @@ const LeaveUpdatesReportList = props => {
     return a.leave_id - b.leave_id;
   });
 
-  const leaveUpdateItems = leaveUpdates.map(record =>
+  const leaveUpdateItems = leaveUpdates.map(record => (
     <tr key={record.id}>
-      <td>
-        {record.leave_id}
-      </td>
+      <td>{record.leave_id}</td>
       <td>
         {record.othernames} {record.surname}
       </td>
-      <td>
-        {record.previous_start_date}
-      </td>
-      <td>
-        {record.previous_end_date}
-      </td>
-      <td>
-        {record.previous_leave_name}
-      </td>
-      <td>
-        {record.previous_leave_days}
-      </td>
-      <td>
-        {record.updated_start_date}
-      </td>
-      <td>
-        {record.updated_end_date}
-      </td>
-      <td>
-        {record.updated_leave_name}
-      </td>
-      <td>
-        {record.updated_leave_days}
-      </td>
-      <td>
-        {record.editReason}
-      </td>
-      <td>
-        {record.date_posted}
-      </td>
+      <td>{record.previous_start_date}</td>
+      <td>{record.previous_end_date}</td>
+      <td>{record.previous_leave_name}</td>
+      <td>{record.previous_leave_days}</td>
+      <td>{record.updated_start_date}</td>
+      <td>{record.updated_end_date}</td>
+      <td>{record.updated_leave_name}</td>
+      <td>{record.updated_leave_days}</td>
+      <td>{record.editReason}</td>
+      <td>{record.date_posted}</td>
     </tr>
-  );
+  ));
 
-  return leaveUpdateItems.length > 0
-    ? <div>
-        <CSVLink
-          data={leaveUpdates}
-          filename={'Leave-updates.csv'}
-          className="btn btn-outline-primary mb-2"
-        >
-          Download
-        </CSVLink>
-        <div className="table-responsive">
-          <table
-            className="table table-bordered table-hover"
-            style={{ backgroundColor: '#FFFFFF' }}
-          >
-            <thead className="thead-default">
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Previous start date</th>
-                <th>Previous end date</th>
-                <th>Previous leave</th>
-                <th>Previous leave days</th>
-                <th>Updated start date</th>
-                <th>Updated end date</th>
-                <th>Updated leave</th>
-                <th>Updated leave days</th>
-                <th>Reason</th>
-                <th>Date posted</th>
-              </tr>
-            </thead>
-            <tbody>
-              {leaveUpdateItems}
-            </tbody>
-          </table>
-        </div>
-      </div>
-    : <div
-        className="card card-body border-0"
-        style={{ paddingTop: '100px', paddingBottom: '260px' }}
+  return leaveUpdateItems.length > 0 ? (
+    <div>
+      <CSVLink
+        data={leaveUpdates}
+        filename={'Leave-updates.csv'}
+        className="btn btn-outline-primary mb-2"
       >
-        <h1 className="display-4 text-center">
-          <em>There is no record to display.</em>
-        </h1>
-      </div>;
+        Download
+      </CSVLink>
+      <div className="table-responsive">
+        <table
+          className="table table-bordered table-hover"
+          style={{ backgroundColor: '#FFFFFF' }}
+        >
+          <thead className="thead-default">
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Previous start date</th>
+              <th>Previous end date</th>
+              <th>Previous leave</th>
+              <th>Previous leave days</th>
+              <th>Updated start date</th>
+              <th>Updated end date</th>
+              <th>Updated leave</th>
+              <th>Updated leave days</th>
+              <th>Reason</th>
+              <th>Date posted</th>
+            </tr>
+          </thead>
+          <tbody>{leaveUpdateItems}</tbody>
+        </table>
+      </div>
+    </div>
+  ) : (
+    <div
+      className="card card-body border-0"
+      style={{ paddingTop: '100px', paddingBottom: '260px' }}
+    >
+      <h1 className="display-4 text-center">
+        <em>There is no record to display.</em>
+      </h1>
+    </div>
+  );
 };
 
 type tabsProps = {
@@ -552,11 +446,7 @@ class Tabs extends Component<tabsProps, tabsState> {
   }
 
   renderPanel() {
-    return (
-      <div>
-        {this.props.data[this.state.activeIndex].content}
-      </div>
-    );
+    return <div>{this.props.data[this.state.activeIndex].content}</div>;
   }
 
   render() {
@@ -568,9 +458,7 @@ class Tabs extends Component<tabsProps, tabsState> {
         >
           {this.renderTabs()}
         </nav>
-        <div className="mt-3">
-          {this.renderPanel()}
-        </div>
+        <div className="mt-3">{this.renderPanel()}</div>
       </div>
     );
   }
