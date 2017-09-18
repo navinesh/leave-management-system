@@ -10,9 +10,9 @@ import Moment from 'moment';
 import { extendMoment } from 'moment-range';
 const moment = extendMoment(Moment);
 
-const ApproveLeave = props =>
+const ApproveLeave = props => (
   <div className="col-md-10 ml-auto mr-auto">
-    {props.pending_items.filter(e => e.id === props.listID).map(record =>
+    {props.pending_items.filter(e => e.id === props.listID).map(record => (
       <div key={record.id}>
         <div
           className="col-md-6 ml-auto mr-auto"
@@ -29,9 +29,7 @@ const ApproveLeave = props =>
                   <div className="form-group">
                     <label>Leave</label>
                     <div className="form-control">
-                      <em>
-                        {record.leave_name}
-                      </em>
+                      <em>{record.leave_name}</em>
                     </div>
                   </div>
                 </div>
@@ -39,9 +37,7 @@ const ApproveLeave = props =>
                   <div className="form-group">
                     <label>Leave type</label>
                     <div className="form-control">
-                      <em>
-                        {record.leave_type}
-                      </em>
+                      <em>{record.leave_type}</em>
                     </div>
                   </div>
                 </div>
@@ -51,9 +47,7 @@ const ApproveLeave = props =>
                   <div className="form-group">
                     <label>Start date</label>
                     <div className="form-control">
-                      <em>
-                        {record.start_date}
-                      </em>
+                      <em>{record.start_date}</em>
                     </div>
                   </div>
                 </div>
@@ -61,9 +55,7 @@ const ApproveLeave = props =>
                   <div className="form-group">
                     <label>End date</label>
                     <div className="form-control">
-                      <em>
-                        {record.end_date}
-                      </em>
+                      <em>{record.end_date}</em>
                     </div>
                   </div>
                 </div>
@@ -73,9 +65,7 @@ const ApproveLeave = props =>
                   <div className="form-group">
                     <label>Leave days</label>
                     <div className="form-control text-muted">
-                      <em>
-                        {record.leave_days}
-                      </em>
+                      <em>{record.leave_days}</em>
                     </div>
                   </div>
                 </div>
@@ -85,9 +75,7 @@ const ApproveLeave = props =>
                   <div className="form-group">
                     <label>Leave reason</label>
                     <div className="form-control text-muted">
-                      <em>
-                        {record.leave_reason}
-                      </em>
+                      <em>{record.leave_reason}</em>
                     </div>
                   </div>
                 </div>
@@ -106,19 +94,20 @@ const ApproveLeave = props =>
                   </button>
                 </div>
                 <div className="text-primary text-center">
-                  {props.isApproveLeaveFetching
-                    ? <div className="loader2" />
-                    : <p className="mt-3">
-                        {props.approveLeavemessage}
-                      </p>}
+                  {props.isApproveLeaveFetching ? (
+                    <div className="loader2" />
+                  ) : (
+                    <p className="mt-3">{props.approveLeavemessage}</p>
+                  )}
                 </div>
               </form>
             </div>
           </div>
         </div>
       </div>
-    )}
-  </div>;
+    ))}
+  </div>
+);
 
 type Props = {
   pending_items: Array<any>,
@@ -423,7 +412,7 @@ export default class PendingLeaveList extends Component<Props, State> {
           const birthDate = moment.utc(dOB);
           // check date of birth
           return moment(startDate).isSame(birthDate) &&
-          moment(endDate).isSame(birthDate)
+            moment(endDate).isSame(birthDate)
             ? myLeaveDays
             : undefined;
         },
@@ -513,7 +502,7 @@ export default class PendingLeaveList extends Component<Props, State> {
         <div>
           {this.props.pending_items
             .filter(e => e.id === this.state.listID)
-            .map(record =>
+            .map(record => (
               <div key={record.id}>
                 <div
                   className="col-md-6 ml-auto mr-auto"
@@ -542,17 +531,15 @@ export default class PendingLeaveList extends Component<Props, State> {
                                 defaultValue={record.leave_name}
                                 ref={select => (this.leave_name = select)}
                               >
-                                <option>
-                                  {record.leave_name}
-                                </option>
+                                <option>{record.leave_name}</option>
                                 <option>annual</option>
                                 <option>sick</option>
                                 <option>bereavement</option>
                                 <option>christmas</option>
                                 <option>birthday</option>
-                                {record.user.gender === 'female'
-                                  ? <option>maternity</option>
-                                  : null}
+                                {record.user.gender === 'female' ? (
+                                  <option>maternity</option>
+                                ) : null}
                                 <option>lwop</option>
                                 <option>other</option>
                               </select>
@@ -567,9 +554,7 @@ export default class PendingLeaveList extends Component<Props, State> {
                                 defaultValue={record.leave_type}
                                 ref={select => (this.leave_type = select)}
                               >
-                                <option>
-                                  {record.leave_type}
-                                </option>
+                                <option>{record.leave_type}</option>
                                 <option>full</option>
                                 <option>half day am</option>
                                 <option>half day pm</option>
@@ -608,10 +593,11 @@ export default class PendingLeaveList extends Component<Props, State> {
                                 showDefaultInputIcon
                                 showClearDates
                                 withPortal
-                                renderCalendarInfo={() =>
+                                renderCalendarInfo={() => (
                                   <p className="text-center">
                                     To select a single day click the date twice.
-                                  </p>}
+                                  </p>
+                                )}
                               />
                             </div>
                           </div>
@@ -646,11 +632,13 @@ export default class PendingLeaveList extends Component<Props, State> {
                           </button>
                         </div>
                         <div className="text-primary text-center">
-                          {this.props.isEditLeaveFetching
-                            ? <div className="loader2" />
-                            : <p className="mt-3">
-                                {this.props.editLeaveMessage}
-                              </p>}
+                          {this.props.isEditLeaveFetching ? (
+                            <div className="loader2" />
+                          ) : (
+                            <p className="mt-3">
+                              {this.props.editLeaveMessage}
+                            </p>
+                          )}
                         </div>
                         <div className="text-danger text-center">
                           {this.state.errorMessage}
@@ -660,7 +648,7 @@ export default class PendingLeaveList extends Component<Props, State> {
                   </div>
                 </div>
               </div>
-            )}
+            ))}
         </div>
       );
     }
@@ -670,7 +658,7 @@ export default class PendingLeaveList extends Component<Props, State> {
         <div>
           {this.props.pending_items
             .filter(e => e.id === this.state.listID)
-            .map(record =>
+            .map(record => (
               <div key={record.id}>
                 <div
                   className="col-md-6 ml-auto mr-auto pb-2"
@@ -687,9 +675,7 @@ export default class PendingLeaveList extends Component<Props, State> {
                           <div className="form-group">
                             <label>Leave</label>
                             <div className="form-control">
-                              <em>
-                                {record.leave_name}
-                              </em>
+                              <em>{record.leave_name}</em>
                             </div>
                           </div>
                         </div>
@@ -697,9 +683,7 @@ export default class PendingLeaveList extends Component<Props, State> {
                           <div className="form-group">
                             <label>Leave type</label>
                             <div className="form-control">
-                              <em>
-                                {record.leave_type}
-                              </em>
+                              <em>{record.leave_type}</em>
                             </div>
                           </div>
                         </div>
@@ -709,9 +693,7 @@ export default class PendingLeaveList extends Component<Props, State> {
                           <div className="form-group">
                             <label>Start date</label>
                             <div className="form-control">
-                              <em>
-                                {record.start_date}
-                              </em>
+                              <em>{record.start_date}</em>
                             </div>
                           </div>
                         </div>
@@ -719,9 +701,7 @@ export default class PendingLeaveList extends Component<Props, State> {
                           <div className="form-group">
                             <label>End date</label>
                             <div className="form-control">
-                              <em>
-                                {record.end_date}
-                              </em>
+                              <em>{record.end_date}</em>
                             </div>
                           </div>
                         </div>
@@ -731,9 +711,7 @@ export default class PendingLeaveList extends Component<Props, State> {
                           <div className="form-group">
                             <label>Leave days</label>
                             <div className="form-control">
-                              <em>
-                                {record.leave_days}
-                              </em>
+                              <em>{record.leave_days}</em>
                             </div>
                           </div>
                         </div>
@@ -743,9 +721,7 @@ export default class PendingLeaveList extends Component<Props, State> {
                           <div className="form-group">
                             <label>Leave reason</label>
                             <div className="form-control">
-                              <em>
-                                {record.leave_reason}
-                              </em>
+                              <em>{record.leave_reason}</em>
                             </div>
                           </div>
                         </div>
@@ -777,50 +753,38 @@ export default class PendingLeaveList extends Component<Props, State> {
                           </button>
                         </div>
                         <div className="text-primary text-center">
-                          {this.props.isDeclineLeaveFetching
-                            ? <div className="loader2" />
-                            : <p className="mt-3">
-                                {this.props.declineLeaveMessage}
-                              </p>}
+                          {this.props.isDeclineLeaveFetching ? (
+                            <div className="loader2" />
+                          ) : (
+                            <p className="mt-3">
+                              {this.props.declineLeaveMessage}
+                            </p>
+                          )}
                         </div>
                         <div className="text-danger text-center">
-                          <div className="mt-3">
-                            {this.state.errorMessage}
-                          </div>
+                          <div className="mt-3">{this.state.errorMessage}</div>
                         </div>
                       </form>
                     </div>
                   </div>
                 </div>
               </div>
-            )}
+            ))}
         </div>
       );
     }
 
-    const itemNodes = this.props.pending_items.map(record =>
+    const itemNodes = this.props.pending_items.map(record => (
       <tr key={record.id}>
         <td>
           {record.user.othernames} {record.user.surname}
         </td>
-        <td>
-          {record.leave_name}
-        </td>
-        <td>
-          {record.leave_type}
-        </td>
-        <td>
-          {record.start_date}
-        </td>
-        <td>
-          {record.end_date}
-        </td>
-        <td>
-          {record.leave_days}
-        </td>
-        <td>
-          {record.leave_reason}
-        </td>
+        <td>{record.leave_name}</td>
+        <td>{record.leave_type}</td>
+        <td>{record.start_date}</td>
+        <td>{record.end_date}</td>
+        <td>{record.leave_days}</td>
+        <td>{record.leave_reason}</td>
         <td>
           <button
             className="btn btn-link"
@@ -849,40 +813,40 @@ export default class PendingLeaveList extends Component<Props, State> {
           </button>
         </td>
       </tr>
-    );
+    ));
 
-    return itemNodes.length > 0
-      ? <div className="table-responsive">
-          <table
-            className="table table-bordered table-hover"
-            style={{ backgroundColor: '#FFFFFF' }}
-          >
-            <thead className="thead-default">
-              <tr>
-                <th>Name</th>
-                <th>Leave</th>
-                <th>Type</th>
-                <th>Start date</th>
-                <th>End date</th>
-                <th>Leave days</th>
-                <th>Reason</th>
-                <th>Approve</th>
-                <th>Decline</th>
-                <th>Edit</th>
-              </tr>
-            </thead>
-            <tbody>
-              {itemNodes}
-            </tbody>
-          </table>
-        </div>
-      : <div
-          className="card card-body border-0"
-          style={{ paddingTop: '100px', paddingBottom: '260px' }}
+    return itemNodes.length > 0 ? (
+      <div className="table-responsive">
+        <table
+          className="table table-bordered table-hover"
+          style={{ backgroundColor: '#FFFFFF' }}
         >
-          <h1 className="display-4 text-center">
-            <em>There is no record to display.</em>
-          </h1>
-        </div>;
+          <thead className="thead-default">
+            <tr>
+              <th>Name</th>
+              <th>Leave</th>
+              <th>Type</th>
+              <th>Start date</th>
+              <th>End date</th>
+              <th>Leave days</th>
+              <th>Reason</th>
+              <th>Approve</th>
+              <th>Decline</th>
+              <th>Edit</th>
+            </tr>
+          </thead>
+          <tbody>{itemNodes}</tbody>
+        </table>
+      </div>
+    ) : (
+      <div
+        className="card card-body border-0"
+        style={{ paddingTop: '100px', paddingBottom: '260px' }}
+      >
+        <h1 className="display-4 text-center">
+          <em>There is no record to display.</em>
+        </h1>
+      </div>
+    );
   }
 }
