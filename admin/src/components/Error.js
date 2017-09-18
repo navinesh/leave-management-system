@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default () =>
+export default () => (
   <div className="container text-center">
     <div className="col-md-8 ml-auto mr-auto">
       <h2 className="display-2">404</h2>
@@ -9,4 +9,5 @@ export default () =>
         The site configured at this address does not contain the requested file.
       </h5>
     </div>
-  </div>;
+  </div>
+);
