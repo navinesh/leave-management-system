@@ -209,7 +209,7 @@ export default class ApprovedLeaveList extends Component<Props, State> {
           const birthDate = moment.utc(dOB);
           // check date of birth
           return moment(startDate).isSame(birthDate) &&
-          moment(endDate).isSame(birthDate)
+            moment(endDate).isSame(birthDate)
             ? myLeaveDays
             : undefined;
         },
@@ -375,7 +375,7 @@ export default class ApprovedLeaveList extends Component<Props, State> {
     if (this.state.isEditing) {
       return (
         <div>
-          {approved_items.filter(e => e.id === listID).map(record =>
+          {approved_items.filter(e => e.id === listID).map(record => (
             <div key={record.id}>
               <div
                 className="col-md-6 ml-auto mr-auto"
@@ -405,17 +405,15 @@ export default class ApprovedLeaveList extends Component<Props, State> {
                               defaultValue={record.leave_name}
                               ref={select => (this.leave_name = select)}
                             >
-                              <option>
-                                {record.leave_name}
-                              </option>
+                              <option>{record.leave_name}</option>
                               <option>annual</option>
                               <option>sick</option>
                               <option>bereavement</option>
                               <option>christmas</option>
                               <option>birthday</option>
-                              {record.user.gender === 'female'
-                                ? <option>maternity</option>
-                                : null}
+                              {record.user.gender === 'female' ? (
+                                <option>maternity</option>
+                              ) : null}
                               <option>lwop</option>
                               <option>other</option>
                             </select>
@@ -430,9 +428,7 @@ export default class ApprovedLeaveList extends Component<Props, State> {
                               defaultValue={record.leave_type}
                               ref={select => (this.leave_type = select)}
                             >
-                              <option>
-                                {record.leave_type}
-                              </option>
+                              <option>{record.leave_type}</option>
                               <option>full</option>
                               <option>half day am</option>
                               <option>half day pm</option>
@@ -471,10 +467,11 @@ export default class ApprovedLeaveList extends Component<Props, State> {
                               showDefaultInputIcon
                               showClearDates
                               withPortal
-                              renderCalendarInfo={() =>
+                              renderCalendarInfo={() => (
                                 <p className="text-center">
                                   To select a single day click the date twice.
-                                </p>}
+                                </p>
+                              )}
                             />
                           </div>
                         </div>
@@ -508,11 +505,13 @@ export default class ApprovedLeaveList extends Component<Props, State> {
                         </button>
                       </div>
                       <div className="text-primary text-center">
-                        {this.props.isEditLeaveFetching
-                          ? <div className="loader2" />
-                          : <p className="text-primary mt-2">
-                              {this.props.editLeaveMessage}
-                            </p>}
+                        {this.props.isEditLeaveFetching ? (
+                          <div className="loader2" />
+                        ) : (
+                          <p className="text-primary mt-2">
+                            {this.props.editLeaveMessage}
+                          </p>
+                        )}
                       </div>
                       <div className="text-danger text-center">
                         {this.state.errorMessage}
@@ -522,7 +521,7 @@ export default class ApprovedLeaveList extends Component<Props, State> {
                 </div>
               </div>
             </div>
-          )}
+          ))}
         </div>
       );
     }
@@ -530,7 +529,7 @@ export default class ApprovedLeaveList extends Component<Props, State> {
     if (this.state.isCancel) {
       return (
         <div>
-          {approved_items.filter(e => e.id === listID).map(record =>
+          {approved_items.filter(e => e.id === listID).map(record => (
             <div key={record.id}>
               <div
                 className="col-md-6 ml-auto mr-auto"
@@ -572,11 +571,13 @@ export default class ApprovedLeaveList extends Component<Props, State> {
                         </button>
                       </div>
                       <div className="text-primary text-center">
-                        {this.props.isCanceLeaveFetching
-                          ? <div className="loader2" />
-                          : <p className="mt-3">
-                              {this.props.cancelLeaveMessage}
-                            </p>}
+                        {this.props.isCanceLeaveFetching ? (
+                          <div className="loader2" />
+                        ) : (
+                          <p className="mt-3">
+                            {this.props.cancelLeaveMessage}
+                          </p>
+                        )}
                       </div>
                       <div className="text-danger text-center">
                         {this.state.errorMessage}
@@ -586,7 +587,7 @@ export default class ApprovedLeaveList extends Component<Props, State> {
                 </div>
               </div>
             </div>
-          )}
+          ))}
         </div>
       );
     }
@@ -616,26 +617,16 @@ export default class ApprovedLeaveList extends Component<Props, State> {
         // return true for current and future leaves
         return isCurrentDate || isEndDate ? true : false;
       })
-      .map(data =>
+      .map(data => (
         <tr key={data.id}>
           <td>
             {data.user.othernames} {data.user.surname}
           </td>
-          <td>
-            {data.leave_name}
-          </td>
-          <td>
-            {data.leave_type}
-          </td>
-          <td>
-            {data.start_date}
-          </td>
-          <td>
-            {data.end_date}
-          </td>
-          <td>
-            {data.leave_days}
-          </td>
+          <td>{data.leave_name}</td>
+          <td>{data.leave_type}</td>
+          <td>{data.start_date}</td>
+          <td>{data.end_date}</td>
+          <td>{data.leave_days}</td>
           <td>
             <button
               className="btn btn-link text-primary"
@@ -655,38 +646,38 @@ export default class ApprovedLeaveList extends Component<Props, State> {
             </button>
           </td>
         </tr>
-      );
+      ));
 
-    return items.length > 0
-      ? <div className="table-responsive">
-          <table
-            className="table table-bordered table-hover"
-            style={{ backgroundColor: '#FFFFFF' }}
-          >
-            <thead className="thead-default">
-              <tr>
-                <th>Name</th>
-                <th>Leave</th>
-                <th>Type</th>
-                <th>Start date</th>
-                <th>End date</th>
-                <th>Leave days</th>
-                <th>Edit</th>
-                <th>Delete</th>
-              </tr>
-            </thead>
-            <tbody>
-              {items}
-            </tbody>
-          </table>
-        </div>
-      : <div
-          className="card card-body border-0"
-          style={{ paddingTop: '100px', paddingBottom: '260px' }}
+    return items.length > 0 ? (
+      <div className="table-responsive">
+        <table
+          className="table table-bordered table-hover"
+          style={{ backgroundColor: '#FFFFFF' }}
         >
-          <h1 className="display-4 text-center">
-            <em>There is no record to display.</em>
-          </h1>
-        </div>;
+          <thead className="thead-default">
+            <tr>
+              <th>Name</th>
+              <th>Leave</th>
+              <th>Type</th>
+              <th>Start date</th>
+              <th>End date</th>
+              <th>Leave days</th>
+              <th>Edit</th>
+              <th>Delete</th>
+            </tr>
+          </thead>
+          <tbody>{items}</tbody>
+        </table>
+      </div>
+    ) : (
+      <div
+        className="card card-body border-0"
+        style={{ paddingTop: '100px', paddingBottom: '260px' }}
+      >
+        <h1 className="display-4 text-center">
+          <em>There is no record to display.</em>
+        </h1>
+      </div>
+    );
   }
 }
