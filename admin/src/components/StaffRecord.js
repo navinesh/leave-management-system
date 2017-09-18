@@ -1,38 +1,38 @@
 // @flow
 import React, { Component } from 'react';
 
-import { searchStaffRecord, fetchStaffRecord } from '../actions/StaffRecord';
+import { fetchStaffRecord } from '../actions/StaffRecord';
 
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const moment = require('moment');
 
-const Search = props =>
-  <div className="row">
-    <div className="col-md-3">
-      <div className="form-group">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Search"
-          onChange={props.handleSearchChange}
-        />
-      </div>
+const Search = props => (
+  <div className="col-md-3">
+    <div className="form-group">
+      <input
+        type="text"
+        className="form-control"
+        placeholder="Search"
+        value={props.searchTerm}
+        onChange={props.handleSearchChange}
+      />
     </div>
-    <div className="col-md-3">
-      <button
-        className="btn btn-outline-primary"
-        onClick={props.handleClearSearch}
-      >
-        Reset view
-      </button>
-    </div>
-  </div>;
+  </div>
+);
 
-const ArchiveUser = props =>
+const ClearSearch = props => (
+  <div className="col-md-3">
+    <button className="btn btn-primary" onClick={props.handleClearSearch}>
+      Clear
+    </button>
+  </div>
+);
+
+const ArchiveUser = props => (
   <div>
-    {props.staff_record.filter(e => e.id === props.listID).map(record =>
+    {props.staff_record.filter(e => e.id === props.listID).map(record => (
       <div key={record.id}>
         <div
           className="col-md-6 ml-auto mr-auto"
@@ -75,11 +75,11 @@ const ArchiveUser = props =>
                   </button>
                 </div>
                 <div className="text-primary text-center">
-                  {props.isArchiveFetching
-                    ? <div className="loader2" />
-                    : <p className="mt-3">
-                        {props.archiveMessage}
-                      </p>}
+                  {props.isArchiveFetching ? (
+                    <div className="loader2" />
+                  ) : (
+                    <p className="mt-3">{props.archiveMessage}</p>
+                  )}
                 </div>
                 <div className="text-danger text-center">
                   {props.errorMessage}
@@ -89,12 +89,12 @@ const ArchiveUser = props =>
           </div>
         </div>
       </div>
-    )}
-  </div>;
+    ))}
+  </div>
+);
 
 type Props = {
   staff_record: Array<any>,
-  searchTerm: string,
   dispatch: Function,
   onModifyUserRecordSubmit: Function,
   onArchiveUserSubmit: Function,
@@ -111,7 +111,8 @@ type State = {
   archiveReason: string,
   isEditing: boolean,
   isArchive: boolean,
-  editReason: string
+  editReason: string,
+  searchTerm: string
 };
 
 export default class StaffRecordList extends Component<Props, State> {
@@ -148,7 +149,8 @@ export default class StaffRecordList extends Component<Props, State> {
       archiveReason: '',
       editReason: '',
       isEditing: false,
-      isArchive: false
+      isArchive: false,
+      searchTerm: ''
     };
 
     this.handleSearchChange = this.handleSearchChange.bind(this);
@@ -165,11 +167,11 @@ export default class StaffRecordList extends Component<Props, State> {
   }
 
   handleSearchChange({ target }: SyntheticInputEvent<>) {
-    this.props.dispatch(searchStaffRecord(target.value.toLowerCase()));
+    this.setState({ searchTerm: target.value });
   }
 
   handleClearSearch() {
-    this.props.dispatch({ type: 'CLEAR_STAFF_RECORD_SEARCH' });
+    this.setState({ searchTerm: '' });
   }
 
   handleOpenEdit(e: SyntheticEvent<HTMLElement>) {
@@ -328,7 +330,6 @@ export default class StaffRecordList extends Component<Props, State> {
   render() {
     const {
       staff_record,
-      searchTerm,
       isFetching,
       message,
       isArchiveFetching,
@@ -397,9 +398,7 @@ export default class StaffRecordList extends Component<Props, State> {
                                 defaultValue={record.designation}
                                 ref={select => (this.designation = select)}
                               >
-                                <option>
-                                  {record.designation}
-                                </option>
+                                <option>{record.designation}</option>
                                 <option>Admin</option>
                                 <option>Level 3 Lawyer</option>
                                 <option>Level 4 Lawyer</option>
@@ -425,9 +424,7 @@ export default class StaffRecordList extends Component<Props, State> {
                                 defaultValue={record.gender}
                                 ref={select => (this.gender = select)}
                               >
-                                <option>
-                                  {record.gender}
-                                </option>
+                                <option>{record.gender}</option>
                                 <option>Male</option>
                                 <option>Female</option>
                               </select>
@@ -483,7 +480,7 @@ export default class StaffRecordList extends Component<Props, State> {
                           </div>
                         </div>
                         <div className="row">
-                          {record.gender.toLowerCase() === 'female' &&
+                          {record.gender.toLowerCase() === 'female' && (
                             <div className="col-md-6">
                               <div className="form-group">
                                 <label htmlFor="Maternity leave">
@@ -495,7 +492,8 @@ export default class StaffRecordList extends Component<Props, State> {
                                   ref={input => (this.maternity = input)}
                                 />
                               </div>
-                            </div>}
+                            </div>
+                          )}
                           <div className="col-md-6">
                             <div className="form-group">
                               <label htmlFor="dob">Date of birth</label>
@@ -548,11 +546,11 @@ export default class StaffRecordList extends Component<Props, State> {
                           </button>
                         </div>
                         <div className="text-primary text-center">
-                          {isFetching
-                            ? <div className="loader2" />
-                            : <p className="mt-3">
-                                {message}
-                              </p>}
+                          {isFetching ? (
+                            <div className="loader2" />
+                          ) : (
+                            <p className="mt-3">{message}</p>
+                          )}
                         </div>
                         <div className="text-danger text-center">
                           {this.state.errorMessage}
@@ -586,8 +584,8 @@ export default class StaffRecordList extends Component<Props, State> {
     const filteredElements = staff_record
       .filter(
         e =>
-          e.othernames.toLowerCase().includes(searchTerm) ||
-          e.surname.toLowerCase().includes(searchTerm)
+          e.othernames.toLowerCase().includes(this.state.searchTerm) ||
+          e.surname.toLowerCase().includes(this.state.searchTerm)
       )
       .map(record => {
         let dob = new Date(record.date_of_birth);
@@ -633,16 +631,18 @@ export default class StaffRecordList extends Component<Props, State> {
                   </span>
                 </li>
                 {record.gender.toLowerCase() === 'female' &&
-                record.maternity > 0
-                  ? <li className="list-group-item">
-                      Maternity
-                      <span className="badge badge-primary badge-pill float-right">
-                        {record.maternity}
-                      </span>
-                    </li>
-                  : <p className="list-group-item">
-                      <br />
-                    </p>}
+                record.maternity > 0 ? (
+                  <li className="list-group-item">
+                    Maternity
+                    <span className="badge badge-primary badge-pill float-right">
+                      {record.maternity}
+                    </span>
+                  </li>
+                ) : (
+                  <p className="list-group-item">
+                    <br />
+                  </p>
+                )}
                 <li className="list-group-item">
                   <button
                     className="btn btn-link text-primary"
@@ -667,24 +667,29 @@ export default class StaffRecordList extends Component<Props, State> {
 
     return (
       <div className="StaffRecordList">
-        {staff_record.length > 0
-          ? <div>
+        {staff_record.length > 0 ? (
+          <div>
+            <div className="row">
               <Search
                 handleSearchChange={this.handleSearchChange}
-                handleClearSearch={this.handleClearSearch}
+                searchTerm={this.state.searchTerm}
               />
-              <div className="row">
-                {filteredElements}
-              </div>
+              {this.state.searchTerm && (
+                <ClearSearch handleClearSearch={this.handleClearSearch} />
+              )}
             </div>
-          : <div
-              className="card card-body border-0"
-              style={{ paddingTop: '100px', paddingBottom: '260px' }}
-            >
-              <h1 className="display-4 text-center">
-                <em>There is no record to display.</em>
-              </h1>
-            </div>}
+            <div className="row">{filteredElements}</div>
+          </div>
+        ) : (
+          <div
+            className="card card-body border-0"
+            style={{ paddingTop: '100px', paddingBottom: '260px' }}
+          >
+            <h1 className="display-4 text-center">
+              <em>There is no record to display.</em>
+            </h1>
+          </div>
+        )}
       </div>
     );
   }
