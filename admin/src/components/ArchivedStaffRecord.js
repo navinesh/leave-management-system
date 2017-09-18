@@ -6,7 +6,7 @@ import { fetchArchivedStaffRecord } from '../actions/ArchivedStaffRecord';
 
 const moment = require('moment');
 
-const Search = props =>
+const Search = props => (
   <div className="row">
     <div className="col-md-3">
       <div className="form-group">
@@ -26,13 +26,14 @@ const Search = props =>
         Reset view
       </button>
     </div>
-  </div>;
+  </div>
+);
 
-const UnArchiveLeave = props =>
+const UnArchiveLeave = props => (
   <div className="col-md-10 ml-auto mr-auto">
     {props.archived_staff_record
       .filter(e => e.id === props.listID)
-      .map(record =>
+      .map(record => (
         <div key={record.id}>
           <div
             className="col-md-6 ml-auto mr-auto"
@@ -64,22 +65,23 @@ const UnArchiveLeave = props =>
                       Yes
                     </button>
                   </div>
-                  {props.isUnArchiveFetching
-                    ? <div className="loader2" />
-                    : <p className="text-primary text-center mt-3">
-                        {props.unArchiveMessage}
-                      </p>}
+                  {props.isUnArchiveFetching ? (
+                    <div className="loader2" />
+                  ) : (
+                    <p className="text-primary text-center mt-3">
+                      {props.unArchiveMessage}
+                    </p>
+                  )}
 
-                  <div className="text-danger">
-                    {props.errorMessage}
-                  </div>
+                  <div className="text-danger">{props.errorMessage}</div>
                 </form>
               </div>
             </div>
           </div>
         </div>
-      )}
-  </div>;
+      ))}
+  </div>
+);
 
 type Props = {
   archived_staff_record: Array<any>,
@@ -225,16 +227,18 @@ export default class ArchivedStaffRecordList extends Component<Props, State> {
                     {dateOfBirth}
                   </span>
                 </li>
-                {record.gender.toLowerCase() === 'female'
-                  ? <li className="list-group-item">
-                      Maternity
-                      <span className="badge badge-primary badge-pill float-right">
-                        {record.maternity}
-                      </span>
-                    </li>
-                  : <p className="list-group-item">
-                      <br />
-                    </p>}
+                {record.gender.toLowerCase() === 'female' ? (
+                  <li className="list-group-item">
+                    Maternity
+                    <span className="badge badge-primary badge-pill float-right">
+                      {record.maternity}
+                    </span>
+                  </li>
+                ) : (
+                  <p className="list-group-item">
+                    <br />
+                  </p>
+                )}
                 <li className="list-group-item">
                   <button
                     className="btn btn-link text-primary"
@@ -252,24 +256,24 @@ export default class ArchivedStaffRecordList extends Component<Props, State> {
 
     return (
       <div className="ArchivedStaffRecordList">
-        {archived_staff_record.length > 0
-          ? <div>
-              <Search
-                handleSearchChange={this.handleSearchChange}
-                handleClearSearch={this.handleClearSearch}
-              />
-              <div className="row">
-                {filteredElements}
-              </div>
-            </div>
-          : <div
-              className="card card-body border-0"
-              style={{ paddingTop: '100px', paddingBottom: '260px' }}
-            >
-              <h1 className="display-4 text-center">
-                <em>There is no record to display.</em>
-              </h1>
-            </div>}
+        {archived_staff_record.length > 0 ? (
+          <div>
+            <Search
+              handleSearchChange={this.handleSearchChange}
+              handleClearSearch={this.handleClearSearch}
+            />
+            <div className="row">{filteredElements}</div>
+          </div>
+        ) : (
+          <div
+            className="card card-body border-0"
+            style={{ paddingTop: '100px', paddingBottom: '260px' }}
+          >
+            <h1 className="display-4 text-center">
+              <em>There is no record to display.</em>
+            </h1>
+          </div>
+        )}
       </div>
     );
   }
