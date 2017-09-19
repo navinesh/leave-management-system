@@ -10,10 +10,11 @@ import Moment from 'moment';
 import { extendMoment } from 'moment-range';
 const moment = extendMoment(Moment);
 
-const UserName = props =>
+const UserName = props => (
   <p>
     {props.user_detail.othernames} {props.user_detail.surname}
-  </p>;
+  </p>
+);
 
 const UserRecord = props => {
   let gender = props.user_detail.gender
@@ -47,13 +48,14 @@ const UserRecord = props => {
         </span>
       </li>
       {gender === 'female' &&
-        props.user_detail.maternity > 0 &&
-        <li className="list-group-item">
-          Maternity
-          <span className="badge badge-primary badge-pill float-right">
-            {props.user_detail.maternity}
-          </span>
-        </li>}
+        props.user_detail.maternity > 0 && (
+          <li className="list-group-item">
+            Maternity
+            <span className="badge badge-primary badge-pill float-right">
+              {props.user_detail.maternity}
+            </span>
+          </li>
+        )}
     </ul>
   );
 };
@@ -265,7 +267,7 @@ class LeaveApplication extends Component<
         },
         sick: () => {
           return (myLeaveDays >= 2 || approvedSingleSickLeaves.length >= 4) &&
-          !sickSheet
+            !sickSheet
             ? null
             : sickDays - myLeaveDays;
         },
@@ -282,7 +284,7 @@ class LeaveApplication extends Component<
           const birthDate = moment.utc(dOB);
           // check date of birth
           return moment(startDate).isSame(birthDate) &&
-          moment(endDate).isSame(birthDate)
+            moment(endDate).isSame(birthDate)
             ? myLeaveDays
             : undefined;
         },
@@ -370,9 +372,7 @@ class LeaveApplication extends Component<
       return (
         <div className="card">
           <div className="card-body text-center">
-            <p>
-              {this.state.successMessage}
-            </p>
+            <p>{this.state.successMessage}</p>
             <button
               onClick={this.handleUserConfirm}
               className="btn btn-primary btn-sm"
@@ -442,10 +442,11 @@ class LeaveApplication extends Component<
                   showClearDates
                   withPortal
                   displayFormat="DD/MM/YYYY"
-                  renderCalendarInfo={() =>
+                  renderCalendarInfo={() => (
                     <p className="text-center">
                       To select a single day click the date twice.
-                    </p>}
+                    </p>
+                  )}
                 />
               </div>
             </div>
@@ -505,9 +506,7 @@ class LeaveApplication extends Component<
           {isFetching ? <div className="loader" /> : message}
         </div>
         <div className="text-danger text-center pt-2">
-          <div>
-            {this.state.errorMessage}
-          </div>
+          <div>{this.state.errorMessage}</div>
         </div>
       </div>
     );
@@ -523,7 +522,7 @@ type Props = {
   public_holiday: Array<any>
 };
 
-export default (props: Props) =>
+export default (props: Props) => (
   <div className="container" style={{ marginTop: '80px' }}>
     <div className="row">
       <div className="col-md-12">
@@ -545,4 +544,5 @@ export default (props: Props) =>
         />
       </div>
     </div>
-  </div>;
+  </div>
+);
