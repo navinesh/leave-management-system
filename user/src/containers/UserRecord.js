@@ -42,16 +42,20 @@ class UserRecords extends Component<Props> {
 
     return (
       <div className="UserRecords">
-        {isFetching
-          ? <div className="text-center">
-              <div className="loader1" />
-            </div>
-          : <UserRecord user_detail={user_detail} message={message} />}
-        {isRecordFetching
-          ? <div className="text-center">
-              <div className="loader1" />
-            </div>
-          : <RecordList user_record={user_record} />}
+        {isFetching ? (
+          <div className="text-center">
+            <div className="loader1" />
+          </div>
+        ) : (
+          <UserRecord user_detail={user_detail} message={message} />
+        )}
+        {isRecordFetching ? (
+          <div className="text-center">
+            <div className="loader1" />
+          </div>
+        ) : (
+          <RecordList user_record={user_record} />
+        )}
       </div>
     );
   }
