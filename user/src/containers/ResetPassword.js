@@ -13,16 +13,19 @@ type Props = {
   isFetching: boolean
 };
 
-const ResetPassword = (props: Props) =>
+const ResetPassword = (props: Props) => (
   <div className="ResetPassword">
-    {!props.isAuthenticated
-      ? <UserResetPassword
-          isFetching={props.isFetching}
-          message={props.message}
-          onResetClick={email => props.dispatch(resetPassword(email))}
-        />
-      : <Redirect to="/" />}
-  </div>;
+    {!props.isAuthenticated ? (
+      <UserResetPassword
+        isFetching={props.isFetching}
+        message={props.message}
+        onResetClick={email => props.dispatch(resetPassword(email))}
+      />
+    ) : (
+      <Redirect to="/" />
+    )}
+  </div>
+);
 
 const mapStateToProps = state => {
   const { userAuth } = state;
