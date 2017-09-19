@@ -39,7 +39,7 @@ export default class Navs extends Component<Props> {
           >
             <span className="navbar-toggler-icon" />
           </button>
-          {this.props.isAuthenticated &&
+          {this.props.isAuthenticated && (
             <div className="justify-content-end">
               <div
                 className="collapse navbar-collapse"
@@ -60,7 +60,8 @@ export default class Navs extends Component<Props> {
                   </button>
                 </div>
               </div>
-            </div>}
+            </div>
+          )}
         </div>
       </nav>
     );
