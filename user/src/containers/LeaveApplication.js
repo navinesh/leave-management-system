@@ -49,17 +49,19 @@ class LeaveApplication extends Component<Props> {
 
     return (
       <div className="LeaveApplication">
-        {isAuthenticated
-          ? <LeaveApplications
-              isFetching={isFetching}
-              message={message}
-              user_detail={user_detail}
-              user_record={user_record}
-              public_holiday={public_holiday}
-              onLeaveApplicationClick={applicationDetails =>
-                dispatch(fetchLeaveApplication(applicationDetails))}
-            />
-          : <Redirect to="/" />}
+        {isAuthenticated ? (
+          <LeaveApplications
+            isFetching={isFetching}
+            message={message}
+            user_detail={user_detail}
+            user_record={user_record}
+            public_holiday={public_holiday}
+            onLeaveApplicationClick={applicationDetails =>
+              dispatch(fetchLeaveApplication(applicationDetails))}
+          />
+        ) : (
+          <Redirect to="/" />
+        )}
       </div>
     );
   }
