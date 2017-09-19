@@ -20,21 +20,24 @@ import LeaveApplication from './containers/LeaveApplication';
 import configureStore from './stores/ConfigureStore';
 const store = configureStore();
 
-const PrivateRoute = ({ component, ...rest }) =>
+const PrivateRoute = ({ component, ...rest }) => (
   <Route
     {...rest}
     render={props =>
-      store.getState().userAuth.isAuthenticated
-        ? React.createElement(component, props)
-        : <Redirect
-            to={{
-              pathname: '/',
-              state: { from: props.location }
-            }}
-          />}
-  />;
+      store.getState().userAuth.isAuthenticated ? (
+        React.createElement(component, props)
+      ) : (
+        <Redirect
+          to={{
+            pathname: '/',
+            state: { from: props.location }
+          }}
+        />
+      )}
+  />
+);
 
-const App = () =>
+const App = () => (
   <Provider store={store}>
     <BrowserRouter>
       <div>
@@ -49,6 +52,7 @@ const App = () =>
         </Switch>
       </div>
     </BrowserRouter>
-  </Provider>;
+  </Provider>
+);
 
 render(<App />, document.getElementById('root'));
