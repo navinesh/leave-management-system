@@ -33,14 +33,16 @@ class UserChangePassword extends Component<Props> {
 
     return (
       <div className="UserAccount">
-        {isAuthenticated
-          ? <UserChange
-              isFetching={isFetching}
-              message={message}
-              auth_info={auth_info}
-              onChangeClick={creds => dispatch(changePassword(creds))}
-            />
-          : <Redirect to="/" />}
+        {isAuthenticated ? (
+          <UserChange
+            isFetching={isFetching}
+            message={message}
+            auth_info={auth_info}
+            onChangeClick={creds => dispatch(changePassword(creds))}
+          />
+        ) : (
+          <Redirect to="/" />
+        )}
       </div>
     );
   }
