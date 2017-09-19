@@ -2,6 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import { logoutUser } from '../actions/UserLogout';
 import Navs from '../components/Header';
 
 type Props = {
@@ -11,7 +12,11 @@ type Props = {
 
 const Header = (props: Props) => (
   <div className="Header">
-    <Navs isAuthenticated={props.isAuthenticated} dispatch={props.dispatch} />
+    <Navs
+      isAuthenticated={props.isAuthenticated}
+      dispatch={props.dispatch}
+      logoutUser={logoutUser}
+    />
   </div>
 );
 
