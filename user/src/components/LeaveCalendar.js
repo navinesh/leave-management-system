@@ -32,51 +32,43 @@ export default (props: Props) => {
       // return true for current and future dates
       return isCurrentDate || isEndDate ? true : false;
     })
-    .map(data =>
+    .map(data => (
       <tr key={data.id}>
         <td>
           {data.user.othernames} {data.user.surname}
         </td>
-        <td>
-          {data.leave_name}
-        </td>
-        <td>
-          {data.start_date}
-        </td>
-        <td>
-          {data.end_date}
-        </td>
-        <td>
-          {data.leave_days}
-        </td>
+        <td>{data.leave_name}</td>
+        <td>{data.start_date}</td>
+        <td>{data.end_date}</td>
+        <td>{data.leave_days}</td>
       </tr>
-    );
+    ));
 
-  return leaveRecord.length > 0
-    ? <div className="table-responsive" style={{ marginTop: '80px' }}>
-        <table
-          className="table table-bordered table-hover"
-          style={{ backgroundColor: '#FFFFFF' }}
-        >
-          <thead className="thead-default">
-            <tr>
-              <th>Name</th>
-              <th>Leave type</th>
-              <th>Start date</th>
-              <th>End date</th>
-              <th>Leave days</th>
-            </tr>
-          </thead>
-          <tbody>
-            {leaveRecord}
-          </tbody>
-        </table>
+  return leaveRecord.length > 0 ? (
+    <div className="table-responsive" style={{ marginTop: '80px' }}>
+      <table
+        className="table table-bordered table-hover"
+        style={{ backgroundColor: '#FFFFFF' }}
+      >
+        <thead className="thead-default">
+          <tr>
+            <th>Name</th>
+            <th>Leave type</th>
+            <th>Start date</th>
+            <th>End date</th>
+            <th>Leave days</th>
+          </tr>
+        </thead>
+        <tbody>{leaveRecord}</tbody>
+      </table>
+    </div>
+  ) : (
+    <div style={{ marginTop: '80px' }}>
+      <div style={{ paddingTop: '100px', paddingBottom: '220px' }}>
+        <h1 className="display-4">
+          <em>There is no data to display.</em>
+        </h1>
       </div>
-    : <div style={{ marginTop: '80px' }}>
-        <div style={{ paddingTop: '100px', paddingBottom: '220px' }}>
-          <h1 className="display-4">
-            <em>There is no data to display.</em>
-          </h1>
-        </div>
-      </div>;
+    </div>
+  );
 };
