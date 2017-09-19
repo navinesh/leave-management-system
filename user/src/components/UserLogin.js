@@ -110,9 +110,11 @@ export default class Login extends Component<Props, State> {
             </div>
           </form>
           <div className="text-danger text-center">
-            {this.props.isFetching
-              ? <div className="loader" />
-              : this.props.message}
+            {this.props.isFetching ? (
+              <div className="loader" />
+            ) : (
+              this.props.message
+            )}
             {this.state.errorMessage}
           </div>
         </div>
