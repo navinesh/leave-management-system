@@ -12,15 +12,17 @@ type Props = {
   isFetching: boolean
 };
 
-const UserLogin = (props: Props) =>
+const UserLogin = (props: Props) => (
   <div className="UserLogin">
-    {!props.isAuthenticated &&
+    {!props.isAuthenticated && (
       <Login
         isFetching={props.isFetching}
         message={props.message}
         onLoginClick={creds => props.dispatch(fetchLogin(creds))}
-      />}
-  </div>;
+      />
+    )}
+  </div>
+);
 
 const mapStateToProps = state => {
   const { userAuth } = state;
