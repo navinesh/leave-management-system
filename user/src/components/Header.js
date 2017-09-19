@@ -2,11 +2,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import { logoutUser } from '../actions/UserLogout';
-
 type Props = {
   isAuthenticated: boolean,
-  dispatch: Function
+  dispatch: Function,
+  logoutUser: Function
 };
 
 export default class Navs extends Component<Props> {
@@ -18,7 +17,7 @@ export default class Navs extends Component<Props> {
   }
 
   userLogout(e: Event) {
-    this.props.dispatch(logoutUser());
+    this.props.dispatch(this.props.logoutUser());
   }
 
   render() {
