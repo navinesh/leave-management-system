@@ -28,18 +28,20 @@ class Main extends Component<Props> {
   render() {
     return (
       <div className="Main">
-        {this.props.isAuthenticated
-          ? <UserRecord />
-          : <div className="container">
-              <div className="row">
-                <div className="col-md-8">
-                  <LeaveCalendar />
-                </div>
-                <div className="col-md-4">
-                  <UserLogin />
-                </div>
+        {this.props.isAuthenticated ? (
+          <UserRecord />
+        ) : (
+          <div className="container">
+            <div className="row">
+              <div className="col-md-8">
+                <LeaveCalendar />
               </div>
-            </div>}
+              <div className="col-md-4">
+                <UserLogin />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     );
   }
