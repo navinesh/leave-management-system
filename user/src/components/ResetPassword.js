@@ -64,9 +64,11 @@ export default class UserResetPassword extends Component<Props, State> {
             </div>
           </form>
           <div className="text-danger text-center">
-            {this.props.isFetching
-              ? <div className="loader1" />
-              : this.props.message}
+            {this.props.isFetching ? (
+              <div className="loader1" />
+            ) : (
+              this.props.message
+            )}
             {this.state.errorMessage}
           </div>
         </div>
