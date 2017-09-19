@@ -5,25 +5,15 @@ import { Link } from 'react-router-dom';
 const PendingRecordList = props => {
   const pendingList = props.user_record
     .filter(data => data.leave_status === 'pending')
-    .map(record =>
+    .map(record => (
       <tr key={record.id}>
-        <td>
-          {record.leave_name}
-        </td>
-        <td>
-          {record.leave_days}
-        </td>
-        <td>
-          {record.start_date}
-        </td>
-        <td>
-          {record.end_date}
-        </td>
-        <td>
-          {record.leave_reason}
-        </td>
+        <td>{record.leave_name}</td>
+        <td>{record.leave_days}</td>
+        <td>{record.start_date}</td>
+        <td>{record.end_date}</td>
+        <td>{record.leave_reason}</td>
       </tr>
-    );
+    ));
 
   if (pendingList.length > 0) {
     return (
@@ -42,9 +32,7 @@ const PendingRecordList = props => {
               <th>Reason</th>
             </tr>
           </thead>
-          <tbody>
-            {pendingList}
-          </tbody>
+          <tbody>{pendingList}</tbody>
         </table>
       </div>
     );
@@ -56,25 +44,15 @@ const PendingRecordList = props => {
 const ApprovedRecordList = props => {
   const approvedList = props.user_record
     .filter(data => data.leave_status === 'approved')
-    .map(record =>
+    .map(record => (
       <tr key={record.id}>
-        <td>
-          {record.leave_name}
-        </td>
-        <td>
-          {record.leave_days}
-        </td>
-        <td>
-          {record.start_date}
-        </td>
-        <td>
-          {record.end_date}
-        </td>
-        <td>
-          {record.leave_reason}
-        </td>
+        <td>{record.leave_name}</td>
+        <td>{record.leave_days}</td>
+        <td>{record.start_date}</td>
+        <td>{record.end_date}</td>
+        <td>{record.leave_reason}</td>
       </tr>
-    );
+    ));
 
   if (approvedList.length > 0) {
     return (
@@ -93,9 +71,7 @@ const ApprovedRecordList = props => {
               <th>Reason</th>
             </tr>
           </thead>
-          <tbody>
-            {approvedList}
-          </tbody>
+          <tbody>{approvedList}</tbody>
         </table>
       </div>
     );
@@ -108,13 +84,14 @@ type Props = {
   user_record: Array<any>
 };
 
-export const RecordList = (props: Props) =>
+export const RecordList = (props: Props) => (
   <div className="container">
     <div className="row">
       <PendingRecordList user_record={props.user_record} />
       <ApprovedRecordList user_record={props.user_record} />
     </div>
-  </div>;
+  </div>
+);
 
 type userRecordProps = {
   user_detail: Object,
@@ -182,13 +159,14 @@ export const UserRecord = (props: userRecordProps) => {
                   </span>
                 </li>
                 {gender === 'female' &&
-                  props.user_detail.maternity > 0 &&
-                  <li className="list-group-item">
-                    Maternity
-                    <span className="badge badge-primary badge-pill float-right">
-                      {props.user_detail.maternity}
-                    </span>
-                  </li>}
+                  props.user_detail.maternity > 0 && (
+                    <li className="list-group-item">
+                      Maternity
+                      <span className="badge badge-primary badge-pill float-right">
+                        {props.user_detail.maternity}
+                      </span>
+                    </li>
+                  )}
               </ul>
             </div>
             {/*<div className="col-md-2 offset-md-1">
