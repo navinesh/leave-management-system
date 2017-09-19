@@ -9,10 +9,11 @@ type Props = {
   dispatch: Function
 };
 
-const Header = (props: Props) =>
+const Header = (props: Props) => (
   <div className="Header">
     <Navs isAuthenticated={props.isAuthenticated} dispatch={props.dispatch} />
-  </div>;
+  </div>
+);
 
 const mapStateToProps = state => {
   const { userAuth } = state;
