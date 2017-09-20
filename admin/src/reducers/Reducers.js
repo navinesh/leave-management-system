@@ -39,9 +39,7 @@ import {
 import {
   REQUEST_STAFF_RECORD,
   RECEIVE_STAFF_RECORD,
-  ERROR_STAFF_RECORD,
-  STAFF_RECORD_SEARCH,
-  CLEAR_STAFF_RECORD_SEARCH
+  ERROR_STAFF_RECORD
 } from '../actions/StaffRecord';
 
 import {
@@ -348,25 +346,6 @@ const archivedStaffRecord = (
       };
     case ERROR_ARCHIVED_STAFF_RECORD:
       return { ...state, isFetching: false };
-    default:
-      return state;
-  }
-};
-
-type searchStaffRecordState = {
-  isSearching: boolean,
-  searchTerm: string
-};
-
-const searchStaffRecord = (
-  state: searchStaffRecordState = { isSearching: false, searchTerm: '' },
-  action
-) => {
-  switch (action.type) {
-    case STAFF_RECORD_SEARCH:
-      return { ...state, isSearching: true, searchTerm: action.searchTerm };
-    case CLEAR_STAFF_RECORD_SEARCH:
-      return { ...state, isSearching: false, searchTerm: '' };
     default:
       return state;
   }
@@ -915,7 +894,6 @@ const rootReducer = combineReducers({
   pendingLeave,
   approvedLeave,
   staffRecord,
-  searchStaffRecord,
   archivedStaffRecord,
   approvedLeaveReport,
   pendingLeaveReport,
