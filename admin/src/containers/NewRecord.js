@@ -5,7 +5,10 @@ import { Redirect } from 'react-router-dom';
 
 import { fetchLoginFromToken } from '../actions/AdminLogin';
 import NewRecordForm from '../components/NewRecord';
-import { submitNewUserRecord, clearNewUserRecord } from '../actions/NewRecord';
+import {
+  submitNewUserRecord,
+  clearNewUserRecordMessage
+} from '../actions/NewRecord';
 
 type Props = {
   isAuthenticated: boolean,
@@ -28,7 +31,7 @@ class NewRecord extends Component<Props> {
   }
 
   componentWillUnmount() {
-    this.props.dispatch(clearNewUserRecord());
+    this.props.dispatch(clearNewUserRecordMessage());
   }
 
   render() {
