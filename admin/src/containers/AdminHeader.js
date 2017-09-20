@@ -2,6 +2,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
+import { logoutAdmin } from '../actions/AdminLogout';
 import Header from '../components/AdminHeader';
 
 type Props = {
@@ -11,7 +12,9 @@ type Props = {
 
 const AdminHeader = (props: Props) => (
   <div className="AdminHeader">
-    {props.isAuthenticated && <Header dispatch={props.dispatch} />}
+    {props.isAuthenticated && (
+      <Header dispatch={props.dispatch} logoutAdmin={logoutAdmin} />
+    )}
   </div>
 );
 
