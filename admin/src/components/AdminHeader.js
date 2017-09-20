@@ -2,10 +2,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-import { logoutAdmin } from '../actions/AdminLogout';
-
 type Props = {
-  dispatch: Function
+  dispatch: Function,
+  logoutAdmin: Function
 };
 
 export default class Header extends Component<Props> {
@@ -17,7 +16,7 @@ export default class Header extends Component<Props> {
   }
 
   adminLogout(e: Event) {
-    this.props.dispatch(logoutAdmin());
+    this.props.dispatch(this.props.logoutAdmin());
   }
 
   render() {
