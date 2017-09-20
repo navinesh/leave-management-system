@@ -1,8 +1,6 @@
 // @flow
 import React, { Component } from 'react';
 
-import { fetchStaffRecord } from '../actions/StaffRecord';
-
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -101,7 +99,8 @@ type Props = {
   message: string,
   isFetching: boolean,
   isArchiveFetching: boolean,
-  archiveMessage: string
+  archiveMessage: string,
+  fetchStaffRecord: Function
 };
 
 type State = {
@@ -272,7 +271,7 @@ export default class StaffRecordList extends Component<Props, State> {
     });
 
     if (this.state.editReason) {
-      this.props.dispatch(fetchStaffRecord());
+      this.props.dispatch(this.props.fetchStaffRecord());
       this.props.dispatch({ type: 'CLEAR_MODIFY_USER_MESSAGE' });
     }
   }
@@ -314,7 +313,7 @@ export default class StaffRecordList extends Component<Props, State> {
 
   handleCloseArchive() {
     if (this.state.archiveReason) {
-      this.props.dispatch(fetchStaffRecord());
+      this.props.dispatch(this.props.fetchStaffRecord());
       this.props.dispatch({ type: 'CLEAR_ARCHIVE_MESSAGE' });
     }
 
