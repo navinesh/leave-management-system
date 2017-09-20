@@ -27,7 +27,7 @@ export const failureNewUserRecord = (data: Object) => {
   };
 };
 
-export const clearNewUserRecord = () => {
+export const clearNewUserRecordMessage = () => {
   return {
     type: CLEAR_NEW_USER_RECORD
   };
