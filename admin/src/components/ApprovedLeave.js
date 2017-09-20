@@ -1,8 +1,6 @@
 // @flow
 import React, { Component } from 'react';
 
-import { fetchApprovedLeave } from '../actions/ApprovedLeave';
-
 import { DateRangePicker } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
 
@@ -19,7 +17,8 @@ type Props = {
   isEditLeaveFetching: boolean,
   editLeaveMessage: string,
   isCancelLeaveFetching: boolean,
-  cancelLeaveMessage: string
+  cancelLeaveMessage: string,
+  fetchApprovedLeave: Function
 };
 
 type State = {
@@ -303,7 +302,7 @@ export default class ApprovedLeaveList extends Component<Props, State> {
     });
 
     if (this.state.editReason) {
-      this.props.dispatch(fetchApprovedLeave());
+      this.props.dispatch(this.props.fetchApprovedLeave());
       this.props.dispatch({ type: 'CLEAR_EDIT_LEAVE' });
     }
   }
@@ -363,7 +362,7 @@ export default class ApprovedLeaveList extends Component<Props, State> {
     });
 
     if (this.state.cancelReason) {
-      this.props.dispatch(fetchApprovedLeave());
+      this.props.dispatch(this.props.fetchApprovedLeave());
       this.props.dispatch({ type: 'CLEAR_CANCEL_LEAVE' });
     }
   }
