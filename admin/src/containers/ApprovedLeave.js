@@ -73,6 +73,7 @@ class ApprovedLeave extends Component<Props> {
                 dispatch(submitEditApprovedLeave(editLeaveData))}
               onCancelLeaveSubmit={cancelLeaveData =>
                 dispatch(submitCancelLeave(cancelLeaveData))}
+              fetchApprovedLeave={fetchApprovedLeave}
             />
           )
         ) : (
