@@ -61,6 +61,7 @@ class ArchivedStaffRecord extends Component<Props> {
               unArchiveMessage={unArchiveMessage}
               onUnArchiveUserSubmit={unArchiveUser =>
                 dispatch(submitUnArchiveUser(unArchiveUser))}
+              fetchArchivedStaffRecord={fetchArchivedStaffRecord}
             />
           )
         ) : (
