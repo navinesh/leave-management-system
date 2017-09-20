@@ -1,8 +1,6 @@
 // @flow
 import React, { Component } from 'react';
 
-import { fetchArchivedStaffRecord } from '../actions/ArchivedStaffRecord';
-
 const moment = require('moment');
 
 const Search = props => (
@@ -86,7 +84,8 @@ type Props = {
   onUnArchiveUserSubmit: Function,
   dispatch: Function,
   isUnArchiveFetching: boolean,
-  unArchiveMessage: string
+  unArchiveMessage: string,
+  fetchArchivedStaffRecord: Function
 };
 
 type State = {
@@ -158,7 +157,7 @@ export default class ArchivedStaffRecordList extends Component<Props, State> {
     this.setState({ isUnarchive: false, errorMessage: '', listID: 0 });
     this.props.dispatch({ type: 'CLEAR_UNARCHIVE_MESSAGE' });
     if (this.props.unArchiveMessage) {
-      this.props.dispatch(fetchArchivedStaffRecord());
+      this.props.dispatch(this.props.fetchArchivedStaffRecord());
     }
   }
 
