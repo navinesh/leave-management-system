@@ -70,6 +70,7 @@ class StaffRecord extends Component<Props> {
                 dispatch(submitModifyUserRecord(modifyUserDetails))}
               onArchiveUserSubmit={archiveUser =>
                 dispatch(submitArchiveUser(archiveUser))}
+              fetchStaffRecord={fetchStaffRecord}
             />
           )
         ) : (
