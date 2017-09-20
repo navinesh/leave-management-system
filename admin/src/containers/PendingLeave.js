@@ -84,6 +84,7 @@ class PendingLeave extends Component<Props> {
                 dispatch(submitDeclineLeave(declineLeaveData))}
               onEditLeaveSubmit={editLeaveData =>
                 dispatch(submitEditLeave(editLeaveData))}
+              fetchPendingLeave={fetchPendingLeave}
             />
           )
         ) : (
