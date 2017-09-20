@@ -1,8 +1,6 @@
 // @flow
 import React, { Component } from 'react';
 
-import { fetchPendingLeave } from '../actions/PendingLeave';
-
 import { DateRangePicker } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
 
@@ -121,7 +119,8 @@ type Props = {
   editLeaveMessage: string,
   isDeclineLeaveFetching: boolean,
   declineLeaveMessage: string,
-  dispatch: Function
+  dispatch: Function,
+  fetchPendingLeave: Function
 };
 
 type State = {
@@ -231,7 +230,7 @@ export default class PendingLeaveList extends Component<Props, State> {
 
     if (this.state.approveSuccess) {
       this.props.dispatch({ type: 'CLEAR_APPROVE_LEAVE' });
-      this.props.dispatch(fetchPendingLeave());
+      this.props.dispatch(this.props.fetchPendingLeave());
     }
 
     this.setState({ approveSuccess: false });
@@ -280,7 +279,7 @@ export default class PendingLeaveList extends Component<Props, State> {
 
     if (this.state.declineReason) {
       this.props.dispatch({ type: 'CLEAR_DECLINE_LEAVE' });
-      this.props.dispatch(fetchPendingLeave());
+      this.props.dispatch(this.props.fetchPendingLeave());
     }
   }
 
@@ -479,7 +478,7 @@ export default class PendingLeaveList extends Component<Props, State> {
 
     if (this.state.editReason) {
       this.props.dispatch({ type: 'CLEAR_EDIT_LEAVE' });
-      this.props.dispatch(fetchPendingLeave());
+      this.props.dispatch(this.props.fetchPendingLeave());
     }
   }
 
