@@ -52,5 +52,13 @@ class Query(graphene.ObjectType):
     public_holiday = SQLAlchemyConnectionField(Publicholiday)
     leave_record = SQLAlchemyConnectionField(Leaverecord)
 
+    find_leave_record = graphene.List(
+        lambda: Leaverecord, leave_status=graphene.String())
+
+    def resolve_find_leave_record(self, args, context, info):
+        query = Leaverecord.get_query(context)
+        leave_status = args.get('leave_status')
+        return query.filter(LeaverecordModel.leave_status == leave_status)
+
 
 schema = graphene.Schema(query=Query)
