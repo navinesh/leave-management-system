@@ -2,7 +2,11 @@
 import React from 'react';
 import { render } from 'react-dom';
 
-import { Provider } from 'react-redux';
+import {
+  ApolloProvider,
+  createNetworkInterface,
+  ApolloClient
+} from 'react-apollo';
 
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
@@ -19,6 +23,14 @@ import LeaveApplication from './containers/LeaveApplication';
 
 import configureStore from './stores/ConfigureStore';
 const store = configureStore();
+
+const networkInterface = createNetworkInterface({
+  uri: 'http://localhost:8080/graphql'
+});
+
+const client = new ApolloClient({
+  networkInterface
+});
 
 const PrivateRoute = ({ component, ...rest }) => (
   <Route
@@ -38,7 +50,7 @@ const PrivateRoute = ({ component, ...rest }) => (
 );
 
 const App = () => (
-  <Provider store={store}>
+  <ApolloProvider client={client} store={store}>
     <BrowserRouter>
       <div>
         <Header />
@@ -52,7 +64,7 @@ const App = () => (
         </Switch>
       </div>
     </BrowserRouter>
-  </Provider>
+  </ApolloProvider>
 );
 
 render(<App />, document.getElementById('root'));
