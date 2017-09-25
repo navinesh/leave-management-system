@@ -1,84 +1,61 @@
 // @flow
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 
-import '../spinners.css';
+import { graphql, gql, compose } from 'react-apollo';
 
-import { fetchUserDetailsIfNeeded } from '../actions/UserDetails';
-import { fetchUserRecordIfNeeded } from '../actions/UserRecord';
 import { UserRecord, RecordList } from '../components/UserRecord';
 
-type Props = {
-  auth_info: Object,
-  isFetching: boolean,
-  isRecordFetching: boolean,
-  user_detail: Object,
-  user_record: Array<any>,
-  message: string,
-  dispatch: Function
-};
-
-class UserRecords extends Component<Props> {
-  componentDidMount() {
-    const { dispatch, auth_info } = this.props;
-    let auth_token = auth_info.auth_token
-      ? auth_info.auth_token
-      : localStorage.getItem('auth_token');
-
-    if (auth_token) {
-      dispatch(fetchUserDetailsIfNeeded(auth_token));
-      dispatch(fetchUserRecordIfNeeded(auth_token));
+const User_Detail = gql`
+  {
+    user(id: "VXNlcjozMQ==") {
+      id
+      othernames
+      surname
+      annual
+      sick
+      bereavement
+      christmas
+      maternity
+      gender
     }
   }
+`;
 
-  render() {
-    const {
-      isFetching,
-      isRecordFetching,
-      user_detail,
-      user_record,
-      message
-    } = this.props;
-
-    return (
-      <div className="UserRecords">
-        {isFetching ? (
-          <div className="text-center">
-            <div className="loader1" />
-          </div>
-        ) : (
-          <UserRecord user_detail={user_detail} message={message} />
-        )}
-        {isRecordFetching ? (
-          <div className="text-center">
-            <div className="loader1" />
-          </div>
-        ) : (
-          <RecordList user_record={user_record} />
-        )}
-      </div>
-    );
+const User_Record = gql`
+  {
+    user(id: "VXNlcjozMQ==") {
+      leaverecord {
+        edges {
+          node {
+            id
+            leaveName
+            leaveDays
+            startDate
+            endDate
+            leaveReason
+            leaveStatus
+          }
+        }
+      }
+    }
   }
-}
+`;
 
-const mapStateToProps = state => {
-  const { userRecords, userAuth, userDetails } = state;
-  const { auth_info } = userAuth;
-  const { isFetching, userDetail: user_detail } = userDetails;
-  const {
-    isFetching: isRecordFetching,
-    userRecord: user_record,
-    message
-  } = userRecords;
-
-  return {
-    auth_info,
-    isFetching,
-    isRecordFetching,
-    user_record,
-    message,
-    user_detail
-  };
+type Props = {
+  userDetail: Object,
+  userRecord: Object
 };
 
-export default connect(mapStateToProps)(UserRecords);
+const UserRecords = (props: Props) => {
+  return (
+    <div className="UserRecords">
+      <UserRecord user_detail={props.userDetail} />
+      <RecordList user_record={props.userRecord} />
+    </div>
+  );
+};
+
+export default compose(
+  graphql(User_Detail, { name: 'userDetail' }),
+  graphql(User_Record, { name: 'userRecord' })
+)(UserRecords);
