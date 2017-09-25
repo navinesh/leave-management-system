@@ -6,6 +6,7 @@ ReactJS web application.
 
 * ReactJS
 * React-Router
+* React-Apollo
 * Redux
 * Redux-thunk
 * Flow
