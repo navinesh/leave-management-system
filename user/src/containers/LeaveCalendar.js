@@ -21,6 +21,10 @@ const LeaveRecord = gql`
   }
 `;
 
+type Props = {
+  data: Object
+};
+
 const LeaveCalendar = (props: Props) => (
   <div style={{ marginTop: '80px' }}>
     <Leaves data={props.data} />
