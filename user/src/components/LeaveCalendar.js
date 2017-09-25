@@ -1,14 +1,31 @@
 // @flow
 import React from 'react';
 
+import '../spinners.css';
+
 const moment = require('moment');
 
 type Props = {
-  records: Array<any>
+  data: Object
 };
 
 export default (props: Props) => {
-  const leaveRecord = props.records
+  const { data: { loading, error, findLeaveRecord } } = props;
+
+  if (loading) {
+    return (
+      <div className="text-center">
+        <div className="loader1" />
+      </div>
+    );
+  }
+
+  if (error) {
+    console.log(error.message);
+    return <p>Something went wrong!</p>;
+  }
+
+  const leaveRecords = findLeaveRecord
     .filter(record => {
       // get current date and format it
       let dateToday = moment();
@@ -16,13 +33,13 @@ export default (props: Props) => {
       let todayDate = dateToday.format('DD/MM/YYYY');
 
       // get end date and format it
-      let end_Date = moment(record.end_date, 'DD/MM/YYYY').format('DD/MM/YYYY');
+      let end_Date = moment(record.endDate, 'DD/MM/YYYY').format('DD/MM/YYYY');
 
       // check if current date and end date is same
       let isCurrentDate = todayDate === end_Date ? true : false;
 
       // get end date and format it
-      let eDate = moment(record.end_date, 'DD/MM/YYYY').format('MM/DD/YYYY');
+      let eDate = moment(record.endDate, 'DD/MM/YYYY').format('MM/DD/YYYY');
 
       let endDate = moment(new Date(eDate));
 
@@ -37,15 +54,15 @@ export default (props: Props) => {
         <td>
           {data.user.othernames} {data.user.surname}
         </td>
-        <td>{data.leave_name}</td>
-        <td>{data.start_date}</td>
-        <td>{data.end_date}</td>
-        <td>{data.leave_days}</td>
+        <td>{data.leaveName}</td>
+        <td>{data.startDate}</td>
+        <td>{data.endDate}</td>
+        <td>{data.leaveDays}</td>
       </tr>
     ));
 
-  return leaveRecord.length > 0 ? (
-    <div className="table-responsive" style={{ marginTop: '80px' }}>
+  return leaveRecords.length > 0 ? (
+    <div className="table-responsive">
       <table
         className="table table-bordered table-hover"
         style={{ backgroundColor: '#FFFFFF' }}
@@ -59,16 +76,14 @@ export default (props: Props) => {
             <th>Leave days</th>
           </tr>
         </thead>
-        <tbody>{leaveRecord}</tbody>
+        <tbody>{leaveRecords}</tbody>
       </table>
     </div>
   ) : (
-    <div style={{ marginTop: '80px' }}>
-      <div style={{ paddingTop: '100px', paddingBottom: '220px' }}>
-        <h1 className="display-4">
-          <em>There is no data to display.</em>
-        </h1>
-      </div>
+    <div style={{ paddingTop: '100px', paddingBottom: '220px' }}>
+      <h1 className="display-4">
+        <em>There is no data to display.</em>
+      </h1>
     </div>
   );
 };
