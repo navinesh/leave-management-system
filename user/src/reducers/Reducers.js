@@ -1,12 +1,6 @@
 import { combineReducers } from 'redux';
 
 import {
-  REQUEST_LEAVE_CALENDAR,
-  RECEIVE_LEAVE_CALENDAR,
-  FAILURE_LEAVE_CALENDAR
-} from '../actions/LeaveCalendar';
-
-import {
   LOGIN_USER_REQUEST,
   LOGIN_USER_SUCCESS,
   LOGIN_USER_FAILURE,
@@ -57,41 +51,6 @@ import {
   RECEIVE_PUBLIC_HOLIDAY,
   ERROR_PUBLIC_HOLIDAY
 } from '../actions/PublicHoliday';
-
-type LeaveRecords = {
-  isFetching: boolean,
-  items: Array<any>
-};
-
-const leaveRecords = (
-  state: LeaveRecords = {
-    isFetching: false,
-    items: []
-  },
-  action
-) => {
-  switch (action.type) {
-    case REQUEST_LEAVE_CALENDAR:
-      return {
-        ...state,
-        isFetching: true
-      };
-    case RECEIVE_LEAVE_CALENDAR:
-      return {
-        ...state,
-        isFetching: false,
-        items: action.records,
-        lastUpdated: action.receivedAt
-      };
-    case FAILURE_LEAVE_CALENDAR:
-      return {
-        ...state,
-        isFetching: false
-      };
-    default:
-      return state;
-  }
-};
 
 type UserAuth = {
   isFetching: boolean,
@@ -403,7 +362,6 @@ const publicHoliday = (
 };
 
 const rootReducer = combineReducers({
-  leaveRecords,
   userAuth,
   userRecords,
   userDetails,
