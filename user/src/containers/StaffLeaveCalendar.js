@@ -1,43 +1,34 @@
 // @flow
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React from 'react';
 
-import '../spinners.css';
+import { graphql, gql } from 'react-apollo';
 
-import { fetchLeaveIfNeeded } from '../actions/LeaveCalendar';
 import Leaves from '../components/LeaveCalendar';
 
+const LeaveRecord = gql`
+  {
+    findLeaveRecord(leaveStatus: "approved") {
+      id
+      leaveName
+      startDate
+      endDate
+      leaveDays
+      user {
+        othernames
+        surname
+      }
+    }
+  }
+`;
+
 type Props = {
-  dispatch: Function,
-  records: Array<any>,
-  isFetching: boolean
+  data: Function
 };
 
-class LeaveCalendar extends Component<Props> {
-  componentDidMount() {
-    this.props.dispatch(fetchLeaveIfNeeded());
-  }
+const LeaveCalendar = (props: Props) => (
+  <div className="container" style={{ marginTop: '80px' }}>
+    <Leaves data={props.data} />
+  </div>
+);
 
-  render() {
-    return (
-      <div className="container">
-        {this.props.isFetching ? (
-          <div className="text-center">
-            <div className="loader1" />
-          </div>
-        ) : (
-          <Leaves records={this.props.records} />
-        )}
-      </div>
-    );
-  }
-}
-
-const mapStateToProps = state => {
-  const { leaveRecords } = state;
-  const { isFetching, items: records } = leaveRecords;
-
-  return { records, isFetching };
-};
-
-export default connect(mapStateToProps)(LeaveCalendar);
+export default graphql(LeaveRecord)(LeaveCalendar);
