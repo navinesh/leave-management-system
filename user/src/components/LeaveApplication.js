@@ -62,8 +62,8 @@ const UserRecord = props => {
 
 type leaveApplicationProps = {
   user_detail: Object,
-  user_record: Array<any>,
-  public_holiday: Array<any>,
+  user_record: Object,
+  public_holiday: Object,
   isFetching: boolean,
   message: string,
   onLeaveApplicationClick: Function
@@ -225,8 +225,8 @@ class LeaveApplication extends Component<
     );
 
     // exclude public holidays
-    const publicHolidays = this.props.public_holiday.map(item => {
-      let hDate = new Date(item.holiday_date);
+    const publicHolidays = this.props.public_holiday.edges.map(item => {
+      let hDate = new Date(item.node.holidayDate);
       let holiday_date = moment(hDate).format('DD, MM, YYYY');
       return holiday_date;
     });
@@ -251,12 +251,12 @@ class LeaveApplication extends Component<
         : leaveDays;
 
     // get total of approved single sick leave days
-    const approvedSingleSickLeaves = user_record.filter(
+    const approvedSingleSickLeaves = user_record.leaverecord.edges.filter(
       e =>
-        e.leave_status === 'approved' &&
-        e.leave_name === 'sick' &&
-        e.file_name === null &&
-        e.leave_days === 1
+        e.node.leaveStatus === 'approved' &&
+        e.node.leaveName === 'sick' &&
+        e.node.fileName === null &&
+        e.node.leaveDays === 1
     );
 
     // calculate total leave days
@@ -515,34 +515,71 @@ class LeaveApplication extends Component<
 
 type Props = {
   user_detail: Object,
+  user_record: Object,
+  public_holiday: Object,
   onLeaveApplicationClick: Function,
   message: string,
-  isFetching: boolean,
-  user_record: Array<any>,
-  public_holiday: Array<any>
+  isFetching: boolean
 };
 
-export default (props: Props) => (
-  <div className="container" style={{ marginTop: '80px' }}>
-    <div className="row">
-      <div className="col-md-12">
-        <div className="col-md-9 ml-auto mr-auto">
-          <UserName user_detail={props.user_detail} />
+export default (props: Props) => {
+  const {
+    user_detail: { loading, error, user },
+    user_record: {
+      loading: recordLoading,
+      error: recordError,
+      user: recordUser
+    },
+    public_holiday: {
+      loading: holidayLoading,
+      error: holidayError,
+      publicHoliday
+    }
+  } = props;
+
+  if (loading || recordLoading || holidayLoading) {
+    return (
+      <div className="container text-center" style={{ paddingTop: '100px' }}>
+        <div className="col-md-8 ml-auto mr-auto">
+          <div className="loader1" />
         </div>
       </div>
-      <div className="col-md-3 ml-auto">
-        <UserRecord user_detail={props.user_detail} />
+    );
+  }
+
+  if (error || recordError || holidayError) {
+    console.log(error.message);
+    return (
+      <div className="container text-center" style={{ paddingTop: '100px' }}>
+        <div className="col-md-8 ml-auto mr-auto">
+          <p>Something went wrong!</p>
+        </div>
       </div>
-      <div className="col-md-6 mr-auto mb-2">
-        <LeaveApplication
-          user_detail={props.user_detail}
-          user_record={props.user_record}
-          onLeaveApplicationClick={props.onLeaveApplicationClick}
-          message={props.message}
-          isFetching={props.isFetching}
-          public_holiday={props.public_holiday}
-        />
+    );
+  }
+
+  return (
+    <div className="container" style={{ marginTop: '80px' }}>
+      <div className="row">
+        <div className="col-md-12">
+          <div className="col-md-9 ml-auto mr-auto">
+            <UserName user_detail={user} />
+          </div>
+        </div>
+        <div className="col-md-3 ml-auto">
+          <UserRecord user_detail={user} />
+        </div>
+        <div className="col-md-6 mr-auto mb-2">
+          <LeaveApplication
+            user_detail={user}
+            user_record={recordUser}
+            public_holiday={publicHoliday}
+            onLeaveApplicationClick={props.onLeaveApplicationClick}
+            message={props.message}
+            isFetching={props.isFetching}
+          />
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
