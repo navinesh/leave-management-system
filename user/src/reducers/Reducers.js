@@ -14,20 +14,6 @@ import { LOGOUT_USER_REQUEST } from '../actions/UserLogout';
 import { LOGOUT_USER_SUCCESS } from '../actions/UserLogout';
 
 import {
-  REQUEST_USER_RECORD,
-  RECEIVE_USER_RECORD,
-  USER_RECORD_ERROR,
-  CLEAR_USER_RECORD
-} from '../actions/UserRecord';
-
-import {
-  REQUEST_USER_DETAILS,
-  RECEIVE_USER_DETAILS,
-  USER_DETAILS_ERROR,
-  CLEAR_USER_DETAILS
-} from '../actions/UserDetails';
-
-import {
   LEAVE_APPLICATION_REQUEST,
   LEAVE_APPLICATION_SUCCESS,
   LEAVE_APPLICATION_FAILURE
@@ -131,94 +117,6 @@ const userAuth = (
         isAuthenticated: false,
         message: 'Your session has expired!',
         auth_info: ''
-      };
-    default:
-      return state;
-  }
-};
-
-type UserRecords = {
-  isFetching: boolean,
-  userRecord: Array<any>,
-  message: string
-};
-
-const userRecords = (
-  state: UserRecords = {
-    isFetching: false,
-    userRecord: [],
-    message: ''
-  },
-  action
-) => {
-  switch (action.type) {
-    case REQUEST_USER_RECORD:
-      return {
-        ...state,
-        isFetching: true
-      };
-    case RECEIVE_USER_RECORD:
-      return {
-        ...state,
-        isFetching: false,
-        userRecord: action.user_record
-      };
-    case USER_RECORD_ERROR:
-      return {
-        ...state,
-        isFetching: false,
-        message: action.message
-      };
-    case CLEAR_USER_RECORD:
-      return {
-        ...state,
-        isFetching: false,
-        message: '',
-        userRecord: []
-      };
-    default:
-      return state;
-  }
-};
-
-type UserDeatils = {
-  isFetching: boolean,
-  userDetail: Object,
-  message: string
-};
-
-const userDetails = (
-  state: UserDeatils = {
-    isFetching: false,
-    userDetail: {},
-    message: ''
-  },
-  action
-) => {
-  switch (action.type) {
-    case REQUEST_USER_DETAILS:
-      return {
-        ...state,
-        isFetching: true
-      };
-    case RECEIVE_USER_DETAILS:
-      return {
-        ...state,
-        isFetching: false,
-        userDetail: action.user_detail
-      };
-    case USER_DETAILS_ERROR:
-      return {
-        ...state,
-        isFetching: false,
-        message: action.message
-      };
-    case CLEAR_USER_DETAILS:
-      return {
-        ...state,
-        isFetching: false,
-        message: '',
-        userDetail: {}
       };
     default:
       return state;
@@ -363,8 +261,6 @@ const publicHoliday = (
 
 const rootReducer = combineReducers({
   userAuth,
-  userRecords,
-  userDetails,
   leaveApplication,
   changePassword,
   resetPassword,
