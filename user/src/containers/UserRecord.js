@@ -6,8 +6,8 @@ import { graphql, gql, compose } from 'react-apollo';
 import { UserRecord, RecordList } from '../components/UserRecord';
 
 const User_Detail = gql`
-  {
-    user(id: "VXNlcjozMQ==") {
+  query($id: ID!) {
+    user(id: $id) {
       othernames
       surname
       annual
@@ -21,8 +21,8 @@ const User_Detail = gql`
 `;
 
 const User_Record = gql`
-  {
-    user(id: "VXNlcjozMQ==") {
+  query($id: ID!) {
+    user(id: $id) {
       leaverecord {
         edges {
           node {
@@ -45,14 +45,12 @@ type Props = {
   userRecord: Object
 };
 
-const UserRecords = (props: Props) => {
-  return (
-    <div className="UserRecords">
-      <UserRecord user_detail={props.userDetail} />
-      <RecordList user_record={props.userRecord} />
-    </div>
-  );
-};
+const UserRecords = (props: Props) => (
+  <div className="UserRecords">
+    <UserRecord user_detail={props.userDetail} />
+    <RecordList user_record={props.userRecord} />
+  </div>
+);
 
 export default compose(
   graphql(User_Detail, { name: 'userDetail' }),
