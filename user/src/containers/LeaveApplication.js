@@ -3,12 +3,61 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
+import { graphql, gql, compose } from 'react-apollo';
+
 import { fetchLoginFromToken } from '../actions/UserLogin';
-import { fetchUserDetailsIfNeeded } from '../actions/UserDetails';
-import { fetchUserRecordIfNeeded } from '../actions/UserRecord';
+
 import { fetchLeaveApplication } from '../actions/LeaveApplication';
 import LeaveApplications from '../components/LeaveApplication';
-import { fetchPublicHoliday } from '../actions/PublicHoliday';
+
+const User_Detail = gql`
+  {
+    user(id: "VXNlcjozMQ==") {
+      id
+      othernames
+      surname
+      annual
+      sick
+      bereavement
+      christmas
+      maternity
+      gender
+    }
+  }
+`;
+
+const User_Record = gql`
+  {
+    user(id: "VXNlcjozMQ==") {
+      leaverecord {
+        edges {
+          node {
+            id
+            leaveName
+            leaveDays
+            startDate
+            endDate
+            leaveReason
+            leaveStatus
+            fileName
+          }
+        }
+      }
+    }
+  }
+`;
+
+const Public_Holiday = gql`
+  {
+    publicHoliday {
+      edges {
+        node {
+          holidayDate
+        }
+      }
+    }
+  }
+`;
 
 type Props = {
   auth_info: Object,
@@ -16,9 +65,9 @@ type Props = {
   isAuthenticated: boolean,
   message: string,
   isFetching: boolean,
-  user_detail: Object,
-  user_record: Array<any>,
-  public_holiday: Array<any>
+  userDetail: Object,
+  userRecord: Object,
+  publicHoliday: Object
 };
 
 class LeaveApplication extends Component<Props> {
@@ -30,32 +79,29 @@ class LeaveApplication extends Component<Props> {
 
     if (auth_token) {
       dispatch(fetchLoginFromToken(auth_token));
-      dispatch(fetchUserDetailsIfNeeded(auth_token));
-      dispatch(fetchUserRecordIfNeeded(auth_token));
-      dispatch(fetchPublicHoliday());
     }
   }
 
   render() {
     const {
+      userDetail,
+      userRecord,
+      publicHoliday,
       dispatch,
       isAuthenticated,
       message,
-      isFetching,
-      user_detail,
-      user_record,
-      public_holiday
+      isFetching
     } = this.props;
 
     return (
       <div className="LeaveApplication">
         {isAuthenticated ? (
           <LeaveApplications
+            user_detail={userDetail}
+            user_record={userRecord}
+            public_holiday={publicHoliday}
             isFetching={isFetching}
             message={message}
-            user_detail={user_detail}
-            user_record={user_record}
-            public_holiday={public_holiday}
             onLeaveApplicationClick={applicationDetails =>
               dispatch(fetchLeaveApplication(applicationDetails))}
           />
@@ -68,29 +114,22 @@ class LeaveApplication extends Component<Props> {
 }
 
 const mapStateToProps = state => {
-  const {
-    userAuth,
-    leaveApplication,
-    userDetails,
-    userRecords,
-    publicHoliday
-  } = state;
+  const { userAuth, leaveApplication } = state;
 
   const { auth_info, isAuthenticated } = userAuth;
   const { isFetching, message } = leaveApplication;
-  const { userDetail: user_detail } = userDetails;
-  const { userRecord: user_record } = userRecords;
-  const { public_holiday } = publicHoliday;
 
   return {
     auth_info,
     isAuthenticated,
     message,
-    isFetching,
-    user_detail,
-    user_record,
-    public_holiday
+    isFetching
   };
 };
 
-export default connect(mapStateToProps)(LeaveApplication);
+export default compose(
+  connect(mapStateToProps),
+  graphql(User_Detail, { name: 'userDetail' }),
+  graphql(User_Record, { name: 'userRecord' }),
+  graphql(Public_Holiday, { name: 'publicHoliday' })
+)(LeaveApplication);
