@@ -1,6 +1,5 @@
 // @flow
 import axios from 'axios';
-import { fetchUserRecord } from '../actions/UserRecord';
 
 export const LEAVE_APPLICATION_REQUEST = 'LEAVE_APPLICATION_REQUEST';
 export const LEAVE_APPLICATION_SUCCESS = 'LEAVE_APPLICATION_SUCCESS';
@@ -47,7 +46,6 @@ export const fetchLeaveApplication = (applicationDetails: Object) => async (
       dispatch(leaveApplicationFailure(response.data));
     } else {
       dispatch(receiveLeaveApplication());
-      dispatch(fetchUserRecord(getState().userAuth.auth_info.auth_token));
     }
   } catch (error) {
     console.log(error);
