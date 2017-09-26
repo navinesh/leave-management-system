@@ -8,7 +8,6 @@ import { UserRecord, RecordList } from '../components/UserRecord';
 const User_Detail = gql`
   {
     user(id: "VXNlcjozMQ==") {
-      id
       othernames
       surname
       annual
