@@ -524,11 +524,11 @@ type Props = {
 
 export default (props: Props) => {
   const {
-    user_detail: { loading, error, user },
+    user_detail: { loading, error, findUser: user },
     user_record: {
       loading: recordLoading,
       error: recordError,
-      user: recordUser
+      findUser: recordUser
     },
     public_holiday: {
       loading: holidayLoading,
