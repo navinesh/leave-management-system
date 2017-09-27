@@ -10,10 +10,12 @@ import { fetchLoginFromToken } from '../actions/UserLogin';
 import { fetchLeaveApplication } from '../actions/LeaveApplication';
 import LeaveApplications from '../components/LeaveApplication';
 
+import configureStore from '../stores/ConfigureStore';
+const store = configureStore();
+
 const User_Detail = gql`
-  {
-    user(id: "VXNlcjozMQ==") {
-      id
+  query($id: Int) {
+    findUser(id: $id) {
       othernames
       surname
       annual
@@ -27,8 +29,8 @@ const User_Detail = gql`
 `;
 
 const User_Record = gql`
-  {
-    user(id: "VXNlcjozMQ==") {
+  query($id: Int) {
+    findUser(id: $id) {
       leaverecord {
         edges {
           node {
@@ -39,7 +41,6 @@ const User_Record = gql`
             endDate
             leaveReason
             leaveStatus
-            fileName
           }
         }
       }
@@ -113,6 +114,10 @@ class LeaveApplication extends Component<Props> {
   }
 }
 
+let userID = store.getState().userAuth.auth_info.user_id
+  ? store.getState().userAuth.auth_info.user_id
+  : localStorage.getItem('user_id');
+
 const mapStateToProps = state => {
   const { userAuth, leaveApplication } = state;
 
@@ -129,7 +134,21 @@ const mapStateToProps = state => {
 
 export default compose(
   connect(mapStateToProps),
-  graphql(User_Detail, { name: 'userDetail' }),
-  graphql(User_Record, { name: 'userRecord' }),
+  graphql(User_Detail, {
+    options: {
+      variables: {
+        id: userID
+      }
+    },
+    name: 'userDetail'
+  }),
+  graphql(User_Record, {
+    options: {
+      variables: {
+        id: userID
+      }
+    },
+    name: 'userRecord'
+  }),
   graphql(Public_Holiday, { name: 'publicHoliday' })
 )(LeaveApplication);
