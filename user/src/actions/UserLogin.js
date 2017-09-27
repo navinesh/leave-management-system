@@ -54,6 +54,7 @@ export const fetchLogin = (creds: Object) => async (dispatch: Function) => {
       dispatch(loginUserError(response.data));
     } else {
       localStorage.setItem('auth_token', response.data.auth_token);
+      localStorage.setItem('user_id', response.data.user_id);
       dispatch(receiveUserLogin(response.data));
     }
   } catch (error) {
@@ -72,6 +73,7 @@ export const fetchLoginFromToken = (auth_token: string) => async (
 
     if (response.status !== 201) {
       localStorage.removeItem('auth_token');
+      localStorage.removeItem('user_id');
       dispatch(loginUserErrorFromToken(response.data));
       dispatch({ type: 'CLEAR_USER_RECORD' });
       dispatch({ type: 'CLEAR_USER_DETAILS' });
