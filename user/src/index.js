@@ -14,6 +14,7 @@ import './index.css';
 import './bootstrap.min.css';
 
 import Header from './containers/Header';
+import Login from './containers/Login';
 import Main from './containers/Main';
 import StaffLeaveCalendar from './containers/StaffLeaveCalendar';
 import ResetPassword from './containers/ResetPassword';
@@ -41,7 +42,7 @@ const PrivateRoute = ({ component, ...rest }) => (
       ) : (
         <Redirect
           to={{
-            pathname: '/',
+            pathname: '/login',
             state: { from: props.location }
           }}
         />
@@ -55,9 +56,10 @@ const App = () => (
       <div>
         <Header />
         <Switch>
-          <Route exact path="/" component={Main} />
+          <PrivateRoute exact path="/" component={Main} />
           <Route path="/leavecalendar" component={StaffLeaveCalendar} />
           <Route path="/reset" component={ResetPassword} />
+          <Route path="/login" component={Login} />
           <PrivateRoute path="/leaveapplication" component={LeaveApplication} />
           <PrivateRoute path="/changepassword" component={UserChangePassword} />
           <Route component={UserError} />
