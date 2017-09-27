@@ -32,12 +32,6 @@ import {
   PASSWORD_RESET_ERROR
 } from '../actions/ResetPassword';
 
-import {
-  REQUEST_PUBLIC_HOLIDAY,
-  RECEIVE_PUBLIC_HOLIDAY,
-  ERROR_PUBLIC_HOLIDAY
-} from '../actions/PublicHoliday';
-
 type UserAuth = {
   isFetching: boolean,
   isAuthenticated: boolean,
@@ -234,37 +228,11 @@ const resetPassword = (
   }
 };
 
-type PublicHoliday = {
-  isFetching: boolean,
-  public_holiday: Array<any>
-};
-
-const publicHoliday = (
-  state: PublicHoliday = { isFetching: false, public_holiday: [] },
-  action
-) => {
-  switch (action.type) {
-    case REQUEST_PUBLIC_HOLIDAY:
-      return { ...state, isFetching: true };
-    case RECEIVE_PUBLIC_HOLIDAY:
-      return {
-        ...state,
-        isFetching: false,
-        public_holiday: action.public_holiday
-      };
-    case ERROR_PUBLIC_HOLIDAY:
-      return { ...state, isFetching: false };
-    default:
-      return state;
-  }
-};
-
 const rootReducer = combineReducers({
   userAuth,
   leaveApplication,
   changePassword,
-  resetPassword,
-  publicHoliday
+  resetPassword
 });
 
 export default rootReducer;
