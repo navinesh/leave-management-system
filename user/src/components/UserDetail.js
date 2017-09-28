@@ -51,7 +51,7 @@ const UserDetail = (props: Props) => {
   return (
     <div
       className="jumbotron jumbotron-fluid"
-      style={{ backgroundColor: '#FFFFFF', paddingTop: '80px' }}
+      style={{ backgroundColor: '#FFFFFF', paddingTop: '100px' }}
     >
       <div className="container">
         <div className="row">
