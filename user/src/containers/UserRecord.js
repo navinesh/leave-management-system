@@ -1,58 +1,25 @@
 // @flow
 import React from 'react';
+import { connect } from 'react-redux';
 
-import { graphql, gql, compose } from 'react-apollo';
-
-import { UserRecord, RecordList } from '../components/UserRecord';
-
-const User_Detail = gql`
-  query($id: ID!) {
-    user(id: $id) {
-      othernames
-      surname
-      annual
-      sick
-      bereavement
-      christmas
-      maternity
-      gender
-    }
-  }
-`;
-
-const User_Record = gql`
-  query($id: ID!) {
-    user(id: $id) {
-      leaverecord {
-        edges {
-          node {
-            id
-            leaveName
-            leaveDays
-            startDate
-            endDate
-            leaveReason
-            leaveStatus
-          }
-        }
-      }
-    }
-  }
-`;
+import UserRecord from '../components/UserRecord';
 
 type Props = {
-  userDetail: Object,
-  userRecord: Object
+  auth_info: Object
 };
 
-const UserRecords = (props: Props) => (
-  <div className="UserRecords">
-    <UserRecord user_detail={props.userDetail} />
-    <RecordList user_record={props.userRecord} />
-  </div>
-);
+const UserRecords = (props: Props) => {
+  let userID = props.auth_info.user_id
+    ? props.auth_info.user_id
+    : localStorage.getItem('user_id');
 
-export default compose(
-  graphql(User_Detail, { name: 'userDetail' }),
-  graphql(User_Record, { name: 'userRecord' })
-)(UserRecords);
+  return <UserRecord id={userID} />;
+};
+
+const mapStateToProps = state => {
+  const { userAuth } = state;
+  const { auth_info } = userAuth;
+  return { auth_info };
+};
+
+export default connect(mapStateToProps)(UserRecords);
