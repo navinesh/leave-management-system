@@ -1,6 +1,8 @@
 // @flow
 import React, { Component } from 'react';
 
+import { graphql, gql, compose } from 'react-apollo';
+
 import { DateRangePicker } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
 
@@ -9,6 +11,53 @@ import '../spinners.css';
 import Moment from 'moment';
 import { extendMoment } from 'moment-range';
 const moment = extendMoment(Moment);
+
+const USER_DETAIL = gql`
+  query($id: Int) {
+    findUser(id: $id) {
+      othernames
+      surname
+      annual
+      sick
+      bereavement
+      christmas
+      maternity
+      gender
+    }
+  }
+`;
+
+const USER_RECORD = gql`
+  query($id: Int) {
+    findUser(id: $id) {
+      leaverecord {
+        edges {
+          node {
+            id
+            leaveName
+            leaveDays
+            startDate
+            endDate
+            leaveReason
+            leaveStatus
+          }
+        }
+      }
+    }
+  }
+`;
+
+const PUBLIC_HOLIDAY = gql`
+  {
+    publicHoliday {
+      edges {
+        node {
+          holidayDate
+        }
+      }
+    }
+  }
+`;
 
 const UserName = props => (
   <p>
@@ -61,6 +110,7 @@ const UserRecord = props => {
 };
 
 type leaveApplicationProps = {
+  id: Number,
   user_detail: Object,
   user_record: Object,
   public_holiday: Object,
@@ -156,9 +206,9 @@ class LeaveApplication extends Component<
 
   handleSubmit(e: Event) {
     e.preventDefault();
-    const { user_detail, user_record } = this.props;
+    const { id, user_detail, user_record } = this.props;
 
-    const user_id = user_detail.id;
+    const user_id = id;
     const annualDays = user_detail.annual;
     const sickDays = user_detail.sick;
     const bereavementDays = user_detail.bereavement;
@@ -239,7 +289,8 @@ class LeaveApplication extends Component<
 
     if (leaveDays === 0) {
       this.setState({
-        errorMessage: 'The dates you selected fall on public holiday!'
+        errorMessage:
+          'The dates you selected either fall on public holiday, Saturday or Sunday!'
       });
       return;
     }
@@ -514,23 +565,24 @@ class LeaveApplication extends Component<
 }
 
 type Props = {
-  user_detail: Object,
-  user_record: Object,
-  public_holiday: Object,
+  id: Number,
+  userDetails: Object,
+  userRecords: Object,
+  publicHolidays: Object,
   onLeaveApplicationClick: Function,
   message: string,
   isFetching: boolean
 };
 
-export default (props: Props) => {
+const Application = (props: Props) => {
   const {
-    user_detail: { loading, error, findUser: user },
-    user_record: {
+    userDetails: { loading, error, findUser: user },
+    userRecords: {
       loading: recordLoading,
       error: recordError,
       findUser: recordUser
     },
-    public_holiday: {
+    publicHolidays: {
       loading: holidayLoading,
       error: holidayError,
       publicHoliday
@@ -571,6 +623,7 @@ export default (props: Props) => {
         </div>
         <div className="col-md-6 mr-auto mb-2">
           <LeaveApplication
+            id={props.id}
             user_detail={user}
             user_record={recordUser}
             public_holiday={publicHoliday}
@@ -583,3 +636,19 @@ export default (props: Props) => {
     </div>
   );
 };
+
+export default compose(
+  graphql(USER_DETAIL, {
+    options: ({ id }) => ({
+      variables: { id }
+    }),
+    name: 'userDetails'
+  }),
+  graphql(USER_RECORD, {
+    options: ({ id }) => ({
+      variables: { id }
+    }),
+    name: 'userRecords'
+  }),
+  graphql(PUBLIC_HOLIDAY, { name: 'publicHolidays' })
+)(Application);
