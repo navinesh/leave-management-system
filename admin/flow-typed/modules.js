@@ -11,6 +11,10 @@ declare module 'react-redux' {
   declare var exports: any;
 }
 
+declare module 'react-apollo' {
+  declare var exports: any;
+}
+
 declare module 'moment' {
   declare var exports: any;
 }
