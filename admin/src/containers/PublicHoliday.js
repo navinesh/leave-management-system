@@ -1,23 +1,16 @@
 // @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+
 import { Redirect } from 'react-router-dom';
 
 import { fetchLoginFromToken } from '../actions/AdminLogin';
 import PublicHolidays from '../components/PublicHoliday';
-import { fetchPublicHoliday } from '../actions/PublicHoliday';
-import { submitAddPublicHoliday } from '../actions/NewPublicHoliday';
-import { submitDeletePublicHoliday } from '../actions/DeletePublicHoliday';
 
 type Props = {
   isAuthenticated: boolean,
   auth_info: Object,
-  public_holiday: Array<any>,
-  dispatch: Function,
-  isAddPublicFetching: boolean,
-  addPublicMessage: string,
-  isDeletePublicFetching: boolean,
-  deletePublicMessage: string
+  dispatch: Function
 };
 
 class PublicHoliday extends Component<Props> {
@@ -32,67 +25,24 @@ class PublicHoliday extends Component<Props> {
     }
   }
 
-  componentDidMount() {
-    if (this.props.isAuthenticated) {
-      this.props.dispatch(fetchPublicHoliday());
-    }
-  }
-
   render() {
-    const {
-      isAuthenticated,
-      public_holiday,
-      dispatch,
-      isAddPublicFetching,
-      addPublicMessage,
-      isDeletePublicFetching,
-      deletePublicMessage
-    } = this.props;
+    const { isAuthenticated } = this.props;
 
     return (
       <div className="container">
-        {isAuthenticated ? (
-          <PublicHolidays
-            public_holiday={public_holiday}
-            dispatch={dispatch}
-            isAddPublicFetching={isAddPublicFetching}
-            addPublicMessage={addPublicMessage}
-            isDeletePublicFetching={isDeletePublicFetching}
-            deletePublicMessage={deletePublicMessage}
-            onAddPublicHolidaySubmit={publicHolidayDate =>
-              dispatch(submitAddPublicHoliday(publicHolidayDate))}
-            onDeletePublicHolidaySubmit={deletePublicHolidayDate =>
-              dispatch(submitDeletePublicHoliday(deletePublicHolidayDate))}
-          />
-        ) : (
-          <Redirect to="/login" />
-        )}
+        {isAuthenticated ? <PublicHolidays /> : <Redirect to="/login" />}
       </div>
     );
   }
 }
 
 const mapStateToProps = state => {
-  const {
-    adminAuth,
-    publicHoliday,
-    addPublicHoliday,
-    deletePublicHoliday
-  } = state;
-
+  const { adminAuth } = state;
   const { auth_info, isAuthenticated } = adminAuth;
-  const { public_holiday } = publicHoliday;
-  const { isAddPublicFetching, addPublicMessage } = addPublicHoliday;
-  const { isDeletePublicFetching, deletePublicMessage } = deletePublicHoliday;
 
   return {
     auth_info,
-    isAuthenticated,
-    public_holiday,
-    isAddPublicFetching,
-    addPublicMessage,
-    isDeletePublicFetching,
-    deletePublicMessage
+    isAuthenticated
   };
 };
 
