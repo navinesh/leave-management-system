@@ -1,20 +1,56 @@
 // @flow
 import React, { Component } from 'react';
+import { graphql, gql, compose } from 'react-apollo';
 
 import { SingleDatePicker } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
 
 const moment = require('moment');
 
+const PUBLIC_HOLIDAY = gql`
+  {
+    publicHoliday {
+      edges {
+        node {
+          id
+          holidayDate
+        }
+      }
+    }
+  }
+`;
+
+const addPublicholiday = gql`
+  mutation addPublicholiday($holidayDate: String!) {
+    addPublicholiday(holidayDate: $holidayDate) {
+      publicHoliday {
+        id
+        holidayDate
+      }
+    }
+  }
+`;
+
+const deletePublicholiday = gql`
+  mutation deletePublicholiday($holidayDate: String!) {
+    deletePublicholiday(holidayDate: $holidayDate) {
+      publicHoliday {
+        id
+        holidayDate
+      }
+    }
+  }
+`;
+
 type addPublicHolidayProps = {
-  dispatch: Function,
-  onAddPublicHolidaySubmit: Function
+  addHoliday: Function
 };
 
 type addPublicHolidayState = {
   date: any,
   focused: any,
   holidayDate: any,
+  successMessage: string,
   errorMessage: string
 };
 
@@ -32,6 +68,7 @@ class AddPublicHoliday extends Component<
       date: null,
       focused: false,
       holidayDate: null,
+      successMessage: '',
       errorMessage: ''
     };
 
@@ -50,6 +87,7 @@ class AddPublicHoliday extends Component<
 
   handleSubmit(e: Event) {
     e.preventDefault();
+
     const holidayDate = this.state.date
       ? moment(this.state.date).format('MM DD YYYY')
       : null;
@@ -65,16 +103,9 @@ class AddPublicHoliday extends Component<
       return null;
     }
 
-    const publicHolidayDate = {
-      holidayDate: holidayDate
-    };
+    this.props.addHoliday(holidayDate);
 
-    this.props.onAddPublicHolidaySubmit(publicHolidayDate);
-    this.setState({ date: null, holidayDate: '', errorMessage: '' });
-
-    setTimeout(() => {
-      this.props.dispatch({ type: 'CLEAR_ADD_PUBLIC_MESSAGE' });
-    }, 3000);
+    this.setState({ date: null, holidayDate: '' });
   }
 
   render() {
@@ -106,9 +137,8 @@ class AddPublicHoliday extends Component<
 }
 
 type deletePublicHolidayProps = {
-  public_holiday: Array<any>,
-  dispatch: Function,
-  onDeletePublicHolidaySubmit: Function
+  public_holiday: Object,
+  deleteHoliday: Function
 };
 
 type deletePublicHolidayState = {
@@ -128,12 +158,14 @@ class DeletePublicHoliday extends Component<
     this.handleDelete = this.handleDelete.bind(this);
   }
 
-  handleDelete(e: SyntheticEvent<HTMLElement>) {
-    const id = parseInt(e.currentTarget.id, 10);
+  handleDelete({ target }: SyntheticInputEvent<>) {
+    const holidayDate = target.value
+      ? moment(target.value, 'dddd, Do MMMM YYYY').format('MM DD YYYY')
+      : null;
 
-    if (!id) {
+    if (!holidayDate) {
       this.setState({
-        errorMessage: 'Valid ID is required!'
+        errorMessage: 'Valid date is required!'
       });
 
       setTimeout(() => {
@@ -142,39 +174,33 @@ class DeletePublicHoliday extends Component<
       return null;
     }
 
-    const deletePublicHolidayDate = {
-      id: id
-    };
+    this.props.deleteHoliday(holidayDate);
 
-    this.props.onDeletePublicHolidaySubmit(deletePublicHolidayDate);
     this.setState({ errorMessage: '' });
-
-    setTimeout(() => {
-      this.props.dispatch({ type: 'CLEAR_DELETE_PUBLIC_MESSAGE' });
-    }, 3000);
   }
 
   render() {
-    let list = this.props.public_holiday.sort((a, b) => {
-      return new Date(a.holiday_date) - new Date(b.holiday_date);
+    let list = this.props.public_holiday.edges.map(a => a.node).sort((b, c) => {
+      return new Date(b.holidayDate) - new Date(c.holidayDate);
     });
 
     const public_holidays = list.map(item => {
-      let hDate = new Date(item.holiday_date);
+      let hDate = new Date(item.holidayDate);
       let holiday_date = moment(hDate).format('dddd, Do MMMM YYYY');
       return (
         <li key={item.id}>
           {holiday_date}
           <button
             className="btn btn-link btn-sm text-danger"
+            value={holiday_date}
             onClick={this.handleDelete}
-            id={item.id}
           >
             Delete
           </button>
         </li>
       );
     });
+
     return (
       <div className="DeletePublicHolidays">
         <ul>{public_holidays}</ul>
@@ -187,51 +213,82 @@ class DeletePublicHoliday extends Component<
 }
 
 type publicHolidayProps = {
-  dispatch: Function,
-  public_holiday: Array<any>,
-  onDeletePublicHolidaySubmit: Function,
-  onAddPublicHolidaySubmit: Function,
-  isAddPublicFetching: boolean,
-  addPublicMessage: string,
-  isDeletePublicFetching: boolean,
-  deletePublicMessage: string
+  publicHolidays: Object,
+  addHoliday: Function,
+  deleteHoliday: Function
 };
 
-export default (props: publicHolidayProps) => (
-  <div className="col-11 ml-auto mr-auto">
-    <div className="card card-body">
-      <div className="row">
-        <div className="col">
-          <h4>Public Holidays</h4>
+const PublicHolidays = (props: publicHolidayProps) => {
+  const {
+    publicHolidays: { loading, error, publicHoliday },
+    addHoliday,
+    deleteHoliday
+  } = props;
+
+  if (loading) {
+    return (
+      <div className="container text-center" style={{ paddingTop: '100px' }}>
+        <div className="col-md-8 ml-auto mr-auto">
+          <div className="loader1" />
         </div>
       </div>
-      <div className="row">
-        <div className="col">
-          <DeletePublicHoliday
-            dispatch={props.dispatch}
-            public_holiday={props.public_holiday}
-            onDeletePublicHolidaySubmit={props.onDeletePublicHolidaySubmit}
-          />
+    );
+  }
+
+  if (error) {
+    console.log(error.message);
+    return (
+      <div className="container text-center" style={{ paddingTop: '100px' }}>
+        <div className="col-md-8 ml-auto mr-auto">
+          <p>Something went wrong!</p>
         </div>
-        <div className="col">
-          <AddPublicHoliday
-            dispatch={props.dispatch}
-            onAddPublicHolidaySubmit={props.onAddPublicHolidaySubmit}
-          />
-          <div>
-            {props.isAddPublicFetching ? (
-              <div className="text-success">ADDING...</div>
-            ) : (
-              <p className="text-primary">{props.addPublicMessage}</p>
-            )}
-            {props.isDeletePublicFetching ? (
-              <div className="text-danger">DELETING...</div>
-            ) : (
-              <p className="text-primary">{props.deletePublicMessage}</p>
-            )}
+      </div>
+    );
+  }
+
+  return (
+    <div className="col-11 ml-auto mr-auto">
+      <div className="card card-body">
+        <div className="row">
+          <div className="col">
+            <h4>Public Holidays</h4>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col">
+            <DeletePublicHoliday
+              public_holiday={publicHoliday}
+              deleteHoliday={deleteHoliday}
+            />
+          </div>
+          <div className="col">
+            <AddPublicHoliday addHoliday={addHoliday} />
           </div>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
+
+export default compose(
+  graphql(PUBLIC_HOLIDAY, { name: 'publicHolidays' }),
+  graphql(addPublicholiday, {
+    name: 'addHoliday',
+    props: ({ addHoliday }) => ({
+      addHoliday: holidayDate => addHoliday({ variables: { holidayDate } })
+    }),
+    options: {
+      refetchQueries: [{ query: PUBLIC_HOLIDAY }]
+    }
+  }),
+  graphql(deletePublicholiday, {
+    name: 'deleteHoliday',
+    props: ({ deleteHoliday }) => ({
+      deleteHoliday: holidayDate =>
+        deleteHoliday({ variables: { holidayDate } })
+    }),
+    options: {
+      refetchQueries: [{ query: PUBLIC_HOLIDAY }]
+    }
+  })
+)(PublicHolidays);
