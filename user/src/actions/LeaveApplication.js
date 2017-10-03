@@ -4,17 +4,23 @@ import axios from 'axios';
 export const LEAVE_APPLICATION_REQUEST = 'LEAVE_APPLICATION_REQUEST';
 export const LEAVE_APPLICATION_SUCCESS = 'LEAVE_APPLICATION_SUCCESS';
 export const LEAVE_APPLICATION_FAILURE = 'LEAVE_APPLICATION_FAILURE';
+export const CLEAR_LEAVE_APPLICATION_MESSAGE =
+  'CLEAR_LEAVE_APPLICATION_MESSAGE';
 
 export const requestLeaveApplication = (applicationDetails: Object) => {
   return { type: LEAVE_APPLICATION_REQUEST, applicationDetails };
 };
 
-export const receiveLeaveApplication = () => {
-  return { type: LEAVE_APPLICATION_SUCCESS };
+export const receiveLeaveApplication = (data: Object) => {
+  return { type: LEAVE_APPLICATION_SUCCESS, message: data.message };
 };
 
 export const leaveApplicationFailure = (data: Object) => {
   return { type: LEAVE_APPLICATION_FAILURE, message: data.message };
+};
+
+export const clearLeaveApplicationMessage = () => {
+  return { type: CLEAR_LEAVE_APPLICATION_MESSAGE };
 };
 
 export const fetchLeaveApplication = (applicationDetails: Object) => async (
@@ -45,7 +51,7 @@ export const fetchLeaveApplication = (applicationDetails: Object) => async (
     if (response.status !== 201) {
       dispatch(leaveApplicationFailure(response.data));
     } else {
-      dispatch(receiveLeaveApplication());
+      dispatch(receiveLeaveApplication(response.data));
     }
   } catch (error) {
     console.log(error);
