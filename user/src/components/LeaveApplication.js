@@ -1,6 +1,5 @@
 // @flow
 import React, { Component } from 'react';
-
 import { graphql, gql, compose } from 'react-apollo';
 
 import { DateRangePicker } from 'react-dates';
@@ -114,9 +113,8 @@ type leaveApplicationProps = {
   user_detail: Object,
   user_record: Object,
   public_holiday: Object,
-  isFetching: boolean,
-  message: string,
-  onLeaveApplicationClick: Function
+  onLeaveApplicationClick: Function,
+  refetch: Function
 };
 
 type leaveApplicationState = {
@@ -206,7 +204,13 @@ class LeaveApplication extends Component<
 
   handleSubmit(e: Event) {
     e.preventDefault();
-    const { id, user_detail, user_record } = this.props;
+    const {
+      id,
+      user_detail,
+      user_record,
+      onLeaveApplicationClick,
+      refetch
+    } = this.props;
 
     const user_id = id;
     const annualDays = user_detail.annual;
@@ -412,28 +416,14 @@ class LeaveApplication extends Component<
       sickSheet: sickSheet
     };
 
-    this.props.onLeaveApplicationClick(applicationDetails);
+    onLeaveApplicationClick(applicationDetails);
+
+    refetch();
   }
 
   render() {
-    const { isFetching, message, user_detail } = this.props;
+    const { user_detail } = this.props;
     let gender = user_detail.gender ? user_detail.gender.toLowerCase() : null;
-
-    if (this.state.successMessage) {
-      return (
-        <div className="card">
-          <div className="card-body text-center">
-            <p>{this.state.successMessage}</p>
-            <button
-              onClick={this.handleUserConfirm}
-              className="btn btn-primary btn-sm"
-            >
-              Apply for leave
-            </button>
-          </div>
-        </div>
-      );
-    }
 
     return (
       <div className="card card-body">
@@ -553,9 +543,6 @@ class LeaveApplication extends Component<
             </button>
           </div>
         </form>
-        <div className="text-danger text-center">
-          {isFetching ? <div className="loader" /> : message}
-        </div>
         <div className="text-danger text-center pt-2">
           <div>{this.state.errorMessage}</div>
         </div>
@@ -571,7 +558,7 @@ type Props = {
   publicHolidays: Object,
   onLeaveApplicationClick: Function,
   message: string,
-  isFetching: boolean
+  dispatch: Function
 };
 
 const Application = (props: Props) => {
@@ -580,13 +567,16 @@ const Application = (props: Props) => {
     userRecords: {
       loading: recordLoading,
       error: recordError,
+      refetch,
       findUser: recordUser
     },
     publicHolidays: {
       loading: holidayLoading,
       error: holidayError,
       publicHoliday
-    }
+    },
+    message,
+    dispatch
   } = props;
 
   if (loading || recordLoading || holidayLoading) {
@@ -622,15 +612,31 @@ const Application = (props: Props) => {
           <UserRecord user_detail={user} />
         </div>
         <div className="col-md-6 mr-auto mb-2">
-          <LeaveApplication
-            id={props.id}
-            user_detail={user}
-            user_record={recordUser}
-            public_holiday={publicHoliday}
-            onLeaveApplicationClick={props.onLeaveApplicationClick}
-            message={props.message}
-            isFetching={props.isFetching}
-          />
+          {message ? (
+            <div className="card">
+              <div className="card-body text-center">
+                <p>{message}</p>
+                <button
+                  className="btn btn-primary btn-sm"
+                  onClick={() =>
+                    dispatch({
+                      type: 'CLEAR_LEAVE_APPLICATION_MESSAGE'
+                    })}
+                >
+                  Apply for leave
+                </button>
+              </div>
+            </div>
+          ) : (
+            <LeaveApplication
+              id={props.id}
+              user_detail={user}
+              user_record={recordUser}
+              public_holiday={publicHoliday}
+              refetch={refetch}
+              onLeaveApplicationClick={props.onLeaveApplicationClick}
+            />
+          )}
         </div>
       </div>
     </div>
