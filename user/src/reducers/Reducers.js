@@ -16,7 +16,8 @@ import { LOGOUT_USER_SUCCESS } from '../actions/UserLogout';
 import {
   LEAVE_APPLICATION_REQUEST,
   LEAVE_APPLICATION_SUCCESS,
-  LEAVE_APPLICATION_FAILURE
+  LEAVE_APPLICATION_FAILURE,
+  CLEAR_LEAVE_APPLICATION_MESSAGE
 } from '../actions/LeaveApplication';
 
 import {
@@ -139,13 +140,20 @@ const leaveApplication = (
     case LEAVE_APPLICATION_SUCCESS:
       return {
         ...state,
-        isFetching: false
+        isFetching: false,
+        message: action.message
       };
     case LEAVE_APPLICATION_FAILURE:
       return {
         ...state,
         isFetching: false,
         message: action.message
+      };
+    case CLEAR_LEAVE_APPLICATION_MESSAGE:
+      return {
+        ...state,
+        isFetching: false,
+        message: ''
       };
     default:
       return state;
