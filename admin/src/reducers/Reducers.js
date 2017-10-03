@@ -110,20 +110,6 @@ import {
 } from '../actions/PublicHoliday';
 
 import {
-  ADD_PUBLIC_HOLIDAY_REQUEST,
-  ADD_PUBLIC_HOLIDAY_SUCCESS,
-  ADD_PUBLIC_HOLIDAY_FAILURE,
-  CLEAR_ADD_PUBLIC_MESSAGE
-} from '../actions/NewPublicHoliday';
-
-import {
-  DELETE_PUBLIC_HOLIDAY_REQUEST,
-  DELETE_PUBLIC_HOLIDAY_SUCCESS,
-  DELETE_PUBLIC_HOLIDAY_FAILURE,
-  CLEAR_DELETE_PUBLIC_MESSAGE
-} from '../actions/DeletePublicHoliday';
-
-import {
   APPROVE_LEAVE_REQUEST,
   APPROVE_LEAVE_SUCCESS,
   APPROVE_LEAVE_ERROR,
@@ -666,82 +652,6 @@ const publicHoliday = (
   }
 };
 
-type addPublicHolidayState = {
-  isAddPublicFetching: boolean,
-  addPublicMessage: string
-};
-
-const addPublicHoliday = (
-  state: addPublicHolidayState = {
-    isAddPublicFetching: false,
-    addPublicMessage: ''
-  },
-  action
-) => {
-  switch (action.type) {
-    case ADD_PUBLIC_HOLIDAY_REQUEST:
-      return { ...state, isAddPublicFetching: true };
-    case ADD_PUBLIC_HOLIDAY_SUCCESS:
-      return {
-        ...state,
-        isAddPublicFetching: false,
-        addPublicMessage: action.message
-      };
-    case ADD_PUBLIC_HOLIDAY_FAILURE:
-      return {
-        ...state,
-        isAddPublicFetching: false,
-        addPublicMessage: action.message
-      };
-    case CLEAR_ADD_PUBLIC_MESSAGE:
-      return {
-        ...state,
-        isAddPublicFetching: false,
-        addPublicMessage: ''
-      };
-    default:
-      return state;
-  }
-};
-
-type deletePublicHolidayState = {
-  isDeletePublicFetching: boolean,
-  deletePublicMessage: string
-};
-
-const deletePublicHoliday = (
-  state: deletePublicHolidayState = {
-    isDeletePublicFetching: false,
-    deletePublicMessage: ''
-  },
-  action
-) => {
-  switch (action.type) {
-    case DELETE_PUBLIC_HOLIDAY_REQUEST:
-      return { ...state, isDeletePublicFetching: true };
-    case DELETE_PUBLIC_HOLIDAY_SUCCESS:
-      return {
-        ...state,
-        isDeletePublicFetching: false,
-        deletePublicMessage: action.message
-      };
-    case DELETE_PUBLIC_HOLIDAY_FAILURE:
-      return {
-        ...state,
-        isDeletePublicFetching: false,
-        deletePublicMessage: action.message
-      };
-    case CLEAR_DELETE_PUBLIC_MESSAGE:
-      return {
-        ...state,
-        isDeletePublicFetching: false,
-        deletePublicMessage: ''
-      };
-    default:
-      return state;
-  }
-};
-
 type approveLeaveState = {
   isApproveLeaveFetching: boolean,
   approveLeavemessage: string
@@ -906,9 +816,7 @@ const rootReducer = combineReducers({
   modifyUser,
   archiveUser,
   unArchiveUser,
-  addPublicHoliday,
   publicHoliday,
-  deletePublicHoliday,
   approveLeave,
   declineLeave,
   editLeave,
