@@ -127,7 +127,7 @@ type leaveApplicationState = {
   reason: string,
   sickSheet: any,
   errorMessage: string,
-  successMessage: string,
+  checkingMessage: string,
   focusedInput: ?boolean
 };
 
@@ -148,7 +148,7 @@ class LeaveApplication extends Component<
     super();
     this.state = {
       errorMessage: '',
-      successMessage: '',
+      checkingMessage: '',
       leave: '',
       leaveType: '',
       startDate: null,
@@ -199,7 +199,7 @@ class LeaveApplication extends Component<
   }
 
   handleUserConfirm() {
-    this.setState({ successMessage: '' });
+    this.setState({ checkingMessage: '' });
   }
 
   handleSubmit(e: Event) {
@@ -399,7 +399,7 @@ class LeaveApplication extends Component<
       errorMessage: '',
       startDate: null,
       endDate: null,
-      successMessage: 'Your application has been submitted.'
+      checkingMessage: 'Checking...'
     });
 
     const applicationDetails = {
@@ -424,6 +424,10 @@ class LeaveApplication extends Component<
   render() {
     const { user_detail } = this.props;
     let gender = user_detail.gender ? user_detail.gender.toLowerCase() : null;
+
+    if (this.state.checkingMessage) {
+      return <div className="loader" />;
+    }
 
     return (
       <div className="card card-body">
