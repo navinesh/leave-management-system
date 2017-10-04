@@ -61,4 +61,47 @@ class Query(graphene.ObjectType):
         return query.filter(LeaverecordModel.leave_status == leave_status)
 
 
-schema = graphene.Schema(query=Query)
+# Create public holiday
+class addPublicholiday(graphene.Mutation):
+    class Input:
+        holiday_date = graphene.String()
+
+    ok = graphene.Boolean()
+    publicHoliday = graphene.Field(Publicholiday)
+
+    @classmethod
+    def mutate(cls, _, args, context, info):
+        publicHoliday = PublicholidayModel(
+            holiday_date=args.get('holiday_date'))
+        db_session.add(publicHoliday)
+        db_session.commit()
+        ok = True
+        return addPublicholiday(publicHoliday=publicHoliday, ok=ok)
+
+
+# Delete public holiday
+class deletePublicholiday(graphene.Mutation):
+    class Input:
+        holiday_date = graphene.String()
+
+    ok = graphene.Boolean()
+    publicHoliday = graphene.Field(Publicholiday)
+
+    @classmethod
+    def mutate(cls, _, args, context, info):
+        query = Publicholiday.get_query(context)
+        holiday_date = args.get('holiday_date')
+        publicHoliday = query.filter(
+            PublicholidayModel.holiday_date == holiday_date).first()
+        db_session.delete(publicHoliday)
+        db_session.commit()
+        ok = True
+        return addPublicholiday(publicHoliday=publicHoliday, ok=ok)
+
+
+class MyMutations(graphene.ObjectType):
+    add_publicholiday = addPublicholiday.Field()
+    delete_publicholiday = deletePublicholiday.Field()
+
+
+schema = graphene.Schema(query=Query, mutation=MyMutations)
