@@ -99,9 +99,9 @@ class deletePublicholiday(graphene.Mutation):
         return addPublicholiday(publicHoliday=publicHoliday, ok=ok)
 
 
-class MyMutations(graphene.ObjectType):
+class Mutations(graphene.ObjectType):
     add_publicholiday = addPublicholiday.Field()
     delete_publicholiday = deletePublicholiday.Field()
 
 
-schema = graphene.Schema(query=Query, mutation=MyMutations)
+schema = graphene.Schema(query=Query, mutation=Mutations)
