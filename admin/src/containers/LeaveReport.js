@@ -5,7 +5,6 @@ import { graphql, gql, compose } from 'react-apollo';
 import { Redirect } from 'react-router-dom';
 
 import { fetchLoginFromToken } from '../actions/AdminLogin';
-
 import LeaveReportList from '../components/LeaveReport';
 
 const APPROVED_RECORD = gql`
