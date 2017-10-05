@@ -6,23 +6,23 @@ import { CSVLink } from 'react-csv';
 const moment = require('moment');
 
 const ApprovedLeaveReportList = props => {
-  const approvedRecord = props.approved_record.sort((a, b) => {
-    return a.user_id - b.user_id;
+  const approvedRecord = props.approved_record.map(a => a).sort((b, c) => {
+    return b.userId - c.userId;
   });
 
   const approvedRecordItems = approvedRecord.map(record => (
     <tr key={record.id}>
       <td>
-        {record.othernames} {record.surname}
+        {record.user.othernames} {record.user.surname}
       </td>
-      <td>{record.leave_name}</td>
-      <td>{record.leave_type}</td>
-      <td>{record.start_date}</td>
-      <td>{record.end_date}</td>
-      <td>{record.leave_status}</td>
-      <td>{record.leave_reason}</td>
-      <td>{record.date_posted}</td>
-      <td>{record.date_reviewed}</td>
+      <td>{record.leaveName}</td>
+      <td>{record.leaveType}</td>
+      <td>{record.startDate}</td>
+      <td>{record.endDate}</td>
+      <td>{record.leaveStatus}</td>
+      <td>{record.leaveReason}</td>
+      <td>{record.datePosted}</td>
+      <td>{record.dateReviewed}</td>
     </tr>
   ));
 
@@ -70,23 +70,23 @@ const ApprovedLeaveReportList = props => {
 };
 
 const PendingLeaveReportList = props => {
-  const pendingRecord = props.pending_record.sort((a, b) => {
-    return a.user_id - b.user_id;
+  const pendingRecord = props.pending_record.map(a => a).sort((b, c) => {
+    return b.userId - c.userId;
   });
 
   const pendingRecordItems = pendingRecord.map(record => (
     <tr key={record.id}>
       <td>
-        {record.othernames} {record.surname}
+        {record.user.othernames} {record.user.surname}
       </td>
-      <td>{record.leave_name}</td>
-      <td>{record.leave_type}</td>
-      <td>{record.start_date}</td>
-      <td>{record.end_date}</td>
-      <td>{record.leave_status}</td>
-      <td>{record.leave_reason}</td>
-      <td>{record.date_posted}</td>
-      <td>{record.date_reviewed}</td>
+      <td>{record.leaveName}</td>
+      <td>{record.leaveType}</td>
+      <td>{record.startDate}</td>
+      <td>{record.endDate}</td>
+      <td>{record.leaveStatus}</td>
+      <td>{record.leaveReason}</td>
+      <td>{record.datePosted}</td>
+      <td>{record.dateReviewed}</td>
     </tr>
   ));
 
@@ -134,23 +134,23 @@ const PendingLeaveReportList = props => {
 };
 
 const CancelledLeaveReportList = props => {
-  const cancelledRecord = props.cancelled_record.sort((a, b) => {
-    return a.user_id - b.user_id;
+  const cancelledRecord = props.cancelled_record.map(a => a).sort((b, c) => {
+    return b.userId - c.userId;
   });
 
   const cancelledRecordItems = cancelledRecord.map(record => (
     <tr key={record.id}>
       <td>
-        {record.othernames} {record.surname}
+        {record.user.othernames} {record.user.surname}
       </td>
-      <td>{record.leave_name}</td>
-      <td>{record.leave_type}</td>
-      <td>{record.start_date}</td>
-      <td>{record.end_date}</td>
-      <td>{record.leave_status}</td>
-      <td>{record.cancelled_reason}</td>
-      <td>{record.date_posted}</td>
-      <td>{record.date_reviewed}</td>
+      <td>{record.leaveName}</td>
+      <td>{record.leaveType}</td>
+      <td>{record.startDate}</td>
+      <td>{record.endDate}</td>
+      <td>{record.leaveStatus}</td>
+      <td>{record.cancelledReason}</td>
+      <td>{record.datePosted}</td>
+      <td>{record.dateReviewed}</td>
     </tr>
   ));
 
@@ -198,23 +198,23 @@ const CancelledLeaveReportList = props => {
 };
 
 const DeclinedLeaveReportList = props => {
-  const declinedRecord = props.declined_record.sort((a, b) => {
-    return a.user_id - b.user_id;
+  const declinedRecord = props.declined_record.map(a => a).sort((b, c) => {
+    return b.userId - c.userId;
   });
 
   const declinedRecordItems = declinedRecord.map(record => (
     <tr key={record.id}>
       <td>
-        {record.othernames} {record.surname}
+        {record.user.othernames} {record.user.surname}
       </td>
-      <td>{record.leave_name}</td>
-      <td>{record.leave_type}</td>
-      <td>{record.start_date}</td>
-      <td>{record.end_date}</td>
-      <td>{record.leave_status}</td>
-      <td>{record.declined_reason}</td>
-      <td>{record.date_posted}</td>
-      <td>{record.date_reviewed}</td>
+      <td>{record.leaveName}</td>
+      <td>{record.leaveType}</td>
+      <td>{record.startDate}</td>
+      <td>{record.endDate}</td>
+      <td>{record.leaveStatus}</td>
+      <td>{record.declinedReason}</td>
+      <td>{record.datePosted}</td>
+      <td>{record.dateReviewed}</td>
     </tr>
   ));
 
@@ -262,18 +262,18 @@ const DeclinedLeaveReportList = props => {
 };
 
 const UserUpdatesReportList = props => {
-  const userUpdates = props.user_updates.sort((a, b) => {
-    return a.user_id - b.user_id;
+  const userUpdates = props.user_updates.edges.map(a => a.node).sort((b, c) => {
+    return b.userId - c.userId;
   });
 
   const userUpdateItems = userUpdates.map(record => {
-    let dob = new Date(record.date_of_birth);
+    let dob = new Date(record.dateOfBirth);
     let dateOfBirth = moment(dob).format('DD/MM/YYYY');
 
     return (
       <tr key={record.id}>
         <td>
-          {record.othernames} {record.surname}
+          {record.user.othernames} {record.user.surname}
         </td>
         <td>{record.annual}</td>
         <td>{record.sick}</td>
@@ -284,7 +284,7 @@ const UserUpdatesReportList = props => {
         <td>{dateOfBirth}</td>
         <td>{record.gender}</td>
         <td>{record.editReason}</td>
-        <td>{record.date_posted}</td>
+        <td>{record.datePosted}</td>
       </tr>
     );
   });
@@ -335,26 +335,28 @@ const UserUpdatesReportList = props => {
 };
 
 const LeaveUpdatesReportList = props => {
-  const leaveUpdates = props.leave_updates.sort((a, b) => {
-    return a.leave_id - b.leave_id;
-  });
+  const leaveUpdates = props.leave_updates.edges
+    .map(a => a.node)
+    .sort((b, c) => {
+      return b.leaveId - c.leaveId;
+    });
 
   const leaveUpdateItems = leaveUpdates.map(record => (
     <tr key={record.id}>
-      <td>{record.leave_id}</td>
+      <td>{record.leaveId}</td>
       <td>
-        {record.othernames} {record.surname}
+        {record.leaverecord.user.othernames} {record.leaverecord.user.surname}
       </td>
-      <td>{record.previous_start_date}</td>
-      <td>{record.previous_end_date}</td>
-      <td>{record.previous_leave_name}</td>
-      <td>{record.previous_leave_days}</td>
-      <td>{record.updated_start_date}</td>
-      <td>{record.updated_end_date}</td>
-      <td>{record.updated_leave_name}</td>
-      <td>{record.updated_leave_days}</td>
+      <td>{record.previousStartDate}</td>
+      <td>{record.previousEndDate}</td>
+      <td>{record.previousLeaveName}</td>
+      <td>{record.previousLeaveDays}</td>
+      <td>{record.updatedStartDate}</td>
+      <td>{record.updatedEndDate}</td>
+      <td>{record.updatedLeaveName}</td>
+      <td>{record.updatedLeaveDays}</td>
       <td>{record.editReason}</td>
-      <td>{record.date_posted}</td>
+      <td>{record.datePosted}</td>
     </tr>
   ));
 
@@ -465,12 +467,12 @@ class Tabs extends Component<tabsProps, tabsState> {
 }
 
 type Props = {
-  cancelled_record: Array<any>,
-  declined_record: Array<any>,
-  approved_record: Array<any>,
-  pending_record: Array<any>,
-  user_updates: Array<any>,
-  leave_updates: Array<any>
+  cancelled_record: Object,
+  declined_record: Object,
+  approved_record: Object,
+  pending_record: Object,
+  user_updates: Object,
+  leave_updates: Object
 };
 
 export default class LeaveReportList extends Component<Props> {
