@@ -1,31 +1,163 @@
 // @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { graphql, gql, compose } from 'react-apollo';
 import { Redirect } from 'react-router-dom';
 
 import { fetchLoginFromToken } from '../actions/AdminLogin';
-import {
-  fetchApprovedLeaveReport,
-  fetchPendingLeaveReport,
-  fetchCancelledRecord,
-  fetchDeclinedRecord,
-  fetchUserUpdates,
-  fetchLeaveUpdates
-} from '../actions/LeaveReport';
 
 import LeaveReportList from '../components/LeaveReport';
+
+const APPROVED_RECORD = gql`
+  {
+    findLeaveRecord(leaveStatus: "approved") {
+      id
+      userId
+      user {
+        othernames
+        surname
+      }
+      leaveName
+      leaveType
+      startDate
+      endDate
+      leaveDays
+      leaveStatus
+      leaveReason
+      datePosted
+      dateReviewed
+    }
+  }
+`;
+
+const PENDING_RECORD = gql`
+  {
+    findLeaveRecord(leaveStatus: "pending") {
+      user {
+        othernames
+        surname
+      }
+      id
+      leaveName
+      leaveType
+      startDate
+      endDate
+      leaveDays
+      leaveStatus
+      leaveReason
+      datePosted
+      dateReviewed
+    }
+  }
+`;
+
+const CANCELLED_RECORD = gql`
+  {
+    findLeaveRecord(leaveStatus: "cancelled") {
+      user {
+        othernames
+        surname
+      }
+      id
+      leaveName
+      leaveType
+      startDate
+      endDate
+      leaveDays
+      leaveStatus
+      cancelledReason
+      datePosted
+      dateReviewed
+    }
+  }
+`;
+
+const DECLINED_RECORD = gql`
+  {
+    findLeaveRecord(leaveStatus: "declined") {
+      user {
+        othernames
+        surname
+      }
+      id
+      leaveName
+      leaveType
+      startDate
+      endDate
+      leaveDays
+      leaveStatus
+      declinedReason
+      datePosted
+      dateReviewed
+    }
+  }
+`;
+
+const USER_UPDATES_RECORD = gql`
+  {
+    userUpdates {
+      edges {
+        node {
+          id
+          userId
+          user {
+            othernames
+            surname
+          }
+          annual
+          sick
+          bereavement
+          christmas
+          maternity
+          designation
+          dateOfBirth
+          gender
+          editReason
+          datePosted
+        }
+      }
+    }
+  }
+`;
+
+const LEAVE_UPDATES_RECORD = gql`
+  {
+    leaveUpdates {
+      edges {
+        node {
+          id
+          leaveId
+          previousStartDate
+          previousEndDate
+          previousLeaveName
+          previousLeaveDays
+          updatedStartDate
+          updatedEndDate
+          updatedLeaveName
+          updatedLeaveDays
+          editReason
+          datePosted
+          leaverecord {
+            user {
+              othernames
+              surname
+            }
+          }
+        }
+      }
+    }
+  }
+`;
 
 type Props = {
   isAuthenticated: boolean,
   auth_info: Object,
-  isFetching: boolean,
-  leave_record: Array<any>,
-  approved_record: Array<any>,
-  pending_record: Array<any>,
-  cancelled_record: Array<any>,
-  declined_record: Array<any>,
-  user_updates: Array<any>,
-  leave_updates: Array<any>,
+  approvedRecord: Object,
+  pendingRecord: Object,
+  cancelledRecord: Object,
+  declinedRecord: Object,
+  userUpdates: Object,
+  leaveUpdates: Object,
   dispatch: Function
 };
 
@@ -41,46 +173,78 @@ class LeaveReport extends Component<Props> {
     }
   }
 
-  componentDidMount() {
-    if (this.props.isAuthenticated) {
-      this.props.dispatch(fetchApprovedLeaveReport());
-      this.props.dispatch(fetchPendingLeaveReport());
-      this.props.dispatch(fetchCancelledRecord());
-      this.props.dispatch(fetchDeclinedRecord());
-      this.props.dispatch(fetchUserUpdates());
-      this.props.dispatch(fetchLeaveUpdates());
-    }
-  }
-
   render() {
     const {
       isAuthenticated,
-      isFetching,
-      approved_record,
-      pending_record,
-      cancelled_record,
-      declined_record,
-      user_updates,
-      leave_updates
+      approvedRecord: {
+        loading: approvedLoading,
+        error: approvedError,
+        findLeaveRecord: approved_record
+      },
+      pendingRecord: {
+        loading: pendingLoading,
+        error: pendingError,
+        findLeaveRecord: pending_record
+      },
+      cancelledRecord: {
+        loading: cancelledLoading,
+        error: cancelledError,
+        findLeaveRecord: cancelled_record
+      },
+      declinedRecord: {
+        loading: declinedLoading,
+        error: declinedError,
+        findLeaveRecord: declined_record
+      },
+      userUpdates: {
+        loading: userLoading,
+        error: userError,
+        userUpdates: user_updates
+      },
+      leaveUpdates: {
+        loading: leaveLoading,
+        error: leaveError,
+        leaveUpdates: leave_updates
+      }
     } = this.props;
+
+    if (
+      approvedLoading ||
+      pendingLoading ||
+      cancelledLoading ||
+      declinedLoading ||
+      userLoading ||
+      leaveLoading
+    ) {
+      return (
+        <div className="text-center">
+          <div className="loader1" />
+        </div>
+      );
+    }
+
+    if (
+      approvedError ||
+      pendingError ||
+      cancelledError ||
+      declinedError ||
+      userError ||
+      leaveError
+    ) {
+      return <p>Error...</p>;
+    }
 
     return (
       <div className="LeaveReport">
         {isAuthenticated ? (
-          isFetching ? (
-            <div className="text-center">
-              <div className="loader1" />
-            </div>
-          ) : (
-            <LeaveReportList
-              approved_record={approved_record}
-              pending_record={pending_record}
-              cancelled_record={cancelled_record}
-              declined_record={declined_record}
-              user_updates={user_updates}
-              leave_updates={leave_updates}
-            />
-          )
+          <LeaveReportList
+            approved_record={approved_record}
+            pending_record={pending_record}
+            cancelled_record={cancelled_record}
+            declined_record={declined_record}
+            user_updates={user_updates}
+            leave_updates={leave_updates}
+          />
         ) : (
           <Redirect to="/login" />
         )}
@@ -90,34 +254,30 @@ class LeaveReport extends Component<Props> {
 }
 
 const mapStateToProps = state => {
-  const {
-    adminAuth,
-    approvedLeaveReport,
-    pendingLeaveReport,
-    cancelledReport,
-    declinedReport,
-    userUpdates,
-    leaveUpdates
-  } = state;
+  const { adminAuth } = state;
   const { auth_info, isAuthenticated } = adminAuth;
-  const { isFetching, approved_record } = approvedLeaveReport;
-  const { pending_record } = pendingLeaveReport;
-  const { cancelled_record } = cancelledReport;
-  const { declined_record } = declinedReport;
-  const { user_updates } = userUpdates;
-  const { leave_updates } = leaveUpdates;
 
-  return {
-    auth_info,
-    isAuthenticated,
-    isFetching,
-    approved_record,
-    pending_record,
-    cancelled_record,
-    declined_record,
-    user_updates,
-    leave_updates
-  };
+  return { auth_info, isAuthenticated };
 };
 
-export default connect(mapStateToProps)(LeaveReport);
+export default compose(
+  connect(mapStateToProps),
+  graphql(APPROVED_RECORD, {
+    name: 'approvedRecord'
+  }),
+  graphql(PENDING_RECORD, {
+    name: 'pendingRecord'
+  }),
+  graphql(CANCELLED_RECORD, {
+    name: 'cancelledRecord'
+  }),
+  graphql(DECLINED_RECORD, {
+    name: 'declinedRecord'
+  }),
+  graphql(USER_UPDATES_RECORD, {
+    name: 'userUpdates'
+  }),
+  graphql(LEAVE_UPDATES_RECORD, {
+    name: 'leaveUpdates'
+  })
+)(LeaveReport);
