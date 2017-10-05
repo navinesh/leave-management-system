@@ -8,6 +8,7 @@ import { fetchApprovedLeave } from '../actions/ApprovedLeave';
 import { submitEditApprovedLeave } from '../actions/EditLeave';
 import { submitCancelLeave } from '../actions/CancelLeave';
 import ApprovedLeaveList from '../components/ApprovedLeave';
+import { fetchPublicHoliday } from '../actions/PublicHoliday';
 
 type Props = {
   isAuthenticated: boolean,
@@ -37,6 +38,7 @@ class ApprovedLeave extends Component<Props> {
   componentDidMount() {
     if (this.props.isAuthenticated) {
       this.props.dispatch(fetchApprovedLeave());
+      this.props.dispatch(fetchPublicHoliday());
     }
   }
 
