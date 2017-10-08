@@ -55,27 +55,6 @@ import {
 } from '../actions/SickSheetRecord';
 
 import {
-  REQUEST_APPROVED_LEAVE_REPORT,
-  RECEIVE_APPROVED_LEAVE_REPORT,
-  ERROR_APPROVED_LEAVE_REPORT,
-  REQUEST_PENDING_LEAVE_REPORT,
-  RECEIVE_PENDING_LEAVE_REPORT,
-  ERROR_PENDING_LEAVE_REPORT,
-  REQUEST_CANCELLED_RECORD,
-  RECEIVE_CANCELLED_RECORD,
-  ERROR_CANCELLED_RECORD,
-  REQUEST_DECLINED_RECORD,
-  RECEIVE_DECLINED_RECORD,
-  ERROR_DECLINED_RECORD,
-  REQUEST_USER_UPDATES,
-  RECEIVE_USER_UPDATES,
-  ERROR_USER_UPDATES,
-  REQUEST_LEAVE_UPDATES,
-  RECEIVE_LEAVE_UPDATES,
-  ERROR_LEAVE_UPDATES
-} from '../actions/LeaveReport';
-
-import {
   NEW_USER_RECORD_REQUEST,
   NEW_USER_RECORD_SUCCESS,
   NEW_USER_RECORD_FAILURE,
@@ -331,152 +310,6 @@ const archivedStaffRecord = (
         archived_staff_record: action.archived_staff_record
       };
     case ERROR_ARCHIVED_STAFF_RECORD:
-      return { ...state, isFetching: false };
-    default:
-      return state;
-  }
-};
-
-type approvedLeaveReportState = {
-  isFetching: boolean,
-  approved_record: Array<any>
-};
-
-const approvedLeaveReport = (
-  state: approvedLeaveReportState = { isFetching: false, approved_record: [] },
-  action
-) => {
-  switch (action.type) {
-    case REQUEST_APPROVED_LEAVE_REPORT:
-      return { ...state, isFetching: true };
-    case RECEIVE_APPROVED_LEAVE_REPORT:
-      return {
-        ...state,
-        isFetching: false,
-        approved_record: action.approved_record
-      };
-    case ERROR_APPROVED_LEAVE_REPORT:
-      return { ...state, isFetching: false };
-    default:
-      return state;
-  }
-};
-
-type pendingLeaveReportState = {
-  isFetching: boolean,
-  pending_record: Array<any>
-};
-
-const pendingLeaveReport = (
-  state: pendingLeaveReportState = { isFetching: false, pending_record: [] },
-  action
-) => {
-  switch (action.type) {
-    case REQUEST_PENDING_LEAVE_REPORT:
-      return { ...state, isFetching: true };
-    case RECEIVE_PENDING_LEAVE_REPORT:
-      return {
-        ...state,
-        isFetching: false,
-        pending_record: action.pending_record
-      };
-    case ERROR_PENDING_LEAVE_REPORT:
-      return { ...state, isFetching: false };
-    default:
-      return state;
-  }
-};
-
-type cancelledReportState = {
-  isFetching: boolean,
-  cancelled_record: Array<any>
-};
-
-const cancelledReport = (
-  state: cancelledReportState = { isFetching: false, cancelled_record: [] },
-  action
-) => {
-  switch (action.type) {
-    case REQUEST_CANCELLED_RECORD:
-      return { ...state, isFetching: true };
-    case RECEIVE_CANCELLED_RECORD:
-      return {
-        ...state,
-        isFetching: false,
-        cancelled_record: action.cancelled_record
-      };
-    case ERROR_CANCELLED_RECORD:
-      return { ...state, isFetching: false };
-    default:
-      return state;
-  }
-};
-
-type declinedReportState = {
-  isFetching: boolean,
-  declined_record: Array<any>
-};
-
-const declinedReport = (
-  state: declinedReportState = { isFetching: false, declined_record: [] },
-  action
-) => {
-  switch (action.type) {
-    case REQUEST_DECLINED_RECORD:
-      return { ...state, isFetching: true };
-    case RECEIVE_DECLINED_RECORD:
-      return {
-        ...state,
-        isFetching: false,
-        declined_record: action.declined_record
-      };
-    case ERROR_DECLINED_RECORD:
-      return { ...state, isFetching: false };
-    default:
-      return state;
-  }
-};
-
-type userUpdateState = {
-  isFetching: boolean,
-  user_updates: Array<any>
-};
-
-const userUpdates = (
-  state: userUpdateState = { isFetching: false, user_updates: [] },
-  action
-) => {
-  switch (action.type) {
-    case REQUEST_USER_UPDATES:
-      return { ...state, isFetching: true };
-    case RECEIVE_USER_UPDATES:
-      return { ...state, isFetching: false, user_updates: action.user_updates };
-    case ERROR_USER_UPDATES:
-      return { ...state, isFetching: false };
-    default:
-      return state;
-  }
-};
-
-type leaveUpdateState = {
-  isFetching: boolean,
-  leave_updates: Array<any>
-};
-
-const leaveUpdates = (
-  state: leaveUpdateState = { isFetching: false, leave_updates: [] },
-  action
-) => {
-  switch (action.type) {
-    case REQUEST_LEAVE_UPDATES:
-      return { ...state, isFetching: true };
-    case RECEIVE_LEAVE_UPDATES:
-      return {
-        ...state,
-        isFetching: false,
-        leave_updates: action.leave_updates
-      };
-    case ERROR_LEAVE_UPDATES:
       return { ...state, isFetching: false };
     default:
       return state;
@@ -805,12 +638,6 @@ const rootReducer = combineReducers({
   approvedLeave,
   staffRecord,
   archivedStaffRecord,
-  approvedLeaveReport,
-  pendingLeaveReport,
-  cancelledReport,
-  declinedReport,
-  userUpdates,
-  leaveUpdates,
   sickSheet,
   addUser,
   modifyUser,
