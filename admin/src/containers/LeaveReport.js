@@ -230,6 +230,14 @@ class LeaveReport extends Component<Props> {
       userError ||
       leaveError
     ) {
+      console.log(
+        approvedError ||
+          pendingError ||
+          cancelledError ||
+          declinedError ||
+          userError ||
+          leaveError
+      );
       return <p>Error...</p>;
     }
 
