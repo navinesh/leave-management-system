@@ -238,7 +238,11 @@ class LeaveReport extends Component<Props> {
           userError ||
           leaveError
       );
-      return <p>Error...</p>;
+      return (
+        <div className="text-center">
+          <p>Something went wrong!</p>
+        </div>
+      );
     }
 
     return (
