@@ -1,5 +1,5 @@
 import graphene
-from graphene import relay
+from graphene import relay, String, Int
 from graphene_sqlalchemy import SQLAlchemyConnectionField, SQLAlchemyObjectType
 from models import db_session, User as UserModel, Userupdates as UserupdatesModel, \
 Leaverecord as LeaverecordModel, Leaveupdates as LeaveupdatesModel, \
@@ -30,12 +30,6 @@ class Leaveupdates(SQLAlchemyObjectType):
         interfaces = (relay.Node, )
 
 
-class Adminuser(SQLAlchemyObjectType):
-    class Meta:
-        model = AdminuserModel
-        interfaces = (relay.Node, )
-
-
 class Publicholiday(SQLAlchemyObjectType):
     class Meta:
         model = PublicholidayModel
@@ -44,9 +38,8 @@ class Publicholiday(SQLAlchemyObjectType):
 
 class Query(graphene.ObjectType):
     node = relay.Node.Field()
-    users = SQLAlchemyConnectionField(User)
     user = relay.Node.Field(User)
-    admin_user = relay.Node.Field(Adminuser)
+    users = SQLAlchemyConnectionField(User)
     user_updates = SQLAlchemyConnectionField(Userupdates)
     leave_updates = SQLAlchemyConnectionField(Leaveupdates)
     public_holiday = SQLAlchemyConnectionField(Publicholiday)
