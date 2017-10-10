@@ -13,6 +13,7 @@ const PUBLIC_HOLIDAY = gql`
       edges {
         node {
           id
+          dbId
           holidayDate
         }
       }
@@ -32,11 +33,11 @@ const addPublicholiday = gql`
 `;
 
 const deletePublicholiday = gql`
-  mutation deletePublicholiday($holidayDate: String!) {
-    deletePublicholiday(holidayDate: $holidayDate) {
+  mutation deletePublicholiday($dbId: Int!) {
+    deletePublicholiday(dbId: $dbId) {
       publicHoliday {
         id
-        holidayDate
+        dbId
       }
     }
   }
@@ -159,11 +160,9 @@ class DeletePublicHoliday extends Component<
   }
 
   handleDelete({ target }: SyntheticInputEvent<>) {
-    const holidayDate = target.value
-      ? moment(target.value, 'dddd, Do MMMM YYYY').format('MM DD YYYY')
-      : null;
+    const dbId = target.value;
 
-    if (!holidayDate) {
+    if (!dbId) {
       this.setState({
         errorMessage: 'Valid date is required!'
       });
@@ -174,7 +173,7 @@ class DeletePublicHoliday extends Component<
       return null;
     }
 
-    this.props.deleteHoliday(holidayDate);
+    this.props.deleteHoliday(dbId);
 
     this.setState({ errorMessage: '' });
   }
@@ -192,7 +191,7 @@ class DeletePublicHoliday extends Component<
           {holiday_date}
           <button
             className="btn btn-link btn-sm text-danger"
-            value={holiday_date}
+            value={item.dbId}
             onClick={this.handleDelete}
           >
             Delete
@@ -284,8 +283,7 @@ export default compose(
   graphql(deletePublicholiday, {
     name: 'deleteHoliday',
     props: ({ deleteHoliday }) => ({
-      deleteHoliday: holidayDate =>
-        deleteHoliday({ variables: { holidayDate } })
+      deleteHoliday: dbId => deleteHoliday({ variables: { dbId } })
     }),
     options: {
       refetchQueries: [{ query: PUBLIC_HOLIDAY }]
