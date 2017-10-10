@@ -27,7 +27,7 @@ const ApproveLeave = props => (
                   <div className="form-group">
                     <label>Leave</label>
                     <div className="form-control">
-                      <em>{record.leave_name}</em>
+                      <em>{record.leaveName}</em>
                     </div>
                   </div>
                 </div>
@@ -35,7 +35,7 @@ const ApproveLeave = props => (
                   <div className="form-group">
                     <label>Leave type</label>
                     <div className="form-control">
-                      <em>{record.leave_type}</em>
+                      <em>{record.leaveType}</em>
                     </div>
                   </div>
                 </div>
@@ -45,7 +45,7 @@ const ApproveLeave = props => (
                   <div className="form-group">
                     <label>Start date</label>
                     <div className="form-control">
-                      <em>{record.start_date}</em>
+                      <em>{record.startDate}</em>
                     </div>
                   </div>
                 </div>
@@ -53,7 +53,7 @@ const ApproveLeave = props => (
                   <div className="form-group">
                     <label>End date</label>
                     <div className="form-control">
-                      <em>{record.end_date}</em>
+                      <em>{record.endDate}</em>
                     </div>
                   </div>
                 </div>
@@ -63,7 +63,7 @@ const ApproveLeave = props => (
                   <div className="form-group">
                     <label>Leave days</label>
                     <div className="form-control text-muted">
-                      <em>{record.leave_days}</em>
+                      <em>{record.leaveDays}</em>
                     </div>
                   </div>
                 </div>
@@ -73,7 +73,7 @@ const ApproveLeave = props => (
                   <div className="form-group">
                     <label>Leave reason</label>
                     <div className="form-control text-muted">
-                      <em>{record.leave_reason}</em>
+                      <em>{record.leaveReason}</em>
                     </div>
                   </div>
                 </div>
@@ -108,8 +108,8 @@ const ApproveLeave = props => (
 );
 
 type Props = {
-  pending_items: Array<any>,
-  public_holiday: Array<any>,
+  pending_items: Object,
+  public_holiday: Object,
   onApproveLeaveSubmit: Function,
   onDeclineLeaveSubmit: Function,
   onEditLeaveSubmit: Function,
@@ -119,15 +119,14 @@ type Props = {
   editLeaveMessage: string,
   isDeclineLeaveFetching: boolean,
   declineLeaveMessage: string,
-  dispatch: Function,
-  fetchPendingLeave: Function
+  dispatch: Function
 };
 
 type State = {
   errorMessage: string,
   declineReason: string,
   editReason: string,
-  listID: number,
+  listID: string,
   startDate: any,
   endDate: any,
   isApproving: boolean,
@@ -150,8 +149,8 @@ export default class PendingLeaveList extends Component<Props, State> {
   handleEditReason: Function;
   handleEditSubmit: Function;
 
-  leave_name: any;
-  leave_type: any;
+  leaveName: any;
+  leaveType: any;
   startDate: any;
   endDate: any;
 
@@ -163,7 +162,7 @@ export default class PendingLeaveList extends Component<Props, State> {
       editReason: '',
       startDate: null,
       endDate: null,
-      listID: 0,
+      listID: '',
       isApproving: false,
       approveSuccess: false,
       isEditing: false,
@@ -187,7 +186,8 @@ export default class PendingLeaveList extends Component<Props, State> {
   handleOpenApproveLeave(e: SyntheticEvent<HTMLElement>) {
     this.setState({
       isApproving: !this.state.isApproving,
-      listID: parseInt(e.currentTarget.id, 10)
+      listID: e.currentTarget.id
+      //listID: parseInt(e.currentTarget.id, 10)
     });
   }
 
@@ -206,8 +206,8 @@ export default class PendingLeaveList extends Component<Props, State> {
 
     const userRecord = pending_items.filter(e => e.id === leaveID);
 
-    const leaveDays = userRecord[0].leave_days;
-    const leaveName = userRecord[0].leave_name;
+    const leaveDays = userRecord[0].leaveDays;
+    const leaveName = userRecord[0].leaveName;
 
     this.setState({ approveSuccess: true });
 
@@ -225,12 +225,12 @@ export default class PendingLeaveList extends Component<Props, State> {
     this.setState({
       isApproving: !this.state.isApproving,
       errorMessage: '',
-      listID: 0
+      listID: ''
     });
 
     if (this.state.approveSuccess) {
       this.props.dispatch({ type: 'CLEAR_APPROVE_LEAVE' });
-      this.props.dispatch(this.props.fetchPendingLeave());
+      //reftech query here
     }
 
     this.setState({ approveSuccess: false });
@@ -239,7 +239,8 @@ export default class PendingLeaveList extends Component<Props, State> {
   handleOpenDecline(e: SyntheticEvent<HTMLElement>) {
     this.setState({
       isDeclining: !this.state.isDeclining,
-      listID: parseInt(e.currentTarget.id, 10)
+      listID: e.currentTarget.id
+      //listID: parseInt(e.currentTarget.id, 10)
     });
   }
 
@@ -274,19 +275,20 @@ export default class PendingLeaveList extends Component<Props, State> {
     this.setState({
       isDeclining: !this.state.isDeclining,
       errorMessage: '',
-      listID: 0
+      listID: ''
     });
 
     if (this.state.declineReason) {
       this.props.dispatch({ type: 'CLEAR_DECLINE_LEAVE' });
-      this.props.dispatch(this.props.fetchPendingLeave());
+      //refetch query here
     }
   }
 
   handleOpenEdit(e: SyntheticEvent<HTMLElement>) {
     this.setState({
       isEditing: !this.state.isEditing,
-      listID: parseInt(e.currentTarget.id, 10)
+      listID: e.currentTarget.id
+      //listID: parseInt(e.currentTarget.id, 10)
     });
   }
 
@@ -304,8 +306,8 @@ export default class PendingLeaveList extends Component<Props, State> {
     const endDate = this.state.endDate
       ? this.state.endDate
       : moment(this.endDate.value, 'DD/MM/YYYY');
-    const leave = this.leave_name.value;
-    const leaveType = this.leave_type.value;
+    const leave = this.leaveName.value;
+    const leaveType = this.leaveType.value;
     const reason = this.state.editReason ? this.state.editReason.trim() : null;
 
     const userRecord = pending_items.filter(e => e.id === listID);
@@ -318,11 +320,11 @@ export default class PendingLeaveList extends Component<Props, State> {
       userRecord[0].user.maternity && userRecord[0].user.maternity;
     const dateOfBirth = userRecord[0].user.date_of_birth;
 
-    const previousLeaveDays = userRecord[0].leave_days;
-    const previousLeaveName = userRecord[0].leave_name;
-    const previousLeaveType = userRecord[0].leave_type;
-    const previousStartDate = userRecord[0].start_date;
-    const previousEndDate = userRecord[0].end_date;
+    const previousLeaveDays = userRecord[0].leaveDays;
+    const previousLeaveName = userRecord[0].leaveName;
+    const previousLeaveType = userRecord[0].leaveType;
+    const previousStartDate = userRecord[0].startDate;
+    const previousEndDate = userRecord[0].endDate;
 
     if (!listID || !leave || !leaveType || !startDate || !endDate || !reason) {
       this.setState({
@@ -364,8 +366,8 @@ export default class PendingLeaveList extends Component<Props, State> {
     );
 
     // exclude public holidays
-    const publicHolidays = this.props.public_holiday.map(item => {
-      let hDate = new Date(item.holiday_date);
+    const publicHolidays = this.props.public_holiday.edges.map(item => {
+      let hDate = new Date(item.node.holidayDate);
       let holiday_date = moment(hDate).format('DD, MM, YYYY');
       return holiday_date;
     });
@@ -473,12 +475,12 @@ export default class PendingLeaveList extends Component<Props, State> {
       errorMessage: '',
       startDate: null,
       endDate: null,
-      listID: 0
+      listID: ''
     });
 
     if (this.state.editReason) {
       this.props.dispatch({ type: 'CLEAR_EDIT_LEAVE' });
-      this.props.dispatch(this.props.fetchPendingLeave());
+      //refetch query here
     }
   }
 
@@ -527,10 +529,10 @@ export default class PendingLeaveList extends Component<Props, State> {
                               <select
                                 className="form-control"
                                 id="leave"
-                                defaultValue={record.leave_name}
-                                ref={select => (this.leave_name = select)}
+                                defaultValue={record.leaveName}
+                                ref={select => (this.leaveName = select)}
                               >
-                                <option>{record.leave_name}</option>
+                                <option>{record.leaveName}</option>
                                 <option>annual</option>
                                 <option>sick</option>
                                 <option>bereavement</option>
@@ -550,10 +552,10 @@ export default class PendingLeaveList extends Component<Props, State> {
                               <select
                                 className="form-control"
                                 id="leave type"
-                                defaultValue={record.leave_type}
-                                ref={select => (this.leave_type = select)}
+                                defaultValue={record.leaveType}
+                                ref={select => (this.leaveType = select)}
                               >
-                                <option>{record.leave_type}</option>
+                                <option>{record.leaveType}</option>
                                 <option>full</option>
                                 <option>half day am</option>
                                 <option>half day pm</option>
@@ -569,17 +571,17 @@ export default class PendingLeaveList extends Component<Props, State> {
                               </label>
                               <input
                                 type="hidden"
-                                defaultValue={record.start_date}
+                                defaultValue={record.startDate}
                                 ref={input => (this.startDate = input)}
                               />
                               <input
                                 type="hidden"
-                                defaultValue={record.end_date}
+                                defaultValue={record.endDate}
                                 ref={input => (this.endDate = input)}
                               />
                               <DateRangePicker
-                                startDatePlaceholderText={record.start_date}
-                                endDatePlaceholderText={record.end_date}
+                                startDatePlaceholderText={record.startDate}
+                                endDatePlaceholderText={record.endDate}
                                 startDate={this.state.startDate}
                                 endDate={this.state.endDate}
                                 onDatesChange={({ startDate, endDate }) =>
@@ -674,7 +676,7 @@ export default class PendingLeaveList extends Component<Props, State> {
                           <div className="form-group">
                             <label>Leave</label>
                             <div className="form-control">
-                              <em>{record.leave_name}</em>
+                              <em>{record.leaveName}</em>
                             </div>
                           </div>
                         </div>
@@ -682,7 +684,7 @@ export default class PendingLeaveList extends Component<Props, State> {
                           <div className="form-group">
                             <label>Leave type</label>
                             <div className="form-control">
-                              <em>{record.leave_type}</em>
+                              <em>{record.leaveType}</em>
                             </div>
                           </div>
                         </div>
@@ -692,7 +694,7 @@ export default class PendingLeaveList extends Component<Props, State> {
                           <div className="form-group">
                             <label>Start date</label>
                             <div className="form-control">
-                              <em>{record.start_date}</em>
+                              <em>{record.startDate}</em>
                             </div>
                           </div>
                         </div>
@@ -700,7 +702,7 @@ export default class PendingLeaveList extends Component<Props, State> {
                           <div className="form-group">
                             <label>End date</label>
                             <div className="form-control">
-                              <em>{record.end_date}</em>
+                              <em>{record.endDate}</em>
                             </div>
                           </div>
                         </div>
@@ -710,7 +712,7 @@ export default class PendingLeaveList extends Component<Props, State> {
                           <div className="form-group">
                             <label>Leave days</label>
                             <div className="form-control">
-                              <em>{record.leave_days}</em>
+                              <em>{record.leaveDays}</em>
                             </div>
                           </div>
                         </div>
@@ -720,7 +722,7 @@ export default class PendingLeaveList extends Component<Props, State> {
                           <div className="form-group">
                             <label>Leave reason</label>
                             <div className="form-control">
-                              <em>{record.leave_reason}</em>
+                              <em>{record.leaveReason}</em>
                             </div>
                           </div>
                         </div>
@@ -778,12 +780,12 @@ export default class PendingLeaveList extends Component<Props, State> {
         <td>
           {record.user.othernames} {record.user.surname}
         </td>
-        <td>{record.leave_name}</td>
-        <td>{record.leave_type}</td>
-        <td>{record.start_date}</td>
-        <td>{record.end_date}</td>
-        <td>{record.leave_days}</td>
-        <td>{record.leave_reason}</td>
+        <td>{record.leaveName}</td>
+        <td>{record.leaveType}</td>
+        <td>{record.startDate}</td>
+        <td>{record.endDate}</td>
+        <td>{record.leaveDays}</td>
+        <td>{record.leaveReason}</td>
         <td>
           <button
             className="btn btn-link"
