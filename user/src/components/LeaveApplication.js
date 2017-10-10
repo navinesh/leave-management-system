@@ -594,7 +594,7 @@ const Application = (props: Props) => {
   }
 
   if (error || recordError || holidayError) {
-    console.log(error.message);
+    console.log(error.message, recordError.message, holidayError.message);
     return (
       <div className="container text-center" style={{ paddingTop: '100px' }}>
         <div className="col-md-8 ml-auto mr-auto">
