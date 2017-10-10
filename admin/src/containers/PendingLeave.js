@@ -1,22 +1,52 @@
 // @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { graphql, gql, compose } from 'react-apollo';
 
 import { fetchLoginFromToken } from '../actions/AdminLogin';
-import { fetchPendingLeave } from '../actions/PendingLeave';
-import { fetchPublicHoliday } from '../actions/PublicHoliday';
 import { submitApproveLeave } from '../actions/ApproveLeave';
 import { submitDeclineLeave } from '../actions/DeclineLeave';
 import { submitEditLeave } from '../actions/EditLeave';
 import PendingLeaveList from '../components/PendingLeave';
 import { Redirect } from 'react-router-dom';
 
+const LEAVE_RECORD = gql`
+  {
+    findLeaveRecord(leaveStatus: "pending") {
+      user {
+        othernames
+        surname
+      }
+      id
+      leaveName
+      leaveType
+      startDate
+      endDate
+      leaveDays
+      leaveReason
+      leaveStatus
+    }
+  }
+`;
+
+const PUBLIC_HOLIDAY = gql`
+  {
+    publicHoliday {
+      edges {
+        node {
+          id
+          holidayDate
+        }
+      }
+    }
+  }
+`;
+
 type Props = {
   isAuthenticated: boolean,
   auth_info: Object,
-  isFetching: boolean,
-  pending_items: Array<any>,
-  public_holiday: Array<any>,
+  leaveRecord: Object,
+  publicHolidays: Object,
   dispatch: Function,
   isApproveLeaveFetching: boolean,
   approveLeavemessage: string,
@@ -38,19 +68,15 @@ class PendingLeave extends Component<Props> {
     }
   }
 
-  componentDidMount() {
-    if (this.props.isAuthenticated) {
-      this.props.dispatch(fetchPendingLeave());
-      this.props.dispatch(fetchPublicHoliday());
-    }
-  }
-
   render() {
     const {
       isAuthenticated,
-      isFetching,
-      pending_items,
-      public_holiday,
+      leaveRecord: { loading, error, findLeaveRecord: pending_items },
+      publicHolidays: {
+        loading: holidayLoading,
+        error: holidayError,
+        publicHoliday
+      },
       dispatch,
       isApproveLeaveFetching,
       approveLeavemessage,
@@ -60,33 +86,43 @@ class PendingLeave extends Component<Props> {
       declineLeaveMessage
     } = this.props;
 
+    if (loading || holidayLoading) {
+      return (
+        <div className="text-center">
+          <div className="loader1" />
+        </div>
+      );
+    }
+
+    if (error || holidayError) {
+      console.log(error.message, holidayError.message);
+      return (
+        <div className="text-center">
+          <p>Something went wrong!</p>
+        </div>
+      );
+    }
+
     return (
       <div className="container">
         {isAuthenticated ? (
-          isFetching ? (
-            <div className="text-center">
-              <div className="loader1" />
-            </div>
-          ) : (
-            <PendingLeaveList
-              pending_items={pending_items}
-              public_holiday={public_holiday}
-              dispatch={dispatch}
-              isApproveLeaveFetching={isApproveLeaveFetching}
-              approveLeavemessage={approveLeavemessage}
-              isEditLeaveFetching={isEditLeaveFetching}
-              editLeaveMessage={editLeaveMessage}
-              isDeclineLeaveFetching={isDeclineLeaveFetching}
-              declineLeaveMessage={declineLeaveMessage}
-              onApproveLeaveSubmit={approveLeaveData =>
-                dispatch(submitApproveLeave(approveLeaveData))}
-              onDeclineLeaveSubmit={declineLeaveData =>
-                dispatch(submitDeclineLeave(declineLeaveData))}
-              onEditLeaveSubmit={editLeaveData =>
-                dispatch(submitEditLeave(editLeaveData))}
-              fetchPendingLeave={fetchPendingLeave}
-            />
-          )
+          <PendingLeaveList
+            pending_items={pending_items}
+            public_holiday={publicHoliday}
+            dispatch={dispatch}
+            isApproveLeaveFetching={isApproveLeaveFetching}
+            approveLeavemessage={approveLeavemessage}
+            isEditLeaveFetching={isEditLeaveFetching}
+            editLeaveMessage={editLeaveMessage}
+            isDeclineLeaveFetching={isDeclineLeaveFetching}
+            declineLeaveMessage={declineLeaveMessage}
+            onApproveLeaveSubmit={approveLeaveData =>
+              dispatch(submitApproveLeave(approveLeaveData))}
+            onDeclineLeaveSubmit={declineLeaveData =>
+              dispatch(submitDeclineLeave(declineLeaveData))}
+            onEditLeaveSubmit={editLeaveData =>
+              dispatch(submitEditLeave(editLeaveData))}
+          />
         ) : (
           <Redirect to="/login" />
         )}
@@ -96,17 +132,8 @@ class PendingLeave extends Component<Props> {
 }
 
 const mapStateToProps = state => {
-  const {
-    adminAuth,
-    pendingLeave,
-    publicHoliday,
-    approveLeave,
-    editLeave,
-    declineLeave
-  } = state;
+  const { adminAuth, approveLeave, editLeave, declineLeave } = state;
   const { auth_info, isAuthenticated } = adminAuth;
-  const { isFetching, pending_items } = pendingLeave;
-  const { public_holiday } = publicHoliday;
   const { isApproveLeaveFetching, approveLeavemessage } = approveLeave;
   const { isEditLeaveFetching, editLeaveMessage } = editLeave;
   const { isDeclineLeaveFetching, declineLeaveMessage } = declineLeave;
@@ -114,9 +141,6 @@ const mapStateToProps = state => {
   return {
     auth_info,
     isAuthenticated,
-    isFetching,
-    pending_items,
-    public_holiday,
     isApproveLeaveFetching,
     approveLeavemessage,
     isEditLeaveFetching,
@@ -126,4 +150,8 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(PendingLeave);
+export default compose(
+  connect(mapStateToProps),
+  graphql(LEAVE_RECORD, { name: 'leaveRecord' }),
+  graphql(PUBLIC_HOLIDAY, { name: 'publicHolidays' })
+)(PendingLeave);
