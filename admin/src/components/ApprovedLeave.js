@@ -9,23 +9,23 @@ import { extendMoment } from 'moment-range';
 const moment = extendMoment(Moment);
 
 type Props = {
-  approved_items: Array<any>,
-  public_holiday: Array<any>,
+  approved_items: Object,
+  public_holiday: Object,
+  refetch: Function,
   dispatch: Function,
   onEditApprovedLeaveSubmit: Function,
   onCancelLeaveSubmit: Function,
   isEditLeaveFetching: boolean,
   editLeaveMessage: string,
   isCancelLeaveFetching: boolean,
-  cancelLeaveMessage: string,
-  fetchApprovedLeave: Function
+  cancelLeaveMessage: string
 };
 
 type State = {
   errorMessage: string,
   editReason: string,
   cancelReason: string,
-  listID: number,
+  listID: string,
   startDate: any,
   endDate: any,
   isEditing: boolean,
@@ -43,8 +43,8 @@ export default class ApprovedLeaveList extends Component<Props, State> {
   handleCancelSubmit: Function;
   handleCloseCancel: Function;
 
-  leave_name: any;
-  leave_type: any;
+  leaveName: any;
+  leaveType: any;
   startDate: any;
   endDate: any;
 
@@ -56,7 +56,7 @@ export default class ApprovedLeaveList extends Component<Props, State> {
       cancelReason: '',
       startDate: null,
       endDate: null,
-      listID: 0,
+      listID: '',
       isEditing: false,
       isCancel: false,
       focusedInput: null
@@ -75,7 +75,7 @@ export default class ApprovedLeaveList extends Component<Props, State> {
   handleOpenEdit(e: SyntheticEvent<HTMLElement>) {
     this.setState({
       isEditing: !this.state.isEditing,
-      listID: parseInt(e.currentTarget.id, 10)
+      listID: e.currentTarget.id
     });
   }
 
@@ -85,26 +85,31 @@ export default class ApprovedLeaveList extends Component<Props, State> {
 
   handleEditSubmit(e: Event) {
     e.preventDefault();
-    const { approved_items, onEditApprovedLeaveSubmit } = this.props;
+    const {
+      approved_items,
+      public_holiday,
+      onEditApprovedLeaveSubmit
+    } = this.props;
 
-    const leave_id = this.state.listID;
+    const listID = this.state.listID;
     const startDate = this.state.startDate
       ? this.state.startDate
       : moment(this.startDate.value, 'DD/MM/YYYY');
     const endDate = this.state.endDate
       ? this.state.endDate
       : moment(this.endDate.value, 'DD/MM/YYYY');
-    const leave = this.leave_name.value;
-    const leaveType = this.leave_type.value;
+    const leave = this.leaveName.value;
+    const leaveType = this.leaveType.value;
     const reason = this.state.editReason ? this.state.editReason.trim() : null;
 
-    const userRecord = approved_items.filter(e => e.id === leave_id);
+    const userRecord = approved_items.filter(e => e.id === listID);
 
-    const previousLeaveName = userRecord[0].leave_name;
-    const previousLeaveDays = userRecord[0].leave_days;
-    const previousLeaveType = userRecord[0].leave_type;
-    const previousStartDate = userRecord[0].start_date;
-    const previousEndDate = userRecord[0].end_date;
+    const leaveID = userRecord[0].dbId;
+    const previousLeaveName = userRecord[0].leaveName;
+    const previousLeaveDays = userRecord[0].leaveDays;
+    const previousLeaveType = userRecord[0].leaveType;
+    const previousStartDate = userRecord[0].startDate;
+    const previousEndDate = userRecord[0].endDate;
 
     const annualDays = userRecord[0].user.annual;
     const sickDays = userRecord[0].user.sick;
@@ -114,14 +119,7 @@ export default class ApprovedLeaveList extends Component<Props, State> {
       userRecord[0].user.maternity && userRecord[0].user.maternity;
     const dateOfBirth = userRecord[0].user.date_of_birth;
 
-    if (
-      !leave_id ||
-      !leave ||
-      !leaveType ||
-      !startDate ||
-      !endDate ||
-      !reason
-    ) {
+    if (!listID || !leave || !leaveType || !startDate || !endDate || !reason) {
       this.setState({
         errorMessage: 'Reason field is mandatory!'
       });
@@ -161,8 +159,9 @@ export default class ApprovedLeaveList extends Component<Props, State> {
     );
 
     // exclude public holidays
-    const publicHolidays = this.props.public_holiday.map(item => {
-      let hDate = new Date(item.holiday_date);
+
+    const publicHolidays = public_holiday.edges.map(item => {
+      let hDate = new Date(item.node.holidayDate);
       let holiday_date = moment(hDate).format('DD, MM, YYYY');
       return holiday_date;
     });
@@ -276,7 +275,7 @@ export default class ApprovedLeaveList extends Component<Props, State> {
     this.setState({ errorMessage: '' });
 
     const editLeaveData = {
-      leave_id: leave_id,
+      leave_id: leaveID,
       leave: leave,
       leaveType: leaveType,
       startDate: sDate,
@@ -298,19 +297,19 @@ export default class ApprovedLeaveList extends Component<Props, State> {
     this.setState({
       isEditing: !this.state.isEditing,
       errorMessage: '',
-      listID: 0
+      listID: ''
     });
 
     if (this.state.editReason) {
-      this.props.dispatch(this.props.fetchApprovedLeave());
       this.props.dispatch({ type: 'CLEAR_EDIT_LEAVE' });
+      this.props.refetch();
     }
   }
 
   handleOpenCancel(e: SyntheticEvent<HTMLElement>) {
     this.setState({
       isCancel: !this.state.isCancel,
-      listID: parseInt(e.currentTarget.id, 10)
+      listID: e.currentTarget.id
     });
   }
 
@@ -337,13 +336,14 @@ export default class ApprovedLeaveList extends Component<Props, State> {
     const userRecord = approved_items.filter(e => e.id === listID);
 
     const userID = userRecord[0].user.id;
-    const leaveDays = userRecord[0].leave_days;
-    const leaveName = userRecord[0].leave_name;
+    const leaveID = userRecord[0].dbId;
+    const leaveDays = userRecord[0].leaveDays;
+    const leaveName = userRecord[0].leaveName;
 
     const leaveStatus = 'cancelled';
 
     const cancelLeaveData = {
-      leaveID: listID,
+      leaveID: leaveID,
       reason: reason,
       userID: userID,
       leaveDays: leaveDays,
@@ -358,12 +358,12 @@ export default class ApprovedLeaveList extends Component<Props, State> {
     this.setState({
       isCancel: !this.state.isCancel,
       errorMessage: '',
-      listID: 0
+      listID: ''
     });
 
     if (this.state.cancelReason) {
-      this.props.dispatch(this.props.fetchApprovedLeave());
       this.props.dispatch({ type: 'CLEAR_CANCEL_LEAVE' });
+      this.props.refetch();
     }
   }
 
@@ -401,10 +401,10 @@ export default class ApprovedLeaveList extends Component<Props, State> {
                             <select
                               className="form-control"
                               id="leave"
-                              defaultValue={record.leave_name}
-                              ref={select => (this.leave_name = select)}
+                              defaultValue={record.leaveName}
+                              ref={select => (this.leaveName = select)}
                             >
-                              <option>{record.leave_name}</option>
+                              <option>{record.leaveName}</option>
                               <option>annual</option>
                               <option>sick</option>
                               <option>bereavement</option>
@@ -424,10 +424,10 @@ export default class ApprovedLeaveList extends Component<Props, State> {
                             <select
                               className="form-control"
                               id="leave type"
-                              defaultValue={record.leave_type}
-                              ref={select => (this.leave_type = select)}
+                              defaultValue={record.leaveType}
+                              ref={select => (this.leaveType = select)}
                             >
-                              <option>{record.leave_type}</option>
+                              <option>{record.leaveType}</option>
                               <option>full</option>
                               <option>half day am</option>
                               <option>half day pm</option>
@@ -443,17 +443,17 @@ export default class ApprovedLeaveList extends Component<Props, State> {
                             </label>
                             <input
                               type="hidden"
-                              defaultValue={record.start_date}
+                              defaultValue={record.startDate}
                               ref={input => (this.startDate = input)}
                             />
                             <input
                               type="hidden"
-                              defaultValue={record.end_date}
+                              defaultValue={record.endDate}
                               ref={input => (this.endDate = input)}
                             />
                             <DateRangePicker
-                              startDatePlaceholderText={record.start_date}
-                              endDatePlaceholderText={record.end_date}
+                              startDatePlaceholderText={record.startDate}
+                              endDatePlaceholderText={record.endDate}
                               startDate={this.state.startDate}
                               endDate={this.state.endDate}
                               onDatesChange={({ startDate, endDate }) =>
@@ -599,7 +599,7 @@ export default class ApprovedLeaveList extends Component<Props, State> {
         let todayDate = dateToday.format('DD/MM/YYYY');
 
         // get end date and format it
-        let end_Date = moment(record.end_date, 'DD/MM/YYYY').format(
+        let end_Date = moment(record.endDate, 'DD/MM/YYYY').format(
           'DD/MM/YYYY'
         );
 
@@ -607,7 +607,7 @@ export default class ApprovedLeaveList extends Component<Props, State> {
         let isCurrentDate = todayDate === end_Date ? true : false;
 
         // check if end date is same or greater than current date
-        let eDate = moment(record.end_date, 'DD/MM/YYYY').format('MM/DD/YYYY');
+        let eDate = moment(record.endDate, 'DD/MM/YYYY').format('MM/DD/YYYY');
 
         let endDate = moment(new Date(eDate));
 
@@ -621,11 +621,11 @@ export default class ApprovedLeaveList extends Component<Props, State> {
           <td>
             {data.user.othernames} {data.user.surname}
           </td>
-          <td>{data.leave_name}</td>
-          <td>{data.leave_type}</td>
-          <td>{data.start_date}</td>
-          <td>{data.end_date}</td>
-          <td>{data.leave_days}</td>
+          <td>{data.leaveName}</td>
+          <td>{data.leaveType}</td>
+          <td>{data.startDate}</td>
+          <td>{data.endDate}</td>
+          <td>{data.leaveDays}</td>
           <td>
             <button
               className="btn btn-link text-primary"
