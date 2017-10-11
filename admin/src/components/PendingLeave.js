@@ -358,43 +358,25 @@ class DeclineLeave extends Component<declineProps, declineState> {
   }
 }
 
-type Props = {
+type editProps = {
   pending_items: Object,
   public_holiday: Object,
-  refetch: Function,
-  onApproveLeaveSubmit: Function,
-  onDeclineLeaveSubmit: Function,
+  listID: string,
   onEditLeaveSubmit: Function,
-  isApproveLeaveFetching: boolean,
-  approveLeavemessage: string,
   isEditLeaveFetching: boolean,
   editLeaveMessage: string,
-  isDeclineLeaveFetching: boolean,
-  declineLeaveMessage: string,
-  dispatch: Function
+  handleCloseEdit: Function
 };
 
-type State = {
-  errorMessage: string,
-  declineReason: string,
-  editReason: string,
-  listID: string,
+type editState = {
   startDate: any,
   endDate: any,
-  isApproving: boolean,
-  approveSuccess: boolean,
-  isEditing: boolean,
-  isDeclining: boolean,
-  focusedInput: ?boolean
+  editReason: string,
+  focusedInput: ?boolean,
+  errorMessage: string
 };
 
-export default class PendingLeaveList extends Component<Props, State> {
-  handleOpenEdit: Function;
-  handleCloseEdit: Function;
-  handleOpenDecline: Function;
-  handleCloseDecline: Function;
-  handleOpenApproveLeave: Function;
-  handleCloseApproveLeave: Function;
+class EditLeave extends Component<editProps, editState> {
   handleEditReason: Function;
   handleEditSubmit: Function;
 
@@ -406,68 +388,15 @@ export default class PendingLeaveList extends Component<Props, State> {
   constructor() {
     super();
     this.state = {
-      errorMessage: '',
-      declineReason: '',
-      editReason: '',
       startDate: null,
       endDate: null,
-      listID: '',
-      isApproving: false,
-      approveSuccess: false,
-      isEditing: false,
+      editReason: '',
       focusedInput: null,
-      isDeclining: false
+      errorMessage: ''
     };
 
-    this.handleOpenEdit = this.handleOpenEdit.bind(this);
     this.handleEditReason = this.handleEditReason.bind(this);
     this.handleEditSubmit = this.handleEditSubmit.bind(this);
-    this.handleCloseEdit = this.handleCloseEdit.bind(this);
-    this.handleOpenDecline = this.handleOpenDecline.bind(this);
-    this.handleCloseDecline = this.handleCloseDecline.bind(this);
-    this.handleOpenApproveLeave = this.handleOpenApproveLeave.bind(this);
-    this.handleCloseApproveLeave = this.handleCloseApproveLeave.bind(this);
-  }
-
-  handleOpenApproveLeave(e: SyntheticEvent<HTMLElement>) {
-    this.setState({
-      isApproving: !this.state.isApproving,
-      listID: e.currentTarget.id
-    });
-  }
-
-  handleCloseApproveLeave() {
-    this.setState({
-      isApproving: !this.state.isApproving,
-      listID: ''
-    });
-
-    this.props.dispatch({ type: 'CLEAR_APPROVE_LEAVE' });
-    this.props.refetch();
-  }
-
-  handleOpenDecline(e: SyntheticEvent<HTMLElement>) {
-    this.setState({
-      isDeclining: !this.state.isDeclining,
-      listID: e.currentTarget.id
-    });
-  }
-
-  handleCloseDecline() {
-    this.setState({
-      isDeclining: !this.state.isDeclining,
-      listID: ''
-    });
-
-    this.props.dispatch({ type: 'CLEAR_DECLINE_LEAVE' });
-    this.props.refetch();
-  }
-
-  handleOpenEdit(e: SyntheticEvent<HTMLElement>) {
-    this.setState({
-      isEditing: !this.state.isEditing,
-      listID: e.currentTarget.id
-    });
   }
 
   handleEditReason({ target }: SyntheticInputEvent<>) {
@@ -476,8 +405,13 @@ export default class PendingLeaveList extends Component<Props, State> {
 
   handleEditSubmit(e: Event) {
     e.preventDefault();
-    const { pending_items } = this.props;
-    const listID = this.state.listID;
+    const {
+      pending_items,
+      public_holiday,
+      listID,
+      onEditLeaveSubmit
+    } = this.props;
+
     const startDate = this.state.startDate
       ? this.state.startDate
       : moment(this.startDate.value, 'DD/MM/YYYY');
@@ -545,7 +479,7 @@ export default class PendingLeaveList extends Component<Props, State> {
     );
 
     // exclude public holidays
-    const publicHolidays = this.props.public_holiday.edges.map(item => {
+    const publicHolidays = public_holiday.edges.map(item => {
       let hDate = new Date(item.node.holidayDate);
       let holiday_date = moment(hDate).format('DD, MM, YYYY');
       return holiday_date;
@@ -559,7 +493,8 @@ export default class PendingLeaveList extends Component<Props, State> {
 
     if (leaveDays === 0) {
       this.setState({
-        errorMessage: 'The dates you selected fall on public holiday!'
+        errorMessage:
+          'The dates you selected either fall on public holiday, Saturday or Sunday!'
       });
       return;
     }
@@ -645,22 +580,266 @@ export default class PendingLeaveList extends Component<Props, State> {
       previousEndDate: previousEndDate
     };
 
-    this.props.onEditLeaveSubmit(editLeaveData);
+    onEditLeaveSubmit(editLeaveData);
+  }
+
+  render() {
+    const {
+      pending_items,
+      listID,
+      handleCloseEdit,
+      isEditLeaveFetching,
+      editLeaveMessage
+    } = this.props;
+    return (
+      <div>
+        {pending_items.filter(e => e.id === listID).map(record => (
+          <div key={record.id}>
+            <div
+              className="col-md-6 ml-auto mr-auto"
+              style={{ paddingTop: '10px' }}
+            >
+              <div className="card">
+                <h5 className="card-header">Edit</h5>
+                <div className="card-body">
+                  <p>
+                    {record.user.othernames} {record.user.surname}
+                  </p>
+                  <form
+                    encType="multipart/form-data"
+                    onSubmit={this.handleEditSubmit}
+                  >
+                    <div className="row">
+                      <div className="col" />
+                    </div>
+                    <div className="row">
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label htmlFor="leave">Leave</label>
+                          <select
+                            className="form-control"
+                            id="leave"
+                            defaultValue={record.leaveName}
+                            ref={select => (this.leaveName = select)}
+                          >
+                            <option>{record.leaveName}</option>
+                            <option>annual</option>
+                            <option>sick</option>
+                            <option>bereavement</option>
+                            <option>christmas</option>
+                            <option>birthday</option>
+                            {record.user.gender === 'female' ? (
+                              <option>maternity</option>
+                            ) : null}
+                            <option>lwop</option>
+                            <option>other</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label htmlFor="leave type">Leave type</label>
+                          <select
+                            className="form-control"
+                            id="leave type"
+                            defaultValue={record.leaveType}
+                            ref={select => (this.leaveType = select)}
+                          >
+                            <option>{record.leaveType}</option>
+                            <option>full</option>
+                            <option>half day am</option>
+                            <option>half day pm</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col">
+                        <div className="form-group">
+                          <label htmlFor="startDate-endDate">
+                            Start date - End date
+                          </label>
+                          <input
+                            type="hidden"
+                            defaultValue={record.startDate}
+                            ref={input => (this.startDate = input)}
+                          />
+                          <input
+                            type="hidden"
+                            defaultValue={record.endDate}
+                            ref={input => (this.endDate = input)}
+                          />
+                          <DateRangePicker
+                            startDatePlaceholderText={record.startDate}
+                            endDatePlaceholderText={record.endDate}
+                            startDate={this.state.startDate}
+                            endDate={this.state.endDate}
+                            onDatesChange={({ startDate, endDate }) =>
+                              this.setState({ startDate, endDate })}
+                            focusedInput={this.state.focusedInput}
+                            onFocusChange={focusedInput =>
+                              this.setState({ focusedInput })}
+                            isOutsideRange={() => false}
+                            minimumNights={0}
+                            showDefaultInputIcon
+                            showClearDates
+                            withPortal
+                            renderCalendarInfo={() => (
+                              <p className="text-center">
+                                To select a single day click the date twice.
+                              </p>
+                            )}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col">
+                        <div className="form-group">
+                          <label htmlFor="reason">Reason</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Enter reason"
+                            id="reason"
+                            onChange={this.handleEditReason}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row justify-content-end">
+                      <button
+                        type="button"
+                        className="btn btn-outline-primary"
+                        onClick={handleCloseEdit}
+                      >
+                        Close
+                      </button>
+                      <button
+                        type="submit"
+                        className="btn btn-primary ml-2 mr-3"
+                      >
+                        Save changes
+                      </button>
+                    </div>
+                    <div className="text-primary text-center">
+                      {isEditLeaveFetching ? (
+                        <div className="loader2" />
+                      ) : (
+                        <p className="mt-3">{editLeaveMessage}</p>
+                      )}
+                    </div>
+                    <div className="text-danger text-center">
+                      {this.state.errorMessage}
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+}
+
+type Props = {
+  pending_items: Object,
+  public_holiday: Object,
+  refetch: Function,
+  onApproveLeaveSubmit: Function,
+  onDeclineLeaveSubmit: Function,
+  onEditLeaveSubmit: Function,
+  isApproveLeaveFetching: boolean,
+  approveLeavemessage: string,
+  isEditLeaveFetching: boolean,
+  editLeaveMessage: string,
+  isDeclineLeaveFetching: boolean,
+  declineLeaveMessage: string,
+  dispatch: Function
+};
+
+type State = {
+  listID: string,
+  isApproving: boolean,
+  isEditing: boolean,
+  isDeclining: boolean
+};
+
+export default class PendingLeaveList extends Component<Props, State> {
+  handleOpenEdit: Function;
+  handleCloseEdit: Function;
+  handleOpenDecline: Function;
+  handleCloseDecline: Function;
+  handleOpenApproveLeave: Function;
+  handleCloseApproveLeave: Function;
+
+  constructor() {
+    super();
+    this.state = {
+      listID: '',
+      isApproving: false,
+      isEditing: false,
+      isDeclining: false
+    };
+
+    this.handleOpenEdit = this.handleOpenEdit.bind(this);
+    this.handleCloseEdit = this.handleCloseEdit.bind(this);
+    this.handleOpenDecline = this.handleOpenDecline.bind(this);
+    this.handleCloseDecline = this.handleCloseDecline.bind(this);
+    this.handleOpenApproveLeave = this.handleOpenApproveLeave.bind(this);
+    this.handleCloseApproveLeave = this.handleCloseApproveLeave.bind(this);
+  }
+
+  handleOpenApproveLeave(e: SyntheticEvent<HTMLElement>) {
+    this.setState({
+      isApproving: !this.state.isApproving,
+      listID: e.currentTarget.id
+    });
+  }
+
+  handleCloseApproveLeave() {
+    this.setState({
+      isApproving: !this.state.isApproving,
+      listID: ''
+    });
+
+    this.props.dispatch({ type: 'CLEAR_APPROVE_LEAVE' });
+    this.props.refetch();
+  }
+
+  handleOpenDecline(e: SyntheticEvent<HTMLElement>) {
+    this.setState({
+      isDeclining: !this.state.isDeclining,
+      listID: e.currentTarget.id
+    });
+  }
+
+  handleCloseDecline() {
+    this.setState({
+      isDeclining: !this.state.isDeclining,
+      listID: ''
+    });
+
+    this.props.dispatch({ type: 'CLEAR_DECLINE_LEAVE' });
+    this.props.refetch();
+  }
+
+  handleOpenEdit(e: SyntheticEvent<HTMLElement>) {
+    this.setState({
+      isEditing: !this.state.isEditing,
+      listID: e.currentTarget.id
+    });
   }
 
   handleCloseEdit() {
     this.setState({
       isEditing: !this.state.isEditing,
-      errorMessage: '',
-      startDate: null,
-      endDate: null,
       listID: ''
     });
 
-    if (this.state.editReason) {
-      this.props.dispatch({ type: 'CLEAR_EDIT_LEAVE' });
-      this.props.refetch();
-    }
+    this.props.dispatch({ type: 'CLEAR_EDIT_LEAVE' });
+    this.props.refetch();
   }
 
   render() {
@@ -679,157 +858,15 @@ export default class PendingLeaveList extends Component<Props, State> {
 
     if (this.state.isEditing) {
       return (
-        <div>
-          {this.props.pending_items
-            .filter(e => e.id === this.state.listID)
-            .map(record => (
-              <div key={record.id}>
-                <div
-                  className="col-md-6 ml-auto mr-auto"
-                  style={{ paddingTop: '10px' }}
-                >
-                  <div className="card">
-                    <h5 className="card-header">Edit</h5>
-                    <div className="card-body">
-                      <p>
-                        {record.user.othernames} {record.user.surname}
-                      </p>
-                      <form
-                        encType="multipart/form-data"
-                        onSubmit={this.handleEditSubmit}
-                      >
-                        <div className="row">
-                          <div className="col" />
-                        </div>
-                        <div className="row">
-                          <div className="col-md-6">
-                            <div className="form-group">
-                              <label htmlFor="leave">Leave</label>
-                              <select
-                                className="form-control"
-                                id="leave"
-                                defaultValue={record.leaveName}
-                                ref={select => (this.leaveName = select)}
-                              >
-                                <option>{record.leaveName}</option>
-                                <option>annual</option>
-                                <option>sick</option>
-                                <option>bereavement</option>
-                                <option>christmas</option>
-                                <option>birthday</option>
-                                {record.user.gender === 'female' ? (
-                                  <option>maternity</option>
-                                ) : null}
-                                <option>lwop</option>
-                                <option>other</option>
-                              </select>
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="form-group">
-                              <label htmlFor="leave type">Leave type</label>
-                              <select
-                                className="form-control"
-                                id="leave type"
-                                defaultValue={record.leaveType}
-                                ref={select => (this.leaveType = select)}
-                              >
-                                <option>{record.leaveType}</option>
-                                <option>full</option>
-                                <option>half day am</option>
-                                <option>half day pm</option>
-                              </select>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="row">
-                          <div className="col">
-                            <div className="form-group">
-                              <label htmlFor="startDate-endDate">
-                                Start date - End date
-                              </label>
-                              <input
-                                type="hidden"
-                                defaultValue={record.startDate}
-                                ref={input => (this.startDate = input)}
-                              />
-                              <input
-                                type="hidden"
-                                defaultValue={record.endDate}
-                                ref={input => (this.endDate = input)}
-                              />
-                              <DateRangePicker
-                                startDatePlaceholderText={record.startDate}
-                                endDatePlaceholderText={record.endDate}
-                                startDate={this.state.startDate}
-                                endDate={this.state.endDate}
-                                onDatesChange={({ startDate, endDate }) =>
-                                  this.setState({ startDate, endDate })}
-                                focusedInput={this.state.focusedInput}
-                                onFocusChange={focusedInput =>
-                                  this.setState({ focusedInput })}
-                                isOutsideRange={() => false}
-                                minimumNights={0}
-                                showDefaultInputIcon
-                                showClearDates
-                                withPortal
-                                renderCalendarInfo={() => (
-                                  <p className="text-center">
-                                    To select a single day click the date twice.
-                                  </p>
-                                )}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="row">
-                          <div className="col">
-                            <div className="form-group">
-                              <label htmlFor="reason">Reason</label>
-                              <input
-                                type="text"
-                                className="form-control"
-                                placeholder="Enter reason"
-                                id="reason"
-                                onChange={this.handleEditReason}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="row justify-content-end">
-                          <button
-                            type="button"
-                            className="btn btn-outline-primary"
-                            onClick={this.handleCloseEdit}
-                          >
-                            Close
-                          </button>
-                          <button
-                            type="submit"
-                            className="btn btn-primary ml-2 mr-3"
-                          >
-                            Save changes
-                          </button>
-                        </div>
-                        <div className="text-primary text-center">
-                          {this.props.isEditLeaveFetching ? (
-                            <div className="loader2" />
-                          ) : (
-                            <p className="mt-3">
-                              {this.props.editLeaveMessage}
-                            </p>
-                          )}
-                        </div>
-                        <div className="text-danger text-center">
-                          {this.state.errorMessage}
-                        </div>
-                      </form>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-        </div>
+        <EditLeave
+          pending_items={this.props.pending_items}
+          public_holiday={this.props.public_holiday}
+          listID={this.state.listID}
+          onEditLeaveSubmit={this.props.onEditLeaveSubmit}
+          isEditLeaveFetching={this.props.isEditLeaveFetching}
+          editLeaveMessage={this.props.editLeaveMessage}
+          handleCloseEdit={this.handleCloseEdit}
+        />
       );
     }
 
