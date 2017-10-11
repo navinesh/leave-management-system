@@ -843,15 +843,29 @@ export default class PendingLeaveList extends Component<Props, State> {
   }
 
   render() {
+    const {
+      pending_items,
+      public_holiday,
+      onApproveLeaveSubmit,
+      isApproveLeaveFetching,
+      approveLeavemessage,
+      onEditLeaveSubmit,
+      isEditLeaveFetching,
+      editLeaveMessage,
+      onDeclineLeaveSubmit,
+      declineLeaveMessage,
+      isDeclineLeaveFetching
+    } = this.props;
+
     if (this.state.isApproving) {
       return (
         <ApproveLeave
-          pending_items={this.props.pending_items}
+          pending_items={pending_items}
           listID={this.state.listID}
-          onApproveLeaveSubmit={this.props.onApproveLeaveSubmit}
+          onApproveLeaveSubmit={onApproveLeaveSubmit}
           handleCloseApproveLeave={this.handleCloseApproveLeave}
-          isApproveLeaveFetching={this.props.isApproveLeaveFetching}
-          approveLeavemessage={this.props.approveLeavemessage}
+          isApproveLeaveFetching={isApproveLeaveFetching}
+          approveLeavemessage={approveLeavemessage}
         />
       );
     }
@@ -859,12 +873,12 @@ export default class PendingLeaveList extends Component<Props, State> {
     if (this.state.isEditing) {
       return (
         <EditLeave
-          pending_items={this.props.pending_items}
-          public_holiday={this.props.public_holiday}
+          pending_items={pending_items}
+          public_holiday={public_holiday}
           listID={this.state.listID}
-          onEditLeaveSubmit={this.props.onEditLeaveSubmit}
-          isEditLeaveFetching={this.props.isEditLeaveFetching}
-          editLeaveMessage={this.props.editLeaveMessage}
+          onEditLeaveSubmit={onEditLeaveSubmit}
+          isEditLeaveFetching={isEditLeaveFetching}
+          editLeaveMessage={editLeaveMessage}
           handleCloseEdit={this.handleCloseEdit}
         />
       );
@@ -873,11 +887,11 @@ export default class PendingLeaveList extends Component<Props, State> {
     if (this.state.isDeclining) {
       return (
         <DeclineLeave
-          pending_items={this.props.pending_items}
+          pending_items={pending_items}
           listID={this.state.listID}
-          onDeclineLeaveSubmit={this.props.onDeclineLeaveSubmit}
-          declineLeaveMessage={this.props.declineLeaveMessage}
-          isDeclineLeaveFetching={this.props.isDeclineLeaveFetching}
+          onDeclineLeaveSubmit={onDeclineLeaveSubmit}
+          declineLeaveMessage={declineLeaveMessage}
+          isDeclineLeaveFetching={isDeclineLeaveFetching}
           handleCloseDecline={this.handleCloseDecline}
         />
       );
