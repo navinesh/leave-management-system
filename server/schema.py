@@ -6,34 +6,49 @@ Leaverecord as LeaverecordModel, Leaveupdates as LeaveupdatesModel, \
 Adminuser as AdminuserModel, Publicholiday as PublicholidayModel
 
 
+class DatabaseId(graphene.Interface):
+    db_id = Int()
+
+
 class User(SQLAlchemyObjectType):
     class Meta:
         model = UserModel
-        interfaces = (relay.Node, )
+        interfaces = (relay.Node, DatabaseId)
+        model.db_id = model.id
+        only_fields = [
+            'id', 'othernames', 'surname', 'email', 'designation', 'gender',
+            'date_of_birth', 'annual', 'sick', 'bereavement', 'christmas',
+            'maternity', 'isArchived', 'archiveReason', 'userupdates',
+            'leaverecord'
+        ]
 
 
 class Userupdates(SQLAlchemyObjectType):
     class Meta:
         model = UserupdatesModel
-        interfaces = (relay.Node, )
+        interfaces = (relay.Node, DatabaseId)
+        model.db_id = model.id
 
 
 class Leaverecord(SQLAlchemyObjectType):
     class Meta:
         model = LeaverecordModel
-        interfaces = (relay.Node, )
+        interfaces = (relay.Node, DatabaseId)
+        model.db_id = model.id
 
 
 class Leaveupdates(SQLAlchemyObjectType):
     class Meta:
         model = LeaveupdatesModel
-        interfaces = (relay.Node, )
+        interfaces = (relay.Node, DatabaseId)
+        model.db_id = model.id
 
 
 class Publicholiday(SQLAlchemyObjectType):
     class Meta:
-        model = PublicholidayModel
-        interfaces = (relay.Node, )
+        model = (PublicholidayModel)
+        interfaces = (relay.Node, DatabaseId)
+        model.db_id = model.id
 
 
 class Query(graphene.ObjectType):
@@ -44,6 +59,13 @@ class Query(graphene.ObjectType):
     leave_updates = SQLAlchemyConnectionField(Leaveupdates)
     public_holiday = SQLAlchemyConnectionField(Publicholiday)
     leave_record = SQLAlchemyConnectionField(Leaverecord)
+
+    find_user = graphene.Field(lambda: User, id=graphene.Int())
+
+    def resolve_find_user(self, args, context, info):
+        query = User.get_query(context)
+        id = args.get('id')
+        return query.filter(UserModel.id == id).first()
 
     find_leave_record = graphene.List(
         lambda: Leaverecord, leave_status=graphene.String())
