@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import { graphql, gql, compose } from 'react-apollo';
 
 import { fetchLoginFromToken } from '../actions/AdminLogin';
@@ -8,16 +9,12 @@ import { submitApproveLeave } from '../actions/ApproveLeave';
 import { submitDeclineLeave } from '../actions/DeclineLeave';
 import { submitEditLeave } from '../actions/EditLeave';
 import PendingLeaveList from '../components/PendingLeave';
-import { Redirect } from 'react-router-dom';
 
 const LEAVE_RECORD = gql`
   {
     findLeaveRecord(leaveStatus: "pending") {
-      user {
-        othernames
-        surname
-      }
       id
+      dbId
       leaveName
       leaveType
       startDate
@@ -25,6 +22,10 @@ const LEAVE_RECORD = gql`
       leaveDays
       leaveReason
       leaveStatus
+      user {
+        othernames
+        surname
+      }
     }
   }
 `;
@@ -71,7 +72,7 @@ class PendingLeave extends Component<Props> {
   render() {
     const {
       isAuthenticated,
-      leaveRecord: { loading, error, findLeaveRecord: pending_items },
+      leaveRecord: { loading, error, findLeaveRecord: pending_items, refetch },
       publicHolidays: {
         loading: holidayLoading,
         error: holidayError,
@@ -109,6 +110,7 @@ class PendingLeave extends Component<Props> {
           <PendingLeaveList
             pending_items={pending_items}
             public_holiday={publicHoliday}
+            refetch={refetch}
             dispatch={dispatch}
             isApproveLeaveFetching={isApproveLeaveFetching}
             approveLeavemessage={approveLeavemessage}
