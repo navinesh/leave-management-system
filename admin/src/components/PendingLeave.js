@@ -8,104 +8,174 @@ import Moment from 'moment';
 import { extendMoment } from 'moment-range';
 const moment = extendMoment(Moment);
 
-const ApproveLeave = props => (
-  <div className="col-md-10 ml-auto mr-auto">
-    {props.pending_items.filter(e => e.id === props.listID).map(record => (
-      <div key={record.id}>
-        <div
-          className="col-md-6 ml-auto mr-auto"
-          style={{ paddingTop: '10px' }}
-        >
-          <div className="card">
-            <h5 className="card-header">Approve</h5>
-            <div className="card-body">
-              <p>
-                {record.user.othernames} {record.user.surname}
-              </p>
-              <div className="row">
-                <div className="col-md-6">
-                  <div className="form-group">
-                    <label>Leave</label>
-                    <div className="form-control">
-                      <em>{record.leaveName}</em>
+type approveProps = {
+  pending_items: Object,
+  listID: string,
+  onApproveLeaveSubmit: Function,
+  isApproveLeaveFetching: boolean,
+  approveLeavemessage: string,
+  handleCloseApproveLeave: Function
+};
+
+type approveState = {
+  errorMessage: string
+};
+
+class ApproveLeave extends Component<approveProps, approveState> {
+  handleApproveLeaveSubmit: Function;
+
+  constructor() {
+    super();
+    this.state = {
+      errorMessage: ''
+    };
+
+    this.handleApproveLeaveSubmit = this.handleApproveLeaveSubmit.bind(this);
+  }
+
+  handleApproveLeaveSubmit(e: Event) {
+    e.preventDefault();
+    const { pending_items, listID, onApproveLeaveSubmit } = this.props;
+
+    const leaveStatus = 'approved';
+
+    if (!listID) {
+      this.setState({
+        errorMessage: 'Could not get id!'
+      });
+      return;
+    }
+
+    const userRecord = pending_items.filter(e => e.id === listID);
+
+    const leaveID = userRecord[0].dbId;
+    const leaveDays = userRecord[0].leaveDays;
+    const leaveName = userRecord[0].leaveName;
+
+    const approveLeaveData = {
+      leaveID: leaveID,
+      leaveStatus: leaveStatus,
+      leaveDays: leaveDays,
+      leaveName: leaveName
+    };
+
+    onApproveLeaveSubmit(approveLeaveData);
+  }
+
+  render() {
+    const {
+      pending_items,
+      listID,
+      handleCloseApproveLeave,
+      isApproveLeaveFetching,
+      approveLeavemessage
+    } = this.props;
+    return (
+      <div className="col-md-10 ml-auto mr-auto">
+        {pending_items.filter(e => e.id === listID).map(record => (
+          <div key={record.id}>
+            <div
+              className="col-md-6 ml-auto mr-auto"
+              style={{ paddingTop: '10px' }}
+            >
+              <div className="card">
+                <h5 className="card-header">Approve</h5>
+                <div className="card-body">
+                  <p>
+                    {record.user.othernames} {record.user.surname}
+                  </p>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label>Leave</label>
+                        <div className="form-control">
+                          <em>{record.leaveName}</em>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label>Leave type</label>
+                        <div className="form-control">
+                          <em>{record.leaveType}</em>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="form-group">
-                    <label>Leave type</label>
-                    <div className="form-control">
-                      <em>{record.leaveType}</em>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label>Start date</label>
+                        <div className="form-control">
+                          <em>{record.startDate}</em>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label>End date</label>
+                        <div className="form-control">
+                          <em>{record.endDate}</em>
+                        </div>
+                      </div>
                     </div>
                   </div>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label>Leave days</label>
+                        <div className="form-control text-muted">
+                          <em>{record.leaveDays}</em>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col">
+                      <div className="form-group">
+                        <label>Leave reason</label>
+                        <div className="form-control text-muted">
+                          <em>{record.leaveReason}</em>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <form onSubmit={this.handleApproveLeaveSubmit}>
+                    <div className="row justify-content-end">
+                      <button
+                        type="button"
+                        className="btn btn-outline-primary"
+                        onClick={handleCloseApproveLeave}
+                      >
+                        Close
+                      </button>
+                      <button
+                        type="submit"
+                        className="btn btn-primary ml-2 mr-3"
+                      >
+                        Approve
+                      </button>
+                    </div>
+                    <div className="text-primary text-center">
+                      {isApproveLeaveFetching ? (
+                        <div className="loader2" />
+                      ) : (
+                        <p className="mt-3">{approveLeavemessage}</p>
+                      )}
+                    </div>
+                    <div className="text-danger text-center">
+                      <div className="mt-3">{this.state.errorMessage}</div>
+                    </div>
+                  </form>
                 </div>
               </div>
-              <div className="row">
-                <div className="col-md-6">
-                  <div className="form-group">
-                    <label>Start date</label>
-                    <div className="form-control">
-                      <em>{record.startDate}</em>
-                    </div>
-                  </div>
-                </div>
-                <div className="col-md-6">
-                  <div className="form-group">
-                    <label>End date</label>
-                    <div className="form-control">
-                      <em>{record.endDate}</em>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col-md-6">
-                  <div className="form-group">
-                    <label>Leave days</label>
-                    <div className="form-control text-muted">
-                      <em>{record.leaveDays}</em>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="row">
-                <div className="col">
-                  <div className="form-group">
-                    <label>Leave reason</label>
-                    <div className="form-control text-muted">
-                      <em>{record.leaveReason}</em>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <form onSubmit={props.handleApproveLeaveSubmit}>
-                <div className="row justify-content-end">
-                  <button
-                    type="button"
-                    className="btn btn-outline-primary"
-                    onClick={props.handleCloseApproveLeave}
-                  >
-                    Close
-                  </button>
-                  <button type="submit" className="btn btn-primary ml-2 mr-3">
-                    Approve
-                  </button>
-                </div>
-                <div className="text-primary text-center">
-                  {props.isApproveLeaveFetching ? (
-                    <div className="loader2" />
-                  ) : (
-                    <p className="mt-3">{props.approveLeavemessage}</p>
-                  )}
-                </div>
-              </form>
             </div>
           </div>
-        </div>
+        ))}
       </div>
-    ))}
-  </div>
-);
+    );
+  }
+}
 
 type declineProps = {
   pending_items: Object,
@@ -151,7 +221,6 @@ class DeclineLeave extends Component<declineProps, declineState> {
       });
       return;
     }
-
     const userRecord = pending_items.filter(e => e.id === listID);
     const leaveID = userRecord[0].dbId;
 
@@ -326,9 +395,6 @@ export default class PendingLeaveList extends Component<Props, State> {
   handleCloseDecline: Function;
   handleOpenApproveLeave: Function;
   handleCloseApproveLeave: Function;
-  handleApproveLeaveSubmit: Function;
-  handleDeclineReason: Function;
-  handleDeclineSubmit: Function;
   handleEditReason: Function;
   handleEditSubmit: Function;
 
@@ -360,7 +426,6 @@ export default class PendingLeaveList extends Component<Props, State> {
     this.handleOpenDecline = this.handleOpenDecline.bind(this);
     this.handleCloseDecline = this.handleCloseDecline.bind(this);
     this.handleOpenApproveLeave = this.handleOpenApproveLeave.bind(this);
-    this.handleApproveLeaveSubmit = this.handleApproveLeaveSubmit.bind(this);
     this.handleCloseApproveLeave = this.handleCloseApproveLeave.bind(this);
   }
 
@@ -371,50 +436,14 @@ export default class PendingLeaveList extends Component<Props, State> {
     });
   }
 
-  handleApproveLeaveSubmit(e: Event) {
-    e.preventDefault();
-    const { pending_items } = this.props;
-    const listID = this.state.listID;
-    const leaveStatus = 'approved';
-
-    if (!listID) {
-      this.setState({
-        errorMessage: 'Could not get id!'
-      });
-      return;
-    }
-
-    const userRecord = pending_items.filter(e => e.id === listID);
-
-    const leaveID = userRecord[0].dbId;
-    const leaveDays = userRecord[0].leaveDays;
-    const leaveName = userRecord[0].leaveName;
-
-    this.setState({ approveSuccess: true });
-
-    const approveLeaveData = {
-      leaveID: leaveID,
-      leaveStatus: leaveStatus,
-      leaveDays: leaveDays,
-      leaveName: leaveName
-    };
-
-    this.props.onApproveLeaveSubmit(approveLeaveData);
-  }
-
   handleCloseApproveLeave() {
     this.setState({
       isApproving: !this.state.isApproving,
-      errorMessage: '',
       listID: ''
     });
 
-    if (this.state.approveSuccess) {
-      this.props.dispatch({ type: 'CLEAR_APPROVE_LEAVE' });
-      this.props.refetch();
-    }
-
-    this.setState({ approveSuccess: false });
+    this.props.dispatch({ type: 'CLEAR_APPROVE_LEAVE' });
+    this.props.refetch();
   }
 
   handleOpenDecline(e: SyntheticEvent<HTMLElement>) {
@@ -427,14 +456,11 @@ export default class PendingLeaveList extends Component<Props, State> {
   handleCloseDecline() {
     this.setState({
       isDeclining: !this.state.isDeclining,
-      errorMessage: '',
       listID: ''
     });
 
-    //if (this.state.declineReason) {
     this.props.dispatch({ type: 'CLEAR_DECLINE_LEAVE' });
     this.props.refetch();
-    //}
   }
 
   handleOpenEdit(e: SyntheticEvent<HTMLElement>) {
@@ -643,7 +669,7 @@ export default class PendingLeaveList extends Component<Props, State> {
         <ApproveLeave
           pending_items={this.props.pending_items}
           listID={this.state.listID}
-          handleApproveLeaveSubmit={this.handleApproveLeaveSubmit}
+          onApproveLeaveSubmit={this.props.onApproveLeaveSubmit}
           handleCloseApproveLeave={this.handleCloseApproveLeave}
           isApproveLeaveFetching={this.props.isApproveLeaveFetching}
           approveLeavemessage={this.props.approveLeavemessage}
