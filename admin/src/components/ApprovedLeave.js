@@ -174,7 +174,8 @@ export default class ApprovedLeaveList extends Component<Props, State> {
 
     if (leaveDays === 0) {
       this.setState({
-        errorMessage: 'The dates you selected fall on public holiday!'
+        errorMessage:
+          'The dates you selected either fall on public holiday, Saturday or Sunday!'
       });
       return;
     }
