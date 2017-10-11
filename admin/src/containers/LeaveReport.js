@@ -1,8 +1,8 @@
 // @flow
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { graphql, gql, compose } from 'react-apollo';
 import { Redirect } from 'react-router-dom';
+import { graphql, gql, compose } from 'react-apollo';
 
 import { fetchLoginFromToken } from '../actions/AdminLogin';
 import LeaveReportList from '../components/LeaveReport';
