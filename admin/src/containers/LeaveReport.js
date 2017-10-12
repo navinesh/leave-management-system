@@ -9,7 +9,7 @@ import LeaveReportList from '../components/LeaveReport';
 
 const APPROVED_RECORD = gql`
   {
-    findLeaveRecord(leaveStatus: "approved") {
+    findLeaveRecord(leaveStatus: "approved", isArchived: "false") {
       id
       userId
       leaveName
@@ -31,7 +31,7 @@ const APPROVED_RECORD = gql`
 
 const PENDING_RECORD = gql`
   {
-    findLeaveRecord(leaveStatus: "pending") {
+    findLeaveRecord(leaveStatus: "pending", isArchived: "false") {
       id
       leaveName
       leaveType
@@ -52,7 +52,7 @@ const PENDING_RECORD = gql`
 
 const CANCELLED_RECORD = gql`
   {
-    findLeaveRecord(leaveStatus: "cancelled") {
+    findLeaveRecord(leaveStatus: "cancelled", isArchived: "false") {
       id
       leaveName
       leaveType
@@ -73,7 +73,7 @@ const CANCELLED_RECORD = gql`
 
 const DECLINED_RECORD = gql`
   {
-    findLeaveRecord(leaveStatus: "declined") {
+    findLeaveRecord(leaveStatus: "declined", isArchived: "false") {
       id
       leaveName
       leaveType
@@ -94,26 +94,22 @@ const DECLINED_RECORD = gql`
 
 const USER_UPDATES_RECORD = gql`
   {
-    userUpdates {
-      edges {
-        node {
-          id
-          userId
-          annual
-          sick
-          bereavement
-          christmas
-          maternity
-          designation
-          dateOfBirth
-          gender
-          editReason
-          datePosted
-          user {
-            othernames
-            surname
-          }
-        }
+    findUserUpdates(isArchived: "false") {
+      id
+      userId
+      annual
+      sick
+      bereavement
+      christmas
+      maternity
+      designation
+      dateOfBirth
+      gender
+      editReason
+      datePosted
+      user {
+        othernames
+        surname
       }
     }
   }
@@ -121,27 +117,23 @@ const USER_UPDATES_RECORD = gql`
 
 const LEAVE_UPDATES_RECORD = gql`
   {
-    leaveUpdates {
-      edges {
-        node {
-          id
-          leaveId
-          previousStartDate
-          previousEndDate
-          previousLeaveName
-          previousLeaveDays
-          updatedStartDate
-          updatedEndDate
-          updatedLeaveName
-          updatedLeaveDays
-          editReason
-          datePosted
-          leaverecord {
-            user {
-              othernames
-              surname
-            }
-          }
+    findLeaveUpdates(isArchived: "false") {
+      id
+      leaveId
+      previousStartDate
+      previousEndDate
+      previousLeaveName
+      previousLeaveDays
+      updatedStartDate
+      updatedEndDate
+      updatedLeaveName
+      updatedLeaveDays
+      editReason
+      datePosted
+      leaverecord {
+        user {
+          othernames
+          surname
         }
       }
     }
@@ -198,12 +190,12 @@ class LeaveReport extends Component<Props> {
       userUpdates: {
         loading: userLoading,
         error: userError,
-        userUpdates: user_updates
+        findUserUpdates: user_updates
       },
       leaveUpdates: {
         loading: leaveLoading,
         error: leaveError,
-        leaveUpdates: leave_updates
+        findLeaveUpdates: leave_updates
       }
     } = this.props;
 
