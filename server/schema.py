@@ -68,12 +68,17 @@ class Query(graphene.ObjectType):
         return query.filter(UserModel.id == id).first()
 
     find_leave_record = graphene.List(
-        lambda: Leaverecord, leave_status=graphene.String())
+        lambda: Leaverecord,
+        leave_status=graphene.String(),
+        is_archived=graphene.String())
 
     def resolve_find_leave_record(self, args, context, info):
         query = Leaverecord.get_query(context)
         leave_status = args.get('leave_status')
-        return query.filter(LeaverecordModel.leave_status == leave_status)
+        is_archived = args.get('is_archived')
+        return query.filter(LeaverecordModel.leave_status ==
+                            leave_status).join(UserModel).filter(
+                                UserModel.isArchived == is_archived)
 
 
 # Create public holiday
