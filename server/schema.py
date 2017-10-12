@@ -55,8 +55,8 @@ class Query(graphene.ObjectType):
     node = relay.Node.Field()
     user = relay.Node.Field(User)
     users = SQLAlchemyConnectionField(User)
-    user_updates = SQLAlchemyConnectionField(Userupdates)
-    leave_updates = SQLAlchemyConnectionField(Leaveupdates)
+    user_update = SQLAlchemyConnectionField(Userupdates)
+    leave_update = SQLAlchemyConnectionField(Leaveupdates)
     public_holiday = SQLAlchemyConnectionField(Publicholiday)
     leave_record = SQLAlchemyConnectionField(Leaverecord)
 
