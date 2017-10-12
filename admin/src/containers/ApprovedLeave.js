@@ -11,7 +11,7 @@ import ApprovedLeaveList from '../components/ApprovedLeave';
 
 const APPROVED_RECORD = gql`
   {
-    findLeaveRecord(leaveStatus: "approved") {
+    findLeaveRecord(leaveStatus: "approved", isArchived: "false") {
       id
       dbId
       userId
