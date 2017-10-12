@@ -262,7 +262,7 @@ const DeclinedLeaveReportList = props => {
 };
 
 const UserUpdatesReportList = props => {
-  const userUpdates = props.user_updates.edges.map(a => a.node).sort((b, c) => {
+  const userUpdates = props.user_updates.map(a => a).sort((b, c) => {
     return b.userId - c.userId;
   });
 
@@ -335,11 +335,9 @@ const UserUpdatesReportList = props => {
 };
 
 const LeaveUpdatesReportList = props => {
-  const leaveUpdates = props.leave_updates.edges
-    .map(a => a.node)
-    .sort((b, c) => {
-      return b.leaveId - c.leaveId;
-    });
+  const leaveUpdates = props.leave_updates.map(a => a).sort((b, c) => {
+    return b.leaveId - c.leaveId;
+  });
 
   const leaveUpdateItems = leaveUpdates.map(record => (
     <tr key={record.id}>
