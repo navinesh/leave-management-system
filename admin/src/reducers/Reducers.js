@@ -25,18 +25,6 @@ import {
 } from '../actions/AdminResetPassword';
 
 import {
-  REQUEST_PENDING_LEAVE,
-  RECEIVE_PENDING_LEAVE,
-  ERROR_PENDING_LEAVE
-} from '../actions/PendingLeave';
-
-import {
-  REQUEST_APPROVED_LEAVE,
-  RECEIVE_APPROVED_LEAVE,
-  ERROR_APPROVED_LEAVE
-} from '../actions/ApprovedLeave';
-
-import {
   REQUEST_STAFF_RECORD,
   RECEIVE_STAFF_RECORD,
   ERROR_STAFF_RECORD
@@ -81,12 +69,6 @@ import {
   UNARCHIVE_USER_FAILURE,
   CLEAR_UNARCHIVE_MESSAGE
 } from '../actions/UnArchiveUser';
-
-import {
-  REQUEST_PUBLIC_HOLIDAY,
-  RECEIVE_PUBLIC_HOLIDAY,
-  ERROR_PUBLIC_HOLIDAY
-} from '../actions/PublicHoliday';
 
 import {
   APPROVE_LEAVE_REQUEST,
@@ -211,56 +193,6 @@ const resetPassword = (
         isFetching: false,
         message: action.message
       };
-    default:
-      return state;
-  }
-};
-
-type pendingLeaveState = {
-  isFetching: boolean,
-  pending_items: Array<any>
-};
-
-const pendingLeave = (
-  state: pendingLeaveState = { isFetching: false, pending_items: [] },
-  action
-) => {
-  switch (action.type) {
-    case REQUEST_PENDING_LEAVE:
-      return { ...state, isFetching: true };
-    case RECEIVE_PENDING_LEAVE:
-      return {
-        ...state,
-        isFetching: false,
-        pending_items: action.pending_records
-      };
-    case ERROR_PENDING_LEAVE:
-      return { ...state, isFetching: false };
-    default:
-      return state;
-  }
-};
-
-type approvedLeaveState = {
-  isFetching: boolean,
-  approved_items: Array<any>
-};
-
-const approvedLeave = (
-  state: approvedLeaveState = { isFetching: false, approved_items: [] },
-  action
-) => {
-  switch (action.type) {
-    case REQUEST_APPROVED_LEAVE:
-      return { ...state, isFetching: true };
-    case RECEIVE_APPROVED_LEAVE:
-      return {
-        ...state,
-        isFetching: false,
-        approved_items: action.approved_records
-      };
-    case ERROR_APPROVED_LEAVE:
-      return { ...state, isFetching: false };
     default:
       return state;
   }
@@ -460,31 +392,6 @@ const unArchiveUser = (
   }
 };
 
-type publicHolidayState = {
-  isFetching: boolean,
-  public_holiday: Array<any>
-};
-
-const publicHoliday = (
-  state: publicHolidayState = { isFetching: false, public_holiday: [] },
-  action
-) => {
-  switch (action.type) {
-    case REQUEST_PUBLIC_HOLIDAY:
-      return { ...state, isFetching: true };
-    case RECEIVE_PUBLIC_HOLIDAY:
-      return {
-        ...state,
-        isFetching: false,
-        public_holiday: action.public_holiday
-      };
-    case ERROR_PUBLIC_HOLIDAY:
-      return { ...state, isFetching: false };
-    default:
-      return state;
-  }
-};
-
 type approveLeaveState = {
   isApproveLeaveFetching: boolean,
   approveLeavemessage: string
@@ -634,8 +541,6 @@ const cancelLeave = (
 const rootReducer = combineReducers({
   adminAuth,
   resetPassword,
-  pendingLeave,
-  approvedLeave,
   staffRecord,
   archivedStaffRecord,
   sickSheet,
@@ -643,7 +548,6 @@ const rootReducer = combineReducers({
   modifyUser,
   archiveUser,
   unArchiveUser,
-  publicHoliday,
   approveLeave,
   declineLeave,
   editLeave,
