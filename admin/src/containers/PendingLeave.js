@@ -12,7 +12,7 @@ import PendingLeaveList from '../components/PendingLeave';
 
 const LEAVE_RECORD = gql`
   {
-    findLeaveRecord(leaveStatus: "pending") {
+    findLeaveRecord(leaveStatus: "pending", isArchived: "false") {
       id
       dbId
       leaveName
