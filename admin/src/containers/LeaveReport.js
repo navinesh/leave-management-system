@@ -12,10 +12,6 @@ const APPROVED_RECORD = gql`
     findLeaveRecord(leaveStatus: "approved") {
       id
       userId
-      user {
-        othernames
-        surname
-      }
       leaveName
       leaveType
       startDate
@@ -25,6 +21,10 @@ const APPROVED_RECORD = gql`
       leaveReason
       datePosted
       dateReviewed
+      user {
+        othernames
+        surname
+      }
     }
   }
 `;
@@ -32,10 +32,6 @@ const APPROVED_RECORD = gql`
 const PENDING_RECORD = gql`
   {
     findLeaveRecord(leaveStatus: "pending") {
-      user {
-        othernames
-        surname
-      }
       id
       leaveName
       leaveType
@@ -46,6 +42,10 @@ const PENDING_RECORD = gql`
       leaveReason
       datePosted
       dateReviewed
+      user {
+        othernames
+        surname
+      }
     }
   }
 `;
@@ -53,10 +53,6 @@ const PENDING_RECORD = gql`
 const CANCELLED_RECORD = gql`
   {
     findLeaveRecord(leaveStatus: "cancelled") {
-      user {
-        othernames
-        surname
-      }
       id
       leaveName
       leaveType
@@ -67,6 +63,10 @@ const CANCELLED_RECORD = gql`
       cancelledReason
       datePosted
       dateReviewed
+      user {
+        othernames
+        surname
+      }
     }
   }
 `;
@@ -74,10 +74,6 @@ const CANCELLED_RECORD = gql`
 const DECLINED_RECORD = gql`
   {
     findLeaveRecord(leaveStatus: "declined") {
-      user {
-        othernames
-        surname
-      }
       id
       leaveName
       leaveType
@@ -88,6 +84,10 @@ const DECLINED_RECORD = gql`
       declinedReason
       datePosted
       dateReviewed
+      user {
+        othernames
+        surname
+      }
     }
   }
 `;
@@ -99,10 +99,6 @@ const USER_UPDATES_RECORD = gql`
         node {
           id
           userId
-          user {
-            othernames
-            surname
-          }
           annual
           sick
           bereavement
@@ -113,6 +109,10 @@ const USER_UPDATES_RECORD = gql`
           gender
           editReason
           datePosted
+          user {
+            othernames
+            surname
+          }
         }
       }
     }
