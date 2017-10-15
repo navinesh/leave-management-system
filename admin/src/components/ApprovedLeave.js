@@ -295,6 +295,8 @@ export default class ApprovedLeaveList extends Component<Props, State> {
   }
 
   handleCloseEdit() {
+    const { dispatch, refetch } = this.props;
+
     this.setState({
       isEditing: !this.state.isEditing,
       errorMessage: '',
@@ -302,8 +304,8 @@ export default class ApprovedLeaveList extends Component<Props, State> {
     });
 
     if (this.state.editReason) {
-      this.props.dispatch({ type: 'CLEAR_EDIT_LEAVE' });
-      this.props.refetch();
+      dispatch({ type: 'CLEAR_EDIT_LEAVE' });
+      refetch();
     }
   }
 
@@ -356,6 +358,8 @@ export default class ApprovedLeaveList extends Component<Props, State> {
   }
 
   handleCloseCancel(e: Event) {
+    const { dispatch, refetch } = this.props;
+
     this.setState({
       isCancel: !this.state.isCancel,
       errorMessage: '',
@@ -363,8 +367,8 @@ export default class ApprovedLeaveList extends Component<Props, State> {
     });
 
     if (this.state.cancelReason) {
-      this.props.dispatch({ type: 'CLEAR_CANCEL_LEAVE' });
-      this.props.refetch();
+      dispatch({ type: 'CLEAR_CANCEL_LEAVE' });
+      refetch();
     }
   }
 
