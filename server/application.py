@@ -27,6 +27,11 @@ from email.MIMEText import MIMEText
 from email.MIMEBase import MIMEBase
 from email import encoders
 
+# graphql
+from flask_graphql import GraphQLView
+from schema import schema
+from models import db_session
+
 # https://pypi.python.org/pypi/Flask-Cors/1.10.3
 from flask_cors import cross_origin
 
@@ -52,6 +57,17 @@ engine = create_engine('postgresql:///leavedb')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
+
+cors = CORS(app, resources={r"/graphql*": {"origins": "*"}})
+
+app.add_url_rule(
+    '/graphql',
+    view_func=GraphQLView.as_view('graphql', schema=schema, graphiql=True))
+
+
+@app.teardown_appcontext
+def shutdown_session(exception=None):
+    db_session.remove()
 
 
 # Remove trailing zeros from decimal
@@ -124,10 +140,10 @@ def allowed_file(filename):
 
 # User
 @app.route('/')
-@app.route('/reset')
-@app.route('/changepassword')
-@app.route('/leaveapplication')
-@app.route('/leavecalendar')
+@app.route('/userlogin')
+@app.route('/usertoken')
+@app.route('/change-password')
+@app.route('/applyforleave')
 def show_user_home():
     """"""
     return render_template('userhome.html')
@@ -304,7 +320,8 @@ def apply_for_leave():
         # Send email
         to_address_list = [userRecord.email, supervisor_email, secretary_email]
 
-        if leave_name == 'lwop' or leave_name == 'other' or leave_name == 'birthday':
+        if leave_name == 'lwop' or leave_name == 'other' or
+        leave_name == 'birthday':
             send_email(
                 to_address_list,
                 "Leave application",
@@ -354,16 +371,15 @@ def apply_for_leave():
                 userRecord.email, supervisor_email, secretary_email
             ]
 
-            send_email(
-                to_address_list, "Leave application",
-                (userRecord.othernames + " " +
-                 userRecord.surname + " applied for " + str(
-                     format_number(leave_days)) + " day(s) of " + leave_name +
-                 " leave from " + date_from + " to " + date_to + ". Current " +
-                 leave_name + " leave balance is " + str(
-                     format_number(current_leave_balance)) +
-                 " day(s) and uppon approval new balance will be " +
-                 str(new_leave_balance) + " day(s). Reason: " + leave_reason),
+            send_email(to_address_list, "Leave application" (
+                userRecord.othernames + " " +
+                userRecord.surname + " applied for " + str(
+                    format_number(leave_days)) + " day(s) of " + leave_name +
+                " leave from " + date_from + " to " + date_to + ". Current " +
+                leave_name + " leave balance is " + str(
+                    format_number(current_leave_balance)) +
+                " day(s) and uppon approval new balance will be " + str(
+                    new_leave_balance) + " day(s). Reason: " + leave_reason),
                 new_file_name)
 
     return jsonify({'message': 'Your application has been submitted.'}), 201
@@ -371,14 +387,21 @@ def apply_for_leave():
 
 # Admin
 @app.route('/admin')
+@app.route('/addadminuser')
+@app.route('/adminlogin')
 @app.route('/adminreset')
-@app.route('/staffrecord')
-@app.route('/approvedleave')
-@app.route('/leavereport')
+@app.route('/admintoken')
+@app.route('/admin-reset-password')
 @app.route('/sicksheetrecord')
-@app.route('/newrecord')
-@app.route('/archivedstaffrecord')
-@app.route('/publicholiday')
+@app.route('/adduser')
+@app.route('/modifyuser')
+@app.route('/archiveuser')
+@app.route('/unarchiveuser')
+@app.route('/approveleave')
+@app.route('/declineleave')
+@app.route('/editleave')
+@app.route('/editapprovedleave')
+@app.route('/cancelleave')
 def show_admin_home():
     """Render admin index html"""
     return render_template('index.html')
@@ -512,7 +535,8 @@ def change_admin_password():
 
     return jsonify({
         'message':
-        'Your password has been reset. Check your mailbox for new login details.'
+        'Your password has been reset. \
+        Check your mailbox for new login details.'
     }), 201
 
 
@@ -587,8 +611,8 @@ def new_user():
     send_email(
         [email],
         "Leave Management System",
-        ("Your Leave Management System account has been created. Your password is: "
-         + password),
+        ("Your Leave Management System account has been created. \
+        Your password is: " + password),
         file=None)
 
     return jsonify({'message': 'User has been successfully added.'}), 201
@@ -636,8 +660,9 @@ def modify_user():
         send_email(
             [email],
             "Leave record update",
-            ("Your leave records have been updated. Your previous leave records were: "
-             + str(userRecord.annual) + " annual day(s), " +
+            ("Your leave records have been updated. \
+             Your previous leave records were: " + str(userRecord.annual) + " \
+             annual day(s), " +
              str(userRecord.sick) + " sick day(s), " + str(
                  userRecord.bereavement) + " bereavement day(s) and " + str(
                      userRecord.christmas) +
@@ -650,8 +675,9 @@ def modify_user():
         send_email(
             [email],
             "Leave record update",
-            ("Your leave records have been updated. Your previous leave records were: "
-             + str(userRecord.annual) + " annual day(s), " +
+            ("Your leave records have been updated. \
+            Your previous leave records were: " + str(userRecord.annual) +
+             " annual day(s), " +
              str(userRecord.sick) + " sick day(s), " + str(
                  userRecord.bereavement) + " bereavement day(s), " + str(
                      userRecord.christmas) + " christmas day(s) and " + str(
@@ -732,64 +758,6 @@ def un_archive_user():
     session.add(userRecord)
     session.commit()
     return jsonify({'message': 'User record has been unarchived.'}), 201
-
-
-# JSON API to view public holiday
-@app.route('/public-holiday.api/')
-@cross_origin()
-def public_holiday_JSON():
-    """API to view public holidays"""
-    public_holiday_record = session.query(Publicholiday).all()
-
-    return jsonify(
-        public_holiday=[record.serialize for record in public_holiday_record])
-
-
-# Add public holiday
-@app.route('/addpublicholiday', methods=['POST'])
-@cross_origin()
-def add_public_holiday():
-    """Adds public holiday
-    Args:
-        holiday_date (date): date for public holiday
-    """
-    holiday_date = request.json.get('holidayDate')
-
-    if session.query(Publicholiday).filter_by(
-            holiday_date=holiday_date).first() is not None:
-        return jsonify({
-            'message': 'This record is already in the database.'
-        }), 200
-
-    holiday_record = Publicholiday(holiday_date=holiday_date)
-    session.add(holiday_record)
-    session.commit()
-
-    return jsonify({'message': 'Public holiday date has been added.'}), 201
-
-
-# Delete public holiday
-@app.route('/deletepublicholiday', methods=['POST'])
-@cross_origin()
-def delete_public_holiday():
-    """Deletes public holiday
-    Args:
-        id (int): the public holiday id to delete
-    """
-    id = request.json.get('id')
-
-    deletePublicholiday = session.query(Publicholiday).filter_by(id=id).one()
-
-    if deletePublicholiday is None:
-        return jsonify({
-            'message':
-            'This record could not be found in the database.'
-        }), 200
-
-    session.delete(deletePublicholiday)
-    session.commit()
-
-    return jsonify({'message': 'Public holiday date has been deleted.'}), 201
 
 
 # Approve leave
@@ -882,8 +850,8 @@ def approve_leave():
         ("Your " + leave_name + " leave application for " + str(
             format_number(leave_days)) + " day(s) from " +
          leaveRecord.start_date + " to " + leaveRecord.end_date +
-         " has been aprroved. " + "Your new "
-         + leave_name + " leave balance is " + str(
+         " has been aprroved. " + "Your new " + leave_name +
+         " leave balance is " + str(
              format_number(leave_balance)) + " day(s)."),
         file=None)
 
@@ -923,8 +891,8 @@ def decline_leave():
         [leaveRecord.user.email],
         "Leave application declined",
         ("Your " + leaveRecord.leave_name + " leave application for " + str(
-            leaveRecord.leave_days) + " day(s) from " + leaveRecord.start_date
-         + " to " + leaveRecord.end_date +
+            leaveRecord.leave_days) + " day(s) from " +
+            leaveRecord.start_date + " to " + leaveRecord.end_date +
          " has been declined. Reason for decline: " + decline_reason),
         file=None)
 
@@ -1447,7 +1415,8 @@ def cancel_approved_leave():
         session.commit()
 
     # Send email
-    if leave_name == 'lwop' or leave_name == 'other' or leave_name == 'birthday':
+    if leave_name == 'lwop' or leave_name == 'other' or \
+            leave_name == 'birthday':
         send_email(
             [userRecord.email],
             "Leave application cancelled",
@@ -1475,210 +1444,6 @@ def cancel_approved_leave():
             file=None)
 
     return jsonify({'message': 'Leave has been cancelled.'}), 201
-
-
-# JSON API to view user detail
-@app.route('/user-detail.api')
-@cross_origin()
-@auth.login_required
-def user_detail_JSON():
-    """API to view staffs record"""
-    user = g.user
-
-    if not user:
-        return jsonify({'message': 'User not found!'})
-        abort(401)
-
-    return jsonify(user_detail=user.serialize), 201
-
-
-# JSON API to view user record (detail and record)
-@app.route('/user-record.api')
-@cross_origin()
-@auth.login_required
-def user_record_JSON():
-    """API to view staff leave records"""
-    user = g.user
-
-    if not user:
-        return jsonify({'message': 'User not found!'})
-        abort(401)
-
-    leaveRecord = session.query(Leaverecord).filter_by(user_id=user.id).all()
-
-    return jsonify(user_record=[x.serialize for x in leaveRecord]), 201
-
-
-# JSON API to view pending leaves
-@app.route('/pending-leave.api')
-@cross_origin()
-def pending_leave_record_JSON():
-    """API to view pending leave"""
-    leave_records = session.query(Leaverecord).filter_by(
-        leave_status='pending')
-    leave_list = []
-    for x in leave_records:
-        leave_record = x.serialize
-        user = session.query(User).filter_by(id=x.user_id).one()
-        leave_record['user'] = user.serialize
-        leave_list.append(leave_record)
-
-    return jsonify(pending_leave_records=leave_list)
-
-
-# JSON API to view approved leave record
-@app.route('/approved-leave.api')
-@cross_origin()
-def approved_leave_record_JSON():
-    """API to view approved leave"""
-    leave_records = session.query(Leaverecord).filter_by(
-        leave_status='approved')
-    leave_list = []
-    for x in leave_records:
-        leave_record = x.serialize
-        user = session.query(User).filter_by(id=x.user_id).one()
-        leave_record['user'] = user.serialize
-        leave_list.append(leave_record)
-
-    return jsonify(approved_leave_records=leave_list)
-
-
-# JSON API to staff record
-@app.route('/staff-record.api')
-@cross_origin()
-def staff__record_JSON():
-    """API to view staff record"""
-    user = session.query(User).filter_by(
-        isArchived="False").order_by(User.othernames).all()
-    return jsonify(staff_record=[u.serialize for u in user])
-
-
-# JSON API to archived staff record
-@app.route('/archived-staff-record.api')
-@cross_origin()
-def archived_staff__record_JSON():
-    """API to view archived staff record"""
-    user = session.query(User).filter_by(
-        isArchived="True").order_by(User.othernames).all()
-    return jsonify(archived_staff_record=[u.serialize for u in user])
-
-
-# JSON API to view approved leave report
-@app.route('/approved-leave-report.api')
-@cross_origin()
-def approved_leave_report_JSON():
-    """API to view approved leave"""
-    leave_records = session.query(Leaverecord).filter_by(
-        leave_status='approved')
-    leave_list = []
-    for x in leave_records:
-        leave_record = x.serialize
-        user = session.query(User).filter_by(id=x.user_id).one()
-        leave_record['othernames'] = user.othernames
-        leave_record['surname'] = user.surname
-        leave_list.append(leave_record)
-
-    return jsonify(approved_leave_report=leave_list)
-
-
-# JSON API to view pending leave report
-@app.route('/pending-leave-report.api')
-@cross_origin()
-def pending_leave_report_JSON():
-    """API to view pending leave"""
-    leave_records = session.query(Leaverecord).filter_by(
-        leave_status='pending')
-    leave_list = []
-    for x in leave_records:
-        leave_record = x.serialize
-        user = session.query(User).filter_by(id=x.user_id).one()
-        leave_record['othernames'] = user.othernames
-        leave_record['surname'] = user.surname
-        leave_list.append(leave_record)
-
-    return jsonify(pending_leave_report=leave_list)
-
-
-# JSON API to cancelled leave record
-@app.route('/cancelled-leave-record.api')
-@cross_origin()
-def cancelled_leave_recordJSON():
-    """API to view leave record"""
-    leave_records = session.query(Leaverecord).filter_by(
-        leave_status="cancelled").all()
-    leave_list = []
-    for x in leave_records:
-        leave_record = x.serialize
-        user = session.query(User).filter_by(id=x.user_id).one()
-        leave_record['othernames'] = user.othernames
-        leave_record['surname'] = user.surname
-        leave_list.append(leave_record)
-
-    return jsonify(cancelled_record=leave_list)
-
-
-# JSON API to declined leave record
-@app.route('/declined-leave-record.api')
-@cross_origin()
-def declined_leave_recordJSON():
-    """API to view leave record"""
-    leave_records = session.query(Leaverecord).filter_by(
-        leave_status="declined").all()
-    leave_list = []
-    for x in leave_records:
-        leave_record = x.serialize
-        user = session.query(User).filter_by(id=x.user_id).one()
-        leave_record['othernames'] = user.othernames
-        leave_record['surname'] = user.surname
-        leave_list.append(leave_record)
-
-    return jsonify(declined_record=leave_list)
-
-
-# JSON API to view user updates
-@app.route('/user-updates.api')
-@cross_origin()
-def user_updates_JSON():
-    """API to view user record updates"""
-    leaveUpdates = session.query(Userupdates).all()
-
-    return jsonify(leave_updates=[x.serialize for x in leaveUpdates]), 201
-
-
-# JSON API to view leave updates
-@app.route('/leave-updates.api')
-@cross_origin()
-def leave_updates_JSON():
-    """API to view leave leave record updates"""
-    leaveUpdates = session.query(Leaveupdates).all()
-
-    record_list = []
-    for x in leaveUpdates:
-        leave_updates = x.serialize
-        user = session.query(User).filter_by(id=x.user_id).one()
-        leave_updates['othernames'] = user.othernames
-        leave_updates['surname'] = user.surname
-        record_list.append(leave_updates)
-
-    return jsonify(leave_updates=record_list), 201
-
-
-# JSON API to sicksheet record
-@app.route('/sicksheet-record.api')
-@cross_origin()
-def sick_sheet_record_JSON():
-    """API to view sick sheet record"""
-    leave_records = session.query(Leaverecord).filter(
-        Leaverecord.file_name != None)
-
-    sick_sheet_list = []
-    for x in leave_records:
-        leave_record = x.serialize
-        user = session.query(User).filter_by(id=x.user_id).one()
-        leave_record['user'] = user.serialize
-        sick_sheet_list.append(leave_record)
-
-    return jsonify(sick_sheet_records=sick_sheet_list)
 
 
 @app.errorhandler(404)
