@@ -209,7 +209,7 @@ class DeclineLeave extends Component<declineProps, declineState> {
 
   handleDeclineSubmit(e: Event) {
     e.preventDefault();
-    const { pending_items, listID } = this.props;
+    const { pending_items, listID, onDeclineLeaveSubmit } = this.props;
 
     const reason = this.state.declineReason
       ? this.state.declineReason.trim()
@@ -230,7 +230,7 @@ class DeclineLeave extends Component<declineProps, declineState> {
       DeclineReason: reason
     };
 
-    this.props.onDeclineLeaveSubmit(declineLeaveData);
+    onDeclineLeaveSubmit(declineLeaveData);
   }
 
   render() {
@@ -799,13 +799,17 @@ export default class PendingLeaveList extends Component<Props, State> {
   }
 
   handleCloseApproveLeave() {
+    const { approveLeavemessage, dispatch, refetch } = this.props;
+
     this.setState({
       isApproving: !this.state.isApproving,
       listID: ''
     });
 
-    this.props.dispatch({ type: 'CLEAR_APPROVE_LEAVE' });
-    this.props.refetch();
+    if (approveLeavemessage) {
+      dispatch({ type: 'CLEAR_APPROVE_LEAVE' });
+      refetch();
+    }
   }
 
   handleOpenDecline(e: SyntheticEvent<HTMLElement>) {
@@ -816,13 +820,17 @@ export default class PendingLeaveList extends Component<Props, State> {
   }
 
   handleCloseDecline() {
+    const { declineLeaveMessage, dispatch, refetch } = this.props;
+
     this.setState({
       isDeclining: !this.state.isDeclining,
       listID: ''
     });
 
-    this.props.dispatch({ type: 'CLEAR_DECLINE_LEAVE' });
-    this.props.refetch();
+    if (declineLeaveMessage) {
+      dispatch({ type: 'CLEAR_DECLINE_LEAVE' });
+      refetch();
+    }
   }
 
   handleOpenEdit(e: SyntheticEvent<HTMLElement>) {
@@ -833,13 +841,17 @@ export default class PendingLeaveList extends Component<Props, State> {
   }
 
   handleCloseEdit() {
+    const { editLeaveMessage, dispatch, refetch } = this.props;
+
     this.setState({
       isEditing: !this.state.isEditing,
       listID: ''
     });
 
-    this.props.dispatch({ type: 'CLEAR_EDIT_LEAVE' });
-    this.props.refetch();
+    if (editLeaveMessage) {
+      dispatch({ type: 'CLEAR_EDIT_LEAVE' });
+      refetch();
+    }
   }
 
   render() {
