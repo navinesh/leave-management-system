@@ -92,7 +92,7 @@ const ArchiveUser = props => (
 );
 
 type Props = {
-  staff_record: Array<any>,
+  staff_record: Object,
   dispatch: Function,
   onModifyUserRecordSubmit: Function,
   onArchiveUserSubmit: Function,
@@ -100,12 +100,12 @@ type Props = {
   isFetching: boolean,
   isArchiveFetching: boolean,
   archiveMessage: string,
-  fetchStaffRecord: Function
+  refetch: Function
 };
 
 type State = {
   errorMessage: string,
-  listID: number,
+  listID: string,
   dob: any,
   archiveReason: string,
   isEditing: boolean,
@@ -143,7 +143,7 @@ export default class StaffRecordList extends Component<Props, State> {
     super();
     this.state = {
       errorMessage: '',
-      listID: 0,
+      listID: '',
       dob: '',
       archiveReason: '',
       editReason: '',
@@ -176,7 +176,7 @@ export default class StaffRecordList extends Component<Props, State> {
   handleOpenEdit(e: SyntheticEvent<HTMLElement>) {
     this.setState({
       isEditing: !this.state.isEditing,
-      listID: parseInt(e.currentTarget.id, 10)
+      listID: e.currentTarget.id
     });
   }
 
@@ -263,23 +263,25 @@ export default class StaffRecordList extends Component<Props, State> {
   }
 
   handleCloseEdit() {
+    const { dispatch, refetch } = this.props;
+
     this.setState({
       isEditing: !this.state.isEditing,
       errorMessage: '',
       dob: '',
-      listID: 0
+      listID: ''
     });
 
     if (this.state.editReason) {
-      this.props.dispatch(this.props.fetchStaffRecord());
-      this.props.dispatch({ type: 'CLEAR_MODIFY_USER_MESSAGE' });
+      dispatch({ type: 'CLEAR_MODIFY_USER_MESSAGE' });
+      refetch();
     }
   }
 
   handleOpenArchive(e: SyntheticEvent<HTMLElement>) {
     this.setState({
       isArchive: !this.state.isArchive,
-      listID: parseInt(e.currentTarget.id, 10)
+      listID: e.currentTarget.id
     });
   }
 
@@ -289,6 +291,8 @@ export default class StaffRecordList extends Component<Props, State> {
 
   handleArchiveSubmit(e: Event) {
     e.preventDefault();
+    const { staff_record, onArchiveUserSubmit } = this.props;
+
     const id = this.state.listID;
     const isArchived = true;
     const archiveReason = this.state.archiveReason;
@@ -302,19 +306,24 @@ export default class StaffRecordList extends Component<Props, State> {
 
     this.setState({ errorMessage: '' });
 
+    const userRecord = staff_record.filter(e => e.id === id);
+    const userID = userRecord[0].dbId;
+
     const archiveUser = {
-      id: id,
+      id: userID,
       isArchived: isArchived,
       archiveReason: archiveReason
     };
 
-    this.props.onArchiveUserSubmit(archiveUser);
+    onArchiveUserSubmit(archiveUser);
   }
 
   handleCloseArchive() {
+    const { dispatch, refetch } = this.props;
+
     if (this.state.archiveReason) {
-      this.props.dispatch(this.props.fetchStaffRecord());
-      this.props.dispatch({ type: 'CLEAR_ARCHIVE_MESSAGE' });
+      dispatch({ type: 'CLEAR_ARCHIVE_MESSAGE' });
+      refetch();
     }
 
     this.setState({
@@ -322,7 +331,7 @@ export default class StaffRecordList extends Component<Props, State> {
       errorMessage: '',
       dob: '',
       archiveReason: '',
-      listID: 0
+      listID: ''
     });
   }
 
@@ -341,7 +350,7 @@ export default class StaffRecordList extends Component<Props, State> {
       return (
         <div>
           {staff_record.filter(e => e.id === listID).map(record => {
-            let dob = new Date(record.date_of_birth);
+            let dob = new Date(record.dateOfBirth);
             let dateOfBirth = moment(dob).format('DD/MM/YYYY');
 
             return (
@@ -587,7 +596,7 @@ export default class StaffRecordList extends Component<Props, State> {
           e.surname.toLowerCase().includes(this.state.searchTerm)
       )
       .map(record => {
-        let dob = new Date(record.date_of_birth);
+        let dob = new Date(record.dateOfBirth);
         let dateOfBirth = moment(dob).format('DD/MM/YYYY');
 
         return (
