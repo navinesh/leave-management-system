@@ -67,6 +67,15 @@ class Query(graphene.ObjectType):
         id = args.get('id')
         return query.filter(UserModel.id == id).first()
 
+    find_user_updates = graphene.List(
+        lambda: Userupdates, is_archived=graphene.String())
+
+    def resolve_find_user_updates(self, args, context, info):
+        query = Userupdates.get_query(context)
+        is_archived = args.get('is_archived')
+        return query.join(UserModel).filter(
+            UserModel.isArchived == is_archived)
+
     find_leave_record = graphene.List(
         lambda: Leaverecord,
         leave_status=graphene.String(),
