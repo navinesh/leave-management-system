@@ -6,7 +6,7 @@ import Leaves from '../components/LeaveCalendar';
 
 const LeaveRecord = gql`
   {
-    findLeaveRecord(leaveStatus: "approved") {
+    findLeaveRecord(leaveStatus: "approved", isArchived: "false") {
       id
       leaveName
       startDate
