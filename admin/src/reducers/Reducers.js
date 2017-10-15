@@ -25,24 +25,6 @@ import {
 } from '../actions/AdminResetPassword';
 
 import {
-  REQUEST_STAFF_RECORD,
-  RECEIVE_STAFF_RECORD,
-  ERROR_STAFF_RECORD
-} from '../actions/StaffRecord';
-
-import {
-  REQUEST_ARCHIVED_STAFF_RECORD,
-  RECEIVE_ARCHIVED_STAFF_RECORD,
-  ERROR_ARCHIVED_STAFF_RECORD
-} from '../actions/ArchivedStaffRecord';
-
-import {
-  REQUEST_SICKSHEET_RECORD,
-  RECEIVE_SICKSHEET_RECORD,
-  ERROR_SICKSHEET_RECORD
-} from '../actions/SickSheetRecord';
-
-import {
   NEW_USER_RECORD_REQUEST,
   NEW_USER_RECORD_SUCCESS,
   NEW_USER_RECORD_FAILURE,
@@ -193,81 +175,6 @@ const resetPassword = (
         isFetching: false,
         message: action.message
       };
-    default:
-      return state;
-  }
-};
-
-type staffRecordState = {
-  isFetching: boolean,
-  staff_record: Array<any>
-};
-
-const staffRecord = (
-  state: staffRecordState = { isFetching: false, staff_record: [] },
-  action
-) => {
-  switch (action.type) {
-    case REQUEST_STAFF_RECORD:
-      return { ...state, isFetching: true };
-    case RECEIVE_STAFF_RECORD:
-      return {
-        ...state,
-        isFetching: false,
-        staff_record: action.staff_record
-      };
-    case ERROR_STAFF_RECORD:
-      return { ...state, isFetching: false };
-    default:
-      return state;
-  }
-};
-
-type archivedRecordState = {
-  isFetching: boolean,
-  archived_staff_record: Array<any>
-};
-
-const archivedStaffRecord = (
-  state: archivedRecordState = { isFetching: false, archived_staff_record: [] },
-  action
-) => {
-  switch (action.type) {
-    case REQUEST_ARCHIVED_STAFF_RECORD:
-      return { ...state, isFetching: true };
-    case RECEIVE_ARCHIVED_STAFF_RECORD:
-      return {
-        ...state,
-        isFetching: false,
-        archived_staff_record: action.archived_staff_record
-      };
-    case ERROR_ARCHIVED_STAFF_RECORD:
-      return { ...state, isFetching: false };
-    default:
-      return state;
-  }
-};
-
-type sickSheetState = {
-  isFetching: boolean,
-  sickSheet_items: Array<any>
-};
-
-const sickSheet = (
-  state: sickSheetState = { isFetching: false, sickSheet_items: [] },
-  action
-) => {
-  switch (action.type) {
-    case REQUEST_SICKSHEET_RECORD:
-      return { ...state, isFetching: true };
-    case RECEIVE_SICKSHEET_RECORD:
-      return {
-        ...state,
-        isFetching: false,
-        sickSheet_items: action.sickSheet_records
-      };
-    case ERROR_SICKSHEET_RECORD:
-      return { ...state, isFetching: false };
     default:
       return state;
   }
@@ -541,9 +448,6 @@ const cancelLeave = (
 const rootReducer = combineReducers({
   adminAuth,
   resetPassword,
-  staffRecord,
-  archivedStaffRecord,
-  sickSheet,
   addUser,
   modifyUser,
   archiveUser,
