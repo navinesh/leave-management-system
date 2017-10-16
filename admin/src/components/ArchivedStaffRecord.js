@@ -85,13 +85,13 @@ type Props = {
   dispatch: Function,
   isUnArchiveFetching: boolean,
   unArchiveMessage: string,
-  fetchArchivedStaffRecord: Function
+  refetch: Function
 };
 
 type State = {
   errorMessage: string,
   isUnarchive: boolean,
-  listID: number,
+  listID: string,
   searchTerm: string
 };
 
@@ -106,7 +106,7 @@ export default class ArchivedStaffRecordList extends Component<Props, State> {
     super();
     this.state = {
       errorMessage: '',
-      listID: 0,
+      listID: '',
       isUnarchive: false,
       searchTerm: ''
     };
@@ -129,12 +129,14 @@ export default class ArchivedStaffRecordList extends Component<Props, State> {
   handleOpenUnarchive(e: SyntheticEvent<HTMLElement>) {
     this.setState({
       isUnarchive: true,
-      listID: parseInt(e.currentTarget.id, 10)
+      listID: e.currentTarget.id
     });
   }
 
   handleSubmit(e: Event) {
     e.preventDefault();
+    const { archived_staff_record, onUnArchiveUserSubmit } = this.props;
+
     const id = this.state.listID;
     const isArchived = false;
 
@@ -145,19 +147,25 @@ export default class ArchivedStaffRecordList extends Component<Props, State> {
       return null;
     }
 
+    const userRecord = archived_staff_record.filter(e => e.id === id);
+    const userID = userRecord[0].dbId;
+
     const unArchiveUser = {
-      id: id,
+      id: userID,
       isArchived: isArchived
     };
 
-    this.props.onUnArchiveUserSubmit(unArchiveUser);
+    onUnArchiveUserSubmit(unArchiveUser);
   }
 
   handleCloseUnarchive() {
-    this.setState({ isUnarchive: false, errorMessage: '', listID: 0 });
-    this.props.dispatch({ type: 'CLEAR_UNARCHIVE_MESSAGE' });
-    if (this.props.unArchiveMessage) {
-      this.props.dispatch(this.props.fetchArchivedStaffRecord());
+    const { unArchiveMessage, refetch, dispatch } = this.props;
+
+    this.setState({ isUnarchive: false, errorMessage: '', listID: '' });
+
+    if (unArchiveMessage) {
+      dispatch({ type: 'CLEAR_UNARCHIVE_MESSAGE' });
+      refetch();
     }
   }
 
@@ -185,7 +193,7 @@ export default class ArchivedStaffRecordList extends Component<Props, State> {
           e.surname.toLowerCase().includes(this.state.searchTerm)
       )
       .map(record => {
-        let dob = new Date(record.date_of_birth);
+        let dob = new Date(record.dateOfBirth);
         let dateOfBirth = moment(dob).format('DD/MM/YYYY');
 
         return (
