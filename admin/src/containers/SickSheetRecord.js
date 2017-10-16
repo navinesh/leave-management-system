@@ -2,17 +2,33 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import { graphql, gql, compose } from 'react-apollo';
 
 import { fetchLoginFromToken } from '../actions/AdminLogin';
-import { fetchSickSheetRecord } from '../actions/SickSheetRecord';
 import SickSheetList from '../components/SickSheetRecord';
+
+const SICK_RECORD = gql`
+  {
+    findSicksheetRecord {
+      id
+      startDate
+      endDate
+      leaveDays
+      datePosted
+      fileName
+      user {
+        othernames
+        surname
+      }
+    }
+  }
+`;
 
 type Props = {
   isAuthenticated: boolean,
   auth_info: Object,
-  isFetching: boolean,
-  sickSheet_items: Array<any>,
-  dispatch: Function
+  dispatch: Function,
+  sickRecord: Object
 };
 
 class SickSheetRecord extends Component<Props> {
@@ -27,25 +43,33 @@ class SickSheetRecord extends Component<Props> {
     }
   }
 
-  componentDidMount() {
-    if (this.props.isAuthenticated) {
-      this.props.dispatch(fetchSickSheetRecord());
-    }
-  }
-
   render() {
-    const { isAuthenticated, isFetching, sickSheet_items } = this.props;
+    const {
+      isAuthenticated,
+      sickRecord: { loading, error, findSicksheetRecord: sickSheet_items }
+    } = this.props;
+
+    if (loading) {
+      return (
+        <div className="text-center">
+          <div className="loader1" />
+        </div>
+      );
+    }
+
+    if (error) {
+      console.log(error);
+      return (
+        <div className="text-center">
+          <p>Something went wrong!</p>
+        </div>
+      );
+    }
 
     return (
       <div className="container">
         {isAuthenticated ? (
-          isFetching ? (
-            <div className="text-center">
-              <div className="loader1" />
-            </div>
-          ) : (
-            <SickSheetList sickSheet_items={sickSheet_items} />
-          )
+          <SickSheetList sickSheet_items={sickSheet_items} />
         ) : (
           <Redirect to="/login" />
         )}
@@ -55,11 +79,13 @@ class SickSheetRecord extends Component<Props> {
 }
 
 const mapStateToProps = state => {
-  const { adminAuth, sickSheet } = state;
+  const { adminAuth } = state;
   const { auth_info, isAuthenticated } = adminAuth;
-  const { isFetching, sickSheet_items } = sickSheet;
 
-  return { auth_info, isAuthenticated, isFetching, sickSheet_items };
+  return { auth_info, isAuthenticated };
 };
 
-export default connect(mapStateToProps)(SickSheetRecord);
+export default compose(
+  connect(mapStateToProps),
+  graphql(SICK_RECORD, { name: 'sickRecord' })
+)(SickSheetRecord);
