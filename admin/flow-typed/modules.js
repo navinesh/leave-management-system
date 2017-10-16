@@ -43,6 +43,10 @@ declare module 'react-dates/lib/css/_datepicker.css' {
   declare var exports: any;
 }
 
+declare module 'react-dates/initialize' {
+  declare var exports: any;
+}
+
 declare module 'react-csv' {
   declare var exports: any;
 }
