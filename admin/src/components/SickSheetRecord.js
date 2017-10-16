@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 type Props = {
-  sickSheet_items: Array<any>
+  sickSheet_items: Object
 };
 
 export default (props: Props) => {
@@ -12,14 +12,14 @@ export default (props: Props) => {
       <td>
         {record.user.othernames} {record.user.surname}
       </td>
-      <td>{record.start_date}</td>
-      <td>{record.end_date}</td>
-      <td>{record.leave_days}</td>
-      <td>{record.date_posted}</td>
+      <td>{record.startDate}</td>
+      <td>{record.endDate}</td>
+      <td>{record.leaveDays}</td>
+      <td>{record.datePosted}</td>
       <td>
         <Link
           className="btn btn-primary btn-sm"
-          to={`/sicksheetrecord/${record.file_name}`}
+          to={`/sicksheetrecord/${record.fileName}`}
         >
           Download
         </Link>
