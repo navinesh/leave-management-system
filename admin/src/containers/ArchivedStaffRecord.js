@@ -2,20 +2,38 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import { graphql, gql, compose } from 'react-apollo';
 
 import { fetchLoginFromToken } from '../actions/AdminLogin';
-import { fetchArchivedStaffRecord } from '../actions/ArchivedStaffRecord';
 import ArchivedStaffRecordList from '../components/ArchivedStaffRecord';
 import { submitUnArchiveUser } from '../actions/UnArchiveUser';
+
+const ARCHIVED_USERS = gql`
+  {
+    findUsers(isArchived: "true") {
+      id
+      dbId
+      othernames
+      surname
+      email
+      annual
+      sick
+      christmas
+      bereavement
+      dateOfBirth
+      maternity
+      gender
+    }
+  }
+`;
 
 type Props = {
   isAuthenticated: boolean,
   auth_info: Object,
-  archived_staff_record: Array<any>,
+  archivedUsers: Object,
   dispatch: Function,
   isUnArchiveFetching: boolean,
-  unArchiveMessage: string,
-  isDataFetching: boolean
+  unArchiveMessage: string
 };
 
 class ArchivedStaffRecord extends Component<Props> {
@@ -30,40 +48,44 @@ class ArchivedStaffRecord extends Component<Props> {
     }
   }
 
-  componentDidMount() {
-    if (this.props.isAuthenticated) {
-      this.props.dispatch(fetchArchivedStaffRecord());
-    }
-  }
-
   render() {
     const {
       isAuthenticated,
-      archived_staff_record,
+      archivedUsers: { loading, error, findUsers, refetch },
       dispatch,
       isUnArchiveFetching,
-      unArchiveMessage,
-      isDataFetching
+      unArchiveMessage
     } = this.props;
+
+    if (loading) {
+      return (
+        <div className="text-center">
+          <div className="loader1" />
+        </div>
+      );
+    }
+
+    if (error) {
+      console.log(error);
+      return (
+        <div className="text-center">
+          <p>Something went wrong!</p>
+        </div>
+      );
+    }
 
     return (
       <div className="container">
         {isAuthenticated ? (
-          isDataFetching ? (
-            <div className="text-center">
-              <div className="loader1" />
-            </div>
-          ) : (
-            <ArchivedStaffRecordList
-              archived_staff_record={archived_staff_record}
-              dispatch={dispatch}
-              isUnArchiveFetching={isUnArchiveFetching}
-              unArchiveMessage={unArchiveMessage}
-              onUnArchiveUserSubmit={unArchiveUser =>
-                dispatch(submitUnArchiveUser(unArchiveUser))}
-              fetchArchivedStaffRecord={fetchArchivedStaffRecord}
-            />
-          )
+          <ArchivedStaffRecordList
+            archived_staff_record={findUsers}
+            dispatch={dispatch}
+            isUnArchiveFetching={isUnArchiveFetching}
+            unArchiveMessage={unArchiveMessage}
+            onUnArchiveUserSubmit={unArchiveUser =>
+              dispatch(submitUnArchiveUser(unArchiveUser))}
+            refetch={refetch}
+          />
         ) : (
           <Redirect to="/login" />
         )}
@@ -73,23 +95,21 @@ class ArchivedStaffRecord extends Component<Props> {
 }
 
 const mapStateToProps = state => {
-  const { adminAuth, archivedStaffRecord, unArchiveUser } = state;
+  const { adminAuth, unArchiveUser } = state;
 
   const { auth_info, isAuthenticated } = adminAuth;
-  const {
-    archived_staff_record,
-    isFetching: isDataFetching
-  } = archivedStaffRecord;
+
   const { isUnArchiveFetching, unArchiveMessage } = unArchiveUser;
 
   return {
     auth_info,
     isAuthenticated,
-    archived_staff_record,
     isUnArchiveFetching,
-    unArchiveMessage,
-    isDataFetching
+    unArchiveMessage
   };
 };
 
-export default connect(mapStateToProps)(ArchivedStaffRecord);
+export default compose(
+  connect(mapStateToProps),
+  graphql(ARCHIVED_USERS, { name: 'archivedUsers' })
+)(ArchivedStaffRecord);
