@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { graphql, gql, compose } from 'react-apollo';
 
+import 'react-dates/initialize';
 import { DateRangePicker } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
 
