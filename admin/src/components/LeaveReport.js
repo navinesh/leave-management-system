@@ -6,21 +6,6 @@ import { CSVLink } from 'react-csv';
 const moment = require('moment');
 
 const ApprovedLeaveReportList = props => {
-  const records = props.approved_record.map(a => {
-    var rObj = {};
-    rObj['Othernames'] = a.user.othernames;
-    rObj['Surname'] = a.user.surname;
-    rObj['Leave'] = a.leaveName;
-    rObj['Type'] = a.leaveType;
-    rObj['Start date'] = a.startDate;
-    rObj['End date'] = a.endDate;
-    rObj['Status'] = a.leaveStatus;
-    rObj['Reason'] = a.leaveReason;
-    rObj['Date posted'] = a.datePosted;
-    rObj['Date reviewed'] = a.dateReviewed;
-    return rObj;
-  });
-
   const approvedRecord = props.approved_record.map(a => a).sort((b, c) => {
     return b.userId - c.userId;
   });
@@ -40,6 +25,21 @@ const ApprovedLeaveReportList = props => {
       <td>{record.dateReviewed}</td>
     </tr>
   ));
+
+  const records = props.approved_record.map(a => {
+    var rObj = {};
+    rObj['Othernames'] = a.user.othernames;
+    rObj['Surname'] = a.user.surname;
+    rObj['Leave'] = a.leaveName;
+    rObj['Type'] = a.leaveType;
+    rObj['Start date'] = a.startDate;
+    rObj['End date'] = a.endDate;
+    rObj['Status'] = a.leaveStatus;
+    rObj['Reason'] = a.leaveReason;
+    rObj['Date posted'] = a.datePosted;
+    rObj['Date reviewed'] = a.dateReviewed;
+    return rObj;
+  });
 
   return approvedRecordItems.length > 0 ? (
     <div>
@@ -85,21 +85,6 @@ const ApprovedLeaveReportList = props => {
 };
 
 const PendingLeaveReportList = props => {
-  const records = props.pending_record.map(a => {
-    var rObj = {};
-    rObj['Othernames'] = a.user.othernames;
-    rObj['Surname'] = a.user.surname;
-    rObj['Leave'] = a.leaveName;
-    rObj['Type'] = a.leaveType;
-    rObj['Start date'] = a.startDate;
-    rObj['End date'] = a.endDate;
-    rObj['Status'] = a.leaveStatus;
-    rObj['Reason'] = a.leaveReason;
-    rObj['Date posted'] = a.datePosted;
-    rObj['Date reviewed'] = a.dateReviewed;
-    return rObj;
-  });
-
   const pendingRecord = props.pending_record.map(a => a).sort((b, c) => {
     return b.userId - c.userId;
   });
@@ -119,6 +104,21 @@ const PendingLeaveReportList = props => {
       <td>{record.dateReviewed}</td>
     </tr>
   ));
+
+  const records = props.pending_record.map(a => {
+    var rObj = {};
+    rObj['Othernames'] = a.user.othernames;
+    rObj['Surname'] = a.user.surname;
+    rObj['Leave'] = a.leaveName;
+    rObj['Type'] = a.leaveType;
+    rObj['Start date'] = a.startDate;
+    rObj['End date'] = a.endDate;
+    rObj['Status'] = a.leaveStatus;
+    rObj['Reason'] = a.leaveReason;
+    rObj['Date posted'] = a.datePosted;
+    rObj['Date reviewed'] = a.dateReviewed;
+    return rObj;
+  });
 
   return pendingRecordItems.length > 0 ? (
     <div>
@@ -164,21 +164,6 @@ const PendingLeaveReportList = props => {
 };
 
 const CancelledLeaveReportList = props => {
-  const records = props.cancelled_record.map(a => {
-    var rObj = {};
-    rObj['Othernames'] = a.user.othernames;
-    rObj['Surname'] = a.user.surname;
-    rObj['Leave'] = a.leaveName;
-    rObj['Type'] = a.leaveType;
-    rObj['Start date'] = a.startDate;
-    rObj['End date'] = a.endDate;
-    rObj['Status'] = a.leaveStatus;
-    rObj['Reason'] = a.leaveReason;
-    rObj['Date posted'] = a.datePosted;
-    rObj['Date reviewed'] = a.dateReviewed;
-    return rObj;
-  });
-
   const cancelledRecord = props.cancelled_record.map(a => a).sort((b, c) => {
     return b.userId - c.userId;
   });
@@ -198,6 +183,21 @@ const CancelledLeaveReportList = props => {
       <td>{record.dateReviewed}</td>
     </tr>
   ));
+
+  const records = props.cancelled_record.map(a => {
+    var rObj = {};
+    rObj['Othernames'] = a.user.othernames;
+    rObj['Surname'] = a.user.surname;
+    rObj['Leave'] = a.leaveName;
+    rObj['Type'] = a.leaveType;
+    rObj['Start date'] = a.startDate;
+    rObj['End date'] = a.endDate;
+    rObj['Status'] = a.leaveStatus;
+    rObj['Cancelled reason'] = a.cancelledReason;
+    rObj['Date posted'] = a.datePosted;
+    rObj['Date reviewed'] = a.dateReviewed;
+    return rObj;
+  });
 
   return cancelledRecordItems.length > 0 ? (
     <div>
@@ -243,21 +243,6 @@ const CancelledLeaveReportList = props => {
 };
 
 const DeclinedLeaveReportList = props => {
-  const records = props.declined_record.map(a => {
-    var rObj = {};
-    rObj['Othernames'] = a.user.othernames;
-    rObj['Surname'] = a.user.surname;
-    rObj['Leave'] = a.leaveName;
-    rObj['Type'] = a.leaveType;
-    rObj['Start date'] = a.startDate;
-    rObj['End date'] = a.endDate;
-    rObj['Status'] = a.leaveStatus;
-    rObj['Reason'] = a.leaveReason;
-    rObj['Date posted'] = a.datePosted;
-    rObj['Date reviewed'] = a.dateReviewed;
-    return rObj;
-  });
-
   const declinedRecord = props.declined_record.map(a => a).sort((b, c) => {
     return b.userId - c.userId;
   });
@@ -277,7 +262,22 @@ const DeclinedLeaveReportList = props => {
       <td>{record.dateReviewed}</td>
     </tr>
   ));
-  console.log(props.declined_record);
+
+  const records = props.declined_record.map(a => {
+    var rObj = {};
+    rObj['Othernames'] = a.user.othernames;
+    rObj['Surname'] = a.user.surname;
+    rObj['Leave'] = a.leaveName;
+    rObj['Type'] = a.leaveType;
+    rObj['Start date'] = a.startDate;
+    rObj['End date'] = a.endDate;
+    rObj['Status'] = a.leaveStatus;
+    rObj['Declined reason'] = a.declinedReason;
+    rObj['Date posted'] = a.datePosted;
+    rObj['Date reviewed'] = a.dateReviewed;
+    return rObj;
+  });
+
   return declinedRecordItems.length > 0 ? (
     <div>
       <CSVLink
@@ -322,23 +322,6 @@ const DeclinedLeaveReportList = props => {
 };
 
 const UserUpdatesReportList = props => {
-  const records = props.user_updates.map(a => {
-    var rObj = {};
-    rObj['Othernames'] = a.user.othernames;
-    rObj['Surname'] = a.user.surname;
-    rObj['Annual'] = a.annual;
-    rObj['Sick'] = a.sick;
-    rObj['Bereavement'] = a.bereavement;
-    rObj['Christmas'] = a.christmas;
-    rObj['Maternity'] = a.maternity;
-    rObj['Designation'] = a.designation;
-    rObj['Date Of Birth'] = a.dateOfBirth;
-    rObj['Gender'] = a.gender;
-    rObj['Edit reason'] = a.editReason;
-    rObj['Date posted'] = a.datePosted;
-    return rObj;
-  });
-
   const userUpdates = props.user_updates.map(a => a).sort((b, c) => {
     return b.userId - c.userId;
   });
@@ -364,6 +347,23 @@ const UserUpdatesReportList = props => {
         <td>{record.datePosted}</td>
       </tr>
     );
+  });
+
+  const records = props.user_updates.map(a => {
+    var rObj = {};
+    rObj['Othernames'] = a.user.othernames;
+    rObj['Surname'] = a.user.surname;
+    rObj['Annual'] = a.annual;
+    rObj['Sick'] = a.sick;
+    rObj['Bereavement'] = a.bereavement;
+    rObj['Christmas'] = a.christmas;
+    rObj['Maternity'] = a.maternity;
+    rObj['Designation'] = a.designation;
+    rObj['Date Of Birth'] = a.dateOfBirth;
+    rObj['Gender'] = a.gender;
+    rObj['Edit reason'] = a.editReason;
+    rObj['Date posted'] = a.datePosted;
+    return rObj;
   });
 
   return userUpdateItems.length > 0 ? (
@@ -412,23 +412,6 @@ const UserUpdatesReportList = props => {
 };
 
 const LeaveUpdatesReportList = props => {
-  const records = props.leave_updates.map(a => {
-    var rObj = {};
-    rObj['Othernames'] = a.leaverecord.user.othernames;
-    rObj['Surname'] = a.leaverecord.user.surname;
-    rObj['Previous start date'] = a.previousStartDate;
-    rObj['Previous end date'] = a.previousEndDate;
-    rObj['Previous leave name'] = a.previousLeaveName;
-    rObj['Previous leave days'] = a.previousLeaveDays;
-    rObj['Updated start date'] = a.updatedStartDate;
-    rObj['Updated end date'] = a.updatedEndDate;
-    rObj['Updated leave name'] = a.updatedLeaveName;
-    rObj['Updated leave days'] = a.updatedLeaveDays;
-    rObj['Edit reason'] = a.editReason;
-    rObj['Date posted'] = a.datePosted;
-    return rObj;
-  });
-
   const leaveUpdates = props.leave_updates.map(a => a).sort((b, c) => {
     return b.leaveId - c.leaveId;
   });
@@ -451,6 +434,23 @@ const LeaveUpdatesReportList = props => {
       <td>{record.datePosted}</td>
     </tr>
   ));
+
+  const records = props.leave_updates.map(a => {
+    var rObj = {};
+    rObj['Othernames'] = a.leaverecord.user.othernames;
+    rObj['Surname'] = a.leaverecord.user.surname;
+    rObj['Previous start date'] = a.previousStartDate;
+    rObj['Previous end date'] = a.previousEndDate;
+    rObj['Previous leave name'] = a.previousLeaveName;
+    rObj['Previous leave days'] = a.previousLeaveDays;
+    rObj['Updated start date'] = a.updatedStartDate;
+    rObj['Updated end date'] = a.updatedEndDate;
+    rObj['Updated leave name'] = a.updatedLeaveName;
+    rObj['Updated leave days'] = a.updatedLeaveDays;
+    rObj['Edit reason'] = a.editReason;
+    rObj['Date posted'] = a.datePosted;
+    return rObj;
+  });
 
   return leaveUpdateItems.length > 0 ? (
     <div>
