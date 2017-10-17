@@ -32,6 +32,7 @@ class LeaveApplication extends Component<Props> {
     let userID = this.props.auth_info.user_id
       ? this.props.auth_info.user_id
       : localStorage.getItem('user_id');
+
     return (
       <div className="LeaveApplication">
         {isAuthenticated ? (
