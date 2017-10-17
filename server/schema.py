@@ -1,9 +1,10 @@
 import graphene
 from graphene import relay, String, Int
 from graphene_sqlalchemy import SQLAlchemyConnectionField, SQLAlchemyObjectType
-from models import db_session, User as UserModel, Userupdates as UserupdatesModel, \
-Leaverecord as LeaverecordModel, Leaveupdates as LeaveupdatesModel, \
-Adminuser as AdminuserModel, Publicholiday as PublicholidayModel
+from models import db_session, User as UserModel, \
+    Userupdates as UserupdatesModel, Leaverecord as LeaverecordModel, \
+    Leaveupdates as LeaveupdatesModel, \
+    Adminuser as AdminuserModel, Publicholiday as PublicholidayModel
 
 
 class DatabaseId(graphene.Interface):
@@ -75,6 +76,13 @@ class Query(graphene.ObjectType):
         is_archived = args.get('is_archived')
         return query.join(UserModel).filter(
             UserModel.isArchived == is_archived)
+
+    find_users = graphene.List(lambda: User, is_archived=graphene.String())
+
+    def resolve_find_users(self, args, context, info):
+        query = User.get_query(context)
+        is_archived = args.get('is_archived')
+        return query.filter(UserModel.isArchived == is_archived)
 
     find_leave_record = graphene.List(
         lambda: Leaverecord,
