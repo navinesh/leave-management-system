@@ -4473,9 +4473,13 @@ moment-range@^3.0.3:
   dependencies:
     es6-symbol "^3.1.0"
 
-moment@>=1.6.0, moment@^2.17.1, moment@^2.18.1:
+moment@>=1.6.0, moment@^2.17.1:
   version "2.18.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.18.1.tgz#c36193dd3ce1c2eed2adb7c802dbbc77a81b1c0f"
+
+moment@^2.19.1:
+  version "2.19.1"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.19.1.tgz#56da1a2d1cbf01d38b7e1afc31c10bcfa1929167"
 
 ms@2.0.0:
   version "2.0.0"
