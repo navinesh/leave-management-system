@@ -2,11 +2,12 @@
 import React from 'react';
 import { render } from 'react-dom';
 
-import {
-  ApolloProvider,
-  createNetworkInterface,
-  ApolloClient
-} from 'react-apollo';
+import { Provider } from 'react-redux';
+
+import { ApolloProvider } from 'react-apollo';
+import { ApolloClient } from 'apollo-client';
+import { HttpLink } from 'apollo-link-http';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
@@ -25,12 +26,9 @@ import LeaveApplication from './containers/LeaveApplication';
 import configureStore from './stores/ConfigureStore';
 const store = configureStore();
 
-const networkInterface = createNetworkInterface({
-  uri: 'http://localhost:8080/graphql'
-});
-
 const client = new ApolloClient({
-  networkInterface
+  link: new HttpLink({ uri: 'http://localhost:8080/graphql' }),
+  cache: new InMemoryCache()
 });
 
 const PrivateRoute = ({ component, ...rest }) => (
@@ -51,21 +49,29 @@ const PrivateRoute = ({ component, ...rest }) => (
 );
 
 const App = () => (
-  <ApolloProvider client={client} store={store}>
-    <BrowserRouter>
-      <div>
-        <Header />
-        <Switch>
-          <PrivateRoute exact path="/" component={Main} />
-          <Route path="/leavecalendar" component={StaffLeaveCalendar} />
-          <Route path="/reset" component={ResetPassword} />
-          <Route path="/login" component={Login} />
-          <PrivateRoute path="/leaveapplication" component={LeaveApplication} />
-          <PrivateRoute path="/changepassword" component={UserChangePassword} />
-          <Route component={UserError} />
-        </Switch>
-      </div>
-    </BrowserRouter>
+  <ApolloProvider client={client}>
+    <Provider store={store}>
+      <BrowserRouter>
+        <div>
+          <Header />
+          <Switch>
+            <PrivateRoute exact path="/" component={Main} />
+            <Route path="/leavecalendar" component={StaffLeaveCalendar} />
+            <Route path="/reset" component={ResetPassword} />
+            <Route path="/login" component={Login} />
+            <PrivateRoute
+              path="/leaveapplication"
+              component={LeaveApplication}
+            />
+            <PrivateRoute
+              path="/changepassword"
+              component={UserChangePassword}
+            />
+            <Route component={UserError} />
+          </Switch>
+        </div>
+      </BrowserRouter>
+    </Provider>
   </ApolloProvider>
 );
 
