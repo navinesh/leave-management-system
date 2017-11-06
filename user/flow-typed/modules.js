@@ -7,6 +7,22 @@ declare module 'react-apollo' {
   declare var exports: any;
 }
 
+declare module 'apollo-client' {
+  declare var exports: any;
+}
+
+declare module 'apollo-link-http' {
+  declare var exports: any;
+}
+
+declare module 'apollo-cache-inmemory' {
+  declare var exports: any;
+}
+
+declare module 'graphql-tag' {
+  declare var exports: any;
+}
+
 declare module 'redux' {
   declare var exports: any;
 }
