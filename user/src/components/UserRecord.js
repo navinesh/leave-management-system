@@ -46,7 +46,7 @@ const PendingRecordList = props => {
           className="table table-bordered table-hover"
           style={{ backgroundColor: '#FFFFFF' }}
         >
-          <thead className="thead-default">
+          <thead className="thead-light">
             <tr>
               <th>Leave type</th>
               <th>Leave days</th>
@@ -85,7 +85,7 @@ const ApprovedRecordList = props => {
           className="table table-bordered table-hover"
           style={{ backgroundColor: '#FFFFFF' }}
         >
-          <thead className="thead-default">
+          <thead className="thead-light">
             <tr>
               <th>Leave type</th>
               <th>Leave days</th>
