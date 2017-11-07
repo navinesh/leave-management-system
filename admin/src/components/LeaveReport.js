@@ -46,7 +46,7 @@ const ApprovedLeaveReportList = props => {
       <CSVLink
         data={records}
         filename={'Approved-leave.csv'}
-        className="btn btn-outline-primary mb-2"
+        className="btn btn-outline-primary btn-sm mb-2"
       >
         Download
       </CSVLink>
@@ -55,7 +55,7 @@ const ApprovedLeaveReportList = props => {
           className="table table-bordered table-hover"
           style={{ backgroundColor: '#FFFFFF' }}
         >
-          <thead className="thead-default">
+          <thead className="thead-light">
             <tr>
               <th>Name</th>
               <th>Leave</th>
@@ -125,7 +125,7 @@ const PendingLeaveReportList = props => {
       <CSVLink
         data={records}
         filename={'Pending-leave.csv'}
-        className="btn btn-outline-primary mb-2"
+        className="btn btn-outline-primary btn-sm mb-2"
       >
         Download
       </CSVLink>
@@ -134,7 +134,7 @@ const PendingLeaveReportList = props => {
           className="table table-bordered table-hover"
           style={{ backgroundColor: '#FFFFFF' }}
         >
-          <thead className="thead-default">
+          <thead className="thead-light">
             <tr>
               <th>Name</th>
               <th>Leave</th>
@@ -204,7 +204,7 @@ const CancelledLeaveReportList = props => {
       <CSVLink
         data={records}
         filename={'Cancelled-leave.csv'}
-        className="btn btn-outline-primary mb-2"
+        className="btn btn-outline-primary btn-sm mb-2"
       >
         Download
       </CSVLink>
@@ -213,7 +213,7 @@ const CancelledLeaveReportList = props => {
           className="table table-bordered table-hover"
           style={{ backgroundColor: '#FFFFFF' }}
         >
-          <thead className="thead-default">
+          <thead className="thead-light">
             <tr>
               <th>Name</th>
               <th>Leave</th>
@@ -283,7 +283,7 @@ const DeclinedLeaveReportList = props => {
       <CSVLink
         data={records}
         filename={'Declined-leave.csv'}
-        className="btn btn-outline-primary mb-2"
+        className="btn btn-outline-primary btn-sm mb-2"
       >
         Download
       </CSVLink>
@@ -292,7 +292,7 @@ const DeclinedLeaveReportList = props => {
           className="table table-bordered table-hover"
           style={{ backgroundColor: '#FFFFFF' }}
         >
-          <thead className="thead-default">
+          <thead className="thead-light">
             <tr>
               <th>Name</th>
               <th>Leave</th>
@@ -371,7 +371,7 @@ const UserUpdatesReportList = props => {
       <CSVLink
         data={records}
         filename={'User-updates.csv'}
-        className="btn btn-outline-primary mb-2"
+        className="btn btn-outline-primary btn-sm mb-2"
       >
         Download
       </CSVLink>
@@ -380,7 +380,7 @@ const UserUpdatesReportList = props => {
           className="table table-bordered table-hover"
           style={{ backgroundColor: '#FFFFFF' }}
         >
-          <thead className="thead-default">
+          <thead className="thead-light">
             <tr>
               <th>Name</th>
               <th>Annual </th>
@@ -457,7 +457,7 @@ const LeaveUpdatesReportList = props => {
       <CSVLink
         data={records}
         filename={'Leave-updates.csv'}
-        className="btn btn-outline-primary mb-2"
+        className="btn btn-outline-primary btn-sm mb-2"
       >
         Download
       </CSVLink>
@@ -466,7 +466,7 @@ const LeaveUpdatesReportList = props => {
           className="table table-bordered table-hover"
           style={{ backgroundColor: '#FFFFFF' }}
         >
-          <thead className="thead-default">
+          <thead className="thead-light">
             <tr>
               <th>ID</th>
               <th>Name</th>
