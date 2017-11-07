@@ -2,11 +2,12 @@
 import React from 'react';
 import { render } from 'react-dom';
 
-import {
-  ApolloProvider,
-  createNetworkInterface,
-  ApolloClient
-} from 'react-apollo';
+import { Provider } from 'react-redux';
+
+import { ApolloProvider } from 'react-apollo';
+import { ApolloClient } from 'apollo-client';
+import { HttpLink } from 'apollo-link-http';
+import { InMemoryCache } from 'apollo-cache-inmemory';
 
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
@@ -30,12 +31,9 @@ import Error from './components/Error';
 import configureStore from './stores/ConfigureStore';
 const store = configureStore();
 
-const networkInterface = createNetworkInterface({
-  uri: 'http://localhost:8080/graphql'
-});
-
 const client = new ApolloClient({
-  networkInterface
+  link: new HttpLink({ uri: 'http://localhost:8080/graphql' }),
+  cache: new InMemoryCache()
 });
 
 const PrivateRoute = ({ component, ...rest }) => (
@@ -56,32 +54,34 @@ const PrivateRoute = ({ component, ...rest }) => (
 );
 
 const App = () => (
-  <ApolloProvider client={client} store={store}>
-    <BrowserRouter>
-      <div>
-        <AdminHeader />
-        <Switch>
-          <PrivateRoute exact path="/" component={PendingLeave} />
-          <PrivateRoute path="/staffrecord" component={StaffRecord} />
-          <PrivateRoute path="/approvedleave" component={ApprovedLeave} />
-          <PrivateRoute path="/leavereport" component={LeaveReport} />
-          <PrivateRoute path="/sicksheetrecord" component={SickSheetRecord} />
-          <PrivateRoute
-            path="/sicksheetrecord/:fileId"
-            component={SickSheetRecord}
-          />
-          <PrivateRoute
-            path="/archivedstaffrecord"
-            component={ArchivedStaffRecord}
-          />
-          <PrivateRoute path="/newrecord" component={NewRecord} />
-          <PrivateRoute path="/publicholiday" component={PublicHoliday} />
-          <Route path="/login" component={AdminLogin} />
-          <Route path="/resetpassword" component={AdminResetPassword} />
-          <Route component={Error} />
-        </Switch>
-      </div>
-    </BrowserRouter>
+  <ApolloProvider client={client}>
+    <Provider store={store}>
+      <BrowserRouter>
+        <div>
+          <AdminHeader />
+          <Switch>
+            <PrivateRoute exact path="/" component={PendingLeave} />
+            <PrivateRoute path="/staffrecord" component={StaffRecord} />
+            <PrivateRoute path="/approvedleave" component={ApprovedLeave} />
+            <PrivateRoute path="/leavereport" component={LeaveReport} />
+            <PrivateRoute path="/sicksheetrecord" component={SickSheetRecord} />
+            <PrivateRoute
+              path="/sicksheetrecord/:fileId"
+              component={SickSheetRecord}
+            />
+            <PrivateRoute
+              path="/archivedstaffrecord"
+              component={ArchivedStaffRecord}
+            />
+            <PrivateRoute path="/newrecord" component={NewRecord} />
+            <PrivateRoute path="/publicholiday" component={PublicHoliday} />
+            <Route path="/login" component={AdminLogin} />
+            <Route path="/resetpassword" component={AdminResetPassword} />
+            <Route component={Error} />
+          </Switch>
+        </div>
+      </BrowserRouter>
+    </Provider>
   </ApolloProvider>
 );
 
