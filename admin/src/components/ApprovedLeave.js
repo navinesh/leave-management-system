@@ -659,7 +659,7 @@ export default class ApprovedLeaveList extends Component<Props, State> {
           className="table table-bordered table-hover"
           style={{ backgroundColor: '#FFFFFF' }}
         >
-          <thead className="thead-default">
+          <thead className="thead-light">
             <tr>
               <th>Name</th>
               <th>Leave</th>
