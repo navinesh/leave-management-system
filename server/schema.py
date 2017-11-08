@@ -160,6 +160,25 @@ class authenticateAdmin(graphene.Mutation):
         return authenticateAdmin(token=auth_token, ok=ok)
 
 
+# Verify admin token
+class verifyAdminToken(graphene.Mutation):
+    class Input:
+        adminToken = graphene.String()
+
+    token = graphene.String()
+    ok = graphene.Boolean()
+
+    @classmethod
+    def mutate(cls, _, args, context, info):
+        adminToken = args.get('adminToken')
+
+        if not adminToken or not AdminuserModel.verify_auth_token(adminToken):
+            raise Exception('Your session has expired!.')
+
+        ok = True
+        return verifyAdminToken(token=adminToken, ok=ok)
+
+
 # Create public holiday
 class addPublicholiday(graphene.Mutation):
     class Input:
@@ -201,6 +220,7 @@ class deletePublicholiday(graphene.Mutation):
 class Mutations(graphene.ObjectType):
     authenticate_user = authenticateUser.Field()
     authenticate_admin = authenticateAdmin.Field()
+    verify_admin_token = verifyAdminToken.Field()
     add_publicholiday = addPublicholiday.Field()
     delete_publicholiday = deletePublicholiday.Field()
 
