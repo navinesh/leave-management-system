@@ -2,7 +2,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { graphql, gql, compose } from 'react-apollo';
+import gql from 'graphql-tag';
+import { graphql, compose } from 'react-apollo';
 
 import { fetchLoginFromToken } from '../actions/AdminLogin';
 import SickSheetList from '../components/SickSheetRecord';
