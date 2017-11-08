@@ -130,6 +130,33 @@ class authenticateUser(graphene.Mutation):
         return authenticateUser(User=user, token=auth_token, ok=ok)
 
 
+# Authenticate admin
+class authenticateAdmin(graphene.Mutation):
+    class Input:
+        email = graphene.String()
+        password = graphene.String()
+
+    token = graphene.String()
+    ok = graphene.Boolean()
+
+    @classmethod
+    def mutate(cls, _, args, context, info):
+        query = Adminuser.get_query(context)
+        email = args.get('email')
+        password = args.get('password')
+
+        admin = query.filter(AdminuserModel.email == email).first()
+
+        if not admin or not admin.verify_password(password):
+            raise Exception(
+                'The username and password you entered did not match our records. Please double-check and try again.'
+            )
+
+        auth_token = admin.generate_auth_token()
+        ok = True
+        return authenticateAdmin(token=auth_token, ok=ok)
+
+
 # Create public holiday
 class addPublicholiday(graphene.Mutation):
     class Input:
@@ -169,6 +196,8 @@ class deletePublicholiday(graphene.Mutation):
 
 
 class Mutations(graphene.ObjectType):
+    authenticate_user = authenticateUser.Field()
+    authenticate_admin = authenticateAdmin.Field()
     add_publicholiday = addPublicholiday.Field()
     delete_publicholiday = deletePublicholiday.Field()
 
