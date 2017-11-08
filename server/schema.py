@@ -173,7 +173,7 @@ class verifyAdminToken(graphene.Mutation):
         adminToken = args.get('adminToken')
 
         if not adminToken or not AdminuserModel.verify_auth_token(adminToken):
-            raise Exception('Your session has expired!.')
+            raise Exception('Your session has expired!')
 
         ok = True
         return verifyAdminToken(token=adminToken, ok=ok)
