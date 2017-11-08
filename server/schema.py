@@ -123,7 +123,9 @@ class authenticateUser(graphene.Mutation):
         user = query.filter(UserModel.email == email).first()
 
         if not user or not user.verify_password(password):
-            raise Exception('Invalid username or password!')
+            raise Exception(
+                'The username and password you entered did not match our \
+                records. Please double-check and try again.')
 
         auth_token = user.generate_auth_token()
         ok = True
@@ -149,7 +151,8 @@ class authenticateAdmin(graphene.Mutation):
 
         if not admin or not admin.verify_password(password):
             raise Exception(
-                'The username and password you entered did not match our records. Please double-check and try again.'
+                'The username and password you entered did not match our \
+                records. Please double-check and try again.'
             )
 
         auth_token = admin.generate_auth_token()
