@@ -1,10 +1,10 @@
 // @flow
 import React from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 import { fetchLogin } from '../actions/AdminLogin';
 import Login from '../components/AdminLogin';
-import { Redirect } from 'react-router-dom';
 
 type Props = {
   isAuthenticated: boolean,
@@ -19,6 +19,7 @@ const AdminLogin = (props: Props) => (
       <Login
         isFetching={props.isFetching}
         message={props.message}
+        dispatch={props.dispatch}
         onLoginClick={creds => props.dispatch(fetchLogin(creds))}
       />
     ) : (
