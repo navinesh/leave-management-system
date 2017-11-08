@@ -52,6 +52,12 @@ class Publicholiday(SQLAlchemyObjectType):
         model.db_id = model.id
 
 
+class Adminuser(SQLAlchemyObjectType):
+    class Meta:
+        model = AdminuserModel
+        interfaces = (relay.Node, )
+
+
 class Query(graphene.ObjectType):
     node = relay.Node.Field()
     user = relay.Node.Field(User)
