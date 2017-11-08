@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react';
-import { graphql, gql, compose } from 'react-apollo';
+import gql from 'graphql-tag';
+import { graphql, compose } from 'react-apollo';
 
 import 'react-dates/initialize';
 import { SingleDatePicker } from 'react-dates';
