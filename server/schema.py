@@ -98,6 +98,32 @@ class Query(graphene.ObjectType):
                                 UserModel.isArchived == is_archived)
 
 
+# Authenticate user
+class authenticateUser(graphene.Mutation):
+    class Input:
+        email = graphene.String()
+        password = graphene.String()
+
+    User = graphene.Field(User)
+    token = graphene.String()
+    ok = graphene.Boolean()
+
+    @classmethod
+    def mutate(cls, _, args, context, info):
+        query = User.get_query(context)
+        email = args.get('email')
+        password = args.get('password')
+
+        user = query.filter(UserModel.email == email).first()
+
+        if not user or not user.verify_password(password):
+            raise Exception('Invalid username or password!')
+
+        auth_token = user.generate_auth_token()
+        ok = True
+        return authenticateUser(User=user, token=auth_token, ok=ok)
+
+
 # Create public holiday
 class addPublicholiday(graphene.Mutation):
     class Input:
