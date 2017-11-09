@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+
 import { fetchLoginFromToken } from '../actions/UserLogin';
 import LeaveCalendar from './LeaveCalendar';
 import UserLogin from './UserLogin';
