@@ -82,37 +82,40 @@ import {
 
 type adminState = {
   isFetching: boolean,
-  isAuthenticated: boolean,
   message: string,
+  isAuthenticated: boolean,
   auth_info: Object
 };
 
 const adminAuth = (
   state: adminState = {
     isFetching: false,
-    isAuthenticated: localStorage.getItem('admin_token') ? true : false,
     message: '',
+    isAuthenticated: localStorage.getItem('admin_token') ? true : false,
     auth_info: {}
   },
   action
 ) => {
   switch (action.type) {
     case LOGIN_ADMIN_REQUEST:
-      return { ...state, isFetching: true, isAuthenticated: false };
+      return {
+        ...state,
+        isFetching: true,
+        message: '',
+        isAuthenticated: false
+      };
     case LOGIN_ADMIN_SUCCESS:
       return {
         ...state,
         isFetching: false,
         isAuthenticated: true,
-        auth_info: action.auth_info,
-        message: 'Login successful!'
+        auth_info: action.auth_info
       };
     case LOGIN_ADMIN_FAILURE:
       return {
         ...state,
         isFetching: false,
-        isAuthenticated: false,
-        message: action.message
+        isAuthenticated: false
       };
     case LOGIN_ADMIN_REQUEST_FROM_TOKEN:
       return { ...state, isFetching: true };
@@ -127,8 +130,8 @@ const adminAuth = (
       return {
         ...state,
         isFetching: false,
-        isAuthenticated: false,
-        message: action.message
+        message: action.message,
+        isAuthenticated: false
       };
     case LOGOUT_ADMIN_REQUEST:
       return { ...state, isFetching: true, isAuthenticated: true };
@@ -137,7 +140,6 @@ const adminAuth = (
         ...state,
         isFetching: false,
         isAuthenticated: false,
-        message: '',
         auth_info: ''
       };
     default:
