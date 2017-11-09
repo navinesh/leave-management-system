@@ -5,8 +5,21 @@ import { Redirect } from 'react-router-dom';
 import gql from 'graphql-tag';
 import { graphql, compose } from 'react-apollo';
 
-import { fetchLoginFromToken } from '../actions/AdminLogin';
+import {
+  requestAdminLoginFromToken,
+  receiveAdminLoginFromToken,
+  loginAdminErrorFromToken
+} from '../actions/AdminLogin';
 import LeaveReportList from '../components/LeaveReport';
+
+const VERIFY_ADMIN_TOKEN = gql`
+  mutation verifyAdminToken($adminToken: String!) {
+    verifyAdminToken(adminToken: $adminToken) {
+      token
+      ok
+    }
+  }
+`;
 
 const APPROVED_RECORD = gql`
   {
@@ -150,20 +163,40 @@ type Props = {
   declinedRecord: Object,
   userUpdates: Object,
   leaveUpdates: Object,
-  dispatch: Function
+  dispatch: Function,
+  verifyAdminToken: Function
 };
 
 class LeaveReport extends Component<Props> {
   componentWillMount() {
-    const { dispatch, auth_info } = this.props;
+    const { auth_info } = this.props;
     let admin_token = auth_info.admin_token
       ? auth_info.admin_token
       : localStorage.getItem('admin_token');
 
     if (admin_token) {
-      dispatch(fetchLoginFromToken(admin_token));
+      this.verifyToken();
     }
   }
+
+  verifyToken = async () => {
+    const { dispatch, verifyAdminToken } = this.props;
+    const adminToken = localStorage.getItem('admin_token');
+
+    try {
+      dispatch(requestAdminLoginFromToken());
+      const response = await verifyAdminToken({
+        variables: { adminToken }
+      });
+      dispatch(
+        receiveAdminLoginFromToken(response.data.verifyAdminToken.token)
+      );
+    } catch (error) {
+      console.log(error);
+      localStorage.removeItem('admin_token');
+      dispatch(loginAdminErrorFromToken('Your session has expired!'));
+    }
+  };
 
   render() {
     const {
@@ -266,6 +299,9 @@ const mapStateToProps = state => {
 
 export default compose(
   connect(mapStateToProps),
+  graphql(VERIFY_ADMIN_TOKEN, {
+    name: 'verifyAdminToken'
+  }),
   graphql(APPROVED_RECORD, {
     name: 'approvedRecord'
   }),
