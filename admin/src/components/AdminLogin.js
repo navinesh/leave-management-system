@@ -1,11 +1,29 @@
 // @flow
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
+
+import {
+  requestAdminLogin,
+  receiveAdminLogin,
+  loginAdminError
+} from '../actions/AdminLogin';
+
+const AUTHENTICATE_ADMIN = gql`
+  mutation authenticateAdmin($email: String!, $password: String!) {
+    authenticateAdmin(email: $email, password: $password) {
+      token
+      ok
+    }
+  }
+`;
 
 type Props = {
-  onLoginClick: Function,
+  logInAdmin: Function,
+  isFetching: boolean,
   message: string,
-  isFetching: boolean
+  dispatch: Function
 };
 
 type State = {
@@ -14,7 +32,7 @@ type State = {
   password: string
 };
 
-export default class Login extends Component<Props, State> {
+class Login extends Component<Props, State> {
   handleSubmit: Function;
   handleEmailChange: Function;
   handlePasswordChange: Function;
@@ -38,8 +56,7 @@ export default class Login extends Component<Props, State> {
 
   handleSubmit(e: Event) {
     e.preventDefault();
-    const email = this.state.email ? this.state.email.trim() : null;
-    const password = this.state.password ? this.state.password.trim() : null;
+    const { email, password } = this.state;
 
     if (!email || !password) {
       this.setState({
@@ -51,8 +68,7 @@ export default class Login extends Component<Props, State> {
 
     this.setState({ errorMessage: '' });
 
-    const creds = { email: email, password: password };
-    this.props.onLoginClick(creds);
+    this.authenticateAdmin();
   }
 
   render() {
@@ -108,4 +124,30 @@ export default class Login extends Component<Props, State> {
       </div>
     );
   }
+
+  authenticateAdmin = async () => {
+    const { logInAdmin, dispatch } = this.props;
+    const { email, password } = this.state;
+
+    try {
+      dispatch(requestAdminLogin());
+      const response = await logInAdmin({
+        variables: { email, password }
+      });
+      localStorage.setItem(
+        'admin_token',
+        response.data.authenticateAdmin.token
+      );
+      dispatch(receiveAdminLogin(response.data.authenticateAdmin.token));
+    } catch (error) {
+      console.log(error);
+      this.setState({ errorMessage: error.message });
+      localStorage.removeItem('admin_token');
+      dispatch(loginAdminError());
+    }
+  };
 }
+
+export default graphql(AUTHENTICATE_ADMIN, {
+  name: 'logInAdmin'
+})(Login);
