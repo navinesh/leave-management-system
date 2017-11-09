@@ -2,33 +2,68 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import gql from 'graphql-tag';
+import { graphql, compose } from 'react-apollo';
 
-import { fetchLoginFromToken } from '../actions/AdminLogin';
+import {
+  requestAdminLoginFromToken,
+  receiveAdminLoginFromToken,
+  loginAdminErrorFromToken
+} from '../actions/AdminLogin';
 import NewRecordForm from '../components/NewRecord';
 import {
   submitNewUserRecord,
   clearNewUserRecordMessage
 } from '../actions/NewRecord';
 
+const VERIFY_ADMIN_TOKEN = gql`
+  mutation verifyAdminToken($adminToken: String!) {
+    verifyAdminToken(adminToken: $adminToken) {
+      token
+      ok
+    }
+  }
+`;
+
 type Props = {
   isAuthenticated: boolean,
   auth_info: Object,
   dispatch: Function,
   isFetching: boolean,
-  message: string
+  message: string,
+  verifyAdminToken: Function
 };
 
 class NewRecord extends Component<Props> {
   componentWillMount() {
-    const { dispatch, auth_info } = this.props;
+    const { auth_info } = this.props;
     let admin_token = auth_info.admin_token
       ? auth_info.admin_token
       : localStorage.getItem('admin_token');
 
     if (admin_token) {
-      dispatch(fetchLoginFromToken(admin_token));
+      this.verifyToken();
     }
   }
+
+  verifyToken = async () => {
+    const { dispatch, verifyAdminToken } = this.props;
+    const adminToken = localStorage.getItem('admin_token');
+
+    try {
+      dispatch(requestAdminLoginFromToken());
+      const response = await verifyAdminToken({
+        variables: { adminToken }
+      });
+      dispatch(
+        receiveAdminLoginFromToken(response.data.verifyAdminToken.token)
+      );
+    } catch (error) {
+      console.log(error);
+      localStorage.removeItem('admin_token');
+      dispatch(loginAdminErrorFromToken('Your session has expired!'));
+    }
+  };
 
   componentWillUnmount() {
     this.props.dispatch(clearNewUserRecordMessage());
@@ -63,4 +98,9 @@ const mapStateToProps = state => {
   return { auth_info, isAuthenticated, isFetching, message };
 };
 
-export default connect(mapStateToProps)(NewRecord);
+export default compose(
+  connect(mapStateToProps),
+  graphql(VERIFY_ADMIN_TOKEN, {
+    name: 'verifyAdminToken'
+  })
+)(NewRecord);
