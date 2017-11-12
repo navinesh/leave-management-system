@@ -61,8 +61,7 @@ const userAuth = (
         ...state,
         isFetching: false,
         isAuthenticated: true,
-        auth_info: action.auth_info,
-        message: 'Login successful!'
+        auth_info: action.auth_info
       };
     case LOGIN_USER_FAILURE:
       return {
@@ -95,8 +94,7 @@ const userAuth = (
         ...state,
         isFetching: false,
         isAuthenticated: true,
-        auth_info: action.auth_info,
-        message: 'Login successful!'
+        auth_info: action.auth_info
       };
     case LOGIN_USER_FAILURE_FROM_TOKEN:
       return {
