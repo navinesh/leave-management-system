@@ -9,7 +9,7 @@ import random
 import json
 from httplib2 import Http
 import string
-from database_setup import Base, User, Userupdates, \
+from models import Base, User, Userupdates, \
     Leaverecord, Adminuser, Publicholiday, Leaveupdates
 from sqlalchemy import create_engine
 from sqlalchemy.orm import relationship, sessionmaker, join
