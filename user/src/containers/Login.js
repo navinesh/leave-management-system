@@ -2,28 +2,62 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
+import gql from 'graphql-tag';
+import { graphql, compose } from 'react-apollo';
 
-import { fetchLoginFromToken } from '../actions/UserLogin';
+import {
+  requestUserLoginFromToken,
+  receiveUserLoginFromToken,
+  loginUserErrorFromToken
+} from '../actions/UserLogin';
 import LeaveCalendar from './LeaveCalendar';
 import UserLogin from './UserLogin';
+
+const VERIFY_USER_TOKEN = gql`
+  mutation verifyUserToken($userToken: String!) {
+    verifyUserToken(userToken: $userToken) {
+      token
+      ok
+    }
+  }
+`;
 
 type Props = {
   auth_info: Object,
   dispatch: Function,
-  isAuthenticated: boolean
+  isAuthenticated: boolean,
+  verifyUserToken: Function
 };
 
-class Main extends Component<Props> {
+class Login extends Component<Props> {
   componentDidMount() {
-    const { dispatch, auth_info } = this.props;
+    const { auth_info } = this.props;
     let auth_token = auth_info.auth_token
       ? auth_info.auth_token
       : localStorage.getItem('auth_token');
 
     if (auth_token) {
-      dispatch(fetchLoginFromToken(auth_token));
+      this.verifyToken();
     }
   }
+
+  verifyToken = async () => {
+    const { dispatch, verifyUserToken } = this.props;
+    const userToken = localStorage.getItem('auth_token');
+
+    try {
+      dispatch(requestUserLoginFromToken());
+      const response = await verifyUserToken({
+        variables: { userToken }
+      });
+      dispatch(receiveUserLoginFromToken(response.data.verifyUserToken.token));
+    } catch (error) {
+      console.log(error);
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('user_id');
+      dispatch(loginUserErrorFromToken('Your session has expired!'));
+    }
+  };
 
   render() {
     return (
@@ -54,4 +88,9 @@ const mapStateToProps = state => {
   return { auth_info, isAuthenticated };
 };
 
-export default connect(mapStateToProps)(Main);
+export default compose(
+  connect(mapStateToProps),
+  graphql(VERIFY_USER_TOKEN, {
+    name: 'verifyUserToken'
+  })
+)(Login);
