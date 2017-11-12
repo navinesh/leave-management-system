@@ -1,13 +1,34 @@
 // @flow
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import gql from 'graphql-tag';
+import { graphql } from 'react-apollo';
+
+import {
+  requestUserLogin,
+  receiveUserLogin,
+  loginUserError
+} from '../actions/UserLogin';
 
 import '../spinners.css';
 
+const AUTHENTICATE_USER = gql`
+  mutation authenticateUser($email: String!, $password: String!) {
+    authenticateUser(email: $email, password: $password) {
+      token
+      User {
+        dbId
+      }
+      ok
+    }
+  }
+`;
+
 type Props = {
-  onLoginClick: Function,
+  logInUser: Function,
   message: string,
-  isFetching: boolean
+  isFetching: boolean,
+  dispatch: Function
 };
 
 type State = {
@@ -16,7 +37,7 @@ type State = {
   errorMessage: string
 };
 
-export default class Login extends Component<Props, State> {
+class Login extends Component<Props, State> {
   handleEmailChange: Function;
   handlePasswordChange: Function;
   handleSubmit: Function;
@@ -71,8 +92,7 @@ export default class Login extends Component<Props, State> {
       errorMessage: ''
     });
 
-    const creds = { email: email, password: password };
-    this.props.onLoginClick(creds);
+    this.authenticateUser();
   }
 
   render() {
@@ -126,4 +146,33 @@ export default class Login extends Component<Props, State> {
       </div>
     );
   }
+
+  authenticateUser = async () => {
+    const { logInUser, dispatch } = this.props;
+    const { email, password } = this.state;
+
+    try {
+      dispatch(requestUserLogin());
+      const response = await logInUser({
+        variables: { email, password }
+      });
+      localStorage.setItem('auth_token', response.data.authenticateUser.token);
+      localStorage.setItem('user_id', response.data.authenticateUser.User.dbId);
+      const auth_info = {
+        auth_token: response.data.authenticateUser.token,
+        user_id: response.data.authenticateUser.User.dbId
+      };
+      dispatch(receiveUserLogin(auth_info));
+    } catch (error) {
+      console.log(error);
+      this.setState({ errorMessage: error.message });
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('user_id');
+      dispatch(loginUserError());
+    }
+  };
 }
+
+export default graphql(AUTHENTICATE_USER, {
+  name: 'logInUser'
+})(Login);
