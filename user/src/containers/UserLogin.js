@@ -2,7 +2,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import { fetchLogin } from '../actions/UserLogin';
 import Login from '../components/UserLogin';
 
 type Props = {
@@ -18,7 +17,7 @@ const UserLogin = (props: Props) => (
       <Login
         isFetching={props.isFetching}
         message={props.message}
-        onLoginClick={creds => props.dispatch(fetchLogin(creds))}
+        dispatch={props.dispatch}
       />
     )}
   </div>
