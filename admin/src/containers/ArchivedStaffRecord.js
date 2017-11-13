@@ -11,7 +11,6 @@ import {
   loginAdminErrorFromToken
 } from '../actions/AdminLogin';
 import ArchivedStaffRecordList from '../components/ArchivedStaffRecord';
-import { submitUnArchiveUser } from '../actions/UnArchiveUser';
 
 const VERIFY_ADMIN_TOKEN = gql`
   mutation verifyAdminToken($adminToken: String!) {
@@ -41,14 +40,24 @@ const ARCHIVED_USERS = gql`
   }
 `;
 
+const UNARCHIVE_USER = gql`
+  mutation unArchiveUser($userId: Int!) {
+    unArchiveUser(userId: $userId) {
+      User {
+        isArchived
+      }
+      ok
+    }
+  }
+`;
+
 type Props = {
   isAuthenticated: boolean,
   auth_info: Object,
-  archivedUsers: Object,
+  verifyAdminToken: Function,
   dispatch: Function,
-  isUnArchiveFetching: boolean,
-  unArchiveMessage: string,
-  verifyAdminToken: Function
+  archivedUsers: Object,
+  unArchiveUser: Function
 };
 
 class ArchivedStaffRecord extends Component<Props> {
@@ -87,8 +96,7 @@ class ArchivedStaffRecord extends Component<Props> {
       isAuthenticated,
       archivedUsers: { loading, error, findUsers, refetch },
       dispatch,
-      isUnArchiveFetching,
-      unArchiveMessage
+      unArchiveUser
     } = this.props;
 
     if (loading) {
@@ -114,10 +122,7 @@ class ArchivedStaffRecord extends Component<Props> {
           <ArchivedStaffRecordList
             archived_staff_record={findUsers}
             dispatch={dispatch}
-            isUnArchiveFetching={isUnArchiveFetching}
-            unArchiveMessage={unArchiveMessage}
-            onUnArchiveUserSubmit={unArchiveUser =>
-              dispatch(submitUnArchiveUser(unArchiveUser))}
+            unArchiveUser={unArchiveUser}
             refetch={refetch}
           />
         ) : (
@@ -129,17 +134,13 @@ class ArchivedStaffRecord extends Component<Props> {
 }
 
 const mapStateToProps = state => {
-  const { adminAuth, unArchiveUser } = state;
+  const { adminAuth } = state;
 
   const { auth_info, isAuthenticated } = adminAuth;
 
-  const { isUnArchiveFetching, unArchiveMessage } = unArchiveUser;
-
   return {
     auth_info,
-    isAuthenticated,
-    isUnArchiveFetching,
-    unArchiveMessage
+    isAuthenticated
   };
 };
 
@@ -148,5 +149,11 @@ export default compose(
   graphql(VERIFY_ADMIN_TOKEN, {
     name: 'verifyAdminToken'
   }),
-  graphql(ARCHIVED_USERS, { name: 'archivedUsers' })
+  graphql(ARCHIVED_USERS, { name: 'archivedUsers' }),
+  graphql(UNARCHIVE_USER, {
+    name: 'unArchiveUser',
+    props: ({ unArchiveUser }) => ({
+      unArchiveUser: userId => unArchiveUser({ variables: { userId } })
+    })
+  })
 )(ArchivedStaffRecord);
