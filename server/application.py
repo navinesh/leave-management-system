@@ -320,8 +320,8 @@ def apply_for_leave():
         # Send email
         to_address_list = [userRecord.email, supervisor_email, secretary_email]
 
-        if leave_name == 'lwop' or leave_name == 'other' or
-        leave_name == 'birthday':
+        if leave_name == 'lwop' or leave_name == 'other' or \
+                leave_name == 'birthday':
             send_email(
                 to_address_list,
                 "Leave application",
