@@ -73,11 +73,7 @@ const ArchiveUser = props => (
                   </button>
                 </div>
                 <div className="text-primary text-center">
-                  {props.isArchiveFetching ? (
-                    <div className="loader2" />
-                  ) : (
-                    <p className="mt-3">{props.archiveMessage}</p>
-                  )}
+                  <p className="mt-3">archiveMessage</p>
                 </div>
                 <div className="text-danger text-center">
                   {props.errorMessage}
@@ -95,11 +91,9 @@ type Props = {
   staff_record: Object,
   dispatch: Function,
   onModifyUserRecordSubmit: Function,
-  onArchiveUserSubmit: Function,
   message: string,
   isFetching: boolean,
-  isArchiveFetching: boolean,
-  archiveMessage: string,
+  archiveUser: Function,
   refetch: Function
 };
 
@@ -291,7 +285,7 @@ export default class StaffRecordList extends Component<Props, State> {
 
   handleArchiveSubmit(e: Event) {
     e.preventDefault();
-    const { staff_record, onArchiveUserSubmit } = this.props;
+    const { staff_record, archiveUser } = this.props;
 
     const id = this.state.listID;
     const isArchived = true;
@@ -307,22 +301,15 @@ export default class StaffRecordList extends Component<Props, State> {
     this.setState({ errorMessage: '' });
 
     const userRecord = staff_record.filter(e => e.id === id);
-    const userID = userRecord[0].dbId;
+    const userId = userRecord[0].dbId;
 
-    const archiveUser = {
-      id: userID,
-      isArchived: isArchived,
-      archiveReason: archiveReason
-    };
-
-    onArchiveUserSubmit(archiveUser);
+    archiveUser(userId);
   }
 
   handleCloseArchive() {
-    const { dispatch, refetch } = this.props;
+    const { refetch } = this.props;
 
     if (this.state.archiveReason) {
-      dispatch({ type: 'CLEAR_ARCHIVE_MESSAGE' });
       refetch();
     }
 
@@ -336,13 +323,7 @@ export default class StaffRecordList extends Component<Props, State> {
   }
 
   render() {
-    const {
-      staff_record,
-      isFetching,
-      message,
-      isArchiveFetching,
-      archiveMessage
-    } = this.props;
+    const { staff_record, isFetching, message } = this.props;
 
     const listID = this.state.listID;
 
@@ -582,8 +563,6 @@ export default class StaffRecordList extends Component<Props, State> {
           handleArchiveSubmit={this.handleArchiveSubmit}
           handleArchiveReason={this.handleArchiveReason}
           handleCloseArchive={this.handleCloseArchive}
-          isArchiveFetching={isArchiveFetching}
-          archiveMessage={archiveMessage}
           errorMessage={this.state.errorMessage}
         />
       );
