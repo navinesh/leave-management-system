@@ -1,4 +1,5 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, Text, Date, Numeric, Boolean
+from sqlalchemy import Column, ForeignKey, Integer, String, Text, Date, \
+    Numeric, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref, sessionmaker, scoped_session
 from sqlalchemy import create_engine
