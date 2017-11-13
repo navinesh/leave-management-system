@@ -1,6 +1,5 @@
 // @flow
 import React, { Component } from 'react';
-
 const moment = require('moment');
 
 const Search = props => (
@@ -61,15 +60,7 @@ const UnArchiveLeave = props => (
                       Yes
                     </button>
                   </div>
-                  {props.isUnArchiveFetching ? (
-                    <div className="loader2" />
-                  ) : (
-                    <p className="text-primary text-center mt-3">
-                      {props.unArchiveMessage}
-                    </p>
-                  )}
-
-                  <div className="text-danger">{props.errorMessage}</div>
+                  <p className="text-primary text-center mt-3">Successful</p>
                 </form>
               </div>
             </div>
@@ -81,10 +72,8 @@ const UnArchiveLeave = props => (
 
 type Props = {
   archived_staff_record: Array<any>,
-  onUnArchiveUserSubmit: Function,
   dispatch: Function,
-  isUnArchiveFetching: boolean,
-  unArchiveMessage: string,
+  unArchiveUser: Function,
   refetch: Function
 };
 
@@ -135,10 +124,9 @@ export default class ArchivedStaffRecordList extends Component<Props, State> {
 
   handleSubmit(e: Event) {
     e.preventDefault();
-    const { archived_staff_record, onUnArchiveUserSubmit } = this.props;
+    const { archived_staff_record, unArchiveUser } = this.props;
 
     const id = this.state.listID;
-    const isArchived = false;
 
     if (!id) {
       this.setState({
@@ -148,25 +136,17 @@ export default class ArchivedStaffRecordList extends Component<Props, State> {
     }
 
     const userRecord = archived_staff_record.filter(e => e.id === id);
-    const userID = userRecord[0].dbId;
+    const userId = userRecord[0].dbId;
 
-    const unArchiveUser = {
-      id: userID,
-      isArchived: isArchived
-    };
-
-    onUnArchiveUserSubmit(unArchiveUser);
+    unArchiveUser(userId);
   }
 
   handleCloseUnarchive() {
-    const { unArchiveMessage, refetch, dispatch } = this.props;
+    const { refetch } = this.props;
 
     this.setState({ isUnarchive: false, errorMessage: '', listID: '' });
 
-    if (unArchiveMessage) {
-      dispatch({ type: 'CLEAR_UNARCHIVE_MESSAGE' });
-      refetch();
-    }
+    refetch();
   }
 
   render() {
@@ -179,8 +159,6 @@ export default class ArchivedStaffRecordList extends Component<Props, State> {
           listID={this.state.listID}
           handleSubmit={this.handleSubmit}
           handleCloseUnarchive={this.handleCloseUnarchive}
-          isUnArchiveFetching={this.props.isUnArchiveFetching}
-          unArchiveMessage={this.props.unArchiveMessage}
           errorMessage={this.state.errorMessage}
         />
       );
