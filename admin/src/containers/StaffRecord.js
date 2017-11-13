@@ -12,7 +12,6 @@ import {
 } from '../actions/AdminLogin';
 import StaffRecordList from '../components/StaffRecord';
 import { submitModifyUserRecord } from '../actions/ModifyRecord';
-import { submitArchiveUser } from '../actions/ArchiveUser';
 
 const VERIFY_ADMIN_TOKEN = gql`
   mutation verifyAdminToken($adminToken: String!) {
@@ -42,6 +41,17 @@ const ACTIVE_USERS = gql`
   }
 `;
 
+const ARCHIVE_USER = gql`
+  mutation archiveUser($userId: Int!) {
+    archiveUser(userId: $userId) {
+      User {
+        isArchived
+      }
+      ok
+    }
+  }
+`;
+
 type Props = {
   isAuthenticated: boolean,
   auth_info: Object,
@@ -49,10 +59,8 @@ type Props = {
   dispatch: Function,
   isFetching: boolean,
   message: string,
-  isArchiveFetching: boolean,
-  archiveMessage: string,
-  isDataFetching: boolean,
-  verifyAdminToken: Function
+  verifyAdminToken: Function,
+  archiveUser: Function
 };
 
 class StaffRecord extends Component<Props> {
@@ -93,8 +101,7 @@ class StaffRecord extends Component<Props> {
       dispatch,
       isFetching,
       message,
-      isArchiveFetching,
-      archiveMessage
+      archiveUser
     } = this.props;
 
     if (loading) {
@@ -122,12 +129,9 @@ class StaffRecord extends Component<Props> {
             dispatch={dispatch}
             isFetching={isFetching}
             message={message}
-            isArchiveFetching={isArchiveFetching}
-            archiveMessage={archiveMessage}
             onModifyUserRecordSubmit={modifyUserDetails =>
               dispatch(submitModifyUserRecord(modifyUserDetails))}
-            onArchiveUserSubmit={archiveUser =>
-              dispatch(submitArchiveUser(archiveUser))}
+            archiveUser={archiveUser}
             refetch={refetch}
           />
         ) : (
@@ -139,19 +143,16 @@ class StaffRecord extends Component<Props> {
 }
 
 const mapStateToProps = state => {
-  const { adminAuth, modifyUser, archiveUser } = state;
+  const { adminAuth, modifyUser } = state;
 
   const { auth_info, isAuthenticated } = adminAuth;
   const { isFetching, message } = modifyUser;
-  const { isArchiveFetching, archiveMessage } = archiveUser;
 
   return {
     auth_info,
     isAuthenticated,
     isFetching,
-    message,
-    isArchiveFetching,
-    archiveMessage
+    message
   };
 };
 
@@ -162,5 +163,11 @@ export default compose(
   }),
   graphql(ACTIVE_USERS, {
     name: 'activeUsers'
+  }),
+  graphql(ARCHIVE_USER, {
+    name: 'archiveUser',
+    props: ({ archiveUser }) => ({
+      archiveUser: userId => archiveUser({ variables: { userId } })
+    })
   })
 )(StaffRecord);
