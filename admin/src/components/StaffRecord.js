@@ -1,6 +1,12 @@
 // @flow
 import React, { Component } from 'react';
 
+import {
+  requestArchiveUser,
+  successArchiveUser,
+  failureArchiveUser
+} from '../actions/ArchiveUser';
+
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -73,7 +79,11 @@ const ArchiveUser = props => (
                   </button>
                 </div>
                 <div className="text-primary text-center">
-                  <p className="mt-3">archiveMessage</p>
+                  {props.isArchiveFetching ? (
+                    <div className="loader2" />
+                  ) : (
+                    <p className="mt-3">{props.archiveMessage}</p>
+                  )}
                 </div>
                 <div className="text-danger text-center">
                   {props.errorMessage}
@@ -94,6 +104,8 @@ type Props = {
   message: string,
   isFetching: boolean,
   archiveUser: Function,
+  isArchiveFetching: boolean,
+  archiveMessage: string,
   refetch: Function
 };
 
@@ -285,13 +297,10 @@ export default class StaffRecordList extends Component<Props, State> {
 
   handleArchiveSubmit(e: Event) {
     e.preventDefault();
-    const { staff_record, archiveUser } = this.props;
-
     const id = this.state.listID;
-    const isArchived = true;
     const archiveReason = this.state.archiveReason;
 
-    if (!id || !isArchived || !archiveReason) {
+    if (!id || !archiveReason) {
       this.setState({
         errorMessage: 'Reason field is mandatory!'
       });
@@ -300,10 +309,7 @@ export default class StaffRecordList extends Component<Props, State> {
 
     this.setState({ errorMessage: '' });
 
-    const userRecord = staff_record.filter(e => e.id === id);
-    const userId = userRecord[0].dbId;
-
-    archiveUser(userId);
+    this.archiveStaff();
   }
 
   handleCloseArchive() {
@@ -322,8 +328,28 @@ export default class StaffRecordList extends Component<Props, State> {
     });
   }
 
+  archiveStaff = async () => {
+    const { dispatch, archiveUser } = this.props;
+    const { listID: userId, archiveReason } = this.state;
+
+    try {
+      dispatch(requestArchiveUser());
+      await archiveUser({ variables: { userId, archiveReason } });
+      dispatch(successArchiveUser('User record has been archived.'));
+    } catch (error) {
+      console.log(error);
+      dispatch(failureArchiveUser(error.message));
+    }
+  };
+
   render() {
-    const { staff_record, isFetching, message } = this.props;
+    const {
+      staff_record,
+      isFetching,
+      message,
+      isArchiveFetching,
+      archiveMessage
+    } = this.props;
 
     const listID = this.state.listID;
 
@@ -563,6 +589,8 @@ export default class StaffRecordList extends Component<Props, State> {
           handleArchiveSubmit={this.handleArchiveSubmit}
           handleArchiveReason={this.handleArchiveReason}
           handleCloseArchive={this.handleCloseArchive}
+          isArchiveFetching={isArchiveFetching}
+          archiveMessage={archiveMessage}
           errorMessage={this.state.errorMessage}
         />
       );
