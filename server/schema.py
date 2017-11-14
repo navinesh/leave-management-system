@@ -5,6 +5,7 @@ from models import db_session, User as UserModel, \
     Userupdates as UserupdatesModel, Leaverecord as LeaverecordModel, \
     Leaveupdates as LeaveupdatesModel, \
     Adminuser as AdminuserModel, Publicholiday as PublicholidayModel
+from graphql_relay import from_global_id
 
 
 class DatabaseId(graphene.Interface):
@@ -177,6 +178,34 @@ class verifyAdminToken(graphene.Mutation):
 
         ok = True
         return verifyAdminToken(token=adminToken, ok=ok)
+
+
+# Archive user
+class archiveUser(graphene.Mutation):
+    class Input:
+        userId = graphene.String()
+        archiveReason = graphene.String()
+
+    User = graphene.Field(User)
+    ok = graphene.Boolean()
+
+    @classmethod
+    def mutate(cls, _, args, context, info):
+        query = User.get_query(context)
+        user_id = from_global_id(args.get('userId'))[1]
+        archiveReason = args.get('archiveReason')
+
+        user = query.filter(UserModel.id == user_id).first()
+
+        if user.isArchived is True:
+            raise Exception('This user has an archived status!')
+
+        user.isArchived = True
+        user.archiveReason = archiveReason
+        db_session.add(user)
+        db_session.commit()
+        ok = True
+        return archiveUser(User=user, ok=ok)
 
 
 # Create public holiday
