@@ -42,8 +42,8 @@ const ACTIVE_USERS = gql`
 `;
 
 const ARCHIVE_USER = gql`
-  mutation archiveUser($userId: Int!) {
-    archiveUser(userId: $userId) {
+  mutation archiveUser($userId: String!, $archiveReason: String!) {
+    archiveUser(userId: $userId, archiveReason: $archiveReason) {
       User {
         isArchived
       }
@@ -60,7 +60,9 @@ type Props = {
   isFetching: boolean,
   message: string,
   verifyAdminToken: Function,
-  archiveUser: Function
+  archiveUser: Function,
+  isArchiveFetching: boolean,
+  archiveMessage: string
 };
 
 class StaffRecord extends Component<Props> {
@@ -101,7 +103,9 @@ class StaffRecord extends Component<Props> {
       dispatch,
       isFetching,
       message,
-      archiveUser
+      archiveUser,
+      isArchiveFetching,
+      archiveMessage
     } = this.props;
 
     if (loading) {
@@ -132,6 +136,8 @@ class StaffRecord extends Component<Props> {
             onModifyUserRecordSubmit={modifyUserDetails =>
               dispatch(submitModifyUserRecord(modifyUserDetails))}
             archiveUser={archiveUser}
+            isArchiveFetching={isArchiveFetching}
+            archiveMessage={archiveMessage}
             refetch={refetch}
           />
         ) : (
@@ -143,16 +149,19 @@ class StaffRecord extends Component<Props> {
 }
 
 const mapStateToProps = state => {
-  const { adminAuth, modifyUser } = state;
+  const { adminAuth, modifyUser, archiveUser } = state;
 
   const { auth_info, isAuthenticated } = adminAuth;
   const { isFetching, message } = modifyUser;
+  const { isArchiveFetching, archiveMessage } = archiveUser;
 
   return {
     auth_info,
     isAuthenticated,
     isFetching,
-    message
+    message,
+    isArchiveFetching,
+    archiveMessage
   };
 };
 
@@ -165,9 +174,6 @@ export default compose(
     name: 'activeUsers'
   }),
   graphql(ARCHIVE_USER, {
-    name: 'archiveUser',
-    props: ({ archiveUser }) => ({
-      archiveUser: userId => archiveUser({ variables: { userId } })
-    })
+    name: 'archiveUser'
   })
 )(StaffRecord);
