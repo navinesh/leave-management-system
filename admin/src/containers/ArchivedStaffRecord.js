@@ -41,7 +41,7 @@ const ARCHIVED_USERS = gql`
 `;
 
 const UNARCHIVE_USER = gql`
-  mutation unArchiveUser($userId: Int!) {
+  mutation unArchiveUser($userId: String!) {
     unArchiveUser(userId: $userId) {
       User {
         isArchived
@@ -57,7 +57,9 @@ type Props = {
   verifyAdminToken: Function,
   dispatch: Function,
   archivedUsers: Object,
-  unArchiveUser: Function
+  unArchiveUser: Function,
+  isUnArchiveFetching: Function,
+  unArchiveMessage: string
 };
 
 class ArchivedStaffRecord extends Component<Props> {
@@ -96,7 +98,9 @@ class ArchivedStaffRecord extends Component<Props> {
       isAuthenticated,
       archivedUsers: { loading, error, findUsers, refetch },
       dispatch,
-      unArchiveUser
+      unArchiveUser,
+      isUnArchiveFetching,
+      unArchiveMessage
     } = this.props;
 
     if (loading) {
@@ -123,6 +127,8 @@ class ArchivedStaffRecord extends Component<Props> {
             archived_staff_record={findUsers}
             dispatch={dispatch}
             unArchiveUser={unArchiveUser}
+            isUnArchiveFetching={isUnArchiveFetching}
+            unArchiveMessage={unArchiveMessage}
             refetch={refetch}
           />
         ) : (
@@ -134,13 +140,16 @@ class ArchivedStaffRecord extends Component<Props> {
 }
 
 const mapStateToProps = state => {
-  const { adminAuth } = state;
+  const { adminAuth, unArchiveUser } = state;
 
   const { auth_info, isAuthenticated } = adminAuth;
+  const { isUnArchiveFetching, unArchiveMessage } = unArchiveUser;
 
   return {
     auth_info,
-    isAuthenticated
+    isAuthenticated,
+    isUnArchiveFetching,
+    unArchiveMessage
   };
 };
 
@@ -150,10 +159,5 @@ export default compose(
     name: 'verifyAdminToken'
   }),
   graphql(ARCHIVED_USERS, { name: 'archivedUsers' }),
-  graphql(UNARCHIVE_USER, {
-    name: 'unArchiveUser',
-    props: ({ unArchiveUser }) => ({
-      unArchiveUser: userId => unArchiveUser({ variables: { userId } })
-    })
-  })
+  graphql(UNARCHIVE_USER, { name: 'unArchiveUser' })
 )(ArchivedStaffRecord);
