@@ -71,6 +71,28 @@ class Login extends Component<Props, State> {
     this.authenticateAdmin();
   }
 
+  authenticateAdmin = async () => {
+    const { logInAdmin, dispatch } = this.props;
+    const { email, password } = this.state;
+
+    try {
+      dispatch(requestAdminLogin());
+      const response = await logInAdmin({
+        variables: { email, password }
+      });
+      localStorage.setItem(
+        'admin_token',
+        response.data.authenticateAdmin.token
+      );
+      dispatch(receiveAdminLogin(response.data.authenticateAdmin.token));
+    } catch (error) {
+      console.log(error);
+      this.setState({ errorMessage: error.message });
+      localStorage.removeItem('admin_token');
+      dispatch(loginAdminError());
+    }
+  };
+
   render() {
     return (
       <div className="Login">
@@ -124,28 +146,6 @@ class Login extends Component<Props, State> {
       </div>
     );
   }
-
-  authenticateAdmin = async () => {
-    const { logInAdmin, dispatch } = this.props;
-    const { email, password } = this.state;
-
-    try {
-      dispatch(requestAdminLogin());
-      const response = await logInAdmin({
-        variables: { email, password }
-      });
-      localStorage.setItem(
-        'admin_token',
-        response.data.authenticateAdmin.token
-      );
-      dispatch(receiveAdminLogin(response.data.authenticateAdmin.token));
-    } catch (error) {
-      console.log(error);
-      this.setState({ errorMessage: error.message });
-      localStorage.removeItem('admin_token');
-      dispatch(loginAdminError());
-    }
-  };
 }
 
 export default graphql(AUTHENTICATE_ADMIN, {
