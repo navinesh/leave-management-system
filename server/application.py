@@ -140,8 +140,6 @@ def allowed_file(filename):
 
 # User
 @app.route('/')
-@app.route('/userlogin')
-@app.route('/usertoken')
 @app.route('/change-password')
 @app.route('/applyforleave')
 def show_user_home():
@@ -149,58 +147,8 @@ def show_user_home():
     return render_template('userhome.html')
 
 
-# User login
-@app.route('/userlogin', methods=['POST'])
-@cross_origin()
-def validate_user():
-    """ """
-    email = request.json.get('email')
-    password = request.json.get('password')
-
-    if email is None or password is None:
-        return jsonify({'message': 'Missing arguments!'})
-        abort(400)
-
-    user = session.query(User).filter_by(email=email).first()
-
-    if not user or not user.verify_password(password):
-        return jsonify({
-            'message':
-            'The username and password you entered did not match our records. \
-            Please double-check and try again.'
-        })
-        abort(401)
-
-    user_id = user.id
-    auth_token = user.generate_auth_token()
-    auth_info = {'auth_token': auth_token, 'user_id': user_id}
-    return jsonify(auth_info), 201
-
-
-# Verify user token
-@app.route('/usertoken', methods=['POST'])
-@cross_origin()
-def validate_user_token():
-    """ """
-    auth_token = request.json.get('auth_token')
-
-    if auth_token is None:
-        return jsonify({'message': 'Missing arguments!'})
-        abort(400)
-
-    if auth_token:
-        user_id = User.verify_auth_token(auth_token)
-        if user_id:
-            auth_info = {'auth_token': auth_token, 'user_id': user_id}
-            return jsonify(auth_info), 201
-        else:
-            return jsonify({'message': 'Your session has expired!'})
-            abort(401)
-
-
 # Change password
 @app.route('/change-password', methods=['POST'])
-@auth.login_required
 @cross_origin()
 def change_user_password():
     """Change password
@@ -388,15 +336,10 @@ def apply_for_leave():
 # Admin
 @app.route('/admin')
 @app.route('/addadminuser')
-@app.route('/adminlogin')
-@app.route('/adminreset')
-@app.route('/admintoken')
 @app.route('/admin-reset-password')
 @app.route('/sicksheetrecord')
 @app.route('/adduser')
 @app.route('/modifyuser')
-@app.route('/archiveuser')
-@app.route('/unarchiveuser')
 @app.route('/approveleave')
 @app.route('/declineleave')
 @app.route('/editleave')
@@ -434,63 +377,6 @@ def new_admin_user():
     session.add(admin)
     session.commit()
     return jsonify({'email': admin.email}), 201
-
-
-# Admin login
-@app.route('/adminlogin', methods=['POST'])
-@cross_origin()  # allow all origins all methods.
-def validate_admin():
-    """Admin login
-    Args:
-        email (string): admin email address
-        password (string): admin password
-    """
-    email = request.json.get('email')
-    password = request.json.get('password')
-
-    if email is None or password is None:
-        return jsonify({'message': 'Missing arguments!'})
-        abort(400)
-
-    admin = session.query(Adminuser).filter_by(email=email).first()
-
-    if not admin or not admin.verify_password(password):
-        return jsonify({
-            'message':
-            'The username and password you entered did not match our records. \
-             Please double-check and try again.'
-        })
-        abort(401)
-
-    auth_token = admin.generate_auth_token()
-
-    auth_info = {'admin_token': auth_token}
-
-    return jsonify(auth_info), 201
-
-
-# Admin token
-@app.route('/admintoken', methods=['POST'])
-@cross_origin()  # allow all origins all methods.
-def validate_admin_token():
-    """Validates admin token
-    Args:
-        auth_token (string): auth token
-    """
-    auth_token = request.json.get('admin_token')
-
-    if auth_token is None:
-        return jsonify({'message': 'Missing arguments!'})
-        abort(400)
-
-    if auth_token:
-        admin_id = Adminuser.verify_auth_token(auth_token)
-        if admin_id:
-            auth_info = {'admin_token': auth_token}
-            return jsonify(auth_info), 201
-        else:
-            return jsonify({'message': 'Your session has expired!'})
-            abort(401)
 
 
 # Admin reset password
@@ -722,42 +608,6 @@ def modify_user():
     session.commit()
 
     return jsonify({'message': 'User record has been updated.'}), 201
-
-
-# Archive user
-@app.route('/archiveuser', methods=['POST'])
-@cross_origin()
-def archive_user():
-    """Archive user"""
-    user_id = request.json.get('user_id')
-    isArchived = request.json.get('isArchived')
-    archiveReason = request.json.get('archiveReason')
-
-    userRecord = session.query(User).filter_by(id=user_id).one()
-
-    userRecord.isArchived = isArchived
-    userRecord.archiveReason = archiveReason
-
-    session.add(userRecord)
-    session.commit()
-    return jsonify({'message': 'User record has been archived.'}), 201
-
-
-# Unarchive user
-@app.route('/unarchiveuser', methods=['POST'])
-@cross_origin()
-def un_archive_user():
-    """Unarchive user"""
-    user_id = request.json.get('user_id')
-    isArchived = request.json.get('isArchived')
-
-    userRecord = session.query(User).filter_by(id=user_id).one()
-
-    userRecord.isArchived = isArchived
-
-    session.add(userRecord)
-    session.commit()
-    return jsonify({'message': 'User record has been unarchived.'}), 201
 
 
 # Approve leave
