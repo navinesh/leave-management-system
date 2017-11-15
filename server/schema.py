@@ -208,6 +208,32 @@ class archiveUser(graphene.Mutation):
         return archiveUser(User=user, ok=ok)
 
 
+# Unarchive user
+class unArchiveUser(graphene.Mutation):
+    class Input:
+        userId = graphene.String()
+
+    User = graphene.Field(User)
+    ok = graphene.Boolean()
+
+    @classmethod
+    def mutate(cls, _, args, context, info):
+        query = User.get_query(context)
+        user_id = from_global_id(args.get('userId'))[1]
+
+        user = query.filter(UserModel.id == user_id).first()
+
+        if user.isArchived is False:
+            raise Exception('This user has an unarchived status!')
+
+        user.isArchived = False
+        user.archiveReason = None
+        db_session.add(user)
+        db_session.commit()
+        ok = True
+        return unArchiveUser(User=user, ok=ok)
+
+
 # Create public holiday
 class addPublicholiday(graphene.Mutation):
     class Input:
