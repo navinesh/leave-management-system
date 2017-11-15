@@ -14,7 +14,7 @@
     "moment-range": "^3.0.3",
     "react": "^16.1.1",
     "react-addons-shallow-compare": "^15.5.2",
-    "react-apollo": "^2.0.0",
+    "react-apollo": "^2.0.1",
     "react-csv": "^1.0.8",
     "react-datepicker": "^0.61.0",
     "react-dates": "^15.1.0",
