@@ -42,8 +42,8 @@ const ACTIVE_USERS = gql`
 `;
 
 const ARCHIVE_USER = gql`
-  mutation archiveUser($userId: String!, $archiveReason: String!) {
-    archiveUser(userId: $userId, archiveReason: $archiveReason) {
+  mutation archiveUser($id: String!, $archiveReason: String!) {
+    archiveUser(id: $id, archiveReason: $archiveReason) {
       User {
         isArchived
       }
