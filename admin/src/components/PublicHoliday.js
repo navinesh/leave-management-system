@@ -1,49 +1,11 @@
 // @flow
 import React, { Component } from 'react';
-import gql from 'graphql-tag';
-import { graphql, compose } from 'react-apollo';
 
 import 'react-dates/initialize';
 import { SingleDatePicker } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
 
 const moment = require('moment');
-
-const PUBLIC_HOLIDAY = gql`
-  {
-    publicHoliday {
-      edges {
-        node {
-          id
-          dbId
-          holidayDate
-        }
-      }
-    }
-  }
-`;
-
-const addPublicholiday = gql`
-  mutation addPublicholiday($holidayDate: String!) {
-    addPublicholiday(holidayDate: $holidayDate) {
-      publicHoliday {
-        id
-        holidayDate
-      }
-    }
-  }
-`;
-
-const deletePublicholiday = gql`
-  mutation deletePublicholiday($dbId: Int!) {
-    deletePublicholiday(dbId: $dbId) {
-      publicHoliday {
-        id
-        dbId
-      }
-    }
-  }
-`;
 
 type addPublicHolidayProps = {
   addHoliday: Function
@@ -162,11 +124,11 @@ class DeletePublicHoliday extends Component<
   }
 
   handleDelete({ target }: SyntheticInputEvent<>) {
-    const dbId = target.value;
+    const id = target.value;
 
-    if (!dbId) {
+    if (!id) {
       this.setState({
-        errorMessage: 'Valid date is required!'
+        errorMessage: 'Valid id is required!'
       });
 
       setTimeout(() => {
@@ -175,7 +137,7 @@ class DeletePublicHoliday extends Component<
       return null;
     }
 
-    this.props.deleteHoliday(dbId);
+    this.props.deleteHoliday(id);
 
     this.setState({ errorMessage: '' });
   }
@@ -193,7 +155,7 @@ class DeletePublicHoliday extends Component<
           {holiday_date}
           <button
             className="btn btn-link btn-sm text-danger"
-            value={item.dbId}
+            value={item.id}
             onClick={this.handleDelete}
           >
             Delete
@@ -206,7 +168,7 @@ class DeletePublicHoliday extends Component<
       <div className="DeletePublicHolidays">
         <ul>{public_holidays}</ul>
         <div className="text-danger">
-          {this.state.errorMessage ? <div>{this.state.errorMessage}</div> : ''}
+          <div>{this.state.errorMessage}</div>
         </div>
       </div>
     );
@@ -219,7 +181,7 @@ type publicHolidayProps = {
   deleteHoliday: Function
 };
 
-const PublicHolidays = (props: publicHolidayProps) => {
+export default (props: publicHolidayProps) => {
   const {
     publicHolidays: { loading, error, publicHoliday },
     addHoliday,
@@ -270,25 +232,3 @@ const PublicHolidays = (props: publicHolidayProps) => {
     </div>
   );
 };
-
-export default compose(
-  graphql(PUBLIC_HOLIDAY, { name: 'publicHolidays' }),
-  graphql(addPublicholiday, {
-    name: 'addHoliday',
-    props: ({ addHoliday }) => ({
-      addHoliday: holidayDate => addHoliday({ variables: { holidayDate } })
-    }),
-    options: {
-      refetchQueries: [{ query: PUBLIC_HOLIDAY }]
-    }
-  }),
-  graphql(deletePublicholiday, {
-    name: 'deleteHoliday',
-    props: ({ deleteHoliday }) => ({
-      deleteHoliday: dbId => deleteHoliday({ variables: { dbId } })
-    }),
-    options: {
-      refetchQueries: [{ query: PUBLIC_HOLIDAY }]
-    }
-  })
-)(PublicHolidays);
