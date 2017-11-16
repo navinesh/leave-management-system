@@ -49,8 +49,7 @@ class Leaveupdates(SQLAlchemyObjectType):
 class Publicholiday(SQLAlchemyObjectType):
     class Meta:
         model = (PublicholidayModel)
-        interfaces = (relay.Node, DatabaseId)
-        model.db_id = model.id
+        interfaces = (relay.Node,)
 
 
 class Adminuser(SQLAlchemyObjectType):
