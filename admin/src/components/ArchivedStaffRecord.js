@@ -33,54 +33,49 @@ const ClearSearch = props => (
 
 const UnArchiveLeave = props => (
   <div className="col-md-10 ml-auto mr-auto">
-    {props.archived_staff_record
-      .filter(e => e.id === props.listID)
-      .map(record => (
-        <div key={record.id}>
-          <div
-            className="col-md-6 ml-auto mr-auto"
-            style={{ paddingTop: '10px' }}
-          >
-            <div className="card">
-              <h5 className="card-header">Unarchive</h5>
-              <div className="card-body">
-                <form
-                  encType="multipart/form-data"
-                  onSubmit={props.handleSubmit}
-                >
-                  <div className="row">
-                    <div className="col">
-                      <p>
-                        {record.othernames} {record.surname}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="row justify-content-end">
-                    <button
-                      type="button"
-                      className="btn btn-outline-primary"
-                      onClick={props.handleCloseUnarchive}
-                    >
-                      Close
-                    </button>
-                    <button type="submit" className="btn btn-primary ml-3 mr-3">
-                      Yes
-                    </button>
-                  </div>
-                  {props.isUnArchiveFetching ? (
-                    <div className="loader2" />
-                  ) : (
-                    <p className="text-primary text-center mt-3">
-                      {props.unArchiveMessage}
+    {props.archived_staff_record.filter(e => e.id === props.id).map(record => (
+      <div key={record.id}>
+        <div
+          className="col-md-6 ml-auto mr-auto"
+          style={{ paddingTop: '10px' }}
+        >
+          <div className="card">
+            <h5 className="card-header">Unarchive</h5>
+            <div className="card-body">
+              <form encType="multipart/form-data" onSubmit={props.handleSubmit}>
+                <div className="row">
+                  <div className="col">
+                    <p>
+                      {record.othernames} {record.surname}
                     </p>
-                  )}
-                  <div className="text-danger">{props.errorMessage}</div>
-                </form>
-              </div>
+                  </div>
+                </div>
+                <div className="row justify-content-end">
+                  <button
+                    type="button"
+                    className="btn btn-outline-primary"
+                    onClick={props.handleCloseUnarchive}
+                  >
+                    Close
+                  </button>
+                  <button type="submit" className="btn btn-primary ml-3 mr-3">
+                    Yes
+                  </button>
+                </div>
+                {props.isUnArchiveFetching ? (
+                  <div className="loader2" />
+                ) : (
+                  <p className="text-primary text-center mt-3">
+                    {props.unArchiveMessage}
+                  </p>
+                )}
+                <div className="text-danger">{props.errorMessage}</div>
+              </form>
             </div>
           </div>
         </div>
-      ))}
+      </div>
+    ))}
   </div>
 );
 
@@ -96,7 +91,7 @@ type Props = {
 type State = {
   errorMessage: string,
   isUnarchive: boolean,
-  listID: string,
+  id: string,
   searchTerm: string
 };
 
@@ -111,7 +106,7 @@ export default class ArchivedStaffRecordList extends Component<Props, State> {
     super();
     this.state = {
       errorMessage: '',
-      listID: '',
+      id: '',
       isUnarchive: false,
       searchTerm: ''
     };
@@ -134,13 +129,13 @@ export default class ArchivedStaffRecordList extends Component<Props, State> {
   handleOpenUnarchive(e: SyntheticEvent<HTMLElement>) {
     this.setState({
       isUnarchive: true,
-      listID: e.currentTarget.id
+      id: e.currentTarget.id
     });
   }
 
   handleSubmit(e: Event) {
     e.preventDefault();
-    const id = this.state.listID;
+    const id = this.state.id;
 
     if (!id) {
       this.setState({
@@ -155,18 +150,19 @@ export default class ArchivedStaffRecordList extends Component<Props, State> {
   handleCloseUnarchive() {
     const { refetch } = this.props;
 
-    this.setState({ isUnarchive: false, errorMessage: '', listID: '' });
+    this.setState({ isUnarchive: false, errorMessage: '', id: '' });
 
     refetch();
+    this.props.dispatch({ type: 'CLEAR_UNARCHIVE_MESSAGE' });
   }
 
   unArchiveStaff = async () => {
     const { dispatch, unArchiveUser } = this.props;
-    const { listID: userId } = this.state;
+    const { id } = this.state;
 
     try {
       dispatch(requestUnArchiveUser());
-      await unArchiveUser({ variables: { userId } });
+      await unArchiveUser({ variables: { id } });
       dispatch(successUnArchiveUser('User record has been unarchived.'));
     } catch (error) {
       console.log(error);
@@ -185,7 +181,7 @@ export default class ArchivedStaffRecordList extends Component<Props, State> {
       return (
         <UnArchiveLeave
           archived_staff_record={this.props.archived_staff_record}
-          listID={this.state.listID}
+          id={this.state.id}
           handleSubmit={this.handleSubmit}
           handleCloseUnarchive={this.handleCloseUnarchive}
           isUnArchiveFetching={isUnArchiveFetching}
