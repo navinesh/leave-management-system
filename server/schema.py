@@ -219,7 +219,7 @@ class unArchiveUser(graphene.Mutation):
     @classmethod
     def mutate(cls, _, args, context, info):
         query = User.get_query(context)
-        user_id = from_global_id(args.get('userId'))[1]
+        user_id = from_global_id(args.get('id'))[1]
 
         user = query.filter(UserModel.id == user_id).first()
 
