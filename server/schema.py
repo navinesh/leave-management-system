@@ -120,7 +120,6 @@ class authenticateUser(graphene.Mutation):
         query = User.get_query(context)
         email = args.get('email')
         password = args.get('password')
-
         user = query.filter(UserModel.email == email).first()
 
         if not user or not user.verify_password(password):
@@ -131,6 +130,25 @@ class authenticateUser(graphene.Mutation):
         auth_token = user.generate_auth_token()
         ok = True
         return authenticateUser(User=user, token=auth_token, ok=ok)
+
+
+# Verify user token
+class verifyUserToken(graphene.Mutation):
+    class Input:
+        userToken = graphene.String()
+
+    token = graphene.String()
+    ok = graphene.Boolean()
+
+    @classmethod
+    def mutate(cls, _, args, context, info):
+        userToken = args.get('userToken')
+
+        if not userToken or not UserModel.verify_auth_token(userToken):
+            raise Exception('Your session has expired!')
+
+        ok = True
+        return verifyUserToken(token=userToken, ok=ok)
 
 
 # Authenticate admin
@@ -147,7 +165,6 @@ class authenticateAdmin(graphene.Mutation):
         query = Adminuser.get_query(context)
         email = args.get('email')
         password = args.get('password')
-
         admin = query.filter(AdminuserModel.email == email).first()
 
         if not admin or not admin.verify_password(password):
