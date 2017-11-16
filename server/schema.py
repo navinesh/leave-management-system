@@ -211,7 +211,7 @@ class archiveUser(graphene.Mutation):
 # Unarchive user
 class unArchiveUser(graphene.Mutation):
     class Input:
-        userId = graphene.String()
+        id = graphene.String()
 
     User = graphene.Field(User)
     ok = graphene.Boolean()
@@ -220,7 +220,6 @@ class unArchiveUser(graphene.Mutation):
     def mutate(cls, _, args, context, info):
         query = User.get_query(context)
         user_id = from_global_id(args.get('id'))[1]
-
         user = query.filter(UserModel.id == user_id).first()
 
         if user.isArchived is False:
