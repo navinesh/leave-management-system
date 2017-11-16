@@ -95,6 +95,31 @@ class Login extends Component<Props, State> {
     this.authenticateUser();
   }
 
+  authenticateUser = async () => {
+    const { logInUser, dispatch } = this.props;
+    const { email, password } = this.state;
+
+    try {
+      dispatch(requestUserLogin());
+      const response = await logInUser({
+        variables: { email, password }
+      });
+      localStorage.setItem('auth_token', response.data.authenticateUser.token);
+      localStorage.setItem('user_id', response.data.authenticateUser.User.dbId);
+      const auth_info = {
+        auth_token: response.data.authenticateUser.token,
+        user_id: response.data.authenticateUser.User.dbId
+      };
+      dispatch(receiveUserLogin(auth_info));
+    } catch (error) {
+      console.log(error);
+      this.setState({ errorMessage: error.message });
+      localStorage.removeItem('auth_token');
+      localStorage.removeItem('user_id');
+      dispatch(loginUserError());
+    }
+  };
+
   render() {
     return (
       <div className="Login" style={{ marginTop: '80px' }}>
@@ -146,31 +171,6 @@ class Login extends Component<Props, State> {
       </div>
     );
   }
-
-  authenticateUser = async () => {
-    const { logInUser, dispatch } = this.props;
-    const { email, password } = this.state;
-
-    try {
-      dispatch(requestUserLogin());
-      const response = await logInUser({
-        variables: { email, password }
-      });
-      localStorage.setItem('auth_token', response.data.authenticateUser.token);
-      localStorage.setItem('user_id', response.data.authenticateUser.User.dbId);
-      const auth_info = {
-        auth_token: response.data.authenticateUser.token,
-        user_id: response.data.authenticateUser.User.dbId
-      };
-      dispatch(receiveUserLogin(auth_info));
-    } catch (error) {
-      console.log(error);
-      this.setState({ errorMessage: error.message });
-      localStorage.removeItem('auth_token');
-      localStorage.removeItem('user_id');
-      dispatch(loginUserError());
-    }
-  };
 }
 
 export default graphql(AUTHENTICATE_USER, {
