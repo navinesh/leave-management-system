@@ -36,7 +36,7 @@ const ClearSearch = props => (
 
 const ArchiveUser = props => (
   <div>
-    {props.staff_record.filter(e => e.id === props.listID).map(record => (
+    {props.staff_record.filter(e => e.id === props.id).map(record => (
       <div key={record.id}>
         <div
           className="col-md-6 ml-auto mr-auto"
@@ -111,7 +111,7 @@ type Props = {
 
 type State = {
   errorMessage: string,
-  listID: string,
+  id: string,
   dob: any,
   archiveReason: string,
   isEditing: boolean,
@@ -149,8 +149,8 @@ export default class StaffRecordList extends Component<Props, State> {
     super();
     this.state = {
       errorMessage: '',
-      listID: '',
-      dob: '',
+      id: '',
+      dob: null,
       archiveReason: '',
       editReason: '',
       isEditing: false,
@@ -182,7 +182,7 @@ export default class StaffRecordList extends Component<Props, State> {
   handleOpenEdit(e: SyntheticEvent<HTMLElement>) {
     this.setState({
       isEditing: !this.state.isEditing,
-      listID: e.currentTarget.id
+      id: e.currentTarget.id
     });
   }
 
@@ -196,7 +196,7 @@ export default class StaffRecordList extends Component<Props, State> {
 
   handleSubmit(e: Event) {
     e.preventDefault();
-    const id = this.state.listID;
+    const id = this.state.id;
     const surname = this.surname.value;
     const othernames = this.othernames.value;
     const staffEmail = this.email.value;
@@ -274,8 +274,8 @@ export default class StaffRecordList extends Component<Props, State> {
     this.setState({
       isEditing: !this.state.isEditing,
       errorMessage: '',
-      dob: '',
-      listID: ''
+      dob: null,
+      id: ''
     });
 
     if (this.state.editReason) {
@@ -287,7 +287,7 @@ export default class StaffRecordList extends Component<Props, State> {
   handleOpenArchive(e: SyntheticEvent<HTMLElement>) {
     this.setState({
       isArchive: !this.state.isArchive,
-      listID: e.currentTarget.id
+      id: e.currentTarget.id
     });
   }
 
@@ -297,7 +297,7 @@ export default class StaffRecordList extends Component<Props, State> {
 
   handleArchiveSubmit(e: Event) {
     e.preventDefault();
-    const id = this.state.listID;
+    const id = this.state.id;
     const archiveReason = this.state.archiveReason;
 
     if (!id || !archiveReason) {
@@ -317,24 +317,24 @@ export default class StaffRecordList extends Component<Props, State> {
 
     if (this.state.archiveReason) {
       refetch();
+      this.props.dispatch({ type: 'CLEAR_ARCHIVE_MESSAGE' });
     }
 
     this.setState({
       isArchive: !this.state.isArchive,
       errorMessage: '',
-      dob: '',
       archiveReason: '',
-      listID: ''
+      id: ''
     });
   }
 
   archiveStaff = async () => {
     const { dispatch, archiveUser } = this.props;
-    const { listID: userId, archiveReason } = this.state;
+    const { id, archiveReason } = this.state;
 
     try {
       dispatch(requestArchiveUser());
-      await archiveUser({ variables: { userId, archiveReason } });
+      await archiveUser({ variables: { id, archiveReason } });
       dispatch(successArchiveUser('User record has been archived.'));
     } catch (error) {
       console.log(error);
@@ -351,15 +351,15 @@ export default class StaffRecordList extends Component<Props, State> {
       archiveMessage
     } = this.props;
 
-    const listID = this.state.listID;
+    const id = this.state.id;
 
     if (this.state.isEditing) {
+      console.log(this.state);
       return (
         <div>
-          {staff_record.filter(e => e.id === listID).map(record => {
+          {staff_record.filter(e => e.id === id).map(record => {
             let dob = new Date(record.dateOfBirth);
             let dateOfBirth = moment(dob).format('DD/MM/YYYY');
-
             return (
               <div key={record.id}>
                 <div className="col-md-6 ml-auto mr-auto pb-2">
@@ -585,7 +585,7 @@ export default class StaffRecordList extends Component<Props, State> {
       return (
         <ArchiveUser
           staff_record={staff_record}
-          listID={listID}
+          id={id}
           handleArchiveSubmit={this.handleArchiveSubmit}
           handleArchiveReason={this.handleArchiveReason}
           handleCloseArchive={this.handleCloseArchive}
