@@ -255,7 +255,7 @@ class addPublicholiday(graphene.Mutation):
 # Delete public holiday
 class deletePublicholiday(graphene.Mutation):
     class Input:
-        holiday_date = graphene.String()
+        id = graphene.String()
 
     ok = graphene.Boolean()
     publicHoliday = graphene.Field(Publicholiday)
@@ -263,9 +263,9 @@ class deletePublicholiday(graphene.Mutation):
     @classmethod
     def mutate(cls, _, args, context, info):
         query = Publicholiday.get_query(context)
-        holiday_date = args.get('holiday_date')
+        holiday_id = from_global_id(args.get('id'))[1]
         publicHoliday = query.filter(
-            PublicholidayModel.holiday_date == holiday_date).first()
+            PublicholidayModel.id == holiday_id).first()
         db_session.delete(publicHoliday)
         db_session.commit()
         ok = True
