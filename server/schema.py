@@ -183,7 +183,7 @@ class verifyAdminToken(graphene.Mutation):
 # Archive user
 class archiveUser(graphene.Mutation):
     class Input:
-        userId = graphene.String()
+        id = graphene.String()
         archiveReason = graphene.String()
 
     User = graphene.Field(User)
@@ -192,9 +192,8 @@ class archiveUser(graphene.Mutation):
     @classmethod
     def mutate(cls, _, args, context, info):
         query = User.get_query(context)
-        user_id = from_global_id(args.get('userId'))[1]
+        user_id = from_global_id(args.get('id'))[1]
         archiveReason = args.get('archiveReason')
-
         user = query.filter(UserModel.id == user_id).first()
 
         if user.isArchived is True:
