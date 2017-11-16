@@ -27,7 +27,6 @@ const PUBLIC_HOLIDAY = gql`
       edges {
         node {
           id
-          dbId
           holidayDate
         }
       }
