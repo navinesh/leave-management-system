@@ -16,6 +16,10 @@ import Application from '../components/LeaveApplication';
 const VERIFY_USER_TOKEN = gql`
   mutation verifyUserToken($userToken: String!) {
     verifyUserToken(userToken: $userToken) {
+      User {
+        id
+        dbId
+      }
       token
       ok
     }
@@ -51,26 +55,30 @@ class LeaveApplication extends Component<Props> {
       const response = await verifyUserToken({
         variables: { userToken }
       });
-      dispatch(receiveUserLoginFromToken(response.data.verifyUserToken.token));
+      const auth_info = {
+        auth_token: response.data.verifyUserToken.token,
+        user_id: response.data.verifyUserToken.User.dbId,
+        id: response.data.verifyUserToken.User.id
+      };
+      dispatch(receiveUserLoginFromToken(auth_info));
     } catch (error) {
       console.log(error);
       localStorage.removeItem('auth_token');
       localStorage.removeItem('user_id');
+      localStorage.removeItem('id');
       dispatch(loginUserErrorFromToken('Your session has expired!'));
     }
   };
 
   render() {
-    const { dispatch, isAuthenticated, message } = this.props;
-    let userID = this.props.auth_info.user_id
-      ? this.props.auth_info.user_id
-      : localStorage.getItem('user_id');
+    const { dispatch, isAuthenticated, auth_info, message } = this.props;
+    let id = auth_info.id ? auth_info.id : localStorage.getItem('id');
 
     return (
       <div className="LeaveApplication">
         {isAuthenticated ? (
           <Application
-            id={userID}
+            id={id}
             message={message}
             dispatch={dispatch}
             onLeaveApplicationClick={applicationDetails =>
