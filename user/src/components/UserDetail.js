@@ -7,8 +7,8 @@ import { graphql } from 'react-apollo';
 import '../spinners.css';
 
 const USER_DETAIL = gql`
-  query($id: Int) {
-    findUser(id: $id) {
+  query($id: ID!) {
+    user(id: $id) {
       othernames
       surname
       annual
@@ -26,7 +26,7 @@ type Props = {
 };
 
 const UserDetail = (props: Props) => {
-  const { userDetail: { loading, error, findUser: user } } = props;
+  const { userDetail: { loading, error, user } } = props;
 
   if (loading) {
     return (
