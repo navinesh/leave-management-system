@@ -15,9 +15,9 @@ import './index.css';
 import './bootstrap.min.css';
 
 import Header from './containers/Header';
-import Login from './containers/Login';
+import MainLogin from './containers/MainLogin';
 import Main from './containers/Main';
-import StaffLeaveCalendar from './containers/StaffLeaveCalendar';
+import LeaveCalendar from './containers/LeaveCalendar';
 import ResetPassword from './containers/ResetPassword';
 import UserChangePassword from './containers/ChangePassword';
 import UserError from './components/UserError';
@@ -56,9 +56,9 @@ const App = () => (
           <Header />
           <Switch>
             <PrivateRoute exact path="/" component={Main} />
-            <Route path="/leavecalendar" component={StaffLeaveCalendar} />
+            <Route path="/leavecalendar" component={LeaveCalendar} />
             <Route path="/reset" component={ResetPassword} />
-            <Route path="/login" component={Login} />
+            <Route path="/login" component={MainLogin} />
             <PrivateRoute
               path="/leaveapplication"
               component={LeaveApplication}
