@@ -67,13 +67,6 @@ class Query(graphene.ObjectType):
     public_holiday = SQLAlchemyConnectionField(Publicholiday)
     leave_record = SQLAlchemyConnectionField(Leaverecord)
 
-    find_user = graphene.Field(lambda: User, id=graphene.Int())
-
-    def resolve_find_user(self, args, context, info):
-        query = User.get_query(context)
-        id = args.get('id')
-        return query.filter(UserModel.id == id).first()
-
     find_user_updates = graphene.List(
         lambda: Userupdates, is_archived=graphene.String())
 
@@ -288,8 +281,11 @@ class deletePublicholiday(graphene.Mutation):
 
 class Mutations(graphene.ObjectType):
     authenticate_user = authenticateUser.Field()
+    verify_user_token = verifyUserToken.Field()
     authenticate_admin = authenticateAdmin.Field()
     verify_admin_token = verifyAdminToken.Field()
+    archive_user = archiveUser.Field()
+    unArchive_user = unArchiveUser.Field()
     add_publicholiday = addPublicholiday.Field()
     delete_publicholiday = deletePublicholiday.Field()
 
