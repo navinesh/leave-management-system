@@ -81,7 +81,7 @@ export default (props: Props) => {
     </div>
   ) : (
     <div style={{ paddingTop: '100px', paddingBottom: '220px' }}>
-      <h1 className="display-4">
+      <h1 className="display-4 text-center">
         <em>There is no data to display.</em>
       </h1>
     </div>
