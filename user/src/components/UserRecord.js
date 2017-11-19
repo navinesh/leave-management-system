@@ -6,8 +6,8 @@ import { graphql } from 'react-apollo';
 import '../spinners.css';
 
 const USER_RECORD = gql`
-  query($id: Int) {
-    findUser(id: $id) {
+  query($id: ID!) {
+    user(id: $id) {
       leaverecord {
         edges {
           node {
@@ -108,7 +108,7 @@ type Props = {
 };
 
 export const UserRecord = (props: Props) => {
-  const { userRecord: { loading, error, findUser: user } } = props;
+  const { userRecord: { loading, error, user } } = props;
 
   if (loading) {
     return (
