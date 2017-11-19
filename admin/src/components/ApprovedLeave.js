@@ -598,30 +598,30 @@ export default class ApprovedLeaveList extends Component<Props, State> {
     }
 
     const items = approved_items
-      .filter(record => {
-        // get current date and format it
-        let dateToday = moment();
+      //.filter(record => {
+      // get current date and format it
+      //let dateToday = moment();
 
-        let todayDate = dateToday.format('DD/MM/YYYY');
+      // let todayDate = dateToday.format('DD/MM/YYYY');
 
-        // get end date and format it
-        let end_Date = moment(record.endDate, 'DD/MM/YYYY').format(
-          'DD/MM/YYYY'
-        );
+      // get end date and format it
+      //let end_Date = moment(record.endDate, 'DD/MM/YYYY').format(
+      //  'DD/MM/YYYY'
+      // );
 
-        // check if current date and end date is same
-        let isCurrentDate = todayDate === end_Date ? true : false;
+      // check if current date and end date is same
+      //let isCurrentDate = todayDate === end_Date ? true : false;
 
-        // check if end date is same or greater than current date
-        let eDate = moment(record.endDate, 'DD/MM/YYYY').format('MM/DD/YYYY');
+      // check if end date is same or greater than current date
+      // let eDate = moment(record.endDate, 'DD/MM/YYYY').format('MM/DD/YYYY');
 
-        let endDate = moment(new Date(eDate));
+      //let endDate = moment(new Date(eDate));
 
-        let isEndDate = endDate.isSameOrAfter(dateToday);
+      // let isEndDate = endDate.isSameOrAfter(dateToday);
 
-        // return true for current and future leaves
-        return isCurrentDate || isEndDate ? true : false;
-      })
+      // return true for current and future leaves
+      // return isCurrentDate || isEndDate ? true : false;
+      //})
       .map(data => (
         <tr key={data.id}>
           <td>
