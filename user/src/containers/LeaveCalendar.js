@@ -26,7 +26,7 @@ type Props = {
 };
 
 const LeaveCalendar = (props: Props) => (
-  <div style={{ marginTop: '80px' }}>
+  <div className="container" style={{ marginTop: '80px' }}>
     <Leaves data={props.data} />
   </div>
 );
