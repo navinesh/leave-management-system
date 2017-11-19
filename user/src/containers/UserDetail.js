@@ -9,11 +9,9 @@ type Props = {
 };
 
 const UserDetails = (props: Props) => {
-  let userID = props.auth_info.user_id
-    ? props.auth_info.user_id
-    : localStorage.getItem('user_id');
+  let id = props.auth_info.id ? props.auth_info.id : localStorage.getItem('id');
 
-  return <UserDetail id={userID} />;
+  return <UserDetail id={id} />;
 };
 
 const mapStateToProps = state => {
