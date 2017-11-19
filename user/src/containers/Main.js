@@ -16,6 +16,10 @@ import UserRecord from './UserRecord';
 const VERIFY_USER_TOKEN = gql`
   mutation verifyUserToken($userToken: String!) {
     verifyUserToken(userToken: $userToken) {
+      User {
+        id
+        dbId
+      }
       token
       ok
     }
@@ -50,11 +54,17 @@ class Main extends Component<Props> {
       const response = await verifyUserToken({
         variables: { userToken }
       });
-      dispatch(receiveUserLoginFromToken(response.data.verifyUserToken.token));
+      const auth_info = {
+        auth_token: response.data.verifyUserToken.token,
+        user_id: response.data.verifyUserToken.User.dbId,
+        id: response.data.verifyUserToken.User.id
+      };
+      dispatch(receiveUserLoginFromToken(auth_info));
     } catch (error) {
       console.log(error);
       localStorage.removeItem('auth_token');
       localStorage.removeItem('user_id');
+      localStorage.removeItem('id');
       dispatch(loginUserErrorFromToken('Your session has expired!'));
     }
   };
