@@ -14,8 +14,8 @@ import { extendMoment } from 'moment-range';
 const moment = extendMoment(Moment);
 
 const USER_DETAIL = gql`
-  query($id: Int) {
-    findUser(id: $id) {
+  query($id: ID!) {
+    user(id: $id) {
       othernames
       surname
       annual
@@ -29,8 +29,8 @@ const USER_DETAIL = gql`
 `;
 
 const USER_RECORD = gql`
-  query($id: Int) {
-    findUser(id: $id) {
+  query($id: ID!) {
+    user(id: $id) {
       leaverecord {
         edges {
           node {
@@ -569,12 +569,12 @@ type Props = {
 
 const Application = (props: Props) => {
   const {
-    userDetails: { loading, error, findUser: user },
+    userDetails: { loading, error, user },
     userRecords: {
       loading: recordLoading,
       error: recordError,
       refetch,
-      findUser: recordUser
+      user: userRecord
     },
     publicHolidays: {
       loading: holidayLoading,
@@ -637,7 +637,7 @@ const Application = (props: Props) => {
             <LeaveApplication
               id={props.id}
               user_detail={user}
-              user_record={recordUser}
+              user_record={userRecord}
               public_holiday={publicHoliday}
               refetch={refetch}
               onLeaveApplicationClick={props.onLeaveApplicationClick}
