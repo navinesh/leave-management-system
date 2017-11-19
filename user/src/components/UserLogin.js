@@ -15,10 +15,11 @@ import '../spinners.css';
 const AUTHENTICATE_USER = gql`
   mutation authenticateUser($email: String!, $password: String!) {
     authenticateUser(email: $email, password: $password) {
-      token
       User {
+        id
         dbId
       }
+      token
       ok
     }
   }
@@ -106,9 +107,11 @@ class Login extends Component<Props, State> {
       });
       localStorage.setItem('auth_token', response.data.authenticateUser.token);
       localStorage.setItem('user_id', response.data.authenticateUser.User.dbId);
+      localStorage.setItem('id', response.data.authenticateUser.User.id);
       const auth_info = {
         auth_token: response.data.authenticateUser.token,
-        user_id: response.data.authenticateUser.User.dbId
+        user_id: response.data.authenticateUser.User.dbId,
+        id: response.data.authenticateUser.User.id
       };
       dispatch(receiveUserLogin(auth_info));
     } catch (error) {
@@ -116,6 +119,7 @@ class Login extends Component<Props, State> {
       this.setState({ errorMessage: error.message });
       localStorage.removeItem('auth_token');
       localStorage.removeItem('user_id');
+      localStorage.removeItem('id');
       dispatch(loginUserError());
     }
   };
