@@ -83,6 +83,15 @@ class Query(graphene.ObjectType):
         is_archived = args.get('is_archived')
         return query.filter(UserModel.isArchived == is_archived)
 
+    find_leave_updates = graphene.List(
+        lambda: Leaveupdates, is_archived=graphene.String())
+
+    def resolve_find_leave_updates(self, args, context, info):
+        query = Leaveupdates.get_query(context)
+        is_archived = args.get('is_archived')
+        return query.join(LeaverecordModel).join(UserModel).filter(
+            UserModel.isArchived == is_archived)
+
     find_leave_record = graphene.List(
         lambda: Leaverecord,
         leave_status=graphene.String(),
