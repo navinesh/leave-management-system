@@ -109,7 +109,7 @@ class Query(graphene.ObjectType):
 
     def resolve_find_sicksheet_record(self, args, context, info):
         query = Leaverecord.get_query(context)
-        return query.filter(LeaverecordModel.file_name != None)
+        return query.filter(LeaverecordModel.file_name.isnot(None))
 
 
 # Authenticate user
