@@ -105,6 +105,12 @@ class Query(graphene.ObjectType):
                             leave_status).join(UserModel).filter(
                                 UserModel.isArchived == is_archived)
 
+    find_sicksheet_record = graphene.List(lambda: Leaverecord)
+
+    def resolve_find_sicksheet_record(self, args, context, info):
+        query = Leaverecord.get_query(context)
+        return query.filter(LeaverecordModel.file_name != None)
+
 
 # Authenticate user
 class authenticateUser(graphene.Mutation):
