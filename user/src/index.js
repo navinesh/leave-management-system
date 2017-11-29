@@ -44,7 +44,8 @@ const PrivateRoute = ({ component, ...rest }) => (
             state: { from: props.location }
           }}
         />
-      )}
+      )
+    }
   />
 );
 
