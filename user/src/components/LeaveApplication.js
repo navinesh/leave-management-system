@@ -479,10 +479,12 @@ class LeaveApplication extends Component<
                   startDate={this.state.startDate}
                   endDate={this.state.endDate}
                   onDatesChange={({ startDate, endDate }) =>
-                    this.setState({ startDate, endDate })}
+                    this.setState({ startDate, endDate })
+                  }
                   focusedInput={this.state.focusedInput}
                   onFocusChange={focusedInput =>
-                    this.setState({ focusedInput })}
+                    this.setState({ focusedInput })
+                  }
                   isOutsideRange={() => false}
                   minimumNights={0}
                   showDefaultInputIcon
@@ -627,7 +629,8 @@ const Application = (props: Props) => {
                   onClick={() =>
                     dispatch({
                       type: 'CLEAR_LEAVE_APPLICATION_MESSAGE'
-                    })}
+                    })
+                  }
                 >
                   Apply for leave
                 </button>
