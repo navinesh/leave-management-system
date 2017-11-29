@@ -82,7 +82,8 @@ class LeaveApplication extends Component<Props> {
             message={message}
             dispatch={dispatch}
             onLeaveApplicationClick={applicationDetails =>
-              dispatch(fetchLeaveApplication(applicationDetails))}
+              dispatch(fetchLeaveApplication(applicationDetails))
+            }
           />
         ) : (
           <Redirect to="/" />
