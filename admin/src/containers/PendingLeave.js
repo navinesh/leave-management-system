@@ -153,11 +153,14 @@ class PendingLeave extends Component<Props> {
             isDeclineLeaveFetching={isDeclineLeaveFetching}
             declineLeaveMessage={declineLeaveMessage}
             onApproveLeaveSubmit={approveLeaveData =>
-              dispatch(submitApproveLeave(approveLeaveData))}
+              dispatch(submitApproveLeave(approveLeaveData))
+            }
             onDeclineLeaveSubmit={declineLeaveData =>
-              dispatch(submitDeclineLeave(declineLeaveData))}
+              dispatch(submitDeclineLeave(declineLeaveData))
+            }
             onEditLeaveSubmit={editLeaveData =>
-              dispatch(submitEditLeave(editLeaveData))}
+              dispatch(submitEditLeave(editLeaveData))
+            }
           />
         ) : (
           <Redirect to="/login" />
