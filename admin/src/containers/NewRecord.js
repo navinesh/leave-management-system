@@ -80,7 +80,8 @@ class NewRecord extends Component<Props> {
             message={message}
             dispatch={dispatch}
             onNewUserRecordSubmit={newUserDetails =>
-              dispatch(submitNewUserRecord(newUserDetails))}
+              dispatch(submitNewUserRecord(newUserDetails))
+            }
           />
         ) : (
           <Redirect to="/login" />
