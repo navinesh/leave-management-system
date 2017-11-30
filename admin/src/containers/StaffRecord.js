@@ -134,7 +134,8 @@ class StaffRecord extends Component<Props> {
             isFetching={isFetching}
             message={message}
             onModifyUserRecordSubmit={modifyUserDetails =>
-              dispatch(submitModifyUserRecord(modifyUserDetails))}
+              dispatch(submitModifyUserRecord(modifyUserDetails))
+            }
             archiveUser={archiveUser}
             isArchiveFetching={isArchiveFetching}
             archiveMessage={archiveMessage}
