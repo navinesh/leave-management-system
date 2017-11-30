@@ -155,9 +155,11 @@ class ApprovedLeave extends Component<Props> {
             isCancelLeaveFetching={isCancelLeaveFetching}
             cancelLeaveMessage={cancelLeaveMessage}
             onEditApprovedLeaveSubmit={editLeaveData =>
-              dispatch(submitEditApprovedLeave(editLeaveData))}
+              dispatch(submitEditApprovedLeave(editLeaveData))
+            }
             onCancelLeaveSubmit={cancelLeaveData =>
-              dispatch(submitCancelLeave(cancelLeaveData))}
+              dispatch(submitCancelLeave(cancelLeaveData))
+            }
           />
         ) : (
           <Redirect to="/login" />
