@@ -13,7 +13,7 @@
     "react-addons-shallow-compare": "^15.5.2",
     "react-csv": "^1.0.8",
     "react-datepicker": "^0.47.0",
-    "react-dates": "^12.6.0",
+    "react-dates": "^15.1.0",
     "react-dom": "^16.2.0",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.0",
