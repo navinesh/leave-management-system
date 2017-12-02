@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
-    "flow-bin": "^0.54.1"
+    "flow-bin": "^0.59.0"
   },
   "dependencies": {
     "axios": "^0.16.2",
