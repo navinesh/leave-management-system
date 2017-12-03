@@ -2,3 +2,4 @@ node_modules
 build
 admin/.flowconfig
 user/.flowconfig
+.vscode/settings.json
