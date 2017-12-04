@@ -57,7 +57,8 @@ class LeaveApplication extends Component<Props> {
             user_record={user_record}
             public_holiday={public_holiday}
             onLeaveApplicationClick={applicationDetails =>
-              dispatch(fetchLeaveApplication(applicationDetails))}
+              dispatch(fetchLeaveApplication(applicationDetails))
+            }
           />
         ) : (
           <Redirect to="/" />
