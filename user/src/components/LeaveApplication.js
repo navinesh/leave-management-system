@@ -432,10 +432,12 @@ class LeaveApplication extends Component<
                   startDate={this.state.startDate}
                   endDate={this.state.endDate}
                   onDatesChange={({ startDate, endDate }) =>
-                    this.setState({ startDate, endDate })}
+                    this.setState({ startDate, endDate })
+                  }
                   focusedInput={this.state.focusedInput}
                   onFocusChange={focusedInput =>
-                    this.setState({ focusedInput })}
+                    this.setState({ focusedInput })
+                  }
                   isOutsideRange={() => false}
                   minimumNights={0}
                   showDefaultInputIcon
