@@ -16,6 +16,7 @@ const moment = extendMoment(Moment);
 const USER_DETAIL = gql`
   query($id: ID!) {
     user(id: $id) {
+      dbId
       othernames
       surname
       annual
@@ -207,14 +208,13 @@ class LeaveApplication extends Component<
   handleSubmit(e: Event) {
     e.preventDefault();
     const {
-      id,
       user_detail,
       user_record,
       onLeaveApplicationClick,
       refetch
     } = this.props;
 
-    const user_id = id;
+    const user_id = user_detail.dbId;
     const annualDays = user_detail.annual;
     const sickDays = user_detail.sick;
     const bereavementDays = user_detail.bereavement;
