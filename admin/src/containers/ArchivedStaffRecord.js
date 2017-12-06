@@ -158,6 +158,9 @@ export default compose(
   graphql(VERIFY_ADMIN_TOKEN, {
     name: 'verifyAdminToken'
   }),
-  graphql(ARCHIVED_USERS, { name: 'archivedUsers' }),
+  graphql(ARCHIVED_USERS, {
+    name: 'archivedUsers',
+    options: { pollInterval: 60000 }
+  }),
   graphql(UNARCHIVE_USER, { name: 'unArchiveUser' })
 )(ArchivedStaffRecord);
