@@ -59,7 +59,7 @@ export default class NewRecordForm extends Component<Props, State> {
       bereavementLeave: '',
       christmasLeave: '',
       maternityLeave: '',
-      dob: ''
+      dob: null
     };
 
     this.handleSurnameChange = this.handleSurnameChange.bind(this);
