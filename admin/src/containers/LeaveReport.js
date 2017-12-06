@@ -300,24 +300,31 @@ const mapStateToProps = state => {
 export default compose(
   connect(mapStateToProps),
   graphql(VERIFY_ADMIN_TOKEN, {
-    name: 'verifyAdminToken'
+    name: 'verifyAdminToken',
+    options: { pollInterval: 60000 }
   }),
   graphql(APPROVED_RECORD, {
-    name: 'approvedRecord'
+    name: 'approvedRecord',
+    options: { pollInterval: 60000 }
   }),
   graphql(PENDING_RECORD, {
-    name: 'pendingRecord'
+    name: 'pendingRecord',
+    options: { pollInterval: 60000 }
   }),
   graphql(CANCELLED_RECORD, {
-    name: 'cancelledRecord'
+    name: 'cancelledRecord',
+    options: { pollInterval: 60000 }
   }),
   graphql(DECLINED_RECORD, {
-    name: 'declinedRecord'
+    name: 'declinedRecord',
+    options: { pollInterval: 60000 }
   }),
   graphql(USER_UPDATES_RECORD, {
-    name: 'userUpdates'
+    name: 'userUpdates',
+    options: { pollInterval: 60000 }
   }),
   graphql(LEAVE_UPDATES_RECORD, {
-    name: 'leaveUpdates'
+    name: 'leaveUpdates',
+    options: { pollInterval: 60000 }
   })
 )(LeaveReport);
