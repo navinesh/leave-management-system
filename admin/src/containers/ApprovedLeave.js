@@ -191,6 +191,9 @@ export default compose(
   graphql(VERIFY_ADMIN_TOKEN, {
     name: 'verifyAdminToken'
   }),
-  graphql(APPROVED_RECORD, { name: 'approvedRecord' }),
+  graphql(APPROVED_RECORD, {
+    name: 'approvedRecord',
+    options: { pollInterval: 60000 }
+  }),
   graphql(PUBLIC_HOLIDAY, { name: 'publicHolidays' })
 )(ApprovedLeave);
