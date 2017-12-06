@@ -191,6 +191,9 @@ const mapStateToProps = state => {
 export default compose(
   connect(mapStateToProps),
   graphql(VERIFY_ADMIN_TOKEN, { name: 'verifyAdminToken' }),
-  graphql(LEAVE_RECORD, { name: 'leaveRecord' }),
+  graphql(LEAVE_RECORD, {
+    name: 'leaveRecord',
+    options: { pollInterval: 60000 }
+  }),
   graphql(PUBLIC_HOLIDAY, { name: 'publicHolidays' })
 )(PendingLeave);
