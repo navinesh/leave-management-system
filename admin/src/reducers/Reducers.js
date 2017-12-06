@@ -131,7 +131,8 @@ const adminAuth = (
         ...state,
         isFetching: false,
         message: action.message,
-        isAuthenticated: false
+        isAuthenticated: false,
+        auth_info: ''
       };
     case LOGOUT_ADMIN_REQUEST:
       return { ...state, isFetching: true, isAuthenticated: true };
