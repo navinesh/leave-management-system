@@ -124,5 +124,8 @@ export default compose(
   graphql(VERIFY_ADMIN_TOKEN, {
     name: 'verifyAdminToken'
   }),
-  graphql(SICK_RECORD, { name: 'sickRecord' })
+  graphql(SICK_RECORD, {
+    name: 'sickRecord',
+    options: { pollInterval: 60000 }
+  })
 )(SickSheetRecord);
