@@ -172,7 +172,8 @@ export default compose(
     name: 'verifyAdminToken'
   }),
   graphql(ACTIVE_USERS, {
-    name: 'activeUsers'
+    name: 'activeUsers',
+    options: { pollInterval: 60000 }
   }),
   graphql(ARCHIVE_USER, {
     name: 'archiveUser'
