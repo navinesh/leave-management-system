@@ -36,32 +36,30 @@ type Props = {
 
 class NewRecord extends Component<Props> {
   componentWillMount() {
-    const { auth_info } = this.props;
-    let admin_token = auth_info.admin_token
-      ? auth_info.admin_token
-      : localStorage.getItem('admin_token');
-
-    if (admin_token) {
-      this.verifyToken();
-    }
+    this.verifyToken();
   }
 
   verifyToken = async () => {
-    const { dispatch, verifyAdminToken } = this.props;
-    const adminToken = localStorage.getItem('admin_token');
+    const { auth_info, dispatch, verifyAdminToken } = this.props;
 
-    try {
-      dispatch(requestAdminLoginFromToken());
-      const response = await verifyAdminToken({
-        variables: { adminToken }
-      });
-      dispatch(
-        receiveAdminLoginFromToken(response.data.verifyAdminToken.token)
-      );
-    } catch (error) {
-      console.log(error);
-      localStorage.removeItem('admin_token');
-      dispatch(loginAdminErrorFromToken('Your session has expired!'));
+    const adminToken = auth_info.admin_token
+      ? auth_info.admin_token
+      : localStorage.getItem('admin_token');
+
+    if (adminToken) {
+      try {
+        dispatch(requestAdminLoginFromToken());
+        const response = await verifyAdminToken({
+          variables: { adminToken }
+        });
+        dispatch(
+          receiveAdminLoginFromToken(response.data.verifyAdminToken.token)
+        );
+      } catch (error) {
+        console.log(error);
+        localStorage.removeItem('admin_token');
+        dispatch(loginAdminErrorFromToken('Your session has expired!'));
+      }
     }
   };
 
