@@ -5398,9 +5398,9 @@ react-datepicker@^0.61.0:
     react-onclickoutside "^6.6.3"
     react-popper "^0.7.4"
 
-react-dates@^15.3.0:
-  version "15.3.0"
-  resolved "https://registry.yarnpkg.com/react-dates/-/react-dates-15.3.0.tgz#a843bfc7811fa3c118928f6f03a1479045126654"
+react-dates@^15.5.1:
+  version "15.5.1"
+  resolved "https://registry.yarnpkg.com/react-dates/-/react-dates-15.5.1.tgz#126efeae979ae29bb9783957d523c28247d1f842"
   dependencies:
     airbnb-prop-types "^2.8.1"
     consolidated-events "^1.1.0"
@@ -5411,7 +5411,7 @@ react-dates@^15.3.0:
     prop-types "^15.5.10"
     react-addons-shallow-compare "^15.5.2"
     react-moment-proptypes "^1.5.0"
-    react-portal "^3.1.0"
+    react-portal "^4.1.0"
     react-with-styles "^2.2.0"
     react-with-styles-interface-css "^3.0.0"
 
@@ -5468,9 +5468,9 @@ react-popper@^0.7.4:
     popper.js "^1.12.5"
     prop-types "^15.5.10"
 
-react-portal@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/react-portal/-/react-portal-3.1.0.tgz#865c44fb72a1da106c649206936559ce891ee899"
+react-portal@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/react-portal/-/react-portal-4.1.0.tgz#749b3e7571620b371e2c1a6e91e4353c03ae49e7"
   dependencies:
     prop-types "^15.5.8"
 
