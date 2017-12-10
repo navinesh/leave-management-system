@@ -15,7 +15,7 @@
     "react": "16.2.0",
     "react-addons-shallow-compare": "^15.5.2",
     "react-apollo": "^2.0.1",
-    "react-dates": "^15.3.0",
+    "react-dates": "^15.5.1",
     "react-dom": "16.2.0",
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.0",
