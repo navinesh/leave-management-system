@@ -110,8 +110,6 @@ const UserDetail = (props: Props) => {
 };
 
 export default graphql(USER_DETAIL, {
-  options: ({ id }) => ({
-    variables: { id }
-  }),
+  options: ({ id }) => ({ variables: { id }, pollInterval: 60000 }),
   name: 'userDetail'
 })(UserDetail);
