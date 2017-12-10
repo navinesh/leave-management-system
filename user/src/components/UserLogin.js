@@ -177,6 +177,4 @@ class Login extends Component<Props, State> {
   }
 }
 
-export default graphql(AUTHENTICATE_USER, {
-  name: 'logInUser'
-})(Login);
+export default graphql(AUTHENTICATE_USER, { name: 'logInUser' })(Login);
