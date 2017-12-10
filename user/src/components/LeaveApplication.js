@@ -476,6 +476,8 @@ class LeaveApplication extends Component<
               <div className="form-group">
                 <label htmlFor="startDate-endDate">Start date - End date</label>
                 <DateRangePicker
+                  startDateId="startDate"
+                  endDateId="endDate"
                   startDate={this.state.startDate}
                   endDate={this.state.endDate}
                   onDatesChange={({ startDate, endDate }) =>
@@ -654,15 +656,11 @@ const Application = (props: Props) => {
 
 export default compose(
   graphql(USER_DETAIL, {
-    options: ({ id }) => ({
-      variables: { id }
-    }),
+    options: ({ id }) => ({ variables: { id }, pollInterval: 60000 }),
     name: 'userDetails'
   }),
   graphql(USER_RECORD, {
-    options: ({ id }) => ({
-      variables: { id }
-    }),
+    options: ({ id }) => ({ variables: { id }, pollInterval: 60000 }),
     name: 'userRecords'
   }),
   graphql(PUBLIC_HOLIDAY, { name: 'publicHolidays' })
