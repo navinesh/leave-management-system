@@ -142,8 +142,6 @@ export const UserRecord = (props: Props) => {
 };
 
 export default graphql(USER_RECORD, {
-  options: ({ id }) => ({
-    variables: { id }
-  }),
+  options: ({ id }) => ({ variables: { id }, pollInterval: 60000 }),
   name: 'userRecord'
 })(UserRecord);
