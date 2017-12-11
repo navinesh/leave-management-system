@@ -86,4 +86,8 @@ const App = () => (
   </ApolloProvider>
 );
 
-render(<App />, document.getElementById('root'));
+const root = document.getElementById('root');
+
+if (root instanceof Element) {
+  render(<App />, root);
+}
