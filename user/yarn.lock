@@ -5235,9 +5235,9 @@ react-addons-shallow-compare@^15.5.2:
     fbjs "^0.8.4"
     object-assign "^4.1.0"
 
-react-dates@^15.1.0:
-  version "15.3.0"
-  resolved "https://registry.yarnpkg.com/react-dates/-/react-dates-15.3.0.tgz#a843bfc7811fa3c118928f6f03a1479045126654"
+react-dates@^16.0.1:
+  version "16.0.1"
+  resolved "https://registry.yarnpkg.com/react-dates/-/react-dates-16.0.1.tgz#0522e65c57b1a5dd685160127e29dff8bb41e573"
   dependencies:
     airbnb-prop-types "^2.8.1"
     consolidated-events "^1.1.0"
@@ -5248,7 +5248,7 @@ react-dates@^15.1.0:
     prop-types "^15.5.10"
     react-addons-shallow-compare "^15.5.2"
     react-moment-proptypes "^1.5.0"
-    react-portal "^3.1.0"
+    react-portal "^4.1.0"
     react-with-styles "^2.2.0"
     react-with-styles-interface-css "^3.0.0"
 
@@ -5294,9 +5294,9 @@ react-moment-proptypes@^1.5.0:
   dependencies:
     moment ">=1.6.0"
 
-react-portal@^3.1.0:
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/react-portal/-/react-portal-3.1.0.tgz#865c44fb72a1da106c649206936559ce891ee899"
+react-portal@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/react-portal/-/react-portal-4.1.0.tgz#749b3e7571620b371e2c1a6e91e4353c03ae49e7"
   dependencies:
     prop-types "^15.5.8"
 
