@@ -4350,9 +4350,9 @@ mkdirp@0.5.1, mkdirp@0.5.x, "mkdirp@>=0.5 0", mkdirp@^0.5.0, mkdirp@^0.5.1, mkdi
   dependencies:
     minimist "0.0.8"
 
-moment-range@^3.0.3:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/moment-range/-/moment-range-3.0.3.tgz#f7a1567c73228f317469cb33148ea996f79ccb9a"
+moment-range@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/moment-range/-/moment-range-3.1.0.tgz#96ab2245939b1c0991f0e4128079843218415c29"
   dependencies:
     es6-symbol "^3.1.0"
 
