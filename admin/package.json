@@ -10,7 +10,7 @@
     "axios": "^0.17.1",
     "graphql": "^0.11.7",
     "graphql-tag": "^2.5.0",
-    "moment": "^2.19.2",
+    "moment": "^2.20.0",
     "moment-range": "^3.0.3",
     "react": "16.2.0",
     "react-addons-shallow-compare": "^15.5.2",
