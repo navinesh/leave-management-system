@@ -160,7 +160,6 @@ export default class ApprovedLeaveList extends Component<Props, State> {
     );
 
     // exclude public holidays
-
     const publicHolidays = public_holiday.edges.map(item => {
       let hDate = new Date(item.node.holidayDate);
       let holiday_date = moment(hDate).format('DD, MM, YYYY');
