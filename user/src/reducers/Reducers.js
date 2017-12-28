@@ -6,8 +6,7 @@ import {
   LOGIN_USER_FAILURE,
   LOGIN_USER_REQUEST_FROM_TOKEN,
   LOGIN_USER_SUCCESS_FROM_TOKEN,
-  LOGIN_USER_FAILURE_FROM_TOKEN,
-  LOGIN_FAILURE_FROM_TOKEN
+  LOGIN_USER_FAILURE_FROM_TOKEN
 } from '../actions/UserLogin';
 
 import { LOGOUT_USER_REQUEST } from '../actions/UserLogout';
@@ -97,13 +96,6 @@ const userAuth = (
         auth_info: action.auth_info
       };
     case LOGIN_USER_FAILURE_FROM_TOKEN:
-      return {
-        ...state,
-        isFetching: false,
-        isAuthenticated: false,
-        message: action.message
-      };
-    case LOGIN_FAILURE_FROM_TOKEN:
       return {
         ...state,
         isFetching: false,
