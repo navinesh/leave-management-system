@@ -328,7 +328,7 @@ def apply_for_leave():
                     format_number(current_leave_balance)) +
                 " day(s) and uppon approval new balance will be " + str(
                     new_leave_balance) + " day(s). Reason: " + leave_reason),
-                new_file_name)
+                    new_file_name)
 
     return jsonify({'message': 'Your application has been submitted.'}), 201
 
