@@ -70,13 +70,13 @@ def shutdown_session(exception=None):
     db_session.remove()
 
 
-# Remove trailing zeros from decimal
 def format_number(i):
+    """Remove trailing zeros from decimal"""
     return '%g' % (Decimal(str(i)))
 
 
-# Send email
 def send_email(toaddr, subject, body, file):
+    """Send email"""
     fromaddr = "FROM_EMAIL_ADDRESS"
     server = smtplib.SMTP('SERVER_IP', PORT_NUMBER)
 
@@ -116,7 +116,7 @@ def send_email(toaddr, subject, body, file):
 # Helper functions
 @auth.verify_password
 def verify_password(email_or_token, password):
-    # Try to see if it's a token first
+    """Verify password or user token""""
     user_id = User.verify_auth_token(email_or_token)
 
     if user_id:
@@ -143,7 +143,7 @@ def allowed_file(filename):
 @app.route('/change-password')
 @app.route('/applyforleave')
 def show_user_home():
-    """"""
+    """Render user index html"""
     return render_template('userhome.html')
 
 
