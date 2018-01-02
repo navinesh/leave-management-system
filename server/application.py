@@ -590,7 +590,7 @@ def modify_user():
     session.add(userRecord)
     session.commit()
 
-    "update logs table"
+    # update logs table
     userUpdates = Userupdates(
         designation=designation,
         gender=gender,
