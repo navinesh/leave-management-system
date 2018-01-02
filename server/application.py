@@ -224,26 +224,26 @@ def apply_for_leave():
             'This user could not be found in the database.'
         }), 200
 
-    userRecord = session.query(User).filter_by(id=user_id).one()
+    user_record = session.query(User).filter_by(id=user_id).one()
 
     if leave_name == 'annual':
-        current_leave_balance = userRecord.annual
+        current_leave_balance = user_record.annual
         new_leave_balance = application_days
 
     if leave_name == 'sick':
-        current_leave_balance = userRecord.sick
+        current_leave_balance = user_record.sick
         new_leave_balance = application_days
 
     if leave_name == 'christmas':
-        current_leave_balance = userRecord.christmas
+        current_leave_balance = user_record.christmas
         new_leave_balance = application_days
 
     if leave_name == 'bereavement':
-        current_leave_balance = userRecord.bereavement
+        current_leave_balance = user_record.bereavement
         new_leave_balance = application_days
 
     if leave_name == 'maternity':
-        current_leave_balance = userRecord.maternity
+        current_leave_balance = user_record.maternity
         new_leave_balance = application_days
 
     # fetch sick sheet file
@@ -266,14 +266,14 @@ def apply_for_leave():
         session.commit()
 
         # Send email
-        to_address_list = [userRecord.email, supervisor_email, secretary_email]
+        to_address_list = [user_record.email, supervisor_email, secretary_email]
 
         if leave_name == 'lwop' or leave_name == 'other' or \
                 leave_name == 'birthday':
             send_email(
                 to_address_list,
                 "Leave application",
-                (userRecord.othernames + " " + userRecord.surname +
+                (user_record.othernames + " " + user_record.surname +
                  " applied for " + str(format_number(leave_days)) +
                  " day(s) of " + leave_name + " leave from " + date_from +
                  " to " + date_to + ". Reason: " + leave_reason),
@@ -282,8 +282,8 @@ def apply_for_leave():
             send_email(
                 to_address_list,
                 "Leave application",
-                (userRecord.othernames + " " +
-                 userRecord.surname + " applied for " + str(
+                (user_record.othernames + " " +
+                 user_record.surname + " applied for " + str(
                      format_number(leave_days)) + " day(s) of " + leave_name +
                  " leave from " + date_from + " to " + date_to + ". Current " +
                  leave_name + " leave balance is " + str(
@@ -316,12 +316,12 @@ def apply_for_leave():
 
             # Send email
             to_address_list = [
-                userRecord.email, supervisor_email, secretary_email
+                user_record.email, supervisor_email, secretary_email
             ]
 
             send_email(to_address_list, "Leave application" (
-                userRecord.othernames + " " +
-                userRecord.surname + " applied for " + str(
+                user_record.othernames + " " +
+                user_record.surname + " applied for " + str(
                     format_number(leave_days)) + " day(s) of " + leave_name +
                 " leave from " + date_from + " to " + date_to + ". Current " +
                 leave_name + " leave balance is " + str(
@@ -538,20 +538,20 @@ def modify_user():
     maternity = request.json.get('maternity')
     editReason = request.json.get('editReason')
 
-    userRecord = session.query(User).filter_by(id=user_id).one()
+    user_record = session.query(User).filter_by(id=user_id).one()
 
     # Email message
     if gender == 'male' or (float(maternity) <= 0 and
-                            userRecord.maternity <= 0):
+                            user_record.maternity <= 0):
         send_email(
             [email],
             "Leave record update",
             ("Your leave records have been updated. \
-             Your previous leave records were: " + str(userRecord.annual) + " \
+             Your previous leave records were: " + str(user_record.annual) + " \
              annual day(s), " +
-             str(userRecord.sick) + " sick day(s), " + str(
-                 userRecord.bereavement) + " bereavement day(s) and " + str(
-                     userRecord.christmas) +
+             str(user_record.sick) + " sick day(s), " + str(
+                 user_record.bereavement) + " bereavement day(s) and " + str(
+                     user_record.christmas) +
              " christmas day(s). Your updated leave records are: " + annual +
              " annual day(s), " + sick + " sick day(s), " + bereavement +
              " bereavement day(s) and " + christmas + " christmas day(s). " +
@@ -562,12 +562,12 @@ def modify_user():
             [email],
             "Leave record update",
             ("Your leave records have been updated. \
-            Your previous leave records were: " + str(userRecord.annual) +
+            Your previous leave records were: " + str(user_record.annual) +
              " annual day(s), " +
-             str(userRecord.sick) + " sick day(s), " + str(
-                 userRecord.bereavement) + " bereavement day(s), " + str(
-                     userRecord.christmas) + " christmas day(s) and " + str(
-                         userRecord.maternity) +
+             str(user_record.sick) + " sick day(s), " + str(
+                 user_record.bereavement) + " bereavement day(s), " + str(
+                     user_record.christmas) + " christmas day(s) and " + str(
+                         user_record.maternity) +
              " maternity day(s). Your updated leave records are: " + annual +
              " annual day(s), " + sick + " sick day(s), " + bereavement +
              " bereavement day(s), " + christmas + " christmas day(s) and " +
@@ -575,19 +575,19 @@ def modify_user():
              editReason),
             file=None)
 
-    userRecord.surname = surname
-    userRecord.othernames = othernames
-    userRecord.email = email
-    userRecord.designation = designation
-    userRecord.gender = gender
-    userRecord.annual = annual
-    userRecord.sick = sick
-    userRecord.christmas = christmas
-    userRecord.bereavement = bereavement
-    userRecord.date_of_birth = date_of_birth
-    userRecord.maternity = maternity
+    user_record.surname = surname
+    user_record.othernames = othernames
+    user_record.email = email
+    user_record.designation = designation
+    user_record.gender = gender
+    user_record.annual = annual
+    user_record.sick = sick
+    user_record.christmas = christmas
+    user_record.bereavement = bereavement
+    user_record.date_of_birth = date_of_birth
+    user_record.maternity = maternity
 
-    session.add(userRecord)
+    session.add(user_record)
     session.commit()
 
     # update logs table
@@ -601,7 +601,7 @@ def modify_user():
         christmas=christmas,
         maternity=maternity,
         editReason=editReason,
-        user_id=userRecord.id,
+        user_id=user_record.id,
         date_posted=str(datetime.now().date()))
 
     session.add(userUpdates)
@@ -633,56 +633,56 @@ def approve_leave():
             'message': 'Cannot find this record in the database.'
         }), 200
 
-    userRecord = session.query(User).filter_by(id=leaveRecord.user_id).one()
+    user_record = session.query(User).filter_by(id=leaveRecord.user_id).one()
 
     if leave_name == 'annual':
-        annual = float(userRecord.annual) - leave_days
+        annual = float(user_record.annual) - leave_days
         if annual < 0:
             return jsonify({'message': 'Leave balance cannot be negative!'})
             abort(400)
         else:
-            userRecord.annual = annual
-            session.add(userRecord)
+            user_record.annual = annual
+            session.add(user_record)
             session.commit()
 
     if leave_name == 'sick':
-        sick = float(userRecord.sick) - leave_days
+        sick = float(user_record.sick) - leave_days
         if sick < 0:
             return jsonify({'message': 'Leave balance cannot be negative!'})
             abort(400)
         else:
-            userRecord.sick = sick
-            session.add(userRecord)
+            user_record.sick = sick
+            session.add(user_record)
             session.commit()
 
     if leave_name == 'bereavement':
-        bereavement = float(userRecord.bereavement) - leave_days
+        bereavement = float(user_record.bereavement) - leave_days
         if bereavement < 0:
             return jsonify({'message': 'Leave balance cannot be negative!'})
             abort(400)
         else:
-            userRecord.bereavement = bereavement
-            session.add(userRecord)
+            user_record.bereavement = bereavement
+            session.add(user_record)
             session.commit()
 
     if leave_name == 'maternity':
-        maternity = float(userRecord.maternity) - leave_days
+        maternity = float(user_record.maternity) - leave_days
         if maternity < 0:
             return jsonify({'message': 'Leave balance cannot be negative!'})
             abort(400)
         else:
-            userRecord.maternity = maternity
-            session.add(userRecord)
+            user_record.maternity = maternity
+            session.add(user_record)
             session.commit()
 
     if leave_name == 'christmas':
-        christmas = float(userRecord.christmas) - leave_days
+        christmas = float(user_record.christmas) - leave_days
         if christmas < 0:
             return jsonify({'message': 'Leave balance cannot be negative!'})
             abort(400)
         else:
-            userRecord.christmas = christmas
-            session.add(userRecord)
+            user_record.christmas = christmas
+            session.add(user_record)
             session.commit()
 
     if leave_name == 'lwop' or leave_name == 'other':
@@ -695,7 +695,7 @@ def approve_leave():
 
     # Send email
     send_email(
-        [userRecord.email],
+        [user_record.email],
         "Leave application approved",
         ("Your " + leave_name + " leave application for " + str(
             format_number(leave_days)) + " day(s) from " +
@@ -908,47 +908,47 @@ def edit_approved_leave():
     session.add(updateLog)
     session.commit()
 
-    userRecord = session.query(User).filter_by(id=leaveRecord.user_id).one()
+    user_record = session.query(User).filter_by(id=leaveRecord.user_id).one()
 
     if leave_name != previous_leave_name:
         if previous_leave_name == 'annual':
-            previous_leave_balance = userRecord.annual
+            previous_leave_balance = user_record.annual
             previous_updated_leave_balance = new_leave_balance
 
-            userRecord.annual = new_leave_balance
-            session.add(userRecord)
+            user_record.annual = new_leave_balance
+            session.add(user_record)
             session.commit()
 
         if previous_leave_name == 'sick':
-            previous_leave_balance = userRecord.sick
+            previous_leave_balance = user_record.sick
             previous_updated_leave_balance = new_leave_balance
 
-            userRecord.sick = new_leave_balance
-            session.add(userRecord)
+            user_record.sick = new_leave_balance
+            session.add(user_record)
             session.commit()
 
         if previous_leave_name == 'christmas':
-            previous_leave_balance = userRecord.christmas
+            previous_leave_balance = user_record.christmas
             previous_updated_leave_balance = new_leave_balance
 
-            userRecord.christmas = new_leave_balance
-            session.add(userRecord)
+            user_record.christmas = new_leave_balance
+            session.add(user_record)
             session.commit()
 
         if previous_leave_name == 'bereavement':
-            previous_leave_balance = userRecord.bereavement
+            previous_leave_balance = user_record.bereavement
             previous_updated_leave_balance = new_leave_balance
 
-            userRecord.bereavement = new_leave_balance
-            session.add(userRecord)
+            user_record.bereavement = new_leave_balance
+            session.add(user_record)
             session.commit()
 
         if previous_leave_name == 'maternity':
-            previous_leave_balance = userRecord.maternity
+            previous_leave_balance = user_record.maternity
             previous_updated_leave_balance = new_leave_balance
 
-            userRecord.maternity = new_leave_balance
-            session.add(userRecord)
+            user_record.maternity = new_leave_balance
+            session.add(user_record)
             session.commit()
 
         if previous_leave_name == 'lwop' or previous_leave_name == 'other':
@@ -956,43 +956,43 @@ def edit_approved_leave():
             previous_updated_leave_balance = 0
 
         if leave_name == 'annual':
-            previous_new_leave_balance = userRecord.annual
-            updated_leave_balance = float(userRecord.annual) - leave_days
+            previous_new_leave_balance = user_record.annual
+            updated_leave_balance = float(user_record.annual) - leave_days
 
-            userRecord.annual = float(userRecord.annual) - leave_days
-            session.add(userRecord)
+            user_record.annual = float(user_record.annual) - leave_days
+            session.add(user_record)
             session.commit()
 
         if leave_name == 'sick':
-            previous_new_leave_balance = userRecord.sick
-            updated_leave_balance = float(userRecord.sick) - leave_days
+            previous_new_leave_balance = user_record.sick
+            updated_leave_balance = float(user_record.sick) - leave_days
 
-            userRecord.sick = float(userRecord.sick) - leave_days
-            session.add(userRecord)
+            user_record.sick = float(user_record.sick) - leave_days
+            session.add(user_record)
             session.commit()
 
         if leave_name == 'bereavement':
-            previous_new_leave_balance = userRecord.bereavement
-            updated_leave_balance = float(userRecord.bereavement) - leave_days
+            previous_new_leave_balance = user_record.bereavement
+            updated_leave_balance = float(user_record.bereavement) - leave_days
 
-            userRecord.bereavement = float(userRecord.bereavement) - leave_days
-            session.add(userRecord)
+            user_record.bereavement = float(user_record.bereavement) - leave_days
+            session.add(user_record)
             session.commit()
 
         if leave_name == 'maternity':
-            previous_new_leave_balance = userRecord.maternity
-            updated_leave_balance = float(userRecord.maternity) - leave_days
+            previous_new_leave_balance = user_record.maternity
+            updated_leave_balance = float(user_record.maternity) - leave_days
 
-            userRecord.maternity = float(userRecord.maternity) - leave_days
-            session.add(userRecord)
+            user_record.maternity = float(user_record.maternity) - leave_days
+            session.add(user_record)
             session.commit()
 
         if leave_name == 'christmas':
-            previous_new_leave_balance = userRecord.christmas
-            updated_leave_balance = float(userRecord.christmas) - leave_days
+            previous_new_leave_balance = user_record.christmas
+            updated_leave_balance = float(user_record.christmas) - leave_days
 
-            userRecord.christmas = float(userRecord.christmas) - leave_days
-            session.add(userRecord)
+            user_record.christmas = float(user_record.christmas) - leave_days
+            session.add(user_record)
             session.commit()
 
         if leave_name == 'lwop' or leave_name == 'other':
@@ -1026,127 +1026,127 @@ def edit_approved_leave():
             if leave_days > previous_leave_days:
                 num_days_difference = leave_days - previous_leave_days
                 if leave_name == 'annual':
-                    previous_leave_balance = userRecord.annual
+                    previous_leave_balance = user_record.annual
                     updated_leave_balance = float(
-                        userRecord.annual) - num_days_difference
+                        user_record.annual) - num_days_difference
 
-                    userRecord.annual = float(
-                        userRecord.annual) - num_days_difference
-                    session.add(userRecord)
+                    user_record.annual = float(
+                        user_record.annual) - num_days_difference
+                    session.add(user_record)
                     session.commit()
 
                 if leave_name == 'sick':
-                    previous_leave_balance = userRecord.sick
+                    previous_leave_balance = user_record.sick
                     updated_leave_balance = float(
-                        userRecord.sick) - num_days_difference
+                        user_record.sick) - num_days_difference
 
-                    userRecord.sick = float(
-                        userRecord.sick) - num_days_difference
-                    session.add(userRecord)
+                    user_record.sick = float(
+                        user_record.sick) - num_days_difference
+                    session.add(user_record)
                     session.commit()
 
                 if leave_name == 'christmas':
-                    previous_leave_balance = userRecord.christmas
+                    previous_leave_balance = user_record.christmas
                     updated_leave_balance = float(
-                        userRecord.christmas) - num_days_difference
+                        user_record.christmas) - num_days_difference
 
-                    userRecord.christmas = float(
-                        userRecord.christmas) - num_days_difference
-                    session.add(userRecord)
+                    user_record.christmas = float(
+                        user_record.christmas) - num_days_difference
+                    session.add(user_record)
                     session.commit()
 
                 if leave_name == 'maternity':
-                    previous_leave_balance = userRecord.maternity
+                    previous_leave_balance = user_record.maternity
                     updated_leave_balance = float(
-                        userRecord.maternity) - num_days_difference
+                        user_record.maternity) - num_days_difference
 
-                    userRecord.maternity = float(
-                        userRecord.maternity) - num_days_difference
-                    session.add(userRecord)
+                    user_record.maternity = float(
+                        user_record.maternity) - num_days_difference
+                    session.add(user_record)
                     session.commit()
 
                 if leave_name == 'bereavement':
-                    previous_leave_balance = userRecord.bereavement
+                    previous_leave_balance = user_record.bereavement
                     updated_leave_balance = float(
-                        userRecord.bereavement) - num_days_difference
+                        user_record.bereavement) - num_days_difference
 
-                    userRecord.bereavement = float(
-                        userRecord.bereavement) - num_days_difference
-                    session.add(userRecord)
+                    user_record.bereavement = float(
+                        user_record.bereavement) - num_days_difference
+                    session.add(user_record)
                     session.commit()
 
             if leave_days < previous_leave_days:
                 num_days_difference = previous_leave_days - leave_days
                 if leave_name == 'annual':
-                    previous_leave_balance = userRecord.annual
+                    previous_leave_balance = user_record.annual
                     updated_leave_balance = float(
-                        userRecord.annual) + num_days_difference
+                        user_record.annual) + num_days_difference
 
-                    userRecord.annual = float(
-                        userRecord.annual) + num_days_difference
-                    session.add(userRecord)
+                    user_record.annual = float(
+                        user_record.annual) + num_days_difference
+                    session.add(user_record)
                     session.commit()
 
                 if leave_name == 'sick':
-                    previous_leave_balance = userRecord.sick
+                    previous_leave_balance = user_record.sick
                     updated_leave_balance = float(
-                        userRecord.sick) + num_days_difference
+                        user_record.sick) + num_days_difference
 
-                    userRecord.sick = float(
-                        userRecord.sick) + num_days_difference
-                    session.add(userRecord)
+                    user_record.sick = float(
+                        user_record.sick) + num_days_difference
+                    session.add(user_record)
                     session.commit()
 
                 if leave_name == 'christmas':
-                    previous_leave_balance = userRecord.christmas
+                    previous_leave_balance = user_record.christmas
                     updated_leave_balance = float(
-                        userRecord.christmas) + num_days_difference
+                        user_record.christmas) + num_days_difference
 
-                    userRecord.christmas = float(
-                        userRecord.christmas) + num_days_difference
-                    session.add(userRecord)
+                    user_record.christmas = float(
+                        user_record.christmas) + num_days_difference
+                    session.add(user_record)
                     session.commit()
 
                 if leave_name == 'maternity':
-                    previous_leave_balance = userRecord.maternity
+                    previous_leave_balance = user_record.maternity
                     updated_leave_balance = float(
-                        userRecord.maternity) + num_days_difference
+                        user_record.maternity) + num_days_difference
 
-                    userRecord.maternity = float(
-                        userRecord.maternity) + num_days_difference
-                    session.add(userRecord)
+                    user_record.maternity = float(
+                        user_record.maternity) + num_days_difference
+                    session.add(user_record)
                     session.commit()
 
                 if leave_name == 'bereavement':
-                    previous_leave_balance = userRecord.bereavement
+                    previous_leave_balance = user_record.bereavement
                     updated_leave_balance = float(
-                        userRecord.bereavement) + num_days_difference
+                        user_record.bereavement) + num_days_difference
 
-                    userRecord.bereavement = float(
-                        userRecord.bereavement) + num_days_difference
-                    session.add(userRecord)
+                    user_record.bereavement = float(
+                        user_record.bereavement) + num_days_difference
+                    session.add(user_record)
                     session.commit()
 
         if leave_days == previous_leave_days:
             if leave_name == 'annual':
-                previous_leave_balance = userRecord.annual
-                updated_leave_balance = userRecord.annual
+                previous_leave_balance = user_record.annual
+                updated_leave_balance = user_record.annual
 
             if leave_name == 'sick':
-                previous_leave_balance = userRecord.sick
-                updated_leave_balance = userRecord.sick
+                previous_leave_balance = user_record.sick
+                updated_leave_balance = user_record.sick
 
             if leave_name == 'christmas':
-                previous_leave_balance = userRecord.christmas
-                updated_leave_balance = userRecord.christmas
+                previous_leave_balance = user_record.christmas
+                updated_leave_balance = user_record.christmas
 
             if leave_name == 'maternity':
-                previous_leave_balance = userRecord.maternity
-                updated_leave_balance = userRecord.maternity
+                previous_leave_balance = user_record.maternity
+                updated_leave_balance = user_record.maternity
 
             if leave_name == 'bereavement':
-                previous_leave_balance = userRecord.bereavement
-                updated_leave_balance = userRecord.bereavement
+                previous_leave_balance = user_record.bereavement
+                updated_leave_balance = user_record.bereavement
 
             if leave_name == 'lwop' or leave_name == 'other':
                 previous_leave_balance = 0
@@ -1208,9 +1208,9 @@ def cancel_approved_leave():
             'message': 'Cannot find this record in the database.'
         }), 200
 
-    userRecord = session.query(User).filter_by(id=leaveRecord.user_id).one()
+    user_record = session.query(User).filter_by(id=leaveRecord.user_id).one()
 
-    if userRecord is None:
+    if user_record is None:
         return jsonify({
             'message': 'Cannot find this record in the database.'
         }), 200
@@ -1225,50 +1225,50 @@ def cancel_approved_leave():
     session.commit()
 
     if leave_name == 'annual':
-        previous_leave_balance = userRecord.annual
-        updated_leave_balance = float(userRecord.annual) + leave_days
+        previous_leave_balance = user_record.annual
+        updated_leave_balance = float(user_record.annual) + leave_days
 
-        userRecord.annual = float(userRecord.annual) + leave_days
-        session.add(userRecord)
+        user_record.annual = float(user_record.annual) + leave_days
+        session.add(user_record)
         session.commit()
 
     if leave_name == 'sick':
-        previous_leave_balance = userRecord.sick
-        updated_leave_balance = float(userRecord.sick) + leave_days
+        previous_leave_balance = user_record.sick
+        updated_leave_balance = float(user_record.sick) + leave_days
 
-        userRecord.sick = float(userRecord.sick) + leave_days
-        session.add(userRecord)
+        user_record.sick = float(user_record.sick) + leave_days
+        session.add(user_record)
         session.commit()
 
     if leave_name == 'christmas':
-        previous_leave_balance = userRecord.christmas
-        updated_leave_balance = float(userRecord.christmas) + leave_days
+        previous_leave_balance = user_record.christmas
+        updated_leave_balance = float(user_record.christmas) + leave_days
 
-        userRecord.christmas = float(userRecord.christmas) + leave_days
-        session.add(userRecord)
+        user_record.christmas = float(user_record.christmas) + leave_days
+        session.add(user_record)
         session.commit()
 
     if leave_name == 'maternity':
-        previous_leave_balance = userRecord.maternity
-        updated_leave_balance = float(userRecord.maternity) + leave_days
+        previous_leave_balance = user_record.maternity
+        updated_leave_balance = float(user_record.maternity) + leave_days
 
-        userRecord.maternity = float(userRecord.maternity) + leave_days
-        session.add(userRecord)
+        user_record.maternity = float(user_record.maternity) + leave_days
+        session.add(user_record)
         session.commit()
 
     if leave_name == 'bereavement':
-        previous_leave_balance = userRecord.bereavement
-        updated_leave_balance = float(userRecord.bereavement) + leave_days
+        previous_leave_balance = user_record.bereavement
+        updated_leave_balance = float(user_record.bereavement) + leave_days
 
-        userRecord.bereavement = float(userRecord.bereavement) + leave_days
-        session.add(userRecord)
+        user_record.bereavement = float(user_record.bereavement) + leave_days
+        session.add(user_record)
         session.commit()
 
     # Send email
     if leave_name == 'lwop' or leave_name == 'other' or \
             leave_name == 'birthday':
         send_email(
-            [userRecord.email],
+            [user_record.email],
             "Leave application cancelled",
             ("Your " + leave_name + " leave application for " + str(
                 format_number(leave_days)) + " day(s) from " + start_date +
@@ -1281,7 +1281,7 @@ def cancel_approved_leave():
             file=None)
     else:
         send_email(
-            [userRecord.email],
+            [user_record.email],
             "Leave application cancelled",
             ("Your " + leave_name + " leave application for " + str(
                 format_number(leave_days)) + " day(s) from " + start_date +
