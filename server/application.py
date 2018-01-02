@@ -803,7 +803,7 @@ def edit_leave():
 
     user_id = leaveRecord.user_id
 
-    updateLog = Leaveupdates(
+    update_log = Leaveupdates(
         updated_leave_name=leave_name,
         updated_leave_type=leave_type,
         updated_start_date=date_from,
@@ -818,7 +818,7 @@ def edit_leave():
         editReason=leave_reason,
         leave_id=leave_id,
         user_id=user_id)
-    session.add(updateLog)
+    session.add(update_log)
     session.commit()
 
     # Send email
@@ -890,7 +890,7 @@ def edit_approved_leave():
 
     user_id = leaveRecord.user_id
 
-    updateLog = Leaveupdates(
+    update_log = Leaveupdates(
         updated_leave_name=leave_name,
         updated_leave_type=leave_type,
         updated_start_date=date_from,
@@ -905,7 +905,7 @@ def edit_approved_leave():
         editReason=leave_reason,
         leave_id=leave_id,
         user_id=user_id)
-    session.add(updateLog)
+    session.add(update_log)
     session.commit()
 
     user_record = session.query(User).filter_by(id=leaveRecord.user_id).one()
