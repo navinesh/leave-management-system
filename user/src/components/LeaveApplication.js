@@ -25,6 +25,7 @@ const USER_DETAIL = gql`
       christmas
       maternity
       gender
+      designation
     }
   }
 `;
@@ -233,6 +234,7 @@ class LeaveApplication extends Component<
       : null;
     const reason = this.state.reason ? this.state.reason.trim() : null;
     const sickSheet = this.state.sickSheet ? this.state.sickSheet : null;
+    const designation = user_detail.designation;
 
     if (
       !user_id ||
@@ -415,7 +417,8 @@ class LeaveApplication extends Component<
       reason: reason,
       leaveDays: myLeaveDays,
       applicationDays: applicationDays,
-      sickSheet: sickSheet
+      sickSheet: sickSheet,
+      designation: designation
     };
 
     onLeaveApplicationClick(applicationDetails);
