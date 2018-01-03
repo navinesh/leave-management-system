@@ -592,7 +592,7 @@ def modify_user():
     session.commit()
 
     # update logs table
-    userUpdates = Userupdates(
+    user_updates = Userupdates(
         designation=designation,
         gender=gender,
         date_of_birth=date_of_birth,
@@ -605,7 +605,7 @@ def modify_user():
         user_id=user_record.id,
         date_posted=str(datetime.now().date()))
 
-    session.add(userUpdates)
+    session.add(user_updates)
     session.commit()
 
     return jsonify({'message': 'User record has been updated.'}), 201
