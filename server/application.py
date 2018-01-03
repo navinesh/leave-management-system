@@ -273,16 +273,16 @@ def apply_for_leave():
 
         # Send email
         if secretary_email == 'null' and designation != 'Partner':
-            to_address_list = [user_record.email, supervisor_email, 
+            to_address_list = [user_record.email, supervisor_email,
                                om_email, pa_email]
-        
+
         if secretary_email == 'null' and designation == 'Partner':
-            to_address_list = [user_record.email, supervisor_email, 
-                               ceo_email, om_email, pa_email]               
-      
+            to_address_list = [user_record.email, supervisor_email,
+                               ceo_email, om_email, pa_email]     
+
         if secretary_email != 'null' and designation != 'Partner':
             to_address_list = [user_record.email, supervisor_email,
-                               secretary_email, om_email, pa_email]    
+                               secretary_email, om_email, pa_email]
 
         if secretary_email != 'null' and designation == 'Partner':
             to_address_list = [user_record.email, supervisor_email,
