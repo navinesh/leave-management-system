@@ -250,7 +250,7 @@ def apply_for_leave():
     if 'sickSheet' not in request.files:
         new_file_name = None
 
-        leaverecord = Leaverecord(
+        leave_record = Leaverecord(
             user_id=user_id,
             leave_name=leave_name,
             leave_type=leave_type,
@@ -262,11 +262,12 @@ def apply_for_leave():
             file_name=new_file_name,
             date_posted=str(datetime.now().date()))
 
-        session.add(leaverecord)
+        session.add(leave_record)
         session.commit()
 
         # Send email
-        to_address_list = [user_record.email, supervisor_email, secretary_email]
+        to_address_list = [user_record.email, supervisor_email,
+                           secretary_email]
 
         if leave_name == 'lwop' or leave_name == 'other' or \
                 leave_name == 'birthday':
@@ -299,7 +300,7 @@ def apply_for_leave():
             new_file_name = date_and_time_today + '-' + filename
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], new_file_name))
 
-            leaverecord = Leaverecord(
+            leave_record = Leaverecord(
                 user_id=user_id,
                 leave_name=leave_name,
                 leave_type=leave_type,
@@ -311,7 +312,7 @@ def apply_for_leave():
                 file_name=new_file_name,
                 date_posted=str(datetime.now().date()))
 
-            session.add(leaverecord)
+            session.add(leave_record)
             session.commit()
 
             # Send email
