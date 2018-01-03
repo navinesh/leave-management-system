@@ -1209,7 +1209,7 @@ def cancel_approved_leave():
             'message': 'Cannot find this record in the database.'
         }), 200
 
-    user_record = session.query(User).filter_by(id=leave_record.user_id).one()
+    user_record = session.query(User).filter_by(id=user_id).one()
 
     if user_record is None:
         return jsonify({
