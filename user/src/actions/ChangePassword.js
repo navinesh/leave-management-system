@@ -43,7 +43,5 @@ export const changePassword = (creds: Object) => async (dispatch: Function) => {
   } catch (error) {
     localStorage.removeItem('auth_token');
     dispatch({ type: 'LOGIN_FAILURE_FROM_TOKEN' });
-    dispatch({ type: 'CLEAR_USER_RECORD' });
-    dispatch({ type: 'CLEAR_USER_DETAILS' });
   }
 };
