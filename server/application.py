@@ -203,6 +203,7 @@ def apply_for_leave():
         leave_reason: reason for leave
         leave_days: number of leave days
         application_days: leave balance
+        deisgnation: staff designation
         leave_status: leave status
         sickSheet: sick sheet file
     """
@@ -216,7 +217,12 @@ def apply_for_leave():
     leave_reason = request.form['reason']
     leave_days = request.form['leaveDays']
     application_days = request.form['applicationDays']
+    designation = request.form['designation']
     leave_status = 'pending'
+
+    om_email = "om@example.com"
+    pa_email = "pa@example.com"
+    ceo_email = "ceo@example.com"
 
     if session.query(User).filter_by(id=user_id).one() is None:
         return jsonify({
@@ -266,8 +272,21 @@ def apply_for_leave():
         session.commit()
 
         # Send email
-        to_address_list = [user_record.email, supervisor_email,
-                           secretary_email]
+        if secretary_email == 'null' and designation != 'Partner':
+            to_address_list = [user_record.email, supervisor_email, 
+                               om_email, pa_email]
+        
+        if secretary_email == 'null' and designation == 'Partner':
+            to_address_list = [user_record.email, supervisor_email, 
+                               ceo_email, om_email, pa_email]               
+      
+        if secretary_email != 'null' and designation != 'Partner':
+            to_address_list = [user_record.email, supervisor_email,
+                               secretary_email, om_email, pa_email]    
+
+        if secretary_email != 'null' and designation == 'Partner':
+            to_address_list = [user_record.email, supervisor_email,
+                               secretary_email, ceo_email, om_email, pa_email]
 
         if leave_name == 'lwop' or leave_name == 'other' or \
                 leave_name == 'birthday':
@@ -316,9 +335,22 @@ def apply_for_leave():
             session.commit()
 
             # Send email
-            to_address_list = [
-                user_record.email, supervisor_email, secretary_email
-            ]
+            if secretary_email == 'null' and designation != 'Partner':
+                to_address_list = [user_record.email, supervisor_email, 
+                                   om_email, pa_email]
+            
+            if secretary_email == 'null' and designation == 'Partner':
+                to_address_list = [user_record.email, supervisor_email, 
+                                   ceo_email, om_email, pa_email]               
+        
+            if secretary_email != 'null' and designation != 'Partner':
+                to_address_list = [user_record.email, supervisor_email,
+                                   secretary_email, om_email, pa_email]    
+
+            if secretary_email != 'null' and designation == 'Partner':
+                to_address_list = [user_record.email, supervisor_email,
+                                   secretary_email, ceo_email, om_email, 
+                                   pa_email]
 
             send_email(to_address_list, "Leave application", (
                 user_record.othernames + " " +
