@@ -1193,16 +1193,16 @@ def edit_approved_leave():
 def cancel_approved_leave():
     """Cancels approved leave.
     Args:
-        id (int): the approved leave id to cancel
+        leave_id (int): the approved leave id to cancel
     """
-    id = request.json.get('leaveID')
+    leave_id = request.json.get('leaveID')
     cancel_reason = request.json.get('cancelReason')
     user_id = request.json.get('userID')
     leave_days = float(request.json.get('leaveDays'))
     leave_name = request.json.get('leaveName')
     leave_status = request.json.get('leaveStatus')
 
-    leave_record = session.query(Leaverecord).filter_by(id=id).one()
+    leave_record = session.query(Leaverecord).filter_by(id=leave_id).one()
 
     if leave_record is None:
         return jsonify({
