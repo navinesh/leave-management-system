@@ -42,6 +42,7 @@ export const fetchLeaveApplication = (applicationDetails: Object) => async (
     data.append('applicationDays', applicationDetails.applicationDays);
     data.append('reason', applicationDetails.reason);
     data.append('sickSheet', applicationDetails.sickSheet);
+    data.append('designation', applicationDetails.designation);
 
     const response = await axios.post(
       'http://localhost:8080/applyforleave',
