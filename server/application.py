@@ -116,7 +116,7 @@ def send_email(toaddr, subject, body, file):
 # Helper functions
 @auth.verify_password
 def verify_password(email_or_token, password):
-    """Verify password or user token""""
+    """Verify password or user token"""
     user_id = User.verify_auth_token(email_or_token)
 
     if user_id:
@@ -320,7 +320,7 @@ def apply_for_leave():
                 user_record.email, supervisor_email, secretary_email
             ]
 
-            send_email(to_address_list, "Leave application" (
+            send_email(to_address_list, "Leave application", (
                 user_record.othernames + " " +
                 user_record.surname + " applied for " + str(
                     format_number(leave_days)) + " day(s) of " + leave_name +
@@ -537,7 +537,7 @@ def modify_user():
     bereavement = request.json.get('bereavement')
     date_of_birth = request.json.get('date_of_birth')
     maternity = request.json.get('maternity')
-    editReason = request.json.get('editReason')
+    edit_reason = request.json.get('editReason')
 
     user_record = session.query(User).filter_by(id=user_id).one()
 
@@ -556,7 +556,7 @@ def modify_user():
              " christmas day(s). Your updated leave records are: " + annual +
              " annual day(s), " + sick + " sick day(s), " + bereavement +
              " bereavement day(s) and " + christmas + " christmas day(s). " +
-             "Reason for update: " + editReason),
+             "Reason for update: " + edit_reason),
             file=None)
     else:
         send_email(
@@ -573,7 +573,7 @@ def modify_user():
              " annual day(s), " + sick + " sick day(s), " + bereavement +
              " bereavement day(s), " + christmas + " christmas day(s) and " +
              maternity + " maternity day(s). " + "Reason for update: " +
-             editReason),
+             edit_reason),
             file=None)
 
     user_record.surname = surname
@@ -601,7 +601,7 @@ def modify_user():
         bereavement=bereavement,
         christmas=christmas,
         maternity=maternity,
-        editReason=editReason,
+        editReason=edit_reason,
         user_id=user_record.id,
         date_posted=str(datetime.now().date()))
 
@@ -627,14 +627,14 @@ def approve_leave():
     leave_days = float(request.json.get('leaveDays'))
     leave_name = request.json.get('leaveName')
 
-    leaveRecord = session.query(Leaverecord).filter_by(id=leave_id).one()
+    leave_record = session.query(Leaverecord).filter_by(id=leave_id).one()
 
-    if leaveRecord is None or leaveRecord.leave_status != 'pending':
+    if leave_record is None or leave_record.leave_status != 'pending':
         return jsonify({
             'message': 'Cannot find this record in the database.'
         }), 200
 
-    user_record = session.query(User).filter_by(id=leaveRecord.user_id).one()
+    user_record = session.query(User).filter_by(id=leave_record.user_id).one()
 
     if leave_name == 'annual':
         annual = float(user_record.annual) - leave_days
@@ -689,9 +689,9 @@ def approve_leave():
     if leave_name == 'lwop' or leave_name == 'other':
         leave_balance = 0
 
-    leaveRecord.leave_status = leave_status
-    leaveRecord.date_reviewed = str(datetime.now().date())
-    session.add(leaveRecord)
+    leave_record.leave_status = leave_status
+    leave_record.date_reviewed = str(datetime.now().date())
+    session.add(leave_record)
     session.commit()
 
     # Send email
@@ -700,7 +700,7 @@ def approve_leave():
         "Leave application approved",
         ("Your " + leave_name + " leave application for " + str(
             format_number(leave_days)) + " day(s) from " +
-         leaveRecord.start_date + " to " + leaveRecord.end_date +
+         leave_record.start_date + " to " + leave_record.end_date +
          " has been aprroved. " + "Your new " + leave_name +
          " leave balance is " + str(
              format_number(leave_balance)) + " day(s)."),
@@ -723,27 +723,27 @@ def decline_leave():
     leave_status = request.json.get('LeaveStatus')
     decline_reason = request.json.get('DeclineReason')
 
-    leaveRecord = session.query(Leaverecord).filter_by(id=leave_id).one()
+    leave_record = session.query(Leaverecord).filter_by(id=leave_id).one()
 
-    if leaveRecord is None or leaveRecord.leave_status != 'pending':
+    if leave_record is None or leave_record.leave_status != 'pending':
         return jsonify({
             'message': 'Cannot find this record in the database.'
         }), 200
 
-    leaveRecord.leave_status = leave_status
-    leaveRecord.declined_reason = decline_reason
-    leaveRecord.date_reviewed = str(datetime.now().date())
+    leave_record.leave_status = leave_status
+    leave_record.declined_reason = decline_reason
+    leave_record.date_reviewed = str(datetime.now().date())
 
-    session.add(leaveRecord)
+    session.add(leave_record)
     session.commit()
 
     # Send email
     send_email(
-        [leaveRecord.user.email],
+        [leave_record.user.email],
         "Leave application declined",
-        ("Your " + leaveRecord.leave_name + " leave application for " + str(
-            leaveRecord.leave_days) + " day(s) from " +
-            leaveRecord.start_date + " to " + leaveRecord.end_date +
+        ("Your " + leave_record.leave_name + " leave application for " + str(
+            leave_record.leave_days) + " day(s) from " +
+            leave_record.start_date + " to " + leave_record.end_date +
          " has been declined. Reason for decline: " + decline_reason),
         file=None)
 
@@ -777,32 +777,32 @@ def edit_leave():
     date_to = request.json.get('endDate')
     leave_reason = request.json.get('reason')
     leave_days = request.json.get('leaveDays')
-    application_days = request.json.get('applicationDays')
+    # application_days = request.json.get('applicationDays')
     previous_leave_days = request.json.get('previousLeaveDays')
     previous_leave_name = request.json.get('previousLeaveName')
     previous_leave_type = request.json.get('previousLeaveType')
     previous_start_date = request.json.get('previousStartDate')
     previous_end_date = request.json.get('previousEndDate')
 
-    leaveRecord = session.query(Leaverecord).filter_by(id=leave_id).one()
+    leave_record = session.query(Leaverecord).filter_by(id=leave_id).one()
 
-    if leaveRecord is None:
+    if leave_record is None:
         return jsonify({
             'message': 'Cannot find this record in the database.'
         }), 200
 
-    leaveRecord.id = leave_id
-    leaveRecord.leave_name = leave_name
-    leaveRecord.leave_type = leave_type
-    leaveRecord.start_date = date_from
-    leaveRecord.end_date = date_to
-    leaveRecord.leave_reason = leave_reason
-    leaveRecord.leave_days = leave_days
-    leaveRecord.date_reviewed = str(datetime.now().date())
-    session.add(leaveRecord)
+    leave_record.id = leave_id
+    leave_record.leave_name = leave_name
+    leave_record.leave_type = leave_type
+    leave_record.start_date = date_from
+    leave_record.end_date = date_to
+    leave_record.leave_reason = leave_reason
+    leave_record.leave_days = leave_days
+    leave_record.date_reviewed = str(datetime.now().date())
+    session.add(leave_record)
     session.commit()
 
-    user_id = leaveRecord.user_id
+    user_id = leave_record.user_id
 
     update_log = Leaveupdates(
         updated_leave_name=leave_name,
@@ -824,7 +824,7 @@ def edit_leave():
 
     # Send email
     send_email(
-        [leaveRecord.user.email],
+        [leave_record.user.email],
         "Leave application edited",
         ("Your " + previous_leave_name + " leave application for " +
          str(previous_leave_days) + " day(s) from " + previous_start_date +
@@ -871,25 +871,25 @@ def edit_approved_leave():
     previous_end_date = request.json.get('previousEndDate')
     new_leave_balance = request.json.get('newLeaveBalance')
 
-    leaveRecord = session.query(Leaverecord).filter_by(id=leave_id).one()
+    leave_record = session.query(Leaverecord).filter_by(id=leave_id).one()
 
-    if leaveRecord is None:
+    if leave_record is None:
         return jsonify({
             'message': 'Cannot find this record in the database.'
         }), 200
 
-    leaveRecord.id = leave_id
-    leaveRecord.leave_name = leave_name
-    leaveRecord.leave_type = leave_type
-    leaveRecord.start_date = date_from
-    leaveRecord.end_date = date_to
-    leaveRecord.leave_reason = leave_reason
-    leaveRecord.leave_days = leave_days
-    leaveRecord.date_reviewed = str(datetime.now().date())
-    session.add(leaveRecord)
+    leave_record.id = leave_id
+    leave_record.leave_name = leave_name
+    leave_record.leave_type = leave_type
+    leave_record.start_date = date_from
+    leave_record.end_date = date_to
+    leave_record.leave_reason = leave_reason
+    leave_record.leave_days = leave_days
+    leave_record.date_reviewed = str(datetime.now().date())
+    session.add(leave_record)
     session.commit()
 
-    user_id = leaveRecord.user_id
+    user_id = leave_record.user_id
 
     update_log = Leaveupdates(
         updated_leave_name=leave_name,
@@ -909,7 +909,7 @@ def edit_approved_leave():
     session.add(update_log)
     session.commit()
 
-    user_record = session.query(User).filter_by(id=leaveRecord.user_id).one()
+    user_record = session.query(User).filter_by(id=leave_record.user_id).one()
 
     if leave_name != previous_leave_name:
         if previous_leave_name == 'annual':
@@ -1002,7 +1002,7 @@ def edit_approved_leave():
 
         # Send email
         send_email(
-            [leaveRecord.user.email],
+            [leave_record.user.email],
             "Leave application update",
             ("Your " + previous_leave_name + " leave application for " + str(
                 format_number(previous_leave_days)) + " day(s) from " +
@@ -1156,7 +1156,7 @@ def edit_approved_leave():
         # Send email
         if leave_name == 'lwop' or leave_name == 'other':
             send_email(
-                [leaveRecord.user.email],
+                [leave_record.user.email],
                 "Leave application update",
                 ("Your " + previous_leave_name + " leave application for " +
                  str(format_number(previous_leave_days)) + " day(s) from " +
@@ -1168,7 +1168,7 @@ def edit_approved_leave():
                 file=None)
         else:
             send_email(
-                [leaveRecord.user.email],
+                [leave_record.user.email],
                 "Leave application update",
                 ("Your " + previous_leave_name + " leave application for " +
                  str(format_number(previous_leave_days)) + " day(s) from " +
@@ -1202,27 +1202,27 @@ def cancel_approved_leave():
     leave_name = request.json.get('leaveName')
     leave_status = request.json.get('leaveStatus')
 
-    leaveRecord = session.query(Leaverecord).filter_by(id=id).one()
+    leave_record = session.query(Leaverecord).filter_by(id=id).one()
 
-    if leaveRecord is None:
+    if leave_record is None:
         return jsonify({
             'message': 'Cannot find this record in the database.'
         }), 200
 
-    user_record = session.query(User).filter_by(id=leaveRecord.user_id).one()
+    user_record = session.query(User).filter_by(id=leave_record.user_id).one()
 
     if user_record is None:
         return jsonify({
             'message': 'Cannot find this record in the database.'
         }), 200
 
-    start_date = leaveRecord.start_date
-    end_date = leaveRecord.end_date
+    start_date = leave_record.start_date
+    end_date = leave_record.end_date
 
-    leaveRecord.leave_status = leave_status
-    leaveRecord.cancelled_reason = cancel_reason
-    leaveRecord.date_reviewed = str(datetime.now().date())
-    session.add(leaveRecord)
+    leave_record.leave_status = leave_status
+    leave_record.cancelled_reason = cancel_reason
+    leave_record.date_reviewed = str(datetime.now().date())
+    session.add(leave_record)
     session.commit()
 
     if leave_name == 'annual':
