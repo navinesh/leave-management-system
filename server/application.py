@@ -361,7 +361,7 @@ def apply_for_leave():
                     format_number(current_leave_balance)) +
                 " day(s) and uppon approval new balance will be " + str(
                     new_leave_balance) + " day(s). Reason: " + leave_reason),
-                    new_file_name)
+                       new_file_name)
 
     return jsonify({'message': 'Your application has been submitted.'}), 201
 
@@ -775,7 +775,7 @@ def decline_leave():
         "Leave application declined",
         ("Your " + leave_record.leave_name + " leave application for " + str(
             leave_record.leave_days) + " day(s) from " +
-            leave_record.start_date + " to " + leave_record.end_date +
+         leave_record.start_date + " to " + leave_record.end_date +
          " has been declined. Reason for decline: " + decline_reason),
         file=None)
 
@@ -863,9 +863,8 @@ def edit_leave():
          " to " + previous_end_date +
          " has been modified. Your updated leave application is for " +
          leave_name + " leave for " + str(leave_days) + " day(s) from " +
-         date_from + " to " + date_to + ". Reason for update: " + leave_reason
-         ),
-        file=None)
+         date_from + " to " + date_to + ". Reason for update: " +
+         leave_reason), file=None)
 
     return jsonify({'message': 'Leave record has been modified.'}), 201
 
@@ -1008,7 +1007,8 @@ def edit_approved_leave():
             previous_new_leave_balance = user_record.bereavement
             updated_leave_balance = float(user_record.bereavement) - leave_days
 
-            user_record.bereavement = float(user_record.bereavement) - leave_days
+            user_record.bereavement = float(
+                user_record.bereavement) - leave_days
             session.add(user_record)
             session.commit()
 
