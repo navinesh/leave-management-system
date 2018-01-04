@@ -9,8 +9,7 @@ import {
   LOGIN_USER_FAILURE_FROM_TOKEN
 } from '../actions/UserLogin';
 
-import { LOGOUT_USER_REQUEST } from '../actions/UserLogout';
-import { LOGOUT_USER_SUCCESS } from '../actions/UserLogout';
+import { LOGOUT_USER } from '../actions/UserLogout';
 
 import {
   LEAVE_APPLICATION_REQUEST,
@@ -53,7 +52,8 @@ const userAuth = (
       return {
         ...state,
         isFetching: true,
-        isAuthenticated: false
+        isAuthenticated: false,
+        message: ''
       };
     case LOGIN_USER_SUCCESS:
       return {
@@ -68,20 +68,6 @@ const userAuth = (
         isFetching: false,
         isAuthenticated: false,
         message: action.message
-      };
-    case LOGOUT_USER_REQUEST:
-      return {
-        ...state,
-        isFetching: true,
-        isAuthenticated: true
-      };
-    case LOGOUT_USER_SUCCESS:
-      return {
-        ...state,
-        isFetching: false,
-        isAuthenticated: false,
-        message: '',
-        auth_info: ''
       };
     case LOGIN_USER_REQUEST_FROM_TOKEN:
       return {
@@ -226,11 +212,22 @@ const resetPassword = (
   }
 };
 
-const rootReducer = combineReducers({
+const appReducer = combineReducers({
   userAuth,
   leaveApplication,
   changePassword,
   resetPassword
 });
+
+const rootReducer = (state, action) => {
+  if (
+    action.type === LOGOUT_USER ||
+    action.type === LOGIN_USER_FAILURE_FROM_TOKEN
+  ) {
+    state = undefined;
+  }
+
+  return appReducer(state, action);
+};
 
 export default rootReducer;
