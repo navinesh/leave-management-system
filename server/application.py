@@ -531,8 +531,7 @@ def new_user():
         [email],
         "Leave Management System",
         ("Your Leave Management System account has been created. \
-        Your password is: " + password),
-        file=None)
+        Your password is: " + password), file=None)
 
     return jsonify({'message': 'User has been successfully added.'}), 201
 
