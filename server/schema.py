@@ -144,18 +144,23 @@ class verifyUserToken(graphene.Mutation):
     class Input:
         userToken = graphene.String()
 
+    User = graphene.Field(User)
     token = graphene.String()
     ok = graphene.Boolean()
 
     @classmethod
     def mutate(cls, _, args, context, info):
-        userToken = args.get('userToken')
+        query = User.get_query(context)
+        user_token = args.get('userToken')
 
-        if not userToken or not UserModel.verify_auth_token(userToken):
+        if not user_token or not UserModel.verify_auth_token(user_token):
             raise Exception('Your session has expired!')
 
+        id = UserModel.verify_auth_token(user_token)
+        user = query.filter(UserModel.id == id).first()
+
         ok = True
-        return verifyUserToken(token=userToken, ok=ok)
+        return verifyUserToken(User=user, token=user_token, ok=ok)
 
 
 # Authenticate admin
@@ -177,8 +182,7 @@ class authenticateAdmin(graphene.Mutation):
         if not admin or not admin.verify_password(password):
             raise Exception(
                 'The username and password you entered did not match our \
-                records. Please double-check and try again.'
-            )
+                records. Please double-check and try again.')
 
         auth_token = admin.generate_auth_token()
         ok = True
@@ -195,13 +199,14 @@ class verifyAdminToken(graphene.Mutation):
 
     @classmethod
     def mutate(cls, _, args, context, info):
-        adminToken = args.get('adminToken')
+        admin_token = args.get('adminToken')
 
-        if not adminToken or not AdminuserModel.verify_auth_token(adminToken):
+        if not admin_token or \
+                not AdminuserModel.verify_auth_token(admin_token):
             raise Exception('Your session has expired!')
 
         ok = True
-        return verifyAdminToken(token=adminToken, ok=ok)
+        return verifyAdminToken(token=admin_token, ok=ok)
 
 
 # Archive user
@@ -217,14 +222,14 @@ class archiveUser(graphene.Mutation):
     def mutate(cls, _, args, context, info):
         query = User.get_query(context)
         user_id = from_global_id(args.get('id'))[1]
-        archiveReason = args.get('archiveReason')
+        archive_reason = args.get('archiveReason')
         user = query.filter(UserModel.id == user_id).first()
 
         if user.isArchived is True:
             raise Exception('This user has an archived status!')
 
         user.isArchived = True
-        user.archiveReason = archiveReason
+        user.archiveReason = archive_reason
         db_session.add(user)
         db_session.commit()
         ok = True
