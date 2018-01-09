@@ -125,7 +125,7 @@ const MainLogin = (props: Props) => {
     </div>
   ) : (
     <div className="container">
-      <div className="col-5 ml-auto mr-auto pt-4">
+      <div className="col-md-5 ml-auto mr-auto pt-4">
         <UserLogin
           isFetching={props.isFetching}
           message={props.message}
