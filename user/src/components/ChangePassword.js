@@ -97,7 +97,7 @@ export default class UserChange extends Component<Props, State> {
 
   render() {
     return (
-      <div className="col-md-4 ml-auto mr-auto" style={{ marginTop: '100px' }}>
+      <div className="col-md-3 ml-auto mr-auto" style={{ marginTop: '100px' }}>
         <div className="card card-body">
           <form onSubmit={this.handleSubmit}>
             <div className="form-group">
