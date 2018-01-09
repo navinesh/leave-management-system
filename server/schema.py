@@ -71,6 +71,7 @@ class Query(graphene.ObjectType):
         lambda: Userupdates, is_archived=graphene.String())
 
     def resolve_find_user_updates(self, args, context, info):
+        """Returns user updates"""
         query = Userupdates.get_query(context)
         is_archived = args.get('is_archived')
         return query.join(UserModel).filter(
@@ -79,6 +80,7 @@ class Query(graphene.ObjectType):
     find_users = graphene.List(lambda: User, is_archived=graphene.String())
 
     def resolve_find_users(self, args, context, info):
+        """Returns users"""
         query = User.get_query(context)
         is_archived = args.get('is_archived')
         return query.filter(UserModel.isArchived == is_archived)
@@ -87,6 +89,7 @@ class Query(graphene.ObjectType):
         lambda: Leaveupdates, is_archived=graphene.String())
 
     def resolve_find_leave_updates(self, args, context, info):
+        """Returns leave updates"""
         query = Leaveupdates.get_query(context)
         is_archived = args.get('is_archived')
         return query.join(LeaverecordModel).join(UserModel).filter(
@@ -98,6 +101,7 @@ class Query(graphene.ObjectType):
         is_archived=graphene.String())
 
     def resolve_find_leave_record(self, args, context, info):
+        """Returns leave records"""
         query = Leaverecord.get_query(context)
         leave_status = args.get('leave_status')
         is_archived = args.get('is_archived')
@@ -108,6 +112,7 @@ class Query(graphene.ObjectType):
     find_sicksheet_record = graphene.List(lambda: Leaverecord)
 
     def resolve_find_sicksheet_record(self, args, context, info):
+        """Returns sicksheet record"""
         query = Leaverecord.get_query(context)
         return query.filter(LeaverecordModel.file_name.isnot(None))
 
