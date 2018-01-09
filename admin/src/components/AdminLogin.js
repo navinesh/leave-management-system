@@ -97,7 +97,7 @@ class Login extends Component<Props, State> {
     return (
       <div className="Login">
         <h1 className="display-4 text-center pb-4">Leave Management System</h1>
-        <div className="col-4 ml-auto mr-auto">
+        <div className="col-md-3 ml-auto mr-auto">
           <div className="card card-body">
             <form onSubmit={this.handleSubmit}>
               <div className="form-group">
@@ -121,7 +121,7 @@ class Login extends Component<Props, State> {
                 />
               </div>
               <div className="form-group">
-                <button type="submit" className="btn btn-primary col btn-lg">
+                <button type="submit" className="btn btn-primary col">
                   Log in
                 </button>
               </div>
