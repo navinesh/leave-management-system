@@ -117,8 +117,8 @@ class Query(graphene.ObjectType):
         return query.filter(LeaverecordModel.file_name.isnot(None))
 
 
-# Authenticate user
-class authenticateUser(graphene.Mutation):
+class Authenticateuser(graphene.Mutation):
+    """Authenticate user"""
     class Input:
         email = graphene.String()
         password = graphene.String()
@@ -141,7 +141,7 @@ class authenticateUser(graphene.Mutation):
 
         auth_token = user.generate_auth_token()
         ok = True
-        return authenticateUser(User=user, token=auth_token, ok=ok)
+        return Authenticateuser(User=user, token=auth_token, ok=ok)
 
 
 # Verify user token
@@ -305,7 +305,7 @@ class deletePublicholiday(graphene.Mutation):
 
 
 class Mutations(graphene.ObjectType):
-    authenticate_user = authenticateUser.Field()
+    authenticate_user = Authenticateuser.Field()
     verify_user_token = verifyUserToken.Field()
     authenticate_admin = authenticateAdmin.Field()
     verify_admin_token = verifyAdminToken.Field()
