@@ -285,7 +285,7 @@ class AddPublicholiday(graphene.Mutation):
 
 
 # Delete public holiday
-class deletePublicholiday(graphene.Mutation):
+class DeletePublicholiday(graphene.Mutation):
     class Input:
         id = graphene.String()
 
@@ -301,7 +301,7 @@ class deletePublicholiday(graphene.Mutation):
         db_session.delete(publicHoliday)
         db_session.commit()
         ok = True
-        return AddPublicholiday(publicHoliday=publicHoliday, ok=ok)
+        return DeletePublicholiday(publicHoliday=publicHoliday, ok=ok)
 
 
 class Mutations(graphene.ObjectType):
@@ -312,7 +312,7 @@ class Mutations(graphene.ObjectType):
     archive_user = ArchiveUser.Field()
     unArchive_user = UnArchiveUser.Field()
     add_publicholiday = AddPublicholiday.Field()
-    delete_publicholiday = deletePublicholiday.Field()
+    delete_publicholiday = DeletePublicholiday.Field()
 
 
 schema = graphene.Schema(query=Query, mutation=Mutations)
