@@ -168,8 +168,8 @@ class VerifyUserToken(graphene.Mutation):
         return VerifyUserToken(User=user, token=user_token, ok=ok)
 
 
-# Authenticate admin
 class authenticateAdmin(graphene.Mutation):
+    """Authenticate admin"""
     class Input:
         email = graphene.String()
         password = graphene.String()
