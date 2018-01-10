@@ -215,7 +215,7 @@ class VerifyAdminToken(graphene.Mutation):
 
 
 # Archive user
-class archiveUser(graphene.Mutation):
+class ArchiveUser(graphene.Mutation):
     class Input:
         id = graphene.String()
         archiveReason = graphene.String()
@@ -238,7 +238,7 @@ class archiveUser(graphene.Mutation):
         db_session.add(user)
         db_session.commit()
         ok = True
-        return archiveUser(User=user, ok=ok)
+        return ArchiveUser(User=user, ok=ok)
 
 
 # Unarchive user
@@ -309,7 +309,7 @@ class Mutations(graphene.ObjectType):
     verify_user_token = VerifyUserToken.Field()
     authenticate_admin = AuthenticateAdmin.Field()
     verify_admin_token = VerifyAdminToken.Field()
-    archive_user = archiveUser.Field()
+    archive_user = ArchiveUser.Field()
     unArchive_user = unArchiveUser.Field()
     add_publicholiday = addPublicholiday.Field()
     delete_publicholiday = deletePublicholiday.Field()
