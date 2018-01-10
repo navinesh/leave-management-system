@@ -195,7 +195,7 @@ class AuthenticateAdmin(graphene.Mutation):
 
 
 # Verify admin token
-class verifyAdminToken(graphene.Mutation):
+class VerifyAdminToken(graphene.Mutation):
     class Input:
         adminToken = graphene.String()
 
@@ -211,7 +211,7 @@ class verifyAdminToken(graphene.Mutation):
             raise Exception('Your session has expired!')
 
         ok = True
-        return verifyAdminToken(token=admin_token, ok=ok)
+        return VerifyAdminToken(token=admin_token, ok=ok)
 
 
 # Archive user
@@ -308,7 +308,7 @@ class Mutations(graphene.ObjectType):
     authenticate_user = AuthenticateUser.Field()
     verify_user_token = VerifyUserToken.Field()
     authenticate_admin = AuthenticateAdmin.Field()
-    verify_admin_token = verifyAdminToken.Field()
+    verify_admin_token = VerifyAdminToken.Field()
     archive_user = archiveUser.Field()
     unArchive_user = unArchiveUser.Field()
     add_publicholiday = addPublicholiday.Field()
