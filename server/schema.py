@@ -242,7 +242,7 @@ class ArchiveUser(graphene.Mutation):
 
 
 # Unarchive user
-class unArchiveUser(graphene.Mutation):
+class UnArchiveUser(graphene.Mutation):
     class Input:
         id = graphene.String()
 
@@ -263,7 +263,7 @@ class unArchiveUser(graphene.Mutation):
         db_session.add(user)
         db_session.commit()
         ok = True
-        return unArchiveUser(User=user, ok=ok)
+        return UnArchiveUser(User=user, ok=ok)
 
 
 # Create public holiday
@@ -310,7 +310,7 @@ class Mutations(graphene.ObjectType):
     authenticate_admin = AuthenticateAdmin.Field()
     verify_admin_token = VerifyAdminToken.Field()
     archive_user = ArchiveUser.Field()
-    unArchive_user = unArchiveUser.Field()
+    unArchive_user = UnArchiveUser.Field()
     add_publicholiday = addPublicholiday.Field()
     delete_publicholiday = deletePublicholiday.Field()
 
