@@ -144,8 +144,8 @@ class Authenticateuser(graphene.Mutation):
         return Authenticateuser(User=user, token=auth_token, ok=ok)
 
 
-# Verify user token
 class verifyUserToken(graphene.Mutation):
+    """Verify user token"""
     class Input:
         userToken = graphene.String()
 
