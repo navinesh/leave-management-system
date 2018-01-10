@@ -168,7 +168,7 @@ class VerifyUserToken(graphene.Mutation):
         return VerifyUserToken(User=user, token=user_token, ok=ok)
 
 
-class authenticateAdmin(graphene.Mutation):
+class AuthenticateAdmin(graphene.Mutation):
     """Authenticate admin"""
     class Input:
         email = graphene.String()
@@ -191,7 +191,7 @@ class authenticateAdmin(graphene.Mutation):
 
         auth_token = admin.generate_auth_token()
         ok = True
-        return authenticateAdmin(token=auth_token, ok=ok)
+        return AuthenticateAdmin(token=auth_token, ok=ok)
 
 
 # Verify admin token
@@ -307,7 +307,7 @@ class deletePublicholiday(graphene.Mutation):
 class Mutations(graphene.ObjectType):
     authenticate_user = AuthenticateUser.Field()
     verify_user_token = VerifyUserToken.Field()
-    authenticate_admin = authenticateAdmin.Field()
+    authenticate_admin = AuthenticateAdmin.Field()
     verify_admin_token = verifyAdminToken.Field()
     archive_user = archiveUser.Field()
     unArchive_user = unArchiveUser.Field()
