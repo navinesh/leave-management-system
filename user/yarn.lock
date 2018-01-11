@@ -1608,7 +1608,7 @@ console-control-strings@^1.0.0, console-control-strings@~1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/console-control-strings/-/console-control-strings-1.1.0.tgz#3d7cf4464db6446ea644bf4b39507f9851008e8e"
 
-consolidated-events@^1.1.0:
+consolidated-events@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/consolidated-events/-/consolidated-events-1.1.1.tgz#25395465b35e531395418b7bbecb5ecaf198d179"
 
@@ -3025,6 +3025,10 @@ has-flag@^1.0.0:
 has-flag@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/has-flag/-/has-flag-2.0.0.tgz#e8207af1cc7b30d446cc70b734b5e8be18f88d51"
+
+has-symbols@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/has-symbols/-/has-symbols-1.0.0.tgz#ba1a8f1af2a0fc39650f5c850367704122063b44"
 
 has-unicode@^2.0.0:
   version "2.0.1"
@@ -4559,7 +4563,7 @@ object-hash@^1.1.4:
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/object-hash/-/object-hash-1.1.8.tgz#28a659cf987d96a4dabe7860289f3b5326c4a03c"
 
-object-keys@^1.0.10, object-keys@^1.0.8:
+object-keys@^1.0.10, object-keys@^1.0.11, object-keys@^1.0.8:
   version "1.0.11"
   resolved "https://registry.yarnpkg.com/object-keys/-/object-keys-1.0.11.tgz#c54601778ad560f1142ce0e01bcca8b56d13426d"
 
@@ -4570,6 +4574,15 @@ object.assign@^4.0.4:
     define-properties "^1.1.2"
     function-bind "^1.1.0"
     object-keys "^1.0.10"
+
+object.assign@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/object.assign/-/object.assign-4.1.0.tgz#968bf1100d7956bb3ca086f006f846b3bc4008da"
+  dependencies:
+    define-properties "^1.1.2"
+    function-bind "^1.1.1"
+    has-symbols "^1.0.0"
+    object-keys "^1.0.11"
 
 object.entries@^1.0.4:
   version "1.0.4"
@@ -5352,6 +5365,13 @@ react-addons-shallow-compare@^15.5.2:
     fbjs "^0.8.4"
     object-assign "^4.1.0"
 
+react-addons-shallow-compare@^15.6.2:
+  version "15.6.2"
+  resolved "https://registry.yarnpkg.com/react-addons-shallow-compare/-/react-addons-shallow-compare-15.6.2.tgz#198a00b91fc37623db64a28fd17b596ba362702f"
+  dependencies:
+    fbjs "^0.8.4"
+    object-assign "^4.1.0"
+
 react-apollo@^2.0.4:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/react-apollo/-/react-apollo-2.0.4.tgz#01dd32a8e388672f5d7385b21cdd0b94009ee9ee"
@@ -5363,21 +5383,21 @@ react-apollo@^2.0.4:
     lodash.pick "^4.4.0"
     prop-types "^15.5.8"
 
-react-dates@^16.0.1:
-  version "16.0.1"
-  resolved "https://registry.yarnpkg.com/react-dates/-/react-dates-16.0.1.tgz#0522e65c57b1a5dd685160127e29dff8bb41e573"
+react-dates@^16.0.2:
+  version "16.0.2"
+  resolved "https://registry.yarnpkg.com/react-dates/-/react-dates-16.0.2.tgz#ad650fbc26f77da4959b9c9bb09c7d6da78a4c1a"
   dependencies:
     airbnb-prop-types "^2.8.1"
-    consolidated-events "^1.1.0"
+    consolidated-events "^1.1.1"
     is-touch-device "^1.0.1"
     lodash "^4.1.1"
-    object.assign "^4.0.4"
+    object.assign "^4.1.0"
     object.values "^1.0.4"
-    prop-types "^15.5.10"
-    react-addons-shallow-compare "^15.5.2"
+    prop-types "^15.6.0"
+    react-addons-shallow-compare "^15.6.2"
     react-moment-proptypes "^1.5.0"
-    react-portal "^4.1.0"
-    react-with-styles "^2.2.0"
+    react-portal "^4.1.2"
+    react-with-styles "=2.2.0"
     react-with-styles-interface-css "^3.0.0"
 
 react-dev-utils@^4.2.1:
@@ -5422,9 +5442,9 @@ react-moment-proptypes@^1.5.0:
   dependencies:
     moment ">=1.6.0"
 
-react-portal@^4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/react-portal/-/react-portal-4.1.0.tgz#749b3e7571620b371e2c1a6e91e4353c03ae49e7"
+react-portal@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/react-portal/-/react-portal-4.1.2.tgz#7f28f3c8c2ed5c541907c0ed0f24e8996acf627f"
   dependencies:
     prop-types "^15.5.8"
 
@@ -5513,7 +5533,7 @@ react-with-styles-interface-css@^3.0.0:
     array-flatten "^2.1.1"
     global-cache "^1.2.1"
 
-react-with-styles@^2.2.0:
+react-with-styles@=2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/react-with-styles/-/react-with-styles-2.2.0.tgz#c85352d9e5951824b259bf9fad11dbcf74a15571"
   dependencies:
