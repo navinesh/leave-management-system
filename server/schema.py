@@ -194,8 +194,8 @@ class AuthenticateAdmin(graphene.Mutation):
         return AuthenticateAdmin(token=auth_token, ok=ok)
 
 
-# Verify admin token
 class VerifyAdminToken(graphene.Mutation):
+    """Verify admin token"""
     class Input:
         adminToken = graphene.String()
 
@@ -214,8 +214,8 @@ class VerifyAdminToken(graphene.Mutation):
         return VerifyAdminToken(token=admin_token, ok=ok)
 
 
-# Archive user
 class ArchiveUser(graphene.Mutation):
+    """Archive user"""
     class Input:
         id = graphene.String()
         archiveReason = graphene.String()
@@ -241,8 +241,8 @@ class ArchiveUser(graphene.Mutation):
         return ArchiveUser(User=user, ok=ok)
 
 
-# Unarchive user
 class UnArchiveUser(graphene.Mutation):
+    """Unarchive user"""
     class Input:
         id = graphene.String()
 
@@ -266,8 +266,8 @@ class UnArchiveUser(graphene.Mutation):
         return UnArchiveUser(User=user, ok=ok)
 
 
-# Create public holiday
 class AddPublicholiday(graphene.Mutation):
+    """Create public holiday"""
     class Input:
         holiday_date = graphene.String()
 
@@ -284,8 +284,8 @@ class AddPublicholiday(graphene.Mutation):
         return AddPublicholiday(publicHoliday=publicHoliday, ok=ok)
 
 
-# Delete public holiday
 class DeletePublicholiday(graphene.Mutation):
+    """Delete public holiday"""
     class Input:
         id = graphene.String()
 
