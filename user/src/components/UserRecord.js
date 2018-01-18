@@ -25,42 +25,6 @@ const USER_RECORD = gql`
   }
 `;
 
-const PendingRecordList = props => {
-  const pendingList = props.user_record.leaverecord.edges
-    .filter(data => data.node.leaveStatus === 'pending')
-    .map(record => (
-      <tr key={record.node.id}>
-        <td>{record.node.leaveName}</td>
-        <td>{record.node.leaveDays}</td>
-        <td>{record.node.startDate}</td>
-        <td>{record.node.endDate}</td>
-        <td>{record.node.leaveReason}</td>
-      </tr>
-    ));
-
-  if (pendingList.length > 0) {
-    return (
-      <table
-        className="table table-bordered table-hover"
-        style={{ backgroundColor: '#FFFFFF' }}
-      >
-        <thead className="thead-light">
-          <tr>
-            <th>Leave type</th>
-            <th>Leave days</th>
-            <th>Start date</th>
-            <th>End date</th>
-            <th>Reason</th>
-          </tr>
-        </thead>
-        <tbody>{pendingList}</tbody>
-      </table>
-    );
-  } else {
-    return <div />;
-  }
-};
-
 const ApprovedRecordList = props => {
   const approvedList = props.user_record.leaverecord.edges
     .filter(data => data.node.leaveStatus === 'approved')
@@ -90,6 +54,42 @@ const ApprovedRecordList = props => {
           </tr>
         </thead>
         <tbody>{approvedList}</tbody>
+      </table>
+    );
+  } else {
+    return <div />;
+  }
+};
+
+const PendingRecordList = props => {
+  const pendingList = props.user_record.leaverecord.edges
+    .filter(data => data.node.leaveStatus === 'pending')
+    .map(record => (
+      <tr key={record.node.id}>
+        <td>{record.node.leaveName}</td>
+        <td>{record.node.leaveDays}</td>
+        <td>{record.node.startDate}</td>
+        <td>{record.node.endDate}</td>
+        <td>{record.node.leaveReason}</td>
+      </tr>
+    ));
+
+  if (pendingList.length > 0) {
+    return (
+      <table
+        className="table table-bordered table-hover"
+        style={{ backgroundColor: '#FFFFFF' }}
+      >
+        <thead className="thead-light">
+          <tr>
+            <th>Leave type</th>
+            <th>Leave days</th>
+            <th>Start date</th>
+            <th>End date</th>
+            <th>Reason</th>
+          </tr>
+        </thead>
+        <tbody>{pendingList}</tbody>
       </table>
     );
   } else {
@@ -182,12 +182,12 @@ export const UserRecord = (props: Props) => {
 
   const tabData = [
     {
-      label: 'PENDING LEAVE SCHEDULE',
-      content: <PendingRecordList user_record={user} />
-    },
-    {
       label: 'APPROVED LEAVE SCHEDULE',
       content: <ApprovedRecordList user_record={user} />
+    },
+    {
+      label: 'PENDING LEAVE SCHEDULE',
+      content: <PendingRecordList user_record={user} />
     }
   ];
 
