@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { Component } from 'react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
@@ -40,24 +40,21 @@ const PendingRecordList = props => {
 
   if (pendingList.length > 0) {
     return (
-      <div className="col-md-12">
-        <p className="text-uppercase">Pending Leave Schedule</p>
-        <table
-          className="table table-bordered table-hover"
-          style={{ backgroundColor: '#FFFFFF' }}
-        >
-          <thead className="thead-light">
-            <tr>
-              <th>Leave type</th>
-              <th>Leave days</th>
-              <th>Start date</th>
-              <th>End date</th>
-              <th>Reason</th>
-            </tr>
-          </thead>
-          <tbody>{pendingList}</tbody>
-        </table>
-      </div>
+      <table
+        className="table table-bordered table-hover"
+        style={{ backgroundColor: '#FFFFFF' }}
+      >
+        <thead className="thead-light">
+          <tr>
+            <th>Leave type</th>
+            <th>Leave days</th>
+            <th>Start date</th>
+            <th>End date</th>
+            <th>Reason</th>
+          </tr>
+        </thead>
+        <tbody>{pendingList}</tbody>
+      </table>
     );
   } else {
     return <div />;
@@ -79,29 +76,81 @@ const ApprovedRecordList = props => {
 
   if (approvedList.length > 0) {
     return (
-      <div className="col-md-12">
-        <p className="text-uppercase">Approved Leave Schedule</p>
-        <table
-          className="table table-bordered table-hover"
-          style={{ backgroundColor: '#FFFFFF' }}
-        >
-          <thead className="thead-light">
-            <tr>
-              <th>Leave type</th>
-              <th>Leave days</th>
-              <th>Start date</th>
-              <th>End date</th>
-              <th>Reason</th>
-            </tr>
-          </thead>
-          <tbody>{approvedList}</tbody>
-        </table>
-      </div>
+      <table
+        className="table table-bordered table-hover"
+        style={{ backgroundColor: '#FFFFFF' }}
+      >
+        <thead className="thead-light">
+          <tr>
+            <th>Leave type</th>
+            <th>Leave days</th>
+            <th>Start date</th>
+            <th>End date</th>
+            <th>Reason</th>
+          </tr>
+        </thead>
+        <tbody>{approvedList}</tbody>
+      </table>
     );
   } else {
     return <div />;
   }
 };
+
+type tabsProps = {
+  data: Array<any>
+};
+
+type tabsState = {
+  activeIndex: number
+};
+
+class Tabs extends Component<tabsProps, tabsState> {
+  selectTabIndex: Function;
+
+  constructor() {
+    super();
+    this.state = { activeIndex: 0 };
+
+    this.selectTabIndex = this.selectTabIndex.bind(this);
+  }
+
+  selectTabIndex(e: SyntheticEvent<HTMLElement>) {
+    this.setState({
+      activeIndex: parseInt(e.currentTarget.id, 10)
+    });
+  }
+
+  renderTabs() {
+    return this.props.data.map((tab, index) => {
+      const isActive = this.state.activeIndex === index;
+      return (
+        <div className="nav-link btn" key={index}>
+          <div
+            className={isActive ? 'text-primary' : 'text-secondary'}
+            onClick={this.selectTabIndex}
+            id={index}
+          >
+            {tab.label}
+          </div>
+        </div>
+      );
+    });
+  }
+
+  renderPanel() {
+    return <div>{this.props.data[this.state.activeIndex].content}</div>;
+  }
+
+  render() {
+    return (
+      <div>
+        <nav className="nav">{this.renderTabs()}</nav>
+        <div className="mt-2">{this.renderPanel()}</div>
+      </div>
+    );
+  }
+}
 
 type Props = {
   userRecord: Object
@@ -131,12 +180,25 @@ export const UserRecord = (props: Props) => {
     );
   }
 
+  const tabData = [
+    {
+      label: 'PENDING LEAVE SCHEDULE',
+      content: <PendingRecordList user_record={user} />
+    },
+    {
+      label: 'APPROVED LEAVE SCHEDULE',
+      content: <ApprovedRecordList user_record={user} />
+    }
+  ];
+
   return (
-    <div className="container">
-      <div className="row">
-        <PendingRecordList user_record={user} />
-        <ApprovedRecordList user_record={user} />
-      </div>
+    <div
+      className="container"
+      style={{
+        paddingTop: '10px'
+      }}
+    >
+      <Tabs data={tabData} />
     </div>
   );
 };
