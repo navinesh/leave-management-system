@@ -60,7 +60,7 @@ const UserDetail = (props: Props) => {
       <div className="container">
         <div className="row">
           <div className="col-md-8">
-            <p className="display-4">
+            <p style={{ fontSize: '30px' }}>
               {user.othernames} {user.surname}
             </p>
             <p>
