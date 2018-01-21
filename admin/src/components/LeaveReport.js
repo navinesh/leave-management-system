@@ -526,9 +526,9 @@ class Tabs extends Component<tabsProps, tabsState> {
     return this.props.data.map((tab, index) => {
       const isActive = this.state.activeIndex === index;
       return (
-        <div className="nav-item" key={index}>
+        <div className="nav-link btn" key={index}>
           <div
-            className={isActive ? 'nav-link active' : 'btn-link'}
+            className={isActive ? 'text-primary' : 'text-secondary'}
             onClick={this.selectTabIndex}
             id={index}
           >
@@ -547,7 +547,7 @@ class Tabs extends Component<tabsProps, tabsState> {
     return (
       <div className="container">
         <nav
-          className="nav nav-pills nav-fill"
+          className="nav justify-content-center"
           style={{ borderBottom: '4px solid #fff' }}
         >
           {this.renderTabs()}
