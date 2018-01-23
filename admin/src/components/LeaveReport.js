@@ -556,7 +556,7 @@ class Tabs extends Component<tabsProps, tabsState> {
         >
           {this.renderTabs()}
         </nav>
-        <div className="mt-2">{this.renderPanel()}</div>
+        <div className="mt-1">{this.renderPanel()}</div>
       </div>
     );
   }
