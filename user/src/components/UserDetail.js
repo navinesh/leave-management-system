@@ -71,35 +71,35 @@ const UserDetail = (props: Props) => {
           </div>
           <div className="col-md-4">
             <ul className="list-group">
-              <li className="list-group-item">
+              <li className="list-group-item d-flex justify-content-between align-items-center">
                 Annual
-                <span className="badge badge-primary badge-pill float-right">
+                <span className="badge badge-primary badge-pill">
                   {user.annual}
                 </span>
               </li>
-              <li className="list-group-item">
+              <li className="list-group-item d-flex justify-content-between align-items-center">
                 Sick
-                <span className="badge badge-primary badge-pill float-right">
+                <span className="badge badge-primary badge-pill">
                   {user.sick}
                 </span>
               </li>
-              <li className="list-group-item">
+              <li className="list-group-item d-flex justify-content-between align-items-center">
                 Bereavement
-                <span className="badge badge-primary badge-pill float-right">
+                <span className="badge badge-primary badge-pill">
                   {user.bereavement}
                 </span>
               </li>
-              <li className="list-group-item">
+              <li className="list-group-item d-flex justify-content-between align-items-center">
                 Christmas
-                <span className="badge badge-primary badge-pill float-right">
+                <span className="badge badge-primary badge-pill">
                   {user.christmas}
                 </span>
               </li>
               {user.gender.toLowerCase() === 'female' &&
                 user.maternity > 0 && (
-                  <li className="list-group-item">
+                  <li className="list-group-item d-flex justify-content-between align-items-center">
                     Maternity
-                    <span className="badge badge-primary badge-pill float-right">
+                    <span className="badge badge-primary badge-pill">
                       {user.maternity}
                     </span>
                   </li>
