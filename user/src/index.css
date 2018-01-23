@@ -1,8 +1,8 @@
+/*
+ * Base structure
+ */
+
 .navbar {
   background-color: #ffffff;
   border-bottom: 1px solid #edeeee;
-}
-
-html body {
-  background-color: #fafafa;
 }
