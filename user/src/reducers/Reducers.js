@@ -220,10 +220,7 @@ const appReducer = combineReducers({
 });
 
 const rootReducer = (state, action) => {
-  if (
-    action.type === LOGOUT_USER ||
-    action.type === LOGIN_USER_FAILURE_FROM_TOKEN
-  ) {
+  if (action.type === LOGOUT_USER) {
     state = undefined;
   }
 
