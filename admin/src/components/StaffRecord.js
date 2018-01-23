@@ -615,52 +615,52 @@ export default class StaffRecordList extends Component<Props, State> {
                     {record.othernames} {record.surname}
                   </p>
                 </li>
-                <li className="list-group-item">
+                <li className="list-group-item d-flex justify-content-between align-items-center">
                   Annual
-                  <span className="badge badge-primary badge-pill float-right">
+                  <span className="badge badge-primary badge-pill">
                     {record.annual}
                   </span>
                 </li>
-                <li className="list-group-item">
+                <li className="list-group-item d-flex justify-content-between align-items-center">
                   Sick
-                  <span className="badge badge-primary badge-pill float-right">
+                  <span className="badge badge-primary badge-pill">
                     {record.sick}
                   </span>
                 </li>
-                <li className="list-group-item">
+                <li className="list-group-item d-flex justify-content-between align-items-center">
                   Bereavement
-                  <span className="badge badge-primary badge-pill float-right">
+                  <span className="badge badge-primary badge-pill">
                     {record.bereavement}
                   </span>
                 </li>
-                <li className="list-group-item">
+                <li className="list-group-item d-flex justify-content-between align-items-center">
                   Christmas
-                  <span className="badge badge-primary badge-pill float-right">
+                  <span className="badge badge-primary badge-pill">
                     {record.christmas}
                   </span>
                 </li>
-                <li className="list-group-item">
+                <li className="list-group-item d-flex justify-content-between align-items-center">
                   DOB
-                  <span className="badge badge-primary badge-pill float-right">
+                  <span className="badge badge-primary badge-pill">
                     {dateOfBirth}
                   </span>
                 </li>
                 {record.gender.toLowerCase() === 'female' &&
                 record.maternity > 0 ? (
-                  <li className="list-group-item">
+                  <li className="list-group-item d-flex justify-content-between align-items-center">
                     Maternity
-                    <span className="badge badge-primary badge-pill float-right">
+                    <span className="badge badge-primary badge-pill">
                       {record.maternity}
                     </span>
                   </li>
                 ) : (
-                  <p className="list-group-item">
+                  <p className="list-group-item d-flex justify-content-between align-items-center">
                     <br />
                   </p>
                 )}
                 <li className="list-group-item">
                   <button
-                    className="btn btn-link text-primary"
+                    className="btn btn-link text-primary pl-0"
                     onClick={this.handleOpenEdit}
                     id={record.id}
                   >
