@@ -46,7 +46,7 @@ const ApprovedLeaveReportList = props => {
       <CSVLink
         data={records}
         filename={'Approved-leave.csv'}
-        className="btn btn-link btn-sm mb-2"
+        className="btn btn-primary btn-sm mb-2"
       >
         Download
       </CSVLink>
@@ -125,7 +125,7 @@ const PendingLeaveReportList = props => {
       <CSVLink
         data={records}
         filename={'Pending-leave.csv'}
-        className="btn btn-link btn-sm mb-2"
+        className="btn btn-primary btn-sm mb-2"
       >
         Download
       </CSVLink>
@@ -204,7 +204,7 @@ const CancelledLeaveReportList = props => {
       <CSVLink
         data={records}
         filename={'Cancelled-leave.csv'}
-        className="btn btn-link btn-sm mb-2"
+        className="btn btn-primary btn-sm mb-2"
       >
         Download
       </CSVLink>
@@ -283,7 +283,7 @@ const DeclinedLeaveReportList = props => {
       <CSVLink
         data={records}
         filename={'Declined-leave.csv'}
-        className="btn btn-link btn-sm mb-2"
+        className="btn btn-primary btn-sm mb-2"
       >
         Download
       </CSVLink>
@@ -371,7 +371,7 @@ const UserUpdatesReportList = props => {
       <CSVLink
         data={records}
         filename={'User-updates.csv'}
-        className="btn btn-link btn-sm mb-2"
+        className="btn btn-primary btn-sm mb-2"
       >
         Download
       </CSVLink>
@@ -457,7 +457,7 @@ const LeaveUpdatesReportList = props => {
       <CSVLink
         data={records}
         filename={'Leave-updates.csv'}
-        className="btn btn-link btn-sm mb-2"
+        className="btn btn-primary btn-sm mb-2"
       >
         Download
       </CSVLink>
@@ -531,7 +531,7 @@ class Tabs extends Component<tabsProps, tabsState> {
             className={
               isActive
                 ? 'border border-right-0 border-left-0 border-top-0 border-secondary'
-                : 'text-secondary'
+                : 'text-secondary btn-link'
             }
             onClick={this.selectTabIndex}
             id={index}
@@ -550,12 +550,7 @@ class Tabs extends Component<tabsProps, tabsState> {
   render() {
     return (
       <div className="container">
-        <nav
-          className="nav justify-content-center"
-          style={{ borderBottom: '4px solid #fff' }}
-        >
-          {this.renderTabs()}
-        </nav>
+        <nav className="nav justify-content-center">{this.renderTabs()}</nav>
         <div className="mt-1">{this.renderPanel()}</div>
       </div>
     );
