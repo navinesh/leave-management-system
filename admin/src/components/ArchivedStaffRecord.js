@@ -25,7 +25,7 @@ const Search = props => (
 
 const ClearSearch = props => (
   <div className="col-md-3">
-    <button className="btn btn-primary" onClick={props.handleClearSearch}>
+    <button className="btn btn-link" onClick={props.handleClearSearch}>
       Clear
     </button>
   </div>
