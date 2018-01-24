@@ -95,9 +95,9 @@ class Login extends Component<Props, State> {
 
   render() {
     return (
-      <div className="Login">
+      <div className="container">
         <h1 className="display-4 text-center pb-4">Leave Management System</h1>
-        <div className="col-md-3 ml-auto mr-auto">
+        <div className="col-md-5 mx-auto">
           <div className="card card-body">
             <form onSubmit={this.handleSubmit}>
               <div className="form-group">
