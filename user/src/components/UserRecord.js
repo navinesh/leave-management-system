@@ -127,7 +127,11 @@ class Tabs extends Component<tabsProps, tabsState> {
       return (
         <div className="nav-link btn" key={index}>
           <div
-            className={isActive ? 'text-primary' : 'text-secondary'}
+            className={
+              isActive
+                ? 'border border-right-0 border-left-0 border-top-0 border-secondary'
+                : 'text-secondary'
+            }
             onClick={this.selectTabIndex}
             id={index}
           >
@@ -182,22 +186,17 @@ export const UserRecord = (props: Props) => {
 
   const tabData = [
     {
-      label: 'APPROVED LEAVE SCHEDULE',
+      label: 'Approved leave schedule',
       content: <ApprovedRecordList user_record={user} />
     },
     {
-      label: 'PENDING LEAVE SCHEDULE',
+      label: 'Pending leave schedule',
       content: <PendingRecordList user_record={user} />
     }
   ];
 
   return (
-    <div
-      className="container"
-      style={{
-        paddingTop: '10px'
-      }}
-    >
+    <div className="container">
       <Tabs data={tabData} />
     </div>
   );
