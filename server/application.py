@@ -773,8 +773,7 @@ def decline_leave():
 
     # Send email
     send_email(
-        [leave_record.user.email],
-        "Leave application declined",
+        leave_record.user.email, None, "Leave application declined",
         ("Your " + leave_record.leave_name + " leave application for " + str(
             leave_record.leave_days) + " day(s) from " +
          leave_record.start_date + " to " + leave_record.end_date +
