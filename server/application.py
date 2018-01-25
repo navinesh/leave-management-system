@@ -721,15 +721,24 @@ def approve_leave():
     session.commit()
 
     # Send email
-    send_email(
-        user_record.email, None, "Leave application approved",
-        ("Your " + leave_name + " leave application for " + str(
-            format_number(leave_days)) + " day(s) from " +
-         leave_record.start_date + " to " + leave_record.end_date +
-         " has been aprroved. " + "Your new " + leave_name +
-         " leave balance is " + str(
-             format_number(leave_balance)) + " day(s)."),
-        file=None)
+
+    if (leave_name == 'lwop' or leave_name == 'other' or
+       leave_name == 'birthday'):
+        send_email(
+            user_record.email, None, "Leave application approved",
+            ("Your " + leave_name + " leave application for " +
+             str(format_number(leave_days)) + " day(s) from " +
+             leave_record.start_date + " to " + leave_record.end_date +
+             " has been aprroved."), file=None)
+    else:
+        send_email(
+            user_record.email, None, "Leave application approved",
+            ("Your " + leave_name + " leave application for " +
+             str(format_number(leave_days)) + " day(s) from " +
+             leave_record.start_date + " to " + leave_record.end_date +
+             " has been aprroved. " + "Your new " + leave_name +
+             " leave balance is " + str(format_number(leave_balance)) +
+             " day(s)."), file=None)
 
     return jsonify({'message': 'Leave has been approved.'}), 201
 
