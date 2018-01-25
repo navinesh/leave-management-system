@@ -279,44 +279,39 @@ def apply_for_leave():
 
         # Send email
         if secretary_email == 'null' and designation != 'Partner':
-            to_address_list = [user_record.email, supervisor_email,
-                               om_email, pa_email]
+            cc_address_list = [user_record.email, om_email, pa_email]
 
         if secretary_email == 'null' and designation == 'Partner':
-            to_address_list = [user_record.email, supervisor_email,
-                               ceo_email, om_email, pa_email]     
+            cc_address_list = [user_record.email, ceo_email, om_email,
+                               pa_email]     
 
         if secretary_email != 'null' and designation != 'Partner':
-            to_address_list = [user_record.email, supervisor_email,
-                               secretary_email, om_email, pa_email]
+            cc_address_list = [user_record.email, secretary_email, om_email,
+                               pa_email]
 
         if secretary_email != 'null' and designation == 'Partner':
-            to_address_list = [user_record.email, supervisor_email,
-                               secretary_email, ceo_email, om_email, pa_email]
+            cc_address_list = [user_record.email, secretary_email, ceo_email,
+                               om_email, pa_email]
 
         if leave_name == 'lwop' or leave_name == 'other' or \
                 leave_name == 'birthday':
-            send_email(
-                to_address_list,
-                "Leave application",
-                (user_record.othernames + " " + user_record.surname +
-                 " applied for " + str(format_number(leave_days)) +
-                 " day(s) of " + leave_name + " leave from " + date_from +
-                 " to " + date_to + ". Reason: " + leave_reason),
-                file=None)
+            send_email(supervisor_email, cc_address_list, "Leave application",
+                       (user_record.othernames + " " + user_record.surname +
+                        " applied for " + str(format_number(leave_days)) +
+                        " day(s) of " + leave_name + " leave from " +
+                        date_from + " to " + date_to + ". Reason: " +
+                        leave_reason), file=None)
         else:
-            send_email(
-                to_address_list,
-                "Leave application",
-                (user_record.othernames + " " +
-                 user_record.surname + " applied for " + str(
-                     format_number(leave_days)) + " day(s) of " + leave_name +
-                 " leave from " + date_from + " to " + date_to + ". Current " +
-                 leave_name + " leave balance is " + str(
-                     format_number(current_leave_balance)) +
-                 " day(s) and uppon approval new balance will be " +
-                 str(new_leave_balance) + " day(s). Reason: " + leave_reason),
-                file=None)
+            send_email(supervisor_email, cc_address_list, "Leave application",
+                       (user_record.othernames + " " + user_record.surname +
+                        " applied for " + str(format_number(leave_days)) +
+                        " day(s) of " + leave_name + " leave from " +
+                        date_from + " to " + date_to + ". Current " +
+                        leave_name + " leave balance is " + 
+                        str(format_number(current_leave_balance)) +
+                        " day(s) and uppon approval new balance will be " +
+                        str(new_leave_balance) + " day(s). Reason: " +
+                        leave_reason), file=None)
     else:
         file = request.files['sickSheet']  # check if an image was posted
         if file and allowed_file(file.filename):  # check extension
@@ -342,32 +337,30 @@ def apply_for_leave():
 
             # Send email
             if secretary_email == 'null' and designation != 'Partner':
-                to_address_list = [user_record.email, supervisor_email,
-                                   om_email, pa_email]
+                cc_address_list = [user_record.email, om_email, pa_email]
 
             if secretary_email == 'null' and designation == 'Partner':
-                to_address_list = [user_record.email, supervisor_email,
-                                   ceo_email, om_email, pa_email]
-
-            if secretary_email != 'null' and designation != 'Partner':
-                to_address_list = [user_record.email, supervisor_email,
-                                   secretary_email, om_email, pa_email]
-
-            if secretary_email != 'null' and designation == 'Partner':
-                to_address_list = [user_record.email, supervisor_email,
-                                   secretary_email, ceo_email, om_email,
+                cc_address_list = [user_record.email, ceo_email, om_email,
                                    pa_email]
 
-            send_email(to_address_list, "Leave application", (
-                user_record.othernames + " " +
-                user_record.surname + " applied for " + str(
-                    format_number(leave_days)) + " day(s) of " + leave_name +
-                " leave from " + date_from + " to " + date_to + ". Current " +
-                leave_name + " leave balance is " + str(
-                    format_number(current_leave_balance)) +
-                " day(s) and uppon approval new balance will be " + str(
-                    new_leave_balance) + " day(s). Reason: " + leave_reason),
-                       new_file_name)
+            if secretary_email != 'null' and designation != 'Partner':
+                cc_address_list = [user_record.email, secretary_email,
+                                   om_email, pa_email]
+
+            if secretary_email != 'null' and designation == 'Partner':
+                cc_address_list = [user_record.email, secretary_email,
+                                   ceo_email, om_email, pa_email]
+
+            send_email(supervisor_email, cc_address_list, "Leave application",
+                       (user_record.othernames + " " + user_record.surname +
+                        " applied for " + str(format_number(leave_days)) +
+                        " day(s) of " + leave_name + " leave from " +
+                        date_from + " to " + date_to + ". Current " +
+                        leave_name + " leave balance is " + 
+                        str(format_number(current_leave_balance)) +
+                        " day(s) and uppon approval new balance will be " +
+                        str(new_leave_balance) + " day(s). Reason: " + 
+                        leave_reason), new_file_name)
 
     return jsonify({'message': 'Your application has been submitted.'}), 201
 
@@ -452,8 +445,7 @@ def change_admin_password():
 
     # Send email
     send_email(
-        [email],
-        "Leave Management System update",
+        email, None, "Leave Management System update",
         ("Your Leave Management System admin password has been reset to: " +
          password),
         file=None)
