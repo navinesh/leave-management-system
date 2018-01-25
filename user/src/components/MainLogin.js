@@ -3,8 +3,6 @@ import React from 'react';
 import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
-import '../spinners.css';
-
 import UserLogin from './UserLogin';
 
 const moment = require('moment');
@@ -37,8 +35,14 @@ const MainLogin = (props: Props) => {
 
   if (loading) {
     return (
-      <div className="col-md-4 ml-auto mr-auto pt-4">
-        <div className="loader1" />
+      <div className="container">
+        <div className="col-md-5 mx-auto pt-4">
+          <UserLogin
+            isFetching={props.isFetching}
+            message={props.message}
+            dispatch={props.dispatch}
+          />
+        </div>
       </div>
     );
   }
@@ -46,7 +50,7 @@ const MainLogin = (props: Props) => {
   if (error) {
     console.log(error.message);
     return (
-      <div className="col-md-4 ml-auto mr-auto">
+      <div className="col-md-4 mx-auto">
         <div className="text-center">
           <p>Something went wrong!</p>
         </div>
