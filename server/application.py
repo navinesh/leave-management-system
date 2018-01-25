@@ -1298,8 +1298,7 @@ def cancel_approved_leave():
     if leave_name == 'lwop' or leave_name == 'other' or \
             leave_name == 'birthday':
         send_email(
-            [user_record.email],
-            "Leave application cancelled",
+            user_record.email, None, "Leave application cancelled",
             ("Your " + leave_name + " leave application for " + str(
                 format_number(leave_days)) + " day(s) from " + start_date +
              " to " + end_date + " has been cancelled. Your previous " +
@@ -1311,8 +1310,7 @@ def cancel_approved_leave():
             file=None)
     else:
         send_email(
-            [user_record.email],
-            "Leave application cancelled",
+            user_record.email, None, "Leave application cancelled",
             ("Your " + leave_name + " leave application for " + str(
                 format_number(leave_days)) + " day(s) from " + start_date +
              " to " + end_date + " has been cancelled. Your previous " +
