@@ -295,12 +295,12 @@ def apply_for_leave():
 
         if leave_name == 'lwop' or leave_name == 'other' or \
                 leave_name == 'birthday':
-            send_email(supervisor_email, cc_address_list, "Leave application",
-                       (user_record.othernames + " " + user_record.surname +
-                        " applied for " + str(format_number(leave_days)) +
-                        " day(s) of " + leave_name + " leave from " +
-                        date_from + " to " + date_to + ". Reason: " +
-                        leave_reason), file=None)
+            send_email(
+                supervisor_email, cc_address_list, "Leave application",
+                (user_record.othernames + " " + user_record.surname +
+                 " applied for " + str(format_number(leave_days)) +
+                 " day(s) of " + leave_name + " leave from " + date_from +
+                 " to " + date_to + ". Reason: " + leave_reason), file=None)
         else:
             send_email(supervisor_email, cc_address_list, "Leave application",
                        (user_record.othernames + " " + user_record.surname +
