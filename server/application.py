@@ -722,8 +722,7 @@ def approve_leave():
 
     # Send email
     send_email(
-        [user_record.email],
-        "Leave application approved",
+        user_record.email, None, "Leave application approved",
         ("Your " + leave_name + " leave application for " + str(
             format_number(leave_days)) + " day(s) from " +
          leave_record.start_date + " to " + leave_record.end_date +
