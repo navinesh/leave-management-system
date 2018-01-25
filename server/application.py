@@ -722,8 +722,8 @@ def approve_leave():
 
     # Send email
 
-    if (leave_name == 'lwop' or leave_name == 'other' or
-       leave_name == 'birthday'):
+    if leave_name == 'lwop' or leave_name == 'other' or \
+            leave_name == 'birthday':
         send_email(
             user_record.email, None, "Leave application approved",
             ("Your " + leave_name + " leave application for " +
