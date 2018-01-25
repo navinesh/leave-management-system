@@ -857,8 +857,7 @@ def edit_leave():
 
     # Send email
     send_email(
-        [leave_record.user.email],
-        "Leave application edited",
+        leave_record.user.email, None, "Leave application edited",
         ("Your " + previous_leave_name + " leave application for " +
          str(previous_leave_days) + " day(s) from " + previous_start_date +
          " to " + previous_end_date +
@@ -1035,8 +1034,7 @@ def edit_approved_leave():
 
         # Send email
         send_email(
-            [leave_record.user.email],
-            "Leave application update",
+            leave_record.user.email, None, "Leave application update",
             ("Your " + previous_leave_name + " leave application for " + str(
                 format_number(previous_leave_days)) + " day(s) from " +
              previous_start_date + " to " + previous_end_date +
