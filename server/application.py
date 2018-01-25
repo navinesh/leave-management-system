@@ -573,8 +573,7 @@ def modify_user():
     if gender == 'male' or (float(maternity) <= 0 and
                             user_record.maternity <= 0):
         send_email(
-            [email],
-            "Leave record update",
+            email, None, "Leave record update",
             ("Your leave records have been updated. \
              Your previous leave records were: " + str(user_record.annual) + " \
              annual day(s), " +
@@ -588,8 +587,7 @@ def modify_user():
             file=None)
     else:
         send_email(
-            [email],
-            "Leave record update",
+            email, None, "Leave record update",
             ("Your leave records have been updated. \
             Your previous leave records were: " + str(user_record.annual) +
              " annual day(s), " +
