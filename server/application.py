@@ -351,16 +351,17 @@ def apply_for_leave():
                 cc_address_list = [user_record.email, secretary_email,
                                    ceo_email, om_email, pa_email]
 
-            send_email(supervisor_email, cc_address_list, "Leave application",
-                       (user_record.othernames + " " + user_record.surname +
-                        " applied for " + str(format_number(leave_days)) +
-                        " day(s) of " + leave_name + " leave from " +
-                        date_from + " to " + date_to + ". Current " +
-                        leave_name + " leave balance is " + 
-                        str(format_number(current_leave_balance)) +
-                        " day(s) and uppon approval new balance will be " +
-                        str(new_leave_balance) + " day(s). Reason: " + 
-                        leave_reason), new_file_name)
+            send_email(
+                supervisor_email, cc_address_list, "Leave application",
+                (user_record.othernames + " " + user_record.surname +
+                 " applied for " + str(format_number(leave_days)) +
+                 " day(s) of " + leave_name + " leave from " + date_from +
+                 " to " + date_to + ". Current " + leave_name +
+                 " leave balance is " +
+                 str(format_number(current_leave_balance)) +
+                 " day(s) and uppon approval new balance will be " +
+                 str(new_leave_balance) + " day(s). Reason: " +
+                 leave_reason), new_file_name)
 
     return jsonify({'message': 'Your application has been submitted.'}), 201
 
