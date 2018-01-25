@@ -75,7 +75,7 @@ def format_number(i):
     return '%g' % (Decimal(str(i)))
 
 
-def send_email(toaddr, subject, body, file):
+def send_email(toaddr, ccaddr, subject, body, file):
     """Send email"""
     fromaddr = "FROM_EMAIL_ADDRESS"
     server = smtplib.SMTP('SERVER_IP', PORT_NUMBER)
@@ -83,8 +83,14 @@ def send_email(toaddr, subject, body, file):
     msg = MIMEMultipart()
 
     msg['From'] = fromaddr
-    msg['To'] = ", ".join(toaddr)
+    msg['To'] = toaddr
     msg['Subject'] = subject
+
+    if ccaddr is not None:
+        rcpt = ccaddr + [toaddr]
+        msg['Cc'] = ", ".join(ccaddr)
+    else:
+        rcpt = toaddr
 
     html = """\
     <html>
@@ -109,7 +115,7 @@ def send_email(toaddr, subject, body, file):
     server.starttls()
     server.login(fromaddr, "PASSWORD")
     text = msg.as_string()
-    server.sendmail(fromaddr, toaddr, text)
+    server.sendmail(fromaddr, rcpt, text)
     server.quit()
 
 
@@ -177,7 +183,7 @@ def change_user_password():
 
     # Send email
     send_email(
-        [user.email],
+        user.email, None,
         "Leave application",
         ("Your password has been reset to: " + new_password),
         file=None)
