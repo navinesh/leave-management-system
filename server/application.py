@@ -526,8 +526,7 @@ def new_user():
 
     # Send email
     send_email(
-        [email],
-        "Leave Management System",
+        email, None, "Leave Management System",
         ("Your Leave Management System account has been created. \
         Your password is: " + password), file=None)
 
