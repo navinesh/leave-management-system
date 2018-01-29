@@ -5415,9 +5415,9 @@ react-datepicker@^1.0.4:
     react-onclickoutside "^6.6.3"
     react-popper "^0.7.4"
 
-react-dates@^16.2.0:
-  version "16.2.0"
-  resolved "https://registry.yarnpkg.com/react-dates/-/react-dates-16.2.0.tgz#edfd3469bcbfa83052b8bb7d60e95cb71deeb481"
+react-dates@^16.2.1:
+  version "16.2.1"
+  resolved "https://registry.yarnpkg.com/react-dates/-/react-dates-16.2.1.tgz#18036b7d211fed54d3dc3f1c01097beca1f90308"
   dependencies:
     airbnb-prop-types "^2.8.1"
     consolidated-events "^1.1.1"
