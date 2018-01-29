@@ -85,6 +85,13 @@ export default class UserChange extends Component<Props, State> {
       return;
     }
 
+    if (newPassword.length <= 7) {
+      this.setState({
+        errorMessage: 'Your password should be 8 or more characters!'
+      });
+      return;
+    }
+
     this.setState({ errorMessage: '' });
 
     const creds = {
