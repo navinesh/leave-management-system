@@ -5406,13 +5406,13 @@ react-csv@^1.0.8:
   version "1.0.8"
   resolved "https://registry.yarnpkg.com/react-csv/-/react-csv-1.0.8.tgz#92bacdb5edbc52cd2ed50f31bbd1d946e8e32acf"
 
-react-datepicker@^1.0.4:
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/react-datepicker/-/react-datepicker-1.0.4.tgz#050a79ccc62617682749f4d2a388ffcb3773c378"
+react-datepicker@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/react-datepicker/-/react-datepicker-1.1.0.tgz#af3892384fb6d1dcafc30b48e81cc7fb976806f4"
   dependencies:
     classnames "^2.2.5"
     prop-types "^15.6.0"
-    react-onclickoutside "^6.6.3"
+    react-onclickoutside "^6.7.1"
     react-popper "^0.7.4"
 
 react-dates@^16.2.1:
@@ -5474,9 +5474,9 @@ react-moment-proptypes@^1.5.0:
   dependencies:
     moment ">=1.6.0"
 
-react-onclickoutside@^6.6.3:
-  version "6.7.0"
-  resolved "https://registry.yarnpkg.com/react-onclickoutside/-/react-onclickoutside-6.7.0.tgz#997a4d533114c9a0a104913638aa26afc084f75c"
+react-onclickoutside@^6.7.1:
+  version "6.7.1"
+  resolved "https://registry.yarnpkg.com/react-onclickoutside/-/react-onclickoutside-6.7.1.tgz#6a5b5b8b4eae6b776259712c89c8a2b36b17be93"
 
 react-popper@^0.7.4:
   version "0.7.4"
