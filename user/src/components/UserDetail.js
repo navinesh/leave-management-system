@@ -9,6 +9,7 @@ import '../spinners.css';
 const USER_DETAIL = gql`
   query($id: ID!) {
     user(id: $id) {
+      dbId
       othernames
       surname
       annual
@@ -17,6 +18,7 @@ const USER_DETAIL = gql`
       christmas
       maternity
       gender
+      designation
     }
   }
 `;
