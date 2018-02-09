@@ -50,9 +50,9 @@ const MainLogin = (props: Props) => {
   if (error) {
     console.log(error.message);
     return (
-      <div className="col-md-4 mx-auto">
+      <div className="col mx-auto" style={{ marginTop: '100px' }}>
         <div className="text-center">
-          <p>Something went wrong!</p>
+          <p className="display-4">Something went wrong!</p>
         </div>
       </div>
     );
