@@ -22,7 +22,13 @@ export default (props: Props) => {
 
   if (error) {
     console.log(error.message);
-    return <p>Something went wrong!</p>;
+    return (
+      <div className="col mx-auto" style={{ marginTop: '100px' }}>
+        <div className="text-center">
+          <p className="display-4">Something went wrong!</p>
+        </div>
+      </div>
+    );
   }
 
   const leaveRecords = findLeaveRecord
