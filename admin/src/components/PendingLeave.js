@@ -5,6 +5,8 @@ import 'react-dates/initialize';
 import { DateRangePicker } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
 
+import done_all from '../img/done_all.png';
+
 import Moment from 'moment';
 import { extendMoment } from 'moment-range';
 const moment = extendMoment(Moment);
@@ -979,11 +981,14 @@ export default class PendingLeaveList extends Component<Props, State> {
     ) : (
       <div
         className="card card-body border-0"
-        style={{ paddingTop: '100px', paddingBottom: '260px' }}
+        style={{
+          paddingTop: '100px',
+          paddingBottom: '260px',
+          alignItems: 'center'
+        }}
       >
-        <h1 className="display-4 text-center">
-          <em>There is no record to display.</em>
-        </h1>
+        <img src={done_all} alt="All done" height="100" width="100" />
+        <h1 className="display-4">You're all caught up.</h1>
       </div>
     );
   }
