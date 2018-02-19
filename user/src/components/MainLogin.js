@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 import { graphql } from 'react-apollo';
 
 import UserLogin from './UserLogin';
