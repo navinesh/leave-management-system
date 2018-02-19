@@ -154,6 +154,21 @@ const LEAVE_UPDATES_RECORD = gql`
   }
 `;
 
+const ACTIVE_USERS = gql`
+  {
+    findUsers(isArchived: "false") {
+      id
+      othernames
+      surname
+      annual
+      sick
+      christmas
+      bereavement
+      maternity
+    }
+  }
+`;
+
 type Props = {
   isAuthenticated: boolean,
   auth_info: Object,
@@ -163,6 +178,7 @@ type Props = {
   declinedRecord: Object,
   userUpdates: Object,
   leaveUpdates: Object,
+  activeUsers: Object,
   dispatch: Function,
   verifyAdminToken: Function
 };
@@ -228,6 +244,11 @@ class LeaveReport extends Component<Props> {
         loading: leaveLoading,
         error: leaveError,
         findLeaveUpdates: leave_updates
+      },
+      activeUsers: {
+        loading: activeUsersLoading,
+        error: activeUsersError,
+        findUsers: staff_record
       }
     } = this.props;
 
@@ -237,7 +258,8 @@ class LeaveReport extends Component<Props> {
       cancelledLoading ||
       declinedLoading ||
       userLoading ||
-      leaveLoading
+      leaveLoading ||
+      activeUsersLoading
     ) {
       return (
         <div className="text-center">
@@ -252,7 +274,8 @@ class LeaveReport extends Component<Props> {
       cancelledError ||
       declinedError ||
       userError ||
-      leaveError
+      leaveError ||
+      activeUsersError
     ) {
       console.log(
         approvedError ||
@@ -260,7 +283,8 @@ class LeaveReport extends Component<Props> {
           cancelledError ||
           declinedError ||
           userError ||
-          leaveError
+          leaveError ||
+          activeUsersError
       );
       return (
         <div className="text-center">
@@ -279,6 +303,7 @@ class LeaveReport extends Component<Props> {
             declined_record={declined_record}
             user_updates={user_updates}
             leave_updates={leave_updates}
+            staff_record={staff_record}
           />
         ) : (
           <Redirect to="/login" />
@@ -323,6 +348,10 @@ export default compose(
   }),
   graphql(LEAVE_UPDATES_RECORD, {
     name: 'leaveUpdates',
+    options: { pollInterval: 60000 }
+  }),
+  graphql(ACTIVE_USERS, {
+    name: 'activeUsers',
     options: { pollInterval: 60000 }
   })
 )(LeaveReport);
