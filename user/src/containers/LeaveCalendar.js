@@ -1,6 +1,6 @@
 //@ flow
 import React from 'react';
-import gql from 'graphql-tag';
+import { gql } from 'apollo-boost';
 import { graphql } from 'react-apollo';
 
 import Leaves from '../components/LeaveCalendar';
