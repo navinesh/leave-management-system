@@ -498,6 +498,72 @@ const LeaveUpdatesReportList = props => {
   );
 };
 
+const StaffRecordList = props => {
+  const staffRecordItems = props.staff_record.map(record => (
+    <tr key={record.id}>
+      <td>
+        {record.othernames} {record.surname}
+      </td>
+      <td>{record.annual}</td>
+      <td>{record.sick}</td>
+      <td>{record.bereavement}</td>
+      <td>{record.christmas}</td>
+      <td>{record.maternity}</td>
+    </tr>
+  ));
+
+  const records = props.staff_record.map(a => {
+    var rObj = {};
+    rObj['Othernames'] = a.othernames;
+    rObj['Surname'] = a.surname;
+    rObj['Annual'] = a.annual;
+    rObj['Sick'] = a.sick;
+    rObj['Bereavement'] = a.bereavement;
+    rObj['Christmas'] = a.christmas;
+    rObj['Maternity'] = a.maternity;
+    return rObj;
+  });
+
+  return staffRecordItems.length > 0 ? (
+    <div>
+      <CSVLink
+        data={records}
+        filename={'User-record.csv'}
+        className="btn btn-primary btn-sm mb-2"
+      >
+        Download
+      </CSVLink>
+      <div className="table-responsive">
+        <table
+          className="table table-bordered table-hover"
+          style={{ backgroundColor: '#FFFFFF' }}
+        >
+          <thead className="thead-light">
+            <tr>
+              <th>Name</th>
+              <th>Annual </th>
+              <th>Sick</th>
+              <th>Bereavement</th>
+              <th>Christmas</th>
+              <th>Maternity</th>
+            </tr>
+          </thead>
+          <tbody>{staffRecordItems}</tbody>
+        </table>
+      </div>
+    </div>
+  ) : (
+    <div
+      className="card card-body border-0"
+      style={{ paddingTop: '100px', paddingBottom: '260px' }}
+    >
+      <h1 className="display-4 text-center">
+        <em>There is no record to display.</em>
+      </h1>
+    </div>
+  );
+};
+
 type tabsProps = {
   data: Array<any>
 };
@@ -610,6 +676,10 @@ export default class LeaveReportList extends Component<Props> {
         content: (
           <LeaveUpdatesReportList leave_updates={this.props.leave_updates} />
         )
+      },
+      {
+        label: 'User record',
+        content: <StaffRecordList staff_record={this.props.staff_record} />
       }
     ];
 
