@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 import { graphql, compose } from 'react-apollo';
 
 import {
