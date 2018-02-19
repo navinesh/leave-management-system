@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import gql from 'graphql-tag';
+import { gql } from 'apollo-boost';
 import { graphql } from 'react-apollo';
 
 import '../spinners.css';
