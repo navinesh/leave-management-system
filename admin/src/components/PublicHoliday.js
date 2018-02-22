@@ -86,7 +86,7 @@ class AddPublicHoliday extends Component<
               numberOfMonths={1}
               isOutsideRange={() => false}
               showClearDate
-              withPortal
+              //withPortal
             />
             <button type="submit" className="btn btn-primary ml-3">
               Add
@@ -210,13 +210,11 @@ export default (props: publicHolidayProps) => {
   }
 
   return (
-    <div className="col-11 ml-auto mr-auto">
-      <div className="card card-body">
-        <div className="row">
-          <div className="col">
-            <h4>Public Holidays</h4>
-          </div>
-        </div>
+    <div className="card">
+      <div className="card-header">
+        <h4>Public Holidays</h4>
+      </div>
+      <div className=" card-body">
         <div className="row">
           <div className="col">
             <DeletePublicHoliday
