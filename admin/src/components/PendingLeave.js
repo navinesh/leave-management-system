@@ -675,6 +675,8 @@ class EditLeave extends Component<editProps, editState> {
                           <DateRangePicker
                             startDatePlaceholderText={record.startDate}
                             endDatePlaceholderText={record.endDate}
+                            startDateId="start_date_id"
+                            endDateId="end_date_id"
                             startDate={this.state.startDate}
                             endDate={this.state.endDate}
                             onDatesChange={({ startDate, endDate }) =>
