@@ -629,7 +629,8 @@ type Props = {
   approved_record: Object,
   pending_record: Object,
   user_updates: Object,
-  leave_updates: Object
+  leave_updates: Object,
+  staff_record: Object
 };
 
 export default class LeaveReportList extends Component<Props> {
