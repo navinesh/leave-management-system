@@ -15,19 +15,7 @@ declare module 'react-apollo' {
   declare module.exports: any;
 }
 
-declare module 'apollo-client' {
-  declare module.exports: any;
-}
-
-declare module 'apollo-link-http' {
-  declare module.exports: any;
-}
-
-declare module 'apollo-cache-inmemory' {
-  declare module.exports: any;
-}
-
-declare module 'graphql-tag' {
+declare module 'apollo-boost' {
   declare module.exports: any;
 }
 
