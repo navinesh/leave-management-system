@@ -5446,9 +5446,9 @@ react-apollo@^2.0.4:
     lodash.pick "^4.4.0"
     prop-types "^15.5.8"
 
-react-dates@^16.3.5:
-  version "16.3.5"
-  resolved "https://registry.yarnpkg.com/react-dates/-/react-dates-16.3.5.tgz#3c73b22755859efd842c5637a759426d12faccb6"
+react-dates@^16.3.6:
+  version "16.3.6"
+  resolved "https://registry.yarnpkg.com/react-dates/-/react-dates-16.3.6.tgz#70ac25c9ae40924020555ccef06f94a353ae4bb3"
   dependencies:
     airbnb-prop-types "^2.8.1"
     consolidated-events "^1.1.1"
