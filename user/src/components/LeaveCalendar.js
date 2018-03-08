@@ -3,6 +3,8 @@ import React from 'react';
 
 import '../spinners.css';
 
+import done_all from '../img/done_all.png';
+
 const moment = require('moment');
 
 type Props = {
@@ -86,10 +88,16 @@ export default (props: Props) => {
       </table>
     </div>
   ) : (
-    <div style={{ paddingTop: '100px', paddingBottom: '220px' }}>
-      <h1 className="display-4 text-center">
-        <em>There is no data to display.</em>
-      </h1>
+    <div
+      className="card card-body border-0"
+      style={{
+        paddingTop: '100px',
+        paddingBottom: '260px',
+        alignItems: 'center'
+      }}
+    >
+      <img src={done_all} alt="All done" height="100" width="100" />
+      <h1 className="display-4">You're all caught up.</h1>
     </div>
   );
 };
