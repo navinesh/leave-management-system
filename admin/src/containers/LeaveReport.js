@@ -184,7 +184,7 @@ type Props = {
 };
 
 class LeaveReport extends Component<Props> {
-  componentWillMount() {
+  componentDidMount() {
     this.verifyToken();
   }
 
