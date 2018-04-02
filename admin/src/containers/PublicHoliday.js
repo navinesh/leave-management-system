@@ -67,7 +67,7 @@ type Props = {
 };
 
 class PublicHoliday extends Component<Props> {
-  componentWillMount() {
+  componentDidMount() {
     this.verifyToken();
   }
 
