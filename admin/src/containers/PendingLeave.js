@@ -73,7 +73,7 @@ type Props = {
 };
 
 class PendingLeave extends Component<Props> {
-  componentWillMount() {
+  componentDidMount() {
     this.verifyToken();
     setInterval(this.verifyToken, 600000);
   }
