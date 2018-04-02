@@ -66,7 +66,7 @@ type Props = {
 };
 
 class StaffRecord extends Component<Props> {
-  componentWillMount() {
+  componentDidMount() {
     this.verifyToken();
   }
 
