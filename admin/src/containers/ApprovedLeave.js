@@ -74,7 +74,7 @@ type Props = {
 };
 
 class ApprovedLeave extends Component<Props> {
-  componentWillMount() {
+  componentDidMount() {
     this.verifyToken();
   }
 
