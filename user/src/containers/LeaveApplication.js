@@ -35,7 +35,7 @@ type Props = {
 };
 
 class LeaveApplication extends Component<Props> {
-  componentWillMount() {
+  componentDidMount() {
     this.verifyToken();
     setInterval(this.verifyToken, 600000);
   }
