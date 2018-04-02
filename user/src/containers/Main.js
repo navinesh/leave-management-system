@@ -34,7 +34,7 @@ type Props = {
 };
 
 class Main extends Component<Props> {
-  componentWillMount() {
+  componentDidMount() {
     this.verifyToken();
     setInterval(this.verifyToken, 600000);
   }
