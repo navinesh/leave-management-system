@@ -47,7 +47,7 @@ type Props = {
 };
 
 class SickSheetRecord extends Component<Props> {
-  componentWillMount() {
+  componentDidMount() {
     this.verifyToken();
   }
 
