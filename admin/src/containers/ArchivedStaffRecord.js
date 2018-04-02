@@ -63,7 +63,7 @@ type Props = {
 };
 
 class ArchivedStaffRecord extends Component<Props> {
-  componentWillMount() {
+  componentDidMount() {
     this.verifyToken();
   }
 
