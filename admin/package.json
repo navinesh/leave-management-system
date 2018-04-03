@@ -6,7 +6,7 @@
     "flow-bin": "^0.66.0"
   },
   "dependencies": {
-    "apollo-boost": "^0.1.1",
+    "apollo-boost": "^0.1.4",
     "axios": "^0.17.1",
     "graphql": "^0.12.3",
     "moment": "^2.20.1",
