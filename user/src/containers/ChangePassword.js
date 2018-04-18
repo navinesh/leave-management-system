@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
@@ -32,7 +32,7 @@ class UserChangePassword extends Component<Props> {
     } = this.props;
 
     return (
-      <div className="UserAccount">
+      <Fragment>
         {isAuthenticated ? (
           <UserChange
             isFetching={isFetching}
@@ -43,7 +43,7 @@ class UserChangePassword extends Component<Props> {
         ) : (
           <Redirect to="/" />
         )}
-      </div>
+      </Fragment>
     );
   }
 }
