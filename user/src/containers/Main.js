@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { gql } from 'apollo-boost';
@@ -70,7 +70,7 @@ class Main extends Component<Props> {
 
   render() {
     return (
-      <div className="Main">
+      <Fragment>
         {this.props.isAuthenticated ? (
           <div>
             <UserDetail /> <UserRecord />
@@ -78,7 +78,7 @@ class Main extends Component<Props> {
         ) : (
           <Redirect to="/login" />
         )}
-      </div>
+      </Fragment>
     );
   }
 }
