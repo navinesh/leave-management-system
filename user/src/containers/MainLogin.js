@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
@@ -15,7 +15,7 @@ type Props = {
 };
 
 const Login = (props: Props) => (
-  <div className="Main">
+  <Fragment>
     {!props.isAuthenticated ? (
       <div className="container">
         <div className="row">
@@ -29,7 +29,7 @@ const Login = (props: Props) => (
     ) : (
       <Redirect to="/" />
     )}
-  </div>
+  </Fragment>
 );
 
 const mapStateToProps = state => {
