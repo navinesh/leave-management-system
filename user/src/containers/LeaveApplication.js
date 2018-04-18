@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { gql } from 'apollo-boost';
@@ -74,7 +74,7 @@ class LeaveApplication extends Component<Props> {
     let id = auth_info.id ? auth_info.id : localStorage.getItem('id');
 
     return (
-      <div className="LeaveApplication">
+      <Fragment>
         {isAuthenticated ? (
           <Application
             id={id}
@@ -87,7 +87,7 @@ class LeaveApplication extends Component<Props> {
         ) : (
           <Redirect to="/" />
         )}
-      </div>
+      </Fragment>
     );
   }
 }
