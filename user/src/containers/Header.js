@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { Fragment } from 'react';
 import { connect } from 'react-redux';
 
 import { logoutUser } from '../actions/UserLogout';
@@ -11,13 +11,13 @@ type Props = {
 };
 
 const Header = (props: Props) => (
-  <div className="Header">
+  <Fragment>
     <Navs
       isAuthenticated={props.isAuthenticated}
       dispatch={props.dispatch}
       logoutUser={logoutUser}
     />
-  </div>
+  </Fragment>
 );
 
 const mapStateToProps = state => {
