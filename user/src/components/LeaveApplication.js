@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { gql } from 'apollo-boost';
-import { graphql, compose } from 'react-apollo';
+import { Query } from 'react-apollo';
 
 import 'react-dates/initialize';
 import { DateRangePicker } from 'react-dates';
@@ -565,106 +565,110 @@ class LeaveApplication extends Component<
 }
 
 type Props = {
-  id: Number,
-  userDetails: Object,
-  userRecords: Object,
-  publicHolidays: Object,
+  id: any,
   onLeaveApplicationClick: Function,
   message: string,
   dispatch: Function
 };
 
-const Application = (props: Props) => {
-  const {
-    userDetails: { loading, error, user },
-    userRecords: {
-      loading: recordLoading,
-      error: recordError,
-      refetch,
-      user: userRecord
-    },
-    publicHolidays: {
-      loading: holidayLoading,
-      error: holidayError,
-      publicHoliday
-    },
-    message,
-    dispatch
-  } = props;
+export default (props: Props) => (
+  <Query query={USER_DETAIL} variables={{ id: props.id }} pollInterval={60000}>
+    {({ loading, error, data: { user }, refetch }) => (
+      <Query
+        query={USER_RECORD}
+        variables={{ id: props.id }}
+        pollInterval={60000}
+      >
+        {({
+          loading: recordLoading,
+          error: recordError,
+          data: { user: userRecord }
+        }) => (
+          <Query query={PUBLIC_HOLIDAY}>
+            {({
+              loading: holidayLoading,
+              error: holidayError,
+              data: { publicHoliday }
+            }) => {
+              if (loading || recordLoading || holidayLoading) {
+                return (
+                  <div
+                    className="container text-center"
+                    style={{ paddingTop: '100px' }}
+                  >
+                    <div className="col-md-8 ml-auto mr-auto">
+                      <div className="loader1" />
+                    </div>
+                  </div>
+                );
+              }
 
-  if (loading || recordLoading || holidayLoading) {
-    return (
-      <div className="container text-center" style={{ paddingTop: '100px' }}>
-        <div className="col-md-8 ml-auto mr-auto">
-          <div className="loader1" />
-        </div>
-      </div>
-    );
-  }
+              if (error || recordError || holidayError) {
+                console.log(
+                  error.message,
+                  recordError.message,
+                  holidayError.message
+                );
+                return (
+                  <div
+                    className="container text-center"
+                    style={{ paddingTop: '100px' }}
+                  >
+                    <div className="col-md-8 ml-auto mr-auto">
+                      <p>Something went wrong!</p>
+                    </div>
+                  </div>
+                );
+              }
 
-  if (error || recordError || holidayError) {
-    console.log(error.message, recordError.message, holidayError.message);
-    return (
-      <div className="container text-center" style={{ paddingTop: '100px' }}>
-        <div className="col-md-8 ml-auto mr-auto">
-          <p>Something went wrong!</p>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="container" style={{ marginTop: '80px' }}>
-      <div className="row">
-        <div className="col-md-12">
-          <div className="col-md-9 ml-auto mr-auto">
-            <UserName user_detail={user} />
-          </div>
-        </div>
-        <div className="col-md-3 ml-auto">
-          <UserRecord user_detail={user} />
-        </div>
-        <div className="col-md-6 mr-auto mb-2">
-          {message ? (
-            <div className="card">
-              <div className="card-body text-center">
-                <p>{message}</p>
-                <button
-                  className="btn btn-primary btn-sm"
-                  onClick={() =>
-                    dispatch({
-                      type: 'CLEAR_LEAVE_APPLICATION_MESSAGE'
-                    })
-                  }
-                >
-                  Apply for leave
-                </button>
-              </div>
-            </div>
-          ) : (
-            <LeaveApplication
-              id={props.id}
-              user_detail={user}
-              user_record={userRecord}
-              public_holiday={publicHoliday}
-              refetch={refetch}
-              onLeaveApplicationClick={props.onLeaveApplicationClick}
-            />
-          )}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default compose(
-  graphql(USER_DETAIL, {
-    options: ({ id }) => ({ variables: { id }, pollInterval: 60000 }),
-    name: 'userDetails'
-  }),
-  graphql(USER_RECORD, {
-    options: ({ id }) => ({ variables: { id }, pollInterval: 60000 }),
-    name: 'userRecords'
-  }),
-  graphql(PUBLIC_HOLIDAY, { name: 'publicHolidays' })
-)(Application);
+              return (
+                <div className="container" style={{ marginTop: '80px' }}>
+                  <div className="row">
+                    <div className="col-md-12">
+                      <div className="col-md-9 ml-auto mr-auto">
+                        <UserName user_detail={user} />
+                      </div>
+                    </div>
+                    <div className="col-md-3 ml-auto">
+                      <UserRecord user_detail={user} />
+                    </div>
+                    <div className="col-md-6 mr-auto mb-2">
+                      {props.message ? (
+                        <div className="card">
+                          <div className="card-body text-center">
+                            <p>{props.message}</p>
+                            <button
+                              className="btn btn-primary btn-sm"
+                              onClick={() =>
+                                props.dispatch({
+                                  type: 'CLEAR_LEAVE_APPLICATION_MESSAGE'
+                                })
+                              }
+                            >
+                              Apply for leave
+                            </button>
+                          </div>
+                        </div>
+                      ) : (
+                        <LeaveApplication
+                          id={props.id}
+                          user_detail={user}
+                          user_record={userRecord}
+                          public_holiday={publicHoliday}
+                          refetch={refetch}
+                          onLeaveApplicationClick={
+                            props.onLeaveApplicationClick
+                          }
+                        />
+                      )}
+                    </div>
+                  </div>
+                </div>
+              );
+            }}
+          </Query>
+        )}
+      </Query>
+    )}
+  </Query>
+);
