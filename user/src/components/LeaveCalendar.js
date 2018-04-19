@@ -12,27 +12,7 @@ type Props = {
 };
 
 export default (props: Props) => {
-  const { data: { loading, error, findLeaveRecord } } = props;
-
-  if (loading) {
-    return (
-      <div className="text-center">
-        <div className="loader1" />
-      </div>
-    );
-  }
-
-  if (error) {
-    console.log(error.message);
-    return (
-      <div className="col mx-auto" style={{ marginTop: '100px' }}>
-        <div className="text-center">
-          <p className="display-4">Something went wrong!</p>
-        </div>
-      </div>
-    );
-  }
-
+  const { data: { findLeaveRecord } } = props;
   const leaveRecords = findLeaveRecord
     .filter(record => {
       // get current date and format it
