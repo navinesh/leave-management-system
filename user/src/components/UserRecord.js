@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { gql } from 'apollo-boost';
-import { graphql } from 'react-apollo';
+import { Query } from 'react-apollo';
 
 import '../spinners.css';
 
@@ -157,52 +157,55 @@ class Tabs extends Component<tabsProps, tabsState> {
 }
 
 type Props = {
-  userRecord: Object
+  id: any
 };
 
-export const UserRecord = (props: Props) => {
-  const { userRecord: { loading, error, user } } = props;
+export default (props: Props) => (
+  <Query query={USER_RECORD} variables={{ id: props.id }} pollInterval={60000}>
+    {({ loading, error, data }) => {
+      if (loading) {
+        return (
+          <div
+            className="container text-center"
+            style={{ paddingTop: '100px' }}
+          >
+            <div className="col-md-8 ml-auto mr-auto">
+              <div className="loader1" />
+            </div>
+          </div>
+        );
+      }
 
-  if (loading) {
-    return (
-      <div className="container text-center" style={{ paddingTop: '100px' }}>
-        <div className="col-md-8 ml-auto mr-auto">
-          <div className="loader1" />
+      if (error) {
+        console.log(error.message);
+        return (
+          <div
+            className="container text-center"
+            style={{ paddingTop: '100px' }}
+          >
+            <div className="col-md-8 ml-auto mr-auto">
+              <p>Something went wrong!</p>
+            </div>
+          </div>
+        );
+      }
+
+      const tabData = [
+        {
+          label: 'Approved leave schedule',
+          content: <ApprovedRecordList user_record={data.user} />
+        },
+        {
+          label: 'Pending leave schedule',
+          content: <PendingRecordList user_record={data.user} />
+        }
+      ];
+
+      return (
+        <div className="container">
+          <Tabs data={tabData} />
         </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    console.log(error.message);
-    return (
-      <div className="container text-center" style={{ paddingTop: '100px' }}>
-        <div className="col-md-8 ml-auto mr-auto">
-          <p>Something went wrong!</p>
-        </div>
-      </div>
-    );
-  }
-
-  const tabData = [
-    {
-      label: 'Approved leave schedule',
-      content: <ApprovedRecordList user_record={user} />
-    },
-    {
-      label: 'Pending leave schedule',
-      content: <PendingRecordList user_record={user} />
-    }
-  ];
-
-  return (
-    <div className="container">
-      <Tabs data={tabData} />
-    </div>
-  );
-};
-
-export default graphql(USER_RECORD, {
-  options: ({ id }) => ({ variables: { id }, pollInterval: 60000 }),
-  name: 'userRecord'
-})(UserRecord);
+      );
+    }}
+  </Query>
+);
