@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { gql } from 'apollo-boost';
-import { graphql } from 'react-apollo';
+import { Query } from 'react-apollo';
 
 import '../spinners.css';
 
@@ -24,97 +24,100 @@ const USER_DETAIL = gql`
 `;
 
 type Props = {
-  userDetail: Object
+  id: any
 };
 
-const UserDetail = (props: Props) => {
-  const { userDetail: { loading, error, user } } = props;
-
-  if (loading) {
-    return (
-      <div className="container text-center" style={{ paddingTop: '100px' }}>
-        <div className="col-md-8 ml-auto mr-auto">
-          <div className="loader1" />
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    console.log(error.message);
-    return (
-      <div className="container text-center" style={{ paddingTop: '100px' }}>
-        <div className="col-md-8 ml-auto mr-auto">
-          <p>Something went wrong!</p>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div
-      style={{
-        backgroundColor: '#FFFFFF',
-        paddingTop: '100px',
-        paddingBottom: '30px'
-      }}
-    >
-      <div className="container">
-        <div className="row">
-          <div className="col-md-8">
-            <p style={{ fontSize: '30px' }}>
-              {user.othernames} {user.surname}
-            </p>
-            <p>
-              <Link to="/changepassword" className="btn btn-primary">
-                Change password
-              </Link>
-            </p>
+export default (props: Props) => (
+  <Query query={USER_DETAIL} variables={{ id: props.id }} pollInterval={60000}>
+    {({ loading, error, data: { user } }) => {
+      if (loading) {
+        return (
+          <div
+            className="container text-center"
+            style={{ paddingTop: '100px' }}
+          >
+            <div className="col-md-8 ml-auto mr-auto">
+              <div className="loader1" />
+            </div>
           </div>
-          <div className="col-md-4">
-            <ul className="list-group">
-              <li className="list-group-item d-flex justify-content-between align-items-center">
-                Annual
-                <span className="badge badge-primary badge-pill">
-                  {user.annual}
-                </span>
-              </li>
-              <li className="list-group-item d-flex justify-content-between align-items-center">
-                Sick
-                <span className="badge badge-primary badge-pill">
-                  {user.sick}
-                </span>
-              </li>
-              <li className="list-group-item d-flex justify-content-between align-items-center">
-                Bereavement
-                <span className="badge badge-primary badge-pill">
-                  {user.bereavement}
-                </span>
-              </li>
-              <li className="list-group-item d-flex justify-content-between align-items-center">
-                Christmas
-                <span className="badge badge-primary badge-pill">
-                  {user.christmas}
-                </span>
-              </li>
-              {user.gender.toLowerCase() === 'female' &&
-                user.maternity > 0 && (
+        );
+      }
+
+      if (error) {
+        console.log(error.message);
+        return (
+          <div
+            className="container text-center"
+            style={{ paddingTop: '100px' }}
+          >
+            <div className="col-md-8 ml-auto mr-auto">
+              <p>Something went wrong!</p>
+            </div>
+          </div>
+        );
+      }
+
+      return (
+        <div
+          style={{
+            backgroundColor: '#FFFFFF',
+            paddingTop: '100px',
+            paddingBottom: '30px'
+          }}
+        >
+          <div className="container">
+            <div className="row">
+              <div className="col-md-8">
+                <p style={{ fontSize: '30px' }}>
+                  {user.othernames} {user.surname}
+                </p>
+                <p>
+                  <Link to="/changepassword" className="btn btn-primary">
+                    Change password
+                  </Link>
+                </p>
+              </div>
+              <div className="col-md-4">
+                <ul className="list-group">
                   <li className="list-group-item d-flex justify-content-between align-items-center">
-                    Maternity
+                    Annual
                     <span className="badge badge-primary badge-pill">
-                      {user.maternity}
+                      {user.annual}
                     </span>
                   </li>
-                )}
-            </ul>
+                  <li className="list-group-item d-flex justify-content-between align-items-center">
+                    Sick
+                    <span className="badge badge-primary badge-pill">
+                      {user.sick}
+                    </span>
+                  </li>
+                  <li className="list-group-item d-flex justify-content-between align-items-center">
+                    Bereavement
+                    <span className="badge badge-primary badge-pill">
+                      {user.bereavement}
+                    </span>
+                  </li>
+                  <li className="list-group-item d-flex justify-content-between align-items-center">
+                    Christmas
+                    <span className="badge badge-primary badge-pill">
+                      {user.christmas}
+                    </span>
+                  </li>
+                  {user.gender.toLowerCase() === 'female' &&
+                    user.maternity > 0 && (
+                      <li className="list-group-item d-flex justify-content-between align-items-center">
+                        Maternity
+                        <span className="badge badge-primary badge-pill">
+                          {user.maternity}
+                        </span>
+                      </li>
+                    )}
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-  );
-};
-
-export default graphql(USER_DETAIL, {
-  options: ({ id }) => ({ variables: { id }, pollInterval: 60000 }),
-  name: 'userDetail'
-})(UserDetail);
+      );
+    }}
+  </Query>
+);
