@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { gql } from 'apollo-boost';
-import { graphql, compose } from 'react-apollo';
+import { Query, graphql, compose } from 'react-apollo';
 
 import {
   requestAdminLoginFromToken,
@@ -96,21 +96,49 @@ class PublicHoliday extends Component<Props> {
   };
 
   render() {
-    const {
-      isAuthenticated,
-      publicHolidays,
-      addHoliday,
-      deleteHoliday
-    } = this.props;
+    const { isAuthenticated, addHoliday, deleteHoliday } = this.props;
 
     return (
       <div className="container">
         {isAuthenticated ? (
-          <PublicHolidays
-            publicHolidays={publicHolidays}
-            addHoliday={addHoliday}
-            deleteHoliday={deleteHoliday}
-          />
+          <Query query={PUBLIC_HOLIDAY}>
+            {({ loading, error, data: { publicHoliday } }) => {
+              if (loading) {
+                return (
+                  <div
+                    className="container text-center"
+                    style={{ paddingTop: '100px' }}
+                  >
+                    <div className="col-md-8 ml-auto mr-auto">
+                      <div className="loader1" />
+                    </div>
+                  </div>
+                );
+              }
+
+              if (error) {
+                console.log(error.message);
+                return (
+                  <div
+                    className="container text-center"
+                    style={{ paddingTop: '100px' }}
+                  >
+                    <div className="col-md-8 ml-auto mr-auto">
+                      <p>Something went wrong!</p>
+                    </div>
+                  </div>
+                );
+              }
+
+              return (
+                <PublicHolidays
+                  publicHolidays={publicHoliday}
+                  addHoliday={addHoliday}
+                  deleteHoliday={deleteHoliday}
+                />
+              );
+            }}
+          </Query>
         ) : (
           <Redirect to="/login" />
         )}
@@ -134,7 +162,6 @@ export default compose(
   graphql(VERIFY_ADMIN_TOKEN, {
     name: 'verifyAdminToken'
   }),
-  graphql(PUBLIC_HOLIDAY, { name: 'publicHolidays' }),
   graphql(ADD_PUBLIC_HOLIDAY, {
     name: 'addHoliday',
     props: ({ addHoliday }) => ({
