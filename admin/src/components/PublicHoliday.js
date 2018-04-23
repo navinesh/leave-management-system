@@ -182,32 +182,7 @@ type publicHolidayProps = {
 };
 
 export default (props: publicHolidayProps) => {
-  const {
-    publicHolidays: { loading, error, publicHoliday },
-    addHoliday,
-    deleteHoliday
-  } = props;
-
-  if (loading) {
-    return (
-      <div className="container text-center" style={{ paddingTop: '100px' }}>
-        <div className="col-md-8 ml-auto mr-auto">
-          <div className="loader1" />
-        </div>
-      </div>
-    );
-  }
-
-  if (error) {
-    console.log(error.message);
-    return (
-      <div className="container text-center" style={{ paddingTop: '100px' }}>
-        <div className="col-md-8 ml-auto mr-auto">
-          <p>Something went wrong!</p>
-        </div>
-      </div>
-    );
-  }
+  const { addHoliday, deleteHoliday } = props;
 
   return (
     <div className="card">
@@ -218,7 +193,7 @@ export default (props: publicHolidayProps) => {
         <div className="row">
           <div className="col">
             <DeletePublicHoliday
-              public_holiday={publicHoliday}
+              public_holiday={props.publicHolidays}
               deleteHoliday={deleteHoliday}
             />
           </div>
