@@ -1,11 +1,26 @@
 // @flow
 import React, { Component } from 'react';
+import { gql } from 'apollo-boost';
+import { Query } from 'react-apollo';
 
 import 'react-dates/initialize';
 import { SingleDatePicker } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
 
 const moment = require('moment');
+
+const PUBLIC_HOLIDAY = gql`
+  {
+    publicHoliday {
+      edges {
+        node {
+          id
+          holidayDate
+        }
+      }
+    }
+  }
+`;
 
 type addPublicHolidayProps = {
   addHoliday: Function
@@ -102,7 +117,6 @@ class AddPublicHoliday extends Component<
 }
 
 type deletePublicHolidayProps = {
-  public_holiday: Object,
   deleteHoliday: Function
 };
 
@@ -143,40 +157,71 @@ class DeletePublicHoliday extends Component<
   }
 
   render() {
-    let list = this.props.public_holiday.edges.map(a => a.node).sort((b, c) => {
-      return new Date(b.holidayDate) - new Date(c.holidayDate);
-    });
-
-    const public_holidays = list.map(item => {
-      let hDate = new Date(item.holidayDate);
-      let holiday_date = moment(hDate).format('dddd, Do MMMM YYYY');
-      return (
-        <li key={item.id}>
-          {holiday_date}
-          <button
-            className="btn btn-link btn-sm text-danger"
-            value={item.id}
-            onClick={this.handleDelete}
-          >
-            Delete
-          </button>
-        </li>
-      );
-    });
-
     return (
-      <div className="DeletePublicHolidays">
-        <ul>{public_holidays}</ul>
-        <div className="text-danger">
-          <div>{this.state.errorMessage}</div>
-        </div>
-      </div>
+      <Query query={PUBLIC_HOLIDAY}>
+        {({ loading, error, data: { publicHoliday } }) => {
+          if (loading) {
+            return (
+              <div
+                className="container text-center"
+                style={{ paddingTop: '100px' }}
+              >
+                <div className="col-md-8 ml-auto mr-auto">
+                  <div className="loader1" />
+                </div>
+              </div>
+            );
+          }
+
+          if (error) {
+            console.log(error.message);
+            return (
+              <div
+                className="container text-center"
+                style={{ paddingTop: '100px' }}
+              >
+                <div className="col-md-8 ml-auto mr-auto">
+                  <p>Something went wrong!</p>
+                </div>
+              </div>
+            );
+          }
+          let list = publicHoliday.edges.map(a => a.node).sort((b, c) => {
+            return new Date(b.holidayDate) - new Date(c.holidayDate);
+          });
+
+          const public_holidays = list.map(item => {
+            let hDate = new Date(item.holidayDate);
+            let holiday_date = moment(hDate).format('dddd, Do MMMM YYYY');
+            return (
+              <li key={item.id}>
+                {holiday_date}
+                <button
+                  className="btn btn-link btn-sm text-danger"
+                  value={item.id}
+                  onClick={this.handleDelete}
+                >
+                  Delete
+                </button>
+              </li>
+            );
+          });
+
+          return (
+            <div className="DeletePublicHolidays">
+              <ul>{public_holidays}</ul>
+              <div className="text-danger">
+                <div>{this.state.errorMessage}</div>
+              </div>
+            </div>
+          );
+        }}
+      </Query>
     );
   }
 }
 
 type publicHolidayProps = {
-  publicHolidays: Object,
   addHoliday: Function,
   deleteHoliday: Function
 };
@@ -192,10 +237,7 @@ export default (props: publicHolidayProps) => {
       <div className=" card-body">
         <div className="row">
           <div className="col">
-            <DeletePublicHoliday
-              public_holiday={props.publicHolidays}
-              deleteHoliday={deleteHoliday}
-            />
+            <DeletePublicHoliday deleteHoliday={deleteHoliday} />
           </div>
           <div className="col">
             <AddPublicHoliday addHoliday={addHoliday} />
