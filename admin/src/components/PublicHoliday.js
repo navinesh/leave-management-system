@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { gql } from 'apollo-boost';
-import { Query } from 'react-apollo';
+import { Query, Mutation } from 'react-apollo';
 
 import 'react-dates/initialize';
 import { SingleDatePicker } from 'react-dates';
@@ -17,6 +17,17 @@ const PUBLIC_HOLIDAY = gql`
           id
           holidayDate
         }
+      }
+    }
+  }
+`;
+
+const DELETE_PUBLIC_HOLIDAY = gql`
+  mutation deletePublicholiday($id: String!) {
+    deletePublicholiday(id: $id) {
+      publicHoliday {
+        id
+        holidayDate
       }
     }
   }
@@ -116,134 +127,101 @@ class AddPublicHoliday extends Component<
   }
 }
 
-type deletePublicHolidayProps = {
-  deleteHoliday: Function
-};
+const DeletePublicHoliday = () => (
+  <Query query={PUBLIC_HOLIDAY}>
+    {({ loading, error, data: { publicHoliday } }) => {
+      if (loading) {
+        return (
+          <div
+            className="container text-center"
+            style={{ paddingTop: '100px' }}
+          >
+            <div className="col-md-8 ml-auto mr-auto">
+              <div className="loader1" />
+            </div>
+          </div>
+        );
+      }
 
-type deletePublicHolidayState = {
-  errorMessage: string
-};
+      if (error) {
+        console.log(error.message);
+        return (
+          <div
+            className="container text-center"
+            style={{ paddingTop: '100px' }}
+          >
+            <div className="col-md-8 ml-auto mr-auto">
+              <p>Something went wrong!</p>
+            </div>
+          </div>
+        );
+      }
 
-class DeletePublicHoliday extends Component<
-  deletePublicHolidayProps,
-  deletePublicHolidayState
-> {
-  handleDelete: Function;
-
-  constructor() {
-    super();
-    this.state = { errorMessage: '' };
-
-    this.handleDelete = this.handleDelete.bind(this);
-  }
-
-  handleDelete({ target }: SyntheticInputEvent<>) {
-    const id = target.value;
-
-    if (!id) {
-      this.setState({
-        errorMessage: 'Valid id is required!'
+      let list = publicHoliday.edges.map(a => a.node).sort((b, c) => {
+        return new Date(b.holidayDate) - new Date(c.holidayDate);
       });
 
-      setTimeout(() => {
-        this.setState({ errorMessage: '' });
-      }, 3000);
-      return null;
-    }
+      const public_holidays = list.map(item => {
+        let hDate = new Date(item.holidayDate);
+        let holiday_date = moment(hDate).format('dddd, Do MMMM YYYY');
+        return (
+          <li key={item.id}>
+            {holiday_date}
+            <Mutation
+              mutation={DELETE_PUBLIC_HOLIDAY}
+              variables={{ id: item.id }}
+              //refetchQueries={PUBLIC_HOLIDAY}
+            >
+              {(deletePublicHoliday, { loading, error }) => {
+                if (loading) {
+                  return <p>Loading...</p>;
+                }
 
-    this.props.deleteHoliday(id);
+                if (error) {
+                  return <p>Error...</p>;
+                }
 
-    this.setState({ errorMessage: '' });
-  }
+                return (
+                  <button
+                    className="btn btn-link btn-sm text-danger"
+                    onClick={deletePublicHoliday}
+                  >
+                    Delete
+                  </button>
+                );
+              }}
+            </Mutation>
+          </li>
+        );
+      });
 
-  render() {
-    return (
-      <Query query={PUBLIC_HOLIDAY}>
-        {({ loading, error, data: { publicHoliday } }) => {
-          if (loading) {
-            return (
-              <div
-                className="container text-center"
-                style={{ paddingTop: '100px' }}
-              >
-                <div className="col-md-8 ml-auto mr-auto">
-                  <div className="loader1" />
-                </div>
-              </div>
-            );
-          }
-
-          if (error) {
-            console.log(error.message);
-            return (
-              <div
-                className="container text-center"
-                style={{ paddingTop: '100px' }}
-              >
-                <div className="col-md-8 ml-auto mr-auto">
-                  <p>Something went wrong!</p>
-                </div>
-              </div>
-            );
-          }
-          let list = publicHoliday.edges.map(a => a.node).sort((b, c) => {
-            return new Date(b.holidayDate) - new Date(c.holidayDate);
-          });
-
-          const public_holidays = list.map(item => {
-            let hDate = new Date(item.holidayDate);
-            let holiday_date = moment(hDate).format('dddd, Do MMMM YYYY');
-            return (
-              <li key={item.id}>
-                {holiday_date}
-                <button
-                  className="btn btn-link btn-sm text-danger"
-                  value={item.id}
-                  onClick={this.handleDelete}
-                >
-                  Delete
-                </button>
-              </li>
-            );
-          });
-
-          return (
-            <div className="DeletePublicHolidays">
-              <ul>{public_holidays}</ul>
-              <div className="text-danger">
-                <div>{this.state.errorMessage}</div>
-              </div>
-            </div>
-          );
-        }}
-      </Query>
-    );
-  }
-}
+      return (
+        <div className="DeletePublicHolidays">
+          <ul>{public_holidays}</ul>
+        </div>
+      );
+    }}
+  </Query>
+);
 
 type publicHolidayProps = {
-  addHoliday: Function,
-  deleteHoliday: Function
+  addHoliday: Function
 };
 
-export default (props: publicHolidayProps) => {
-  const { addHoliday, deleteHoliday } = props;
-
-  return (
-    <div className="card">
-      <div className="card-header">
-        <h4>Public Holidays</h4>
-      </div>
-      <div className=" card-body">
-        <div className="row">
-          <div className="col">
-            <DeletePublicHoliday deleteHoliday={deleteHoliday} />
-          </div>
-          <div className="col">
-            <AddPublicHoliday addHoliday={addHoliday} />
-          </div>
+export default (props: publicHolidayProps) => (
+  <div className="card">
+    <div className="card-header">
+      <h4>Public Holidays</h4>
+    </div>
+    <div className=" card-body">
+      <div className="row">
+        <div className="col">
+          <DeletePublicHoliday />
+        </div>
+        <div className="col">
+          <AddPublicHoliday addHoliday={props.addHoliday} />
         </div>
       </div>
     </div>
-  );
-};
+  </div>
+);
