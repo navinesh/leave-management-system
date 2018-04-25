@@ -127,7 +127,7 @@ class AddPublicHoliday extends Component<
   }
 }
 
-const DeletePublicHoliday = () => (
+const PublicHolidays = () => (
   <Query query={PUBLIC_HOLIDAY}>
     {({ loading, error, data: { publicHoliday } }) => {
       if (loading) {
@@ -164,21 +164,31 @@ const DeletePublicHoliday = () => (
       const public_holidays = list.map(item => {
         let hDate = new Date(item.holidayDate);
         let holiday_date = moment(hDate).format('dddd, Do MMMM YYYY');
+
         return (
           <li key={item.id}>
             {holiday_date}
             <Mutation
               mutation={DELETE_PUBLIC_HOLIDAY}
               variables={{ id: item.id }}
-              //refetchQueries={PUBLIC_HOLIDAY}
+              refetchQueries={[{ query: PUBLIC_HOLIDAY }]}
             >
               {(deletePublicHoliday, { loading, error }) => {
                 if (loading) {
-                  return <p>Loading...</p>;
+                  return (
+                    <span className="ml-2 font-italic text-primary">
+                      Loading...
+                    </span>
+                  );
                 }
 
                 if (error) {
-                  return <p>Error...</p>;
+                  console.log(error);
+                  return (
+                    <span className="ml-2 font-italic text-warning">
+                      Error...
+                    </span>
+                  );
                 }
 
                 return (
@@ -216,7 +226,7 @@ export default (props: publicHolidayProps) => (
     <div className=" card-body">
       <div className="row">
         <div className="col">
-          <DeletePublicHoliday />
+          <PublicHolidays />
         </div>
         <div className="col">
           <AddPublicHoliday addHoliday={props.addHoliday} />
