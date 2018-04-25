@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { gql } from 'apollo-boost';
-import { Query, graphql, compose } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 
 import {
   requestAdminLoginFromToken,
@@ -101,44 +101,10 @@ class PublicHoliday extends Component<Props> {
     return (
       <div className="container">
         {isAuthenticated ? (
-          <Query query={PUBLIC_HOLIDAY}>
-            {({ loading, error, data: { publicHoliday } }) => {
-              if (loading) {
-                return (
-                  <div
-                    className="container text-center"
-                    style={{ paddingTop: '100px' }}
-                  >
-                    <div className="col-md-8 ml-auto mr-auto">
-                      <div className="loader1" />
-                    </div>
-                  </div>
-                );
-              }
-
-              if (error) {
-                console.log(error.message);
-                return (
-                  <div
-                    className="container text-center"
-                    style={{ paddingTop: '100px' }}
-                  >
-                    <div className="col-md-8 ml-auto mr-auto">
-                      <p>Something went wrong!</p>
-                    </div>
-                  </div>
-                );
-              }
-
-              return (
-                <PublicHolidays
-                  publicHolidays={publicHoliday}
-                  addHoliday={addHoliday}
-                  deleteHoliday={deleteHoliday}
-                />
-              );
-            }}
-          </Query>
+          <PublicHolidays
+            addHoliday={addHoliday}
+            deleteHoliday={deleteHoliday}
+          />
         ) : (
           <Redirect to="/login" />
         )}
