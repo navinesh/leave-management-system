@@ -45,25 +45,12 @@ const ADD_PUBLIC_HOLIDAY = gql`
   }
 `;
 
-const DELETE_PUBLIC_HOLIDAY = gql`
-  mutation deletePublicholiday($id: String!) {
-    deletePublicholiday(id: $id) {
-      publicHoliday {
-        id
-        holidayDate
-      }
-    }
-  }
-`;
-
 type Props = {
   isAuthenticated: boolean,
   auth_info: Object,
   dispatch: Function,
   verifyAdminToken: Function,
-  publicHolidays: Object,
-  addHoliday: Function,
-  deleteHoliday: Function
+  addHoliday: Function
 };
 
 class PublicHoliday extends Component<Props> {
@@ -96,15 +83,12 @@ class PublicHoliday extends Component<Props> {
   };
 
   render() {
-    const { isAuthenticated, addHoliday, deleteHoliday } = this.props;
+    const { isAuthenticated, addHoliday } = this.props;
 
     return (
       <div className="container">
         {isAuthenticated ? (
-          <PublicHolidays
-            addHoliday={addHoliday}
-            deleteHoliday={deleteHoliday}
-          />
+          <PublicHolidays addHoliday={addHoliday} />
         ) : (
           <Redirect to="/login" />
         )}
@@ -132,15 +116,6 @@ export default compose(
     name: 'addHoliday',
     props: ({ addHoliday }) => ({
       addHoliday: holidayDate => addHoliday({ variables: { holidayDate } })
-    }),
-    options: {
-      refetchQueries: [{ query: PUBLIC_HOLIDAY }]
-    }
-  }),
-  graphql(DELETE_PUBLIC_HOLIDAY, {
-    name: 'deleteHoliday',
-    props: ({ deleteHoliday }) => ({
-      deleteHoliday: id => deleteHoliday({ variables: { id } })
     }),
     options: {
       refetchQueries: [{ query: PUBLIC_HOLIDAY }]
