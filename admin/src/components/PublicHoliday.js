@@ -112,7 +112,6 @@ class AddPublicHoliday extends Component<
               numberOfMonths={1}
               isOutsideRange={() => false}
               showClearDate
-              //withPortal
             />
             <button type="submit" className="btn btn-primary ml-3">
               Add
