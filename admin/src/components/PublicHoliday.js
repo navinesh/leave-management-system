@@ -126,6 +126,40 @@ class AddPublicHoliday extends Component<
   }
 }
 
+type deleteHolidayProps = {
+  id: string
+};
+
+const DeleteHoliday = (props: deleteHolidayProps) => (
+  <Mutation
+    mutation={DELETE_PUBLIC_HOLIDAY}
+    variables={{ id: props.id }}
+    refetchQueries={[{ query: PUBLIC_HOLIDAY }]}
+  >
+    {(deletePublicHoliday, { loading, error }) => {
+      if (loading) {
+        return (
+          <span className="ml-2 font-italic text-primary">Loading...</span>
+        );
+      }
+
+      if (error) {
+        console.log(error);
+        return <span className="ml-2 font-italic text-warning">Error...</span>;
+      }
+
+      return (
+        <button
+          className="btn btn-link btn-sm text-danger"
+          onClick={deletePublicHoliday}
+        >
+          Delete
+        </button>
+      );
+    }}
+  </Mutation>
+);
+
 const PublicHolidays = () => (
   <Query query={PUBLIC_HOLIDAY}>
     {({ loading, error, data: { publicHoliday } }) => {
@@ -167,39 +201,7 @@ const PublicHolidays = () => (
         return (
           <li key={item.id}>
             {holiday_date}
-            <Mutation
-              mutation={DELETE_PUBLIC_HOLIDAY}
-              variables={{ id: item.id }}
-              refetchQueries={[{ query: PUBLIC_HOLIDAY }]}
-            >
-              {(deletePublicHoliday, { loading, error }) => {
-                if (loading) {
-                  return (
-                    <span className="ml-2 font-italic text-primary">
-                      Loading...
-                    </span>
-                  );
-                }
-
-                if (error) {
-                  console.log(error);
-                  return (
-                    <span className="ml-2 font-italic text-warning">
-                      Error...
-                    </span>
-                  );
-                }
-
-                return (
-                  <button
-                    className="btn btn-link btn-sm text-danger"
-                    onClick={deletePublicHoliday}
-                  >
-                    Delete
-                  </button>
-                );
-              }}
-            </Mutation>
+            <DeleteHoliday id={item.id} />
           </li>
         );
       });
