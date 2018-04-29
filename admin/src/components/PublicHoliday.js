@@ -1,10 +1,10 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { gql } from 'apollo-boost';
 import { Query, Mutation } from 'react-apollo';
 
 import 'react-dates/initialize';
-import { SingleDatePicker } from 'react-dates';
+import { DayPickerSingleDateController } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
 
 const moment = require('moment');
@@ -22,6 +22,17 @@ const PUBLIC_HOLIDAY = gql`
   }
 `;
 
+const ADD_PUBLIC_HOLIDAY = gql`
+  mutation addPublicholiday($holidayDate: String!) {
+    addPublicholiday(holidayDate: $holidayDate) {
+      publicHoliday {
+        id
+        holidayDate
+      }
+    }
+  }
+`;
+
 const DELETE_PUBLIC_HOLIDAY = gql`
   mutation deletePublicholiday($id: String!) {
     deletePublicholiday(id: $id) {
@@ -33,14 +44,41 @@ const DELETE_PUBLIC_HOLIDAY = gql`
   }
 `;
 
+type addHolidayProps = {
+  holidayDate: any
+};
+
+const AddHoliday = (props: addHolidayProps) => (
+  <Mutation
+    mutation={ADD_PUBLIC_HOLIDAY}
+    variables={{ holidayDate: props.holidayDate }}
+    refetchQueries={[{ query: PUBLIC_HOLIDAY }]}
+  >
+    {(addPublicHoliday, { loading, error }) => {
+      if (loading) {
+        return <p className="font-italic text-primary mt-4">Loading...</p>;
+      }
+
+      if (error) {
+        return <p className="font-italic text-warning mt-4">Error...</p>;
+      }
+
+      return (
+        <button onClick={addPublicHoliday} className="btn btn-primary mt-4">
+          Add
+        </button>
+      );
+    }}
+  </Mutation>
+);
+
 type addPublicHolidayProps = {
-  addHoliday: Function
+  render: any
 };
 
 type addPublicHolidayState = {
   date: any,
   focused: any,
-  holidayDate: any,
   successMessage: string,
   errorMessage: string
 };
@@ -49,7 +87,6 @@ class AddPublicHoliday extends Component<
   addPublicHolidayProps,
   addPublicHolidayState
 > {
-  handleSubmit: Function;
   onDateChange: Function;
   onFocusChange: Function;
 
@@ -58,14 +95,12 @@ class AddPublicHoliday extends Component<
     this.state = {
       date: null,
       focused: false,
-      holidayDate: null,
       successMessage: '',
       errorMessage: ''
     };
 
     this.onDateChange = this.onDateChange.bind(this);
     this.onFocusChange = this.onFocusChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   onDateChange(e: Event) {
@@ -76,52 +111,17 @@ class AddPublicHoliday extends Component<
     this.setState({ focused: e.focused });
   }
 
-  handleSubmit(e: Event) {
-    e.preventDefault();
-
-    const holidayDate = this.state.date
-      ? moment(this.state.date).format('MM DD YYYY')
-      : null;
-
-    if (!holidayDate) {
-      this.setState({
-        errorMessage: 'You did not select any date!'
-      });
-
-      setTimeout(() => {
-        this.setState({ errorMessage: '' });
-      }, 3000);
-      return null;
-    }
-
-    this.props.addHoliday(holidayDate);
-
-    this.setState({ date: null, holidayDate: '' });
-  }
-
   render() {
     return (
-      <div className="AddPublicHoliday">
-        <form encType="multipart/form-data" onSubmit={this.handleSubmit}>
-          <div className="form-group">
-            <SingleDatePicker
-              date={this.state.date}
-              onDateChange={this.onDateChange}
-              focused={this.state.focused}
-              onFocusChange={this.onFocusChange}
-              numberOfMonths={1}
-              isOutsideRange={() => false}
-              showClearDate
-            />
-            <button type="submit" className="btn btn-primary ml-3">
-              Add
-            </button>
-          </div>
-        </form>
-        <div className="text-danger">
-          <div>{this.state.errorMessage}</div>
-        </div>
-      </div>
+      <Fragment>
+        <DayPickerSingleDateController
+          onDateChange={this.onDateChange}
+          onFocusChange={this.onFocusChange}
+          focused={this.state.focused}
+          date={this.state.date}
+        />
+        {this.props.render(this.state.date)}
+      </Fragment>
     );
   }
 }
@@ -213,11 +213,7 @@ const PublicHolidays = () => (
   </Query>
 );
 
-type publicHolidayProps = {
-  addHoliday: Function
-};
-
-export default (props: publicHolidayProps) => (
+export default () => (
   <div className="card">
     <div className="card-header">
       <h4>Public Holidays</h4>
@@ -228,7 +224,9 @@ export default (props: publicHolidayProps) => (
           <PublicHolidays />
         </div>
         <div className="col">
-          <AddPublicHoliday addHoliday={props.addHoliday} />
+          <AddPublicHoliday
+            render={date => <AddHoliday holidayDate={date} />}
+          />
         </div>
       </div>
     </div>
