@@ -21,36 +21,11 @@ const VERIFY_ADMIN_TOKEN = gql`
   }
 `;
 
-const PUBLIC_HOLIDAY = gql`
-  {
-    publicHoliday {
-      edges {
-        node {
-          id
-          holidayDate
-        }
-      }
-    }
-  }
-`;
-
-const ADD_PUBLIC_HOLIDAY = gql`
-  mutation addPublicholiday($holidayDate: String!) {
-    addPublicholiday(holidayDate: $holidayDate) {
-      publicHoliday {
-        id
-        holidayDate
-      }
-    }
-  }
-`;
-
 type Props = {
   isAuthenticated: boolean,
   auth_info: Object,
   dispatch: Function,
-  verifyAdminToken: Function,
-  addHoliday: Function
+  verifyAdminToken: Function
 };
 
 class PublicHoliday extends Component<Props> {
@@ -83,15 +58,11 @@ class PublicHoliday extends Component<Props> {
   };
 
   render() {
-    const { isAuthenticated, addHoliday } = this.props;
+    const { isAuthenticated } = this.props;
 
     return (
       <div className="container">
-        {isAuthenticated ? (
-          <PublicHolidays addHoliday={addHoliday} />
-        ) : (
-          <Redirect to="/login" />
-        )}
+        {isAuthenticated ? <PublicHolidays /> : <Redirect to="/login" />}
       </div>
     );
   }
@@ -111,14 +82,5 @@ export default compose(
   connect(mapStateToProps),
   graphql(VERIFY_ADMIN_TOKEN, {
     name: 'verifyAdminToken'
-  }),
-  graphql(ADD_PUBLIC_HOLIDAY, {
-    name: 'addHoliday',
-    props: ({ addHoliday }) => ({
-      addHoliday: holidayDate => addHoliday({ variables: { holidayDate } })
-    }),
-    options: {
-      refetchQueries: [{ query: PUBLIC_HOLIDAY }]
-    }
   })
 )(PublicHoliday);
