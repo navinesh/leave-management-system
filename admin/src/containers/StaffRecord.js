@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { gql } from 'apollo-boost';
-import { graphql, compose } from 'react-apollo';
+import { graphql, compose, Query } from 'react-apollo';
 
 import {
   requestAdminLoginFromToken,
@@ -55,7 +55,6 @@ const ARCHIVE_USER = gql`
 type Props = {
   isAuthenticated: boolean,
   auth_info: Object,
-  activeUsers: Object,
   dispatch: Function,
   isFetching: boolean,
   message: string,
@@ -97,7 +96,6 @@ class StaffRecord extends Component<Props> {
   render() {
     const {
       isAuthenticated,
-      activeUsers: { loading, error, refetch, findUsers: staff_record },
       dispatch,
       isFetching,
       message,
@@ -106,39 +104,50 @@ class StaffRecord extends Component<Props> {
       archiveMessage
     } = this.props;
 
-    if (loading) {
-      return (
-        <div className="text-center">
-          <div className="loader1" />
-        </div>
-      );
-    }
-
-    if (error) {
-      console.log(error);
-      return (
-        <div className="text-center">
-          <p>Something went wrong!</p>
-        </div>
-      );
-    }
-
     return (
       <div className="container">
         {isAuthenticated ? (
-          <StaffRecordList
-            staff_record={staff_record}
-            dispatch={dispatch}
-            isFetching={isFetching}
-            message={message}
-            onModifyUserRecordSubmit={modifyUserDetails =>
-              dispatch(submitModifyUserRecord(modifyUserDetails))
-            }
-            archiveUser={archiveUser}
-            isArchiveFetching={isArchiveFetching}
-            archiveMessage={archiveMessage}
-            refetch={refetch}
-          />
+          <Query query={ACTIVE_USERS} pollInterval={60000}>
+            {({
+              loading,
+              error,
+              data: { findUsers: staff_record },
+              refetch
+            }) => {
+              if (loading) {
+                return (
+                  <div className="text-center">
+                    <div className="loader1" />
+                  </div>
+                );
+              }
+
+              if (error) {
+                console.log(error);
+                return (
+                  <div className="text-center">
+                    <p>Something went wrong!</p>
+                  </div>
+                );
+              }
+
+              return (
+                <StaffRecordList
+                  staff_record={staff_record}
+                  dispatch={dispatch}
+                  isFetching={isFetching}
+                  message={message}
+                  onModifyUserRecordSubmit={modifyUserDetails =>
+                    dispatch(submitModifyUserRecord(modifyUserDetails))
+                  }
+                  archiveUser={archiveUser}
+                  isArchiveFetching={isArchiveFetching}
+                  archiveMessage={archiveMessage}
+                  refetch={refetch}
+                />
+              );
+            }}
+          </Query>
         ) : (
           <Redirect to="/login" />
         )}
@@ -168,10 +177,6 @@ export default compose(
   connect(mapStateToProps),
   graphql(VERIFY_ADMIN_TOKEN, {
     name: 'verifyAdminToken'
-  }),
-  graphql(ACTIVE_USERS, {
-    name: 'activeUsers',
-    options: { pollInterval: 60000 }
   }),
   graphql(ARCHIVE_USER, {
     name: 'archiveUser'
