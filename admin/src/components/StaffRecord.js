@@ -354,7 +354,6 @@ export default class StaffRecordList extends Component<Props, State> {
     const id = this.state.id;
 
     if (this.state.isEditing) {
-      console.log(this.state);
       return (
         <div>
           {staff_record.filter(e => e.id === id).map(record => {
