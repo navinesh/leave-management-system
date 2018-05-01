@@ -1,16 +1,42 @@
 // @flow
 import React, { Component } from 'react';
-
-import {
-  requestArchiveUser,
-  successArchiveUser,
-  failureArchiveUser
-} from '../actions/ArchiveUser';
+import { gql } from 'apollo-boost';
+import { Mutation } from 'react-apollo';
 
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const moment = require('moment');
+
+const ARCHIVE_USER = gql`
+  mutation archiveUser($id: String!, $archiveReason: String!) {
+    archiveUser(id: $id, archiveReason: $archiveReason) {
+      User {
+        isArchived
+      }
+      ok
+    }
+  }
+`;
+
+const ARCHIVED_USERS = gql`
+  {
+    findUsers(isArchived: "true") {
+      id
+      dbId
+      othernames
+      surname
+      email
+      annual
+      sick
+      christmas
+      bereavement
+      dateOfBirth
+      maternity
+      gender
+    }
+  }
+`;
 
 const Search = props => (
   <div className="col-md-3">
@@ -34,6 +60,41 @@ const ClearSearch = props => (
   </div>
 );
 
+const Archive = props => (
+  <Mutation
+    mutation={ARCHIVE_USER}
+    variables={{
+      id: props.id,
+      archiveReason: props.archiveReason
+    }}
+    refetchQueries={[{ query: ARCHIVED_USERS }]}
+  >
+    {(archiveUser, { loading, error, data }) => {
+      if (loading) {
+        return <p className="font-italic text-primary ml-3 mr-3">Loading...</p>;
+      }
+
+      if (error) {
+        return <p className="font-italic text-warning ml-3 mr-3">Error...</p>;
+      }
+
+      if (data) {
+        return (
+          <p className="font-italic text-primary ml-3 mr-3">
+            User has been archived successfully!
+          </p>
+        );
+      }
+
+      return (
+        <button onClick={archiveUser} className="btn btn-primary ml-2 mr-3">
+          Confirm
+        </button>
+      );
+    }}
+  </Mutation>
+);
+
 const ArchiveUser = props => (
   <div>
     {props.staff_record.filter(e => e.id === props.id).map(record => (
@@ -45,50 +106,33 @@ const ArchiveUser = props => (
           <div className="card">
             <h5 className="card-header">Archive</h5>
             <div className="card-body">
-              <form
-                encType="multipart/form-data"
-                onSubmit={props.handleArchiveSubmit}
-              >
-                <div className="row">
-                  <div className="col">
-                    <p>
-                      {record.othernames} {record.surname}
-                    </p>
-                    <div className="form-group">
-                      <label htmlFor="reason">Reason</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Enter reason"
-                        id="reason"
-                        onChange={props.handleArchiveReason}
-                      />
-                    </div>
+              <div className="row">
+                <div className="col">
+                  <p>
+                    {record.othernames} {record.surname}
+                  </p>
+                  <div className="form-group">
+                    <label htmlFor="reason">Reason</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Enter reason"
+                      id="reason"
+                      onChange={props.handleArchiveReason}
+                    />
                   </div>
                 </div>
-                <div className="row justify-content-end">
-                  <button
-                    type="button"
-                    className="btn btn-outline-primary"
-                    onClick={props.handleCloseArchive}
-                  >
-                    Close
-                  </button>
-                  <button type="submit" className="btn btn-primary ml-2 mr-3">
-                    Confirm
-                  </button>
-                </div>
-                <div className="text-primary text-center">
-                  {props.isArchiveFetching ? (
-                    <div className="loader2" />
-                  ) : (
-                    <p className="mt-3">{props.archiveMessage}</p>
-                  )}
-                </div>
-                <div className="text-danger text-center">
-                  {props.errorMessage}
-                </div>
-              </form>
+              </div>
+              <div className="row justify-content-end">
+                <button
+                  type="button"
+                  className="btn btn-outline-primary"
+                  onClick={props.handleCloseArchive}
+                >
+                  Close
+                </button>
+                <Archive id={props.id} archiveReason={props.archiveReason} />
+              </div>
             </div>
           </div>
         </div>
@@ -103,9 +147,6 @@ type Props = {
   onModifyUserRecordSubmit: Function,
   message: string,
   isFetching: boolean,
-  archiveUser: Function,
-  isArchiveFetching: boolean,
-  archiveMessage: string,
   refetch: Function
 };
 
@@ -295,23 +336,6 @@ export default class StaffRecordList extends Component<Props, State> {
     this.setState({ archiveReason: target.value });
   }
 
-  handleArchiveSubmit(e: Event) {
-    e.preventDefault();
-    const id = this.state.id;
-    const archiveReason = this.state.archiveReason;
-
-    if (!id || !archiveReason) {
-      this.setState({
-        errorMessage: 'Reason field is mandatory!'
-      });
-      return null;
-    }
-
-    this.setState({ errorMessage: '' });
-
-    this.archiveStaff();
-  }
-
   handleCloseArchive() {
     const { refetch } = this.props;
 
@@ -328,28 +352,8 @@ export default class StaffRecordList extends Component<Props, State> {
     });
   }
 
-  archiveStaff = async () => {
-    const { dispatch, archiveUser } = this.props;
-    const { id, archiveReason } = this.state;
-
-    try {
-      dispatch(requestArchiveUser());
-      await archiveUser({ variables: { id, archiveReason } });
-      dispatch(successArchiveUser('User record has been archived.'));
-    } catch (error) {
-      console.log(error);
-      dispatch(failureArchiveUser(error.message));
-    }
-  };
-
   render() {
-    const {
-      staff_record,
-      isFetching,
-      message,
-      isArchiveFetching,
-      archiveMessage
-    } = this.props;
+    const { staff_record, isFetching, message } = this.props;
 
     const id = this.state.id;
 
@@ -585,12 +589,9 @@ export default class StaffRecordList extends Component<Props, State> {
         <ArchiveUser
           staff_record={staff_record}
           id={id}
-          handleArchiveSubmit={this.handleArchiveSubmit}
           handleArchiveReason={this.handleArchiveReason}
+          archiveReason={this.state.archiveReason}
           handleCloseArchive={this.handleCloseArchive}
-          isArchiveFetching={isArchiveFetching}
-          archiveMessage={archiveMessage}
-          errorMessage={this.state.errorMessage}
         />
       );
     }
