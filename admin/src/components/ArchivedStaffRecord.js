@@ -1,13 +1,39 @@
 // @flow
 import React, { Component } from 'react';
-
-import {
-  requestUnArchiveUser,
-  successUnArchiveUser,
-  failureUnArchiveUser
-} from '../actions/UnArchiveUser';
+import { gql } from 'apollo-boost';
+import { Mutation } from 'react-apollo';
 
 const moment = require('moment');
+
+const UNARCHIVE_USER = gql`
+  mutation unArchiveUser($id: String!) {
+    unArchiveUser(id: $id) {
+      User {
+        isArchived
+      }
+      ok
+    }
+  }
+`;
+
+const ACTIVE_USERS = gql`
+  {
+    findUsers(isArchived: "false") {
+      id
+      dbId
+      othernames
+      surname
+      email
+      annual
+      sick
+      christmas
+      bereavement
+      dateOfBirth
+      maternity
+      gender
+    }
+  }
+`;
 
 const Search = props => (
   <div className="col-md-3">
@@ -31,6 +57,38 @@ const ClearSearch = props => (
   </div>
 );
 
+const UnArchive = props => (
+  <Mutation
+    mutation={UNARCHIVE_USER}
+    variables={{ id: props.id }}
+    refetchQueries={[{ query: ACTIVE_USERS }]}
+  >
+    {(unArchiveUser, { loading, error, data }) => {
+      if (loading) {
+        return <p className="font-italic text-primary ml-3 mr-3">Loading...</p>;
+      }
+
+      if (error) {
+        return <p className="font-italic text-warning ml-3 mr-3">Error...</p>;
+      }
+
+      if (data) {
+        return (
+          <p className="font-italic text-primary ml-3 mr-3">
+            User has been unarchived successfully!
+          </p>
+        );
+      }
+
+      return (
+        <button onClick={unArchiveUser} className="btn btn-primary ml-2 mr-3">
+          Yes
+        </button>
+      );
+    }}
+  </Mutation>
+);
+
 const UnArchiveLeave = props => (
   <div className="col-md-10 ml-auto mr-auto">
     {props.archived_staff_record.filter(e => e.id === props.id).map(record => (
@@ -42,35 +100,23 @@ const UnArchiveLeave = props => (
           <div className="card">
             <h5 className="card-header">Unarchive</h5>
             <div className="card-body">
-              <form encType="multipart/form-data" onSubmit={props.handleSubmit}>
-                <div className="row">
-                  <div className="col">
-                    <p>
-                      {record.othernames} {record.surname}
-                    </p>
-                  </div>
-                </div>
-                <div className="row justify-content-end">
-                  <button
-                    type="button"
-                    className="btn btn-outline-primary"
-                    onClick={props.handleCloseUnarchive}
-                  >
-                    Close
-                  </button>
-                  <button type="submit" className="btn btn-primary ml-3 mr-3">
-                    Yes
-                  </button>
-                </div>
-                {props.isUnArchiveFetching ? (
-                  <div className="loader2" />
-                ) : (
-                  <p className="text-primary text-center mt-3">
-                    {props.unArchiveMessage}
+              <div className="row">
+                <div className="col">
+                  <p>
+                    {record.othernames} {record.surname}
                   </p>
-                )}
-                <div className="text-danger">{props.errorMessage}</div>
-              </form>
+                </div>
+              </div>
+              <div className="row justify-content-end">
+                <button
+                  type="button"
+                  className="btn btn-outline-primary"
+                  onClick={props.handleCloseUnarchive}
+                >
+                  Close
+                </button>
+                <UnArchive id={props.id} />
+              </div>
             </div>
           </div>
         </div>
@@ -82,9 +128,6 @@ const UnArchiveLeave = props => (
 type Props = {
   archived_staff_record: Array<any>,
   dispatch: Function,
-  unArchiveUser: Function,
-  isUnArchiveFetching: Function,
-  unArchiveMessage: string,
   refetch: Function
 };
 
@@ -114,7 +157,6 @@ export default class ArchivedStaffRecordList extends Component<Props, State> {
     this.handleSearchChange = this.handleSearchChange.bind(this);
     this.handleClearSearch = this.handleClearSearch.bind(this);
     this.handleOpenUnarchive = this.handleOpenUnarchive.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
     this.handleCloseUnarchive = this.handleCloseUnarchive.bind(this);
   }
 
@@ -133,20 +175,6 @@ export default class ArchivedStaffRecordList extends Component<Props, State> {
     });
   }
 
-  handleSubmit(e: Event) {
-    e.preventDefault();
-    const id = this.state.id;
-
-    if (!id) {
-      this.setState({
-        errorMessage: 'Could not fetch ID!'
-      });
-      return null;
-    }
-
-    this.unArchiveStaff();
-  }
-
   handleCloseUnarchive() {
     const { refetch } = this.props;
 
@@ -156,37 +184,15 @@ export default class ArchivedStaffRecordList extends Component<Props, State> {
     this.props.dispatch({ type: 'CLEAR_UNARCHIVE_MESSAGE' });
   }
 
-  unArchiveStaff = async () => {
-    const { dispatch, unArchiveUser } = this.props;
-    const { id } = this.state;
-
-    try {
-      dispatch(requestUnArchiveUser());
-      await unArchiveUser({ variables: { id } });
-      dispatch(successUnArchiveUser('User record has been unarchived.'));
-    } catch (error) {
-      console.log(error);
-      dispatch(failureUnArchiveUser(error.message));
-    }
-  };
-
   render() {
-    const {
-      archived_staff_record,
-      isUnArchiveFetching,
-      unArchiveMessage
-    } = this.props;
+    const { archived_staff_record } = this.props;
 
     if (this.state.isUnarchive) {
       return (
         <UnArchiveLeave
           archived_staff_record={this.props.archived_staff_record}
           id={this.state.id}
-          handleSubmit={this.handleSubmit}
           handleCloseUnarchive={this.handleCloseUnarchive}
-          isUnArchiveFetching={isUnArchiveFetching}
-          unArchiveMessage={unArchiveMessage}
-          errorMessage={this.state.errorMessage}
         />
       );
     }
