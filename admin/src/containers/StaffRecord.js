@@ -37,6 +37,7 @@ const ACTIVE_USERS = gql`
       dateOfBirth
       maternity
       gender
+      designation
     }
   }
 `;
