@@ -166,7 +166,6 @@ export default class StaffRecordList extends Component<Props, State> {
   handleEditReason: Function;
   handleSubmit: Function;
   handleArchiveReason: Function;
-  handleArchiveSubmit: Function;
   handleOpenEdit: Function;
   handleCloseEdit: Function;
   handleOpenArchive: Function;
@@ -208,7 +207,6 @@ export default class StaffRecordList extends Component<Props, State> {
     this.handleCloseEdit = this.handleCloseEdit.bind(this);
     this.handleOpenArchive = this.handleOpenArchive.bind(this);
     this.handleArchiveReason = this.handleArchiveReason.bind(this);
-    this.handleArchiveSubmit = this.handleArchiveSubmit.bind(this);
     this.handleCloseArchive = this.handleCloseArchive.bind(this);
   }
 
@@ -337,16 +335,12 @@ export default class StaffRecordList extends Component<Props, State> {
   }
 
   handleCloseArchive() {
-    const { refetch } = this.props;
-
     if (this.state.archiveReason) {
-      refetch();
-      this.props.dispatch({ type: 'CLEAR_ARCHIVE_MESSAGE' });
+      this.props.refetch();
     }
 
     this.setState({
       isArchive: !this.state.isArchive,
-      errorMessage: '',
       archiveReason: '',
       id: ''
     });
