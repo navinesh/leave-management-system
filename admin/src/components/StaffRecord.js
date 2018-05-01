@@ -80,7 +80,7 @@ const Archive = props => (
 
       if (data) {
         return (
-          <p className="font-italic text-primary ml-3 mr-3">
+          <p className="font-italic text-success ml-3 mr-3">
             User has been archived successfully!
           </p>
         );
@@ -154,7 +154,7 @@ type State = {
   errorMessage: string,
   id: string,
   dob: any,
-  archiveReason: string,
+  archiveReason: any,
   isEditing: boolean,
   isArchive: boolean,
   editReason: string,
@@ -191,7 +191,7 @@ export default class StaffRecordList extends Component<Props, State> {
       errorMessage: '',
       id: '',
       dob: null,
-      archiveReason: '',
+      archiveReason: null,
       editReason: '',
       isEditing: false,
       isArchive: false,
@@ -341,7 +341,7 @@ export default class StaffRecordList extends Component<Props, State> {
 
     this.setState({
       isArchive: !this.state.isArchive,
-      archiveReason: '',
+      archiveReason: null,
       id: ''
     });
   }
