@@ -12,7 +12,7 @@ const ARCHIVE_USER = gql`
   mutation archiveUser($id: String!, $archiveReason: String!) {
     archiveUser(id: $id, archiveReason: $archiveReason) {
       User {
-        isArchived
+        isArchivingd
       }
       ok
     }
@@ -21,7 +21,7 @@ const ARCHIVE_USER = gql`
 
 const ARCHIVED_USERS = gql`
   {
-    findUsers(isArchived: "true") {
+    findUsers(isArchivingd: "true") {
       id
       dbId
       othernames
@@ -156,7 +156,7 @@ type State = {
   dob: any,
   archiveReason: any,
   isEditing: boolean,
-  isArchive: boolean,
+  isArchiving: boolean,
   editReason: string,
   searchTerm: string
 };
@@ -194,7 +194,7 @@ export default class StaffRecordList extends Component<Props, State> {
       archiveReason: null,
       editReason: '',
       isEditing: false,
-      isArchive: false,
+      isArchiving: false,
       searchTerm: ''
     };
 
@@ -325,7 +325,7 @@ export default class StaffRecordList extends Component<Props, State> {
 
   handleOpenArchive(e: SyntheticEvent<HTMLElement>) {
     this.setState({
-      isArchive: !this.state.isArchive,
+      isArchiving: !this.state.isArchiving,
       id: e.currentTarget.id
     });
   }
@@ -340,7 +340,7 @@ export default class StaffRecordList extends Component<Props, State> {
     }
 
     this.setState({
-      isArchive: !this.state.isArchive,
+      isArchiving: !this.state.isArchiving,
       archiveReason: null,
       id: ''
     });
@@ -578,7 +578,7 @@ export default class StaffRecordList extends Component<Props, State> {
       );
     }
 
-    if (this.state.isArchive) {
+    if (this.state.isArchiving) {
       return (
         <ArchiveUser
           staff_record={staff_record}
