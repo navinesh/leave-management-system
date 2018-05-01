@@ -65,23 +65,23 @@ const UnArchive = props => (
   >
     {(unArchiveUser, { loading, error, data }) => {
       if (loading) {
-        return <p className="font-italic text-primary ml-3 mr-3">Loading...</p>;
+        return <p className="font-italic text-primary mr-3">Loading...</p>;
       }
 
       if (error) {
-        return <p className="font-italic text-warning ml-3 mr-3">Error...</p>;
+        return <p className="font-italic text-warning mr-3">Error...</p>;
       }
 
       if (data) {
         return (
-          <p className="font-italic text-success ml-3 mr-3">
-            User has been unarchived successfully!
+          <p className="font-italic text-success mr-3">
+            User has been unarchived!
           </p>
         );
       }
 
       return (
-        <button onClick={unArchiveUser} className="btn btn-primary ml-2 mr-3">
+        <button onClick={unArchiveUser} className="btn btn-primary mr-3">
           Yes
         </button>
       );
@@ -108,6 +108,7 @@ const UnArchiveLeave = props => (
                 </div>
               </div>
               <div className="row justify-content-end">
+                <UnArchive id={props.id} />
                 <button
                   type="button"
                   className="btn btn-outline-primary"
@@ -115,7 +116,6 @@ const UnArchiveLeave = props => (
                 >
                   Close
                 </button>
-                <UnArchive id={props.id} />
               </div>
             </div>
           </div>
