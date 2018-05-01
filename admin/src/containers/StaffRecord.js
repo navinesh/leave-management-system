@@ -41,17 +41,6 @@ const ACTIVE_USERS = gql`
   }
 `;
 
-const ARCHIVE_USER = gql`
-  mutation archiveUser($id: String!, $archiveReason: String!) {
-    archiveUser(id: $id, archiveReason: $archiveReason) {
-      User {
-        isArchived
-      }
-      ok
-    }
-  }
-`;
-
 type Props = {
   isAuthenticated: boolean,
   auth_info: Object,
@@ -94,20 +83,12 @@ class StaffRecord extends Component<Props> {
   };
 
   render() {
-    const {
-      isAuthenticated,
-      dispatch,
-      isFetching,
-      message,
-      archiveUser,
-      isArchiveFetching,
-      archiveMessage
-    } = this.props;
+    const { isAuthenticated, dispatch, isFetching, message } = this.props;
 
     return (
       <div className="container">
         {isAuthenticated ? (
-          <Query query={ACTIVE_USERS} pollInterval={60000}>
+          <Query query={ACTIVE_USERS}>
             {({
               loading,
               error,
@@ -140,9 +121,6 @@ class StaffRecord extends Component<Props> {
                   onModifyUserRecordSubmit={modifyUserDetails =>
                     dispatch(submitModifyUserRecord(modifyUserDetails))
                   }
-                  archiveUser={archiveUser}
-                  isArchiveFetching={isArchiveFetching}
-                  archiveMessage={archiveMessage}
                   refetch={refetch}
                 />
               );
@@ -157,19 +135,16 @@ class StaffRecord extends Component<Props> {
 }
 
 const mapStateToProps = state => {
-  const { adminAuth, modifyUser, archiveUser } = state;
+  const { adminAuth, modifyUser } = state;
 
   const { auth_info, isAuthenticated } = adminAuth;
   const { isFetching, message } = modifyUser;
-  const { isArchiveFetching, archiveMessage } = archiveUser;
 
   return {
     auth_info,
     isAuthenticated,
     isFetching,
-    message,
-    isArchiveFetching,
-    archiveMessage
+    message
   };
 };
 
@@ -177,8 +152,5 @@ export default compose(
   connect(mapStateToProps),
   graphql(VERIFY_ADMIN_TOKEN, {
     name: 'verifyAdminToken'
-  }),
-  graphql(ARCHIVE_USER, {
-    name: 'archiveUser'
   })
 )(StaffRecord);
