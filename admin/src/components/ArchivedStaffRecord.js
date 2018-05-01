@@ -74,7 +74,7 @@ const UnArchive = props => (
 
       if (data) {
         return (
-          <p className="font-italic text-primary ml-3 mr-3">
+          <p className="font-italic text-success ml-3 mr-3">
             User has been unarchived successfully!
           </p>
         );
@@ -176,12 +176,9 @@ export default class ArchivedStaffRecordList extends Component<Props, State> {
   }
 
   handleCloseUnarchive() {
-    const { refetch } = this.props;
-
     this.setState({ isUnarchive: false, errorMessage: '', id: '' });
 
-    refetch();
-    this.props.dispatch({ type: 'CLEAR_UNARCHIVE_MESSAGE' });
+    this.props.refetch();
   }
 
   render() {
