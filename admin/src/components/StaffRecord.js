@@ -153,6 +153,7 @@ type Props = {
 type State = {
   errorMessage: string,
   id: string,
+  dbid: number,
   dob: any,
   archiveReason: any,
   isEditing: boolean,
@@ -190,6 +191,7 @@ export default class StaffRecordList extends Component<Props, State> {
     this.state = {
       errorMessage: '',
       id: '',
+      dbid: 0,
       dob: null,
       archiveReason: null,
       editReason: '',
@@ -221,7 +223,8 @@ export default class StaffRecordList extends Component<Props, State> {
   handleOpenEdit(e: SyntheticEvent<HTMLElement>) {
     this.setState({
       isEditing: !this.state.isEditing,
-      id: e.currentTarget.id
+      id: e.currentTarget.id,
+      dbid: e.currentTarget.value
     });
   }
 
@@ -235,7 +238,7 @@ export default class StaffRecordList extends Component<Props, State> {
 
   handleSubmit(e: Event) {
     e.preventDefault();
-    const id = this.state.id;
+    const dbid = this.state.dbid;
     const surname = this.surname.value;
     const othernames = this.othernames.value;
     const staffEmail = this.email.value;
@@ -268,7 +271,7 @@ export default class StaffRecordList extends Component<Props, State> {
 
     // verify data
     if (
-      !id ||
+      !dbid ||
       !surname ||
       !othernames ||
       !staffEmail ||
@@ -289,7 +292,7 @@ export default class StaffRecordList extends Component<Props, State> {
 
     // prepare data to post to database
     const modifyUserDetails = {
-      id: id,
+      dbid: dbid,
       surname: surname,
       othernames: othernames,
       staffEmail: staffEmail,
@@ -314,7 +317,8 @@ export default class StaffRecordList extends Component<Props, State> {
       isEditing: !this.state.isEditing,
       errorMessage: '',
       dob: null,
-      id: ''
+      id: '',
+      dbid: 0
     });
 
     if (this.state.editReason) {
@@ -511,7 +515,7 @@ export default class StaffRecordList extends Component<Props, State> {
                               <label htmlFor="dob">Date of birth</label>
                               <input
                                 type="hidden"
-                                defaultValue={record.date_of_birth}
+                                defaultValue={record.dateOfBirth}
                                 ref={input => (this.dob = input)}
                               />
                               <DatePicker
@@ -657,6 +661,7 @@ export default class StaffRecordList extends Component<Props, State> {
                     className="btn btn-link text-primary pl-0"
                     onClick={this.handleOpenEdit}
                     id={record.id}
+                    value={record.dbId}
                   >
                     Edit
                   </button>
