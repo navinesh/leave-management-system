@@ -40,26 +40,12 @@ const ARCHIVED_USERS = gql`
   }
 `;
 
-const UNARCHIVE_USER = gql`
-  mutation unArchiveUser($id: String!) {
-    unArchiveUser(id: $id) {
-      User {
-        isArchived
-      }
-      ok
-    }
-  }
-`;
-
 type Props = {
   isAuthenticated: boolean,
   auth_info: Object,
   verifyAdminToken: Function,
   dispatch: Function,
-  archivedUsers: Object,
-  unArchiveUser: Function,
-  isUnArchiveFetching: Function,
-  unArchiveMessage: string
+  archivedUsers: Object
 };
 
 class ArchivedStaffRecord extends Component<Props> {
@@ -95,10 +81,7 @@ class ArchivedStaffRecord extends Component<Props> {
     const {
       isAuthenticated,
       archivedUsers: { loading, error, findUsers, refetch },
-      dispatch,
-      unArchiveUser,
-      isUnArchiveFetching,
-      unArchiveMessage
+      dispatch
     } = this.props;
 
     if (loading) {
@@ -124,9 +107,6 @@ class ArchivedStaffRecord extends Component<Props> {
           <ArchivedStaffRecordList
             archived_staff_record={findUsers}
             dispatch={dispatch}
-            unArchiveUser={unArchiveUser}
-            isUnArchiveFetching={isUnArchiveFetching}
-            unArchiveMessage={unArchiveMessage}
             refetch={refetch}
           />
         ) : (
@@ -138,16 +118,12 @@ class ArchivedStaffRecord extends Component<Props> {
 }
 
 const mapStateToProps = state => {
-  const { adminAuth, unArchiveUser } = state;
+  const { adminAuth } = state;
 
   const { auth_info, isAuthenticated } = adminAuth;
-  const { isUnArchiveFetching, unArchiveMessage } = unArchiveUser;
-
   return {
     auth_info,
-    isAuthenticated,
-    isUnArchiveFetching,
-    unArchiveMessage
+    isAuthenticated
   };
 };
 
@@ -159,6 +135,5 @@ export default compose(
   graphql(ARCHIVED_USERS, {
     name: 'archivedUsers',
     options: { pollInterval: 60000 }
-  }),
-  graphql(UNARCHIVE_USER, { name: 'unArchiveUser' })
+  })
 )(ArchivedStaffRecord);
