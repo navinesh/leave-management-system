@@ -71,23 +71,23 @@ const Archive = props => (
   >
     {(archiveUser, { loading, error, data }) => {
       if (loading) {
-        return <p className="font-italic text-primary ml-3 mr-3">Loading...</p>;
+        return <p className="font-italic text-primary mr-3">Loading...</p>;
       }
 
       if (error) {
-        return <p className="font-italic text-warning ml-3 mr-3">Error...</p>;
+        return <p className="font-italic text-warning mr-3">Error...</p>;
       }
 
       if (data) {
         return (
-          <p className="font-italic text-success ml-3 mr-3">
-            User has been archived successfully!
+          <p className="font-italic text-success mr-3">
+            User has been archived!
           </p>
         );
       }
 
       return (
-        <button onClick={archiveUser} className="btn btn-primary ml-2 mr-3">
+        <button onClick={archiveUser} className="btn btn-primary mr-3">
           Confirm
         </button>
       );
@@ -124,6 +124,7 @@ const ArchiveUser = props => (
                 </div>
               </div>
               <div className="row justify-content-end">
+                <Archive id={props.id} archiveReason={props.archiveReason} />
                 <button
                   type="button"
                   className="btn btn-outline-primary"
@@ -131,7 +132,6 @@ const ArchiveUser = props => (
                 >
                   Close
                 </button>
-                <Archive id={props.id} archiveReason={props.archiveReason} />
               </div>
             </div>
           </div>
