@@ -12,7 +12,7 @@ const ARCHIVE_USER = gql`
   mutation archiveUser($id: String!, $archiveReason: String!) {
     archiveUser(id: $id, archiveReason: $archiveReason) {
       User {
-        isArchivingd
+        isArchived
       }
       ok
     }
@@ -21,7 +21,7 @@ const ARCHIVE_USER = gql`
 
 const ARCHIVED_USERS = gql`
   {
-    findUsers(isArchivingd: "true") {
+    findUsers(isArchived: "true") {
       id
       dbId
       othernames
