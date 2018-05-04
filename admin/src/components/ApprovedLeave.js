@@ -579,7 +579,7 @@ export default class ApprovedLeaveList extends Component<Props, State> {
                         </button>
                       </div>
                       <div className="text-primary text-center">
-                        {this.props.isCanceLeaveFetching ? (
+                        {this.props.isCancelLeaveFetching ? (
                           <div className="loader2" />
                         ) : (
                           <p className="mt-3">
