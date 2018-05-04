@@ -44,7 +44,7 @@ type Props = {
   isAuthenticated: boolean,
   auth_info: Object,
   verifyAdminToken: Function,
-  archivedUsers: Object
+  dispatch: Function
 };
 
 class ArchivedStaffRecord extends Component<Props> {
@@ -77,7 +77,7 @@ class ArchivedStaffRecord extends Component<Props> {
   };
 
   render() {
-    const { isAuthenticated } = this.props;
+    const { isAuthenticated, dispatch } = this.props;
 
     return (
       <div className="container">
@@ -110,6 +110,7 @@ class ArchivedStaffRecord extends Component<Props> {
                 <ArchivedStaffRecordList
                   archived_staff_record={staff_record}
                   refetch={refetch}
+                  dispatch={dispatch}
                 />
               );
             }}
