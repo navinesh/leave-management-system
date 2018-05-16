@@ -39,20 +39,6 @@ import {
 } from '../actions/ModifyRecord';
 
 import {
-  ARCHIVE_USER_REQUEST,
-  ARCHIVE_USER_SUCCESS,
-  ARCHIVE_USER_FAILURE,
-  CLEAR_ARCHIVE_MESSAGE
-} from '../actions/ArchiveUser';
-
-import {
-  UNARCHIVE_USER_REQUEST,
-  UNARCHIVE_USER_SUCCESS,
-  UNARCHIVE_USER_FAILURE,
-  CLEAR_UNARCHIVE_MESSAGE
-} from '../actions/UnArchiveUser';
-
-import {
   APPROVE_LEAVE_REQUEST,
   APPROVE_LEAVE_SUCCESS,
   APPROVE_LEAVE_ERROR,
@@ -229,79 +215,6 @@ const modifyUser = (
   }
 };
 
-type archivedUserState = {
-  isArchiveFetching: boolean,
-  archiveMessage: string
-};
-
-const archiveUser = (
-  state: archivedUserState = { isArchiveFetching: false, archiveMessage: '' },
-  action
-) => {
-  switch (action.type) {
-    case ARCHIVE_USER_REQUEST:
-      return { ...state, isArchiveFetching: true };
-    case ARCHIVE_USER_SUCCESS:
-      return {
-        ...state,
-        isArchiveFetching: false,
-        archiveMessage: action.message
-      };
-    case ARCHIVE_USER_FAILURE:
-      return {
-        ...state,
-        isArchiveFetching: false,
-        archiveMessage: action.message
-      };
-    case CLEAR_ARCHIVE_MESSAGE:
-      return {
-        ...state,
-        isArchiveFetching: false,
-        archiveMessage: ''
-      };
-    default:
-      return state;
-  }
-};
-
-type unArchivedUserState = {
-  isUnArchiveFetching: boolean,
-  unArchiveMessage: string
-};
-
-const unArchiveUser = (
-  state: unArchivedUserState = {
-    isUnArchiveFetching: false,
-    unArchiveMessage: ''
-  },
-  action
-) => {
-  switch (action.type) {
-    case UNARCHIVE_USER_REQUEST:
-      return { ...state, isUnArchiveFetching: true };
-    case UNARCHIVE_USER_SUCCESS:
-      return {
-        ...state,
-        isUnArchiveFetching: false,
-        unArchiveMessage: action.message
-      };
-    case UNARCHIVE_USER_FAILURE:
-      return {
-        ...state,
-        isUnArchiveFetching: false,
-        unArchiveMessage: action.message
-      };
-    case CLEAR_UNARCHIVE_MESSAGE:
-      return {
-        ...state,
-        isUnArchiveFetching: false,
-        unArchiveMessage: ''
-      };
-    default:
-      return state;
-  }
-};
-
 type approveLeaveState = {
   isApproveLeaveFetching: boolean,
   approveLeavemessage: string
@@ -453,8 +366,6 @@ const rootReducer = combineReducers({
   resetPassword,
   addUser,
   modifyUser,
-  archiveUser,
-  unArchiveUser,
   approveLeave,
   declineLeave,
   editLeave,
