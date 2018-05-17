@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { gql } from 'apollo-boost';
-import { graphql, compose } from 'react-apollo';
+import { graphql, compose, Query } from 'react-apollo';
 
 import {
   requestAdminLoginFromToken,
@@ -42,8 +42,7 @@ type Props = {
   isAuthenticated: boolean,
   auth_info: Object,
   dispatch: Function,
-  verifyAdminToken: Function,
-  sickRecord: Object
+  verifyAdminToken: Function
 };
 
 class SickSheetRecord extends Component<Props> {
@@ -76,32 +75,37 @@ class SickSheetRecord extends Component<Props> {
   };
 
   render() {
-    const {
-      isAuthenticated,
-      sickRecord: { loading, error, findSicksheetRecord: sickSheet_items }
-    } = this.props;
-
-    if (loading) {
-      return (
-        <div className="text-center">
-          <div className="loader1" />
-        </div>
-      );
-    }
-
-    if (error) {
-      console.log(error);
-      return (
-        <div className="text-center">
-          <p>Something went wrong!</p>
-        </div>
-      );
-    }
+    const { isAuthenticated } = this.props;
 
     return (
       <div className="container">
         {isAuthenticated ? (
-          <SickSheetList sickSheet_items={sickSheet_items} />
+          <Query query={SICK_RECORD} pollInterval={60000}>
+            {({
+              loading,
+              error,
+              data: { findSicksheetRecord: sickSheet_items }
+            }) => {
+              if (loading) {
+                return (
+                  <div className="text-center">
+                    <div className="loader1" />
+                  </div>
+                );
+              }
+
+              if (error) {
+                console.log(error);
+                return (
+                  <div className="text-center">
+                    <p>Something went wrong!</p>
+                  </div>
+                );
+              }
+
+              return <SickSheetList sickSheet_items={sickSheet_items} />;
+            }}
+          </Query>
         ) : (
           <Redirect to="/login" />
         )}
@@ -121,9 +125,5 @@ export default compose(
   connect(mapStateToProps),
   graphql(VERIFY_ADMIN_TOKEN, {
     name: 'verifyAdminToken'
-  }),
-  graphql(SICK_RECORD, {
-    name: 'sickRecord',
-    options: { pollInterval: 60000 }
   })
 )(SickSheetRecord);
