@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { gql } from 'apollo-boost';
-import { graphql, compose } from 'react-apollo';
+import { graphql, compose, Query } from 'react-apollo';
 
 import {
   requestAdminLoginFromToken,
@@ -60,8 +60,6 @@ const PUBLIC_HOLIDAY = gql`
 type Props = {
   isAuthenticated: boolean,
   auth_info: Object,
-  leaveRecord: Object,
-  publicHolidays: Object,
   dispatch: Function,
   isApproveLeaveFetching: boolean,
   approveLeavemessage: string,
@@ -105,12 +103,6 @@ class PendingLeave extends Component<Props> {
   render() {
     const {
       isAuthenticated,
-      leaveRecord: { loading, error, findLeaveRecord: pending_items, refetch },
-      publicHolidays: {
-        loading: holidayLoading,
-        error: holidayError,
-        publicHoliday
-      },
       dispatch,
       isApproveLeaveFetching,
       approveLeavemessage,
@@ -120,47 +112,66 @@ class PendingLeave extends Component<Props> {
       declineLeaveMessage
     } = this.props;
 
-    if (loading || holidayLoading) {
-      return (
-        <div className="text-center">
-          <div className="loader1" />
-        </div>
-      );
-    }
-
-    if (error || holidayError) {
-      console.log(error.message, holidayError.message);
-      return (
-        <div className="text-center">
-          <p>Something went wrong!</p>
-        </div>
-      );
-    }
-
     return (
       <div className="container">
         {isAuthenticated ? (
-          <PendingLeaveList
-            pending_items={pending_items}
-            public_holiday={publicHoliday}
-            refetch={refetch}
-            dispatch={dispatch}
-            isApproveLeaveFetching={isApproveLeaveFetching}
-            approveLeavemessage={approveLeavemessage}
-            isEditLeaveFetching={isEditLeaveFetching}
-            editLeaveMessage={editLeaveMessage}
-            isDeclineLeaveFetching={isDeclineLeaveFetching}
-            declineLeaveMessage={declineLeaveMessage}
-            onApproveLeaveSubmit={approveLeaveData =>
-              dispatch(submitApproveLeave(approveLeaveData))
-            }
-            onDeclineLeaveSubmit={declineLeaveData =>
-              dispatch(submitDeclineLeave(declineLeaveData))
-            }
-            onEditLeaveSubmit={editLeaveData =>
-              dispatch(submitEditLeave(editLeaveData))
-            }
-          />
+          <Query query={LEAVE_RECORD} pollInterval={60000}>
+            {({
+              loading,
+              error,
+              data: { findLeaveRecord: pending_items },
+              refetch
+            }) => (
+              <Query query={PUBLIC_HOLIDAY}>
+                {({
+                  loading: holidayLoading,
+                  error: holidayError,
+                  data: { publicHoliday }
+                }) => {
+                  if (loading || holidayLoading) {
+                    return (
+                      <div className="text-center">
+                        <div className="loader1" />
+                      </div>
+                    );
+                  }
+
+                  if (error || holidayError) {
+                    console.log(error || holidayError);
+                    return (
+                      <div className="text-center">
+                        <p>Something went wrong!</p>
+                      </div>
+                    );
+                  }
+
+                  return (
+                    <PendingLeaveList
+                      pending_items={pending_items}
+                      public_holiday={publicHoliday}
+                      refetch={refetch}
+                      dispatch={dispatch}
+                      isApproveLeaveFetching={isApproveLeaveFetching}
+                      approveLeavemessage={approveLeavemessage}
+                      isEditLeaveFetching={isEditLeaveFetching}
+                      editLeaveMessage={editLeaveMessage}
+                      isDeclineLeaveFetching={isDeclineLeaveFetching}
+                      declineLeaveMessage={declineLeaveMessage}
+                      onApproveLeaveSubmit={approveLeaveData =>
+                        dispatch(submitApproveLeave(approveLeaveData))
+                      }
+                      onDeclineLeaveSubmit={declineLeaveData =>
+                        dispatch(submitDeclineLeave(declineLeaveData))
+                      }
+                      onEditLeaveSubmit={editLeaveData =>
+                        dispatch(submitEditLeave(editLeaveData))
+                      }
+                    />
+                  );
+                }}
+              </Query>
+            )}
+          </Query>
         ) : (
           <Redirect to="/login" />
         )}
@@ -190,10 +201,5 @@ const mapStateToProps = state => {
 
 export default compose(
   connect(mapStateToProps),
-  graphql(VERIFY_ADMIN_TOKEN, { name: 'verifyAdminToken' }),
-  graphql(LEAVE_RECORD, {
-    name: 'leaveRecord',
-    options: { pollInterval: 60000 }
-  }),
-  graphql(PUBLIC_HOLIDAY, { name: 'publicHolidays' })
+  graphql(VERIFY_ADMIN_TOKEN, { name: 'verifyAdminToken' })
 )(PendingLeave);
