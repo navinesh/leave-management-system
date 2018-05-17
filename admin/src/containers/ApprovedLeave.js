@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { gql } from 'apollo-boost';
-import { graphql, compose } from 'react-apollo';
+import { graphql, compose, Query } from 'react-apollo';
 
 import {
   requestAdminLoginFromToken,
@@ -62,8 +62,6 @@ const PUBLIC_HOLIDAY = gql`
 type Props = {
   isAuthenticated: boolean,
   auth_info: Object,
-  approvedRecord: Object,
-  publicHolidays: Object,
   isFetching: boolean,
   dispatch: Function,
   isEditLeaveFetching: boolean,
@@ -105,17 +103,6 @@ class ApprovedLeave extends Component<Props> {
   render() {
     const {
       isAuthenticated,
-      approvedRecord: {
-        loading,
-        error,
-        findLeaveRecord: approved_items,
-        refetch
-      },
-      publicHolidays: {
-        loading: holidayLoading,
-        error: holidayError,
-        publicHoliday
-      },
       dispatch,
       isEditLeaveFetching,
       editLeaveMessage,
@@ -123,42 +110,61 @@ class ApprovedLeave extends Component<Props> {
       cancelLeaveMessage
     } = this.props;
 
-    if (loading || holidayLoading) {
-      return (
-        <div className="text-center">
-          <div className="loader1" />
-        </div>
-      );
-    }
-
-    if (error || holidayError) {
-      console.log(error.message, holidayError.message);
-      return (
-        <div className="text-center">
-          <p>Something went wrong!</p>
-        </div>
-      );
-    }
-
     return (
       <div className="container">
         {isAuthenticated ? (
-          <ApprovedLeaveList
-            approved_items={approved_items}
-            public_holiday={publicHoliday}
-            refetch={refetch}
-            dispatch={dispatch}
-            isEditLeaveFetching={isEditLeaveFetching}
-            editLeaveMessage={editLeaveMessage}
-            isCancelLeaveFetching={isCancelLeaveFetching}
-            cancelLeaveMessage={cancelLeaveMessage}
-            onEditApprovedLeaveSubmit={editLeaveData =>
-              dispatch(submitEditApprovedLeave(editLeaveData))
-            }
-            onCancelLeaveSubmit={cancelLeaveData =>
-              dispatch(submitCancelLeave(cancelLeaveData))
-            }
-          />
+          <Query query={APPROVED_RECORD} pollInterval={60000}>
+            {({
+              loading,
+              error,
+              data: { findLeaveRecord: approved_items },
+              refetch
+            }) => (
+              <Query query={PUBLIC_HOLIDAY}>
+                {({
+                  loading: holidayLoading,
+                  error: holidayError,
+                  data: { publicHoliday }
+                }) => {
+                  if (loading || holidayLoading) {
+                    return (
+                      <div className="text-center">
+                        <div className="loader1" />
+                      </div>
+                    );
+                  }
+
+                  if (error || holidayError) {
+                    console.log(error || holidayError);
+                    return (
+                      <div className="text-center">
+                        <p>Something went wrong!</p>
+                      </div>
+                    );
+                  }
+
+                  return (
+                    <ApprovedLeaveList
+                      approved_items={approved_items}
+                      public_holiday={publicHoliday}
+                      refetch={refetch}
+                      dispatch={dispatch}
+                      isEditLeaveFetching={isEditLeaveFetching}
+                      editLeaveMessage={editLeaveMessage}
+                      isCancelLeaveFetching={isCancelLeaveFetching}
+                      cancelLeaveMessage={cancelLeaveMessage}
+                      onEditApprovedLeaveSubmit={editLeaveData =>
+                        dispatch(submitEditApprovedLeave(editLeaveData))
+                      }
+                      onCancelLeaveSubmit={cancelLeaveData =>
+                        dispatch(submitCancelLeave(cancelLeaveData))
+                      }
+                    />
+                  );
+                }}
+              </Query>
+            )}
+          </Query>
         ) : (
           <Redirect to="/login" />
         )}
@@ -188,10 +194,5 @@ export default compose(
   connect(mapStateToProps),
   graphql(VERIFY_ADMIN_TOKEN, {
     name: 'verifyAdminToken'
-  }),
-  graphql(APPROVED_RECORD, {
-    name: 'approvedRecord',
-    options: { pollInterval: 60000 }
-  }),
-  graphql(PUBLIC_HOLIDAY, { name: 'publicHolidays' })
+  })
 )(ApprovedLeave);
