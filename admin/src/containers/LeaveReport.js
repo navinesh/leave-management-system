@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { gql } from 'apollo-boost';
@@ -209,7 +209,7 @@ class LeaveReport extends Component<Props> {
     const { isAuthenticated } = this.props;
 
     return (
-      <div className="LeaveReport">
+      <Fragment>
         {isAuthenticated ? (
           <Query query={APPROVED_RECORD} pollInterval={60000}>
             {({
@@ -331,7 +331,7 @@ class LeaveReport extends Component<Props> {
         ) : (
           <Redirect to="/login" />
         )}
-      </div>
+      </Fragment>
     );
   }
 }
