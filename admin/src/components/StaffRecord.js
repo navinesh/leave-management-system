@@ -548,17 +548,17 @@ export default class StaffRecordList extends Component<Props, State> {
                         </div>
                         <div className="row justify-content-end">
                           <button
+                            type="submit"
+                            className="btn btn-primary mr-3"
+                          >
+                            Save changes
+                          </button>
+                          <button
                             type="button"
                             className="btn btn-outline-primary"
                             onClick={this.handleCloseEdit}
                           >
                             Close
-                          </button>
-                          <button
-                            type="submit"
-                            className="btn btn-primary ml-2 mr-3"
-                          >
-                            Save changes
                           </button>
                         </div>
                         <div className="text-primary text-center">
