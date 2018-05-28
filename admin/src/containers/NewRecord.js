@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { gql } from 'apollo-boost';
@@ -71,7 +71,7 @@ class NewRecord extends Component<Props> {
     const { isAuthenticated, dispatch, message, isFetching } = this.props;
 
     return (
-      <div className="NewRecord">
+      <Fragment>
         {isAuthenticated ? (
           <NewRecordForm
             isFetching={isFetching}
@@ -84,7 +84,7 @@ class NewRecord extends Component<Props> {
         ) : (
           <Redirect to="/login" />
         )}
-      </div>
+      </Fragment>
     );
   }
 }
