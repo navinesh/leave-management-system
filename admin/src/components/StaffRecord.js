@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { gql } from 'apollo-boost';
 import { Mutation } from 'react-apollo';
 
@@ -96,7 +96,7 @@ const Archive = props => (
 );
 
 const ArchiveUser = props => (
-  <div>
+  <Fragment>
     {props.staff_record.filter(e => e.id === props.id).map(record => (
       <div key={record.id}>
         <div
@@ -138,7 +138,7 @@ const ArchiveUser = props => (
         </div>
       </div>
     ))}
-  </div>
+  </Fragment>
 );
 
 type Props = {
@@ -357,7 +357,7 @@ export default class StaffRecordList extends Component<Props, State> {
 
     if (this.state.isEditing) {
       return (
-        <div>
+        <Fragment>
           {staff_record.filter(e => e.id === id).map(record => {
             let dob = new Date(record.dateOfBirth);
             let dateOfBirth = moment(dob).format('DD/MM/YYYY');
@@ -578,7 +578,7 @@ export default class StaffRecordList extends Component<Props, State> {
               </div>
             );
           })}
-        </div>
+        </Fragment>
       );
     }
 
@@ -680,7 +680,7 @@ export default class StaffRecordList extends Component<Props, State> {
       });
 
     return (
-      <div className="StaffRecordList">
+      <Fragment>
         {staff_record.length > 0 ? (
           <div>
             <div className="row">
@@ -704,7 +704,7 @@ export default class StaffRecordList extends Component<Props, State> {
             </h1>
           </div>
         )}
-      </div>
+      </Fragment>
     );
   }
 }
