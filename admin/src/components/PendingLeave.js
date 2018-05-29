@@ -145,18 +145,15 @@ class ApproveLeave extends Component<approveProps, approveState> {
                   </div>
                   <form onSubmit={this.handleApproveLeaveSubmit}>
                     <div className="row justify-content-end">
+                      <button type="submit" className="btn btn-primary mr-3">
+                        Approve
+                      </button>
                       <button
                         type="button"
                         className="btn btn-outline-primary"
                         onClick={handleCloseApproveLeave}
                       >
                         Close
-                      </button>
-                      <button
-                        type="submit"
-                        className="btn btn-primary ml-2 mr-3"
-                      >
-                        Approve
                       </button>
                     </div>
                     <div className="text-primary text-center">
@@ -326,18 +323,15 @@ class DeclineLeave extends Component<declineProps, declineState> {
                       />
                     </div>
                     <div className="row justify-content-end">
+                      <button type="submit" className="btn btn-primary mr-3">
+                        Decline
+                      </button>
                       <button
                         type="button"
                         className="btn btn-outline-primary"
                         onClick={handleCloseDecline}
                       >
                         Close
-                      </button>
-                      <button
-                        type="submit"
-                        className="btn btn-primary ml-2 mr-3"
-                      >
-                        Decline
                       </button>
                     </div>
                     <div className="text-primary text-center">
@@ -715,18 +709,15 @@ class EditLeave extends Component<editProps, editState> {
                       </div>
                     </div>
                     <div className="row justify-content-end">
+                      <button type="submit" className="btn btn-primary mr-3">
+                        Save changes
+                      </button>
                       <button
                         type="button"
                         className="btn btn-outline-primary"
                         onClick={handleCloseEdit}
                       >
                         Close
-                      </button>
-                      <button
-                        type="submit"
-                        className="btn btn-primary ml-2 mr-3"
-                      >
-                        Save changes
                       </button>
                     </div>
                     <div className="text-primary text-center">
