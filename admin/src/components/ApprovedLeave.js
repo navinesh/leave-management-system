@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 
 import 'react-dates/initialize';
 import { DateRangePicker } from 'react-dates';
@@ -378,7 +378,7 @@ export default class ApprovedLeaveList extends Component<Props, State> {
 
     if (this.state.isEditing) {
       return (
-        <div>
+        <Fragment>
           {approved_items.filter(e => e.id === listID).map(record => (
             <div key={record.id}>
               <div
@@ -498,18 +498,15 @@ export default class ApprovedLeaveList extends Component<Props, State> {
                         </div>
                       </div>
                       <div className="row justify-content-end">
+                        <button type="submit" className="btn btn-primary mr-3">
+                          Save changes
+                        </button>
                         <button
                           type="button"
                           className="btn btn-outline-primary"
                           onClick={this.handleCloseEdit}
                         >
                           Close
-                        </button>
-                        <button
-                          type="submit"
-                          className="btn btn-primary ml-2 mr-3"
-                        >
-                          Save changes
                         </button>
                       </div>
                       <div className="text-primary text-center">
@@ -530,13 +527,13 @@ export default class ApprovedLeaveList extends Component<Props, State> {
               </div>
             </div>
           ))}
-        </div>
+        </Fragment>
       );
     }
 
     if (this.state.isCancel) {
       return (
-        <div>
+        <Fragment>
           {approved_items.filter(e => e.id === listID).map(record => (
             <div key={record.id}>
               <div
@@ -564,18 +561,15 @@ export default class ApprovedLeaveList extends Component<Props, State> {
                         </div>
                       </div>
                       <div className="row justify-content-end">
+                        <button type="submit" className="btn btn-primary mr-3">
+                          Submit
+                        </button>
                         <button
                           type="button"
                           className="btn btn-outline-primary"
                           onClick={this.handleCloseCancel}
                         >
                           Close
-                        </button>
-                        <button
-                          type="submit"
-                          className="btn btn-primary ml-2 mr-3"
-                        >
-                          Submit
                         </button>
                       </div>
                       <div className="text-primary text-center">
@@ -596,7 +590,7 @@ export default class ApprovedLeaveList extends Component<Props, State> {
               </div>
             </div>
           ))}
-        </div>
+        </Fragment>
       );
     }
 
