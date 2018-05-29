@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 
 import { CSVLink } from 'react-csv';
 
@@ -42,7 +42,7 @@ const ApprovedLeaveReportList = props => {
   });
 
   return approvedRecordItems.length > 0 ? (
-    <div>
+    <Fragment>
       <CSVLink
         data={records}
         filename={'Approved-leave.csv'}
@@ -71,7 +71,7 @@ const ApprovedLeaveReportList = props => {
           <tbody>{approvedRecordItems}</tbody>
         </table>
       </div>
-    </div>
+    </Fragment>
   ) : (
     <div
       className="card card-body border-0"
@@ -121,7 +121,7 @@ const PendingLeaveReportList = props => {
   });
 
   return pendingRecordItems.length > 0 ? (
-    <div>
+    <Fragment>
       <CSVLink
         data={records}
         filename={'Pending-leave.csv'}
@@ -150,7 +150,7 @@ const PendingLeaveReportList = props => {
           <tbody>{pendingRecordItems}</tbody>
         </table>
       </div>
-    </div>
+    </Fragment>
   ) : (
     <div
       className="card card-body border-0"
@@ -200,7 +200,7 @@ const CancelledLeaveReportList = props => {
   });
 
   return cancelledRecordItems.length > 0 ? (
-    <div>
+    <Fragment>
       <CSVLink
         data={records}
         filename={'Cancelled-leave.csv'}
@@ -229,7 +229,7 @@ const CancelledLeaveReportList = props => {
           <tbody>{cancelledRecordItems}</tbody>
         </table>
       </div>
-    </div>
+    </Fragment>
   ) : (
     <div
       className="card card-body border-0"
@@ -279,7 +279,7 @@ const DeclinedLeaveReportList = props => {
   });
 
   return declinedRecordItems.length > 0 ? (
-    <div>
+    <Fragment>
       <CSVLink
         data={records}
         filename={'Declined-leave.csv'}
@@ -308,7 +308,7 @@ const DeclinedLeaveReportList = props => {
           <tbody>{declinedRecordItems}</tbody>
         </table>
       </div>
-    </div>
+    </Fragment>
   ) : (
     <div
       className="card card-body border-0"
@@ -367,7 +367,7 @@ const UserUpdatesReportList = props => {
   });
 
   return userUpdateItems.length > 0 ? (
-    <div>
+    <Fragment>
       <CSVLink
         data={records}
         filename={'User-updates.csv'}
@@ -398,7 +398,7 @@ const UserUpdatesReportList = props => {
           <tbody>{userUpdateItems}</tbody>
         </table>
       </div>
-    </div>
+    </Fragment>
   ) : (
     <div
       className="card card-body border-0"
@@ -453,7 +453,7 @@ const LeaveUpdatesReportList = props => {
   });
 
   return leaveUpdateItems.length > 0 ? (
-    <div>
+    <Fragment>
       <CSVLink
         data={records}
         filename={'Leave-updates.csv'}
@@ -485,7 +485,7 @@ const LeaveUpdatesReportList = props => {
           <tbody>{leaveUpdateItems}</tbody>
         </table>
       </div>
-    </div>
+    </Fragment>
   ) : (
     <div
       className="card card-body border-0"
@@ -525,7 +525,7 @@ const StaffRecordList = props => {
   });
 
   return staffRecordItems.length > 0 ? (
-    <div>
+    <Fragment>
       <CSVLink
         data={records}
         filename={'User-record.csv'}
@@ -551,7 +551,7 @@ const StaffRecordList = props => {
           <tbody>{staffRecordItems}</tbody>
         </table>
       </div>
-    </div>
+    </Fragment>
   ) : (
     <div
       className="card card-body border-0"
