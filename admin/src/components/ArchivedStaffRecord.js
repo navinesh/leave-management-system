@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { gql } from 'apollo-boost';
 import { Mutation } from 'react-apollo';
 
@@ -271,7 +271,7 @@ export default class ArchivedStaffRecordList extends Component<Props, State> {
       });
 
     return (
-      <div className="ArchivedStaffRecordList">
+      <Fragment>
         {archived_staff_record.length > 0 ? (
           <div>
             <div className="row">
@@ -295,7 +295,7 @@ export default class ArchivedStaffRecordList extends Component<Props, State> {
             </h1>
           </div>
         )}
-      </div>
+      </Fragment>
     );
   }
 }
