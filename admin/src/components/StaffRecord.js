@@ -153,7 +153,7 @@ type Props = {
 type State = {
   errorMessage: string,
   id: string,
-  dbid: number,
+  dbid: string,
   dob: any,
   archiveReason: any,
   isEditing: boolean,
@@ -191,7 +191,7 @@ export default class StaffRecordList extends Component<Props, State> {
     this.state = {
       errorMessage: '',
       id: '',
-      dbid: 0,
+      dbid: '',
       dob: null,
       archiveReason: null,
       editReason: '',
@@ -220,11 +220,11 @@ export default class StaffRecordList extends Component<Props, State> {
     this.setState({ searchTerm: '' });
   }
 
-  handleOpenEdit(e: SyntheticEvent<HTMLElement>) {
+  handleOpenEdit({ target }: SyntheticInputEvent<>) {
     this.setState({
       isEditing: !this.state.isEditing,
-      id: e.currentTarget.id,
-      dbid: e.currentTarget.value
+      id: target.id,
+      dbid: target.value
     });
   }
 
@@ -318,7 +318,7 @@ export default class StaffRecordList extends Component<Props, State> {
       errorMessage: '',
       dob: null,
       id: '',
-      dbid: 0
+      dbid: ''
     });
 
     if (this.state.editReason) {
