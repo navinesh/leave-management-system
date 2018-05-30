@@ -1,5 +1,5 @@
 //  @flow
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 
 type Props = {
@@ -37,7 +37,7 @@ export default class AdminResetPassword extends Component<Props, State> {
 
   render() {
     return (
-      <div className="AdminResetPassword">
+      <Fragment>
         <h1 className="display-4 text-center pb-4">Leave Management System</h1>
         <div className="col-4 ml-auto mr-auto">
           <div className="card card-body">
@@ -73,7 +73,7 @@ export default class AdminResetPassword extends Component<Props, State> {
             </Link>
           </div>
         </div>
-      </div>
+      </Fragment>
     );
   }
 }
