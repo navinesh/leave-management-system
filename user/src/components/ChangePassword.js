@@ -19,8 +19,8 @@ type State = {
 
 export default class UserChange extends Component<Props, State> {
   handleCurrentPasswordChange: Function;
-  handleNewPasswordChange: Function;
-  handleNewPasswordConfirmChange: Function;
+  handlePasswordChange: Function;
+  handlePasswordChangeConfirm: Function;
   handleSubmit: Function;
 
   constructor() {
@@ -35,8 +35,8 @@ export default class UserChange extends Component<Props, State> {
     this.handleCurrentPasswordChange = this.handleCurrentPasswordChange.bind(
       this
     );
-    this.handleNewPasswordChange = this.handleNewPasswordChange.bind(this);
-    this.handleNewPasswordConfirmChange = this.handleNewPasswordConfirmChange.bind(
+    this.handlePasswordChange = this.handlePasswordChange.bind(this);
+    this.handlePasswordChangeConfirm = this.handlePasswordChangeConfirm.bind(
       this
     );
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -46,11 +46,11 @@ export default class UserChange extends Component<Props, State> {
     this.setState({ currentPassword: target.value });
   }
 
-  handleNewPasswordChange({ target }: SyntheticInputEvent<>) {
+  handlePasswordChange({ target }: SyntheticInputEvent<>) {
     this.setState({ newPassword: target.value });
   }
 
-  handleNewPasswordConfirmChange({ target }: SyntheticInputEvent<>) {
+  handlePasswordChangeConfirm({ target }: SyntheticInputEvent<>) {
     this.setState({ newPasswordConfirm: target.value });
   }
 
@@ -124,7 +124,7 @@ export default class UserChange extends Component<Props, State> {
                 className="form-control"
                 placeholder="New password"
                 id="newPassword"
-                onChange={this.handleNewPasswordChange}
+                onChange={this.handlePasswordChange}
               />
             </div>
             <div className="form-group">
@@ -134,7 +134,7 @@ export default class UserChange extends Component<Props, State> {
                 className="form-control"
                 placeholder="Confirm new password"
                 id="newPasswordConfirm"
-                onChange={this.handleNewPasswordConfirmChange}
+                onChange={this.handlePasswordChangeConfirm}
               />
             </div>
             <div className="form-group">
