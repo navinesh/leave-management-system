@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { Fragment } from 'react';
 import { render } from 'react-dom';
 
 import { Provider } from 'react-redux';
@@ -48,7 +48,7 @@ const App = () => (
   <ApolloProvider client={client}>
     <Provider store={store}>
       <BrowserRouter>
-        <div>
+        <Fragment>
           <Header />
           <Switch>
             <PrivateRoute exact path="/" component={Main} />
@@ -65,7 +65,7 @@ const App = () => (
             />
             <Route component={UserError} />
           </Switch>
-        </div>
+        </Fragment>
       </BrowserRouter>
     </Provider>
   </ApolloProvider>
