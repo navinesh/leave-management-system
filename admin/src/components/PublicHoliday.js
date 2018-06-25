@@ -119,6 +119,7 @@ class AddPublicHoliday extends Component<
           onFocusChange={this.onFocusChange}
           focused={this.state.focused}
           date={this.state.date}
+          hideKeyboardShortcutsPanel
         />
         {this.props.render(this.state.date)}
       </Fragment>
