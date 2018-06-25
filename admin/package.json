@@ -16,7 +16,7 @@
     "react-apollo": "^2.1.4",
     "react-csv": "^1.0.14",
     "react-datepicker": "^1.5.0",
-    "react-dates": "^16.7.0",
+    "react-dates": "^17.0.0",
     "react-dom": "^16.4.1",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
