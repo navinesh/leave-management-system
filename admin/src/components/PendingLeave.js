@@ -685,8 +685,9 @@ class EditLeave extends Component<editProps, editState> {
                             showDefaultInputIcon
                             showClearDates
                             withPortal
+                            hideKeyboardShortcutsPanel
                             renderCalendarInfo={() => (
-                              <p className="text-center">
+                              <p className="text-center font-italic">
                                 To select a single day click the date twice.
                               </p>
                             )}
