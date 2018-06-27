@@ -1,9 +1,7 @@
 // @flow
 import React, { Component, Fragment } from 'react';
 
-import 'react-dates/initialize';
 import { DateRangePicker } from 'react-dates';
-import 'react-dates/lib/css/_datepicker.css';
 
 import Moment from 'moment';
 import { extendMoment } from 'moment-range';
