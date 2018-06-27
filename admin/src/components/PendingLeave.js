@@ -2,8 +2,8 @@
 import React, { Component } from 'react';
 
 import 'react-dates/initialize';
-import { DateRangePicker } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
+import { DateRangePicker } from 'react-dates';
 
 import done_all from '../img/done_all.png';
 
