@@ -4,8 +4,8 @@ import { gql } from 'apollo-boost';
 import { Query } from 'react-apollo';
 
 import 'react-dates/initialize';
-import { DateRangePicker } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
+import { DateRangePicker } from 'react-dates';
 
 import '../spinners.css';
 
