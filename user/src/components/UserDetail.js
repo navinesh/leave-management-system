@@ -29,7 +29,7 @@ type Props = {
 
 export default (props: Props) => (
   <Query query={USER_DETAIL} variables={{ id: props.id }} pollInterval={60000}>
-    {({ loading, error, data: { user } }) => {
+    {({ loading, error, data }) => {
       if (loading) {
         return (
           <div
@@ -69,7 +69,7 @@ export default (props: Props) => (
             <div className="row">
               <div className="col-md-8">
                 <p style={{ fontSize: '30px' }}>
-                  {user.othernames} {user.surname}
+                  {data.user.othernames} {data.user.surname}
                 </p>
                 <p>
                   <Link to="/changepassword" className="btn btn-primary">
@@ -82,33 +82,33 @@ export default (props: Props) => (
                   <li className="list-group-item d-flex justify-content-between align-items-center">
                     Annual
                     <span className="badge badge-primary badge-pill">
-                      {user.annual}
+                      {data.user.annual}
                     </span>
                   </li>
                   <li className="list-group-item d-flex justify-content-between align-items-center">
                     Sick
                     <span className="badge badge-primary badge-pill">
-                      {user.sick}
+                      {data.user.sick}
                     </span>
                   </li>
                   <li className="list-group-item d-flex justify-content-between align-items-center">
                     Bereavement
                     <span className="badge badge-primary badge-pill">
-                      {user.bereavement}
+                      {data.user.bereavement}
                     </span>
                   </li>
                   <li className="list-group-item d-flex justify-content-between align-items-center">
                     Christmas
                     <span className="badge badge-primary badge-pill">
-                      {user.christmas}
+                      {data.user.christmas}
                     </span>
                   </li>
-                  {user.gender.toLowerCase() === 'female' &&
-                    user.maternity > 0 && (
+                  {data.user.gender.toLowerCase() === 'female' &&
+                    data.user.maternity > 0 && (
                       <li className="list-group-item d-flex justify-content-between align-items-center">
                         Maternity
                         <span className="badge badge-primary badge-pill">
-                          {user.maternity}
+                          {data.user.maternity}
                         </span>
                       </li>
                     )}
