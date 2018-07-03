@@ -31,7 +31,7 @@ type Props = {
 
 export default (props: Props) => (
   <Query query={LEAVE_RECORD}>
-    {({ loading, error, data: { findLeaveRecord } }) => {
+    {({ loading, error, data }) => {
       if (loading) {
         return (
           <div className="container">
@@ -57,7 +57,7 @@ export default (props: Props) => (
         );
       }
 
-      const leaveRecords = findLeaveRecord
+      const leaveRecords = data.findLeaveRecord
         .filter(record => {
           // get current date and format it
           let dateToday = moment();
