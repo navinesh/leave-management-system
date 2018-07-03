@@ -4,8 +4,8 @@ import { gql } from 'apollo-boost';
 import { Query, Mutation } from 'react-apollo';
 
 import 'react-dates/initialize';
-import { DayPickerSingleDateController } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
+import { DayPickerSingleDateController } from 'react-dates';
 
 const moment = require('moment');
 
