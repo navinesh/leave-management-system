@@ -5,8 +5,6 @@ import { Query } from 'react-apollo';
 
 import UserLogin from './UserLogin';
 
-import Error from '../img/error.gif';
-
 const moment = require('moment');
 
 const LEAVE_RECORD = gql`
@@ -53,9 +51,7 @@ export default (props: Props) => (
         return (
           <div className="col mx-auto" style={{ marginTop: '100px' }}>
             <div className="text-center">
-              <p style={{ fontSize: '42px' }}>Oops!</p>
-              <p style={{ fontSize: '24px' }}>Something went wrong!</p>
-              <img src={Error} alt="Error" />
+              <p className="display-4">Something went wrong!</p>
             </div>
           </div>
         );
