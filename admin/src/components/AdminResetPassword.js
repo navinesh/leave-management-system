@@ -39,7 +39,7 @@ export default class AdminResetPassword extends Component<Props, State> {
     return (
       <Fragment>
         <h1 className="display-4 text-center pb-4">Leave Management System</h1>
-        <div className="col-4 ml-auto mr-auto">
+        <div className="col-3 ml-auto mr-auto">
           <div className="card card-body">
             <form onSubmit={this.handleSubmit.bind(this)}>
               <div className="form-group">
