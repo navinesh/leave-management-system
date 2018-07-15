@@ -28,7 +28,8 @@ import {
 import {
   REQUEST_PASSWORD_RESET,
   PASSWORD_RESET_SUCCESS,
-  PASSWORD_RESET_ERROR
+  PASSWORD_RESET_ERROR,
+  CLEAR_RESET_PASSWORD_MESSAGE
 } from '../actions/ResetPassword';
 
 type UserAuth = {
@@ -206,6 +207,12 @@ const resetPassword = (
         ...state,
         isFetching: false,
         message: action.message
+      };
+    case CLEAR_RESET_PASSWORD_MESSAGE:
+      return {
+        ...state,
+        isFetching: false,
+        message: ''
       };
     default:
       return state;
