@@ -147,6 +147,7 @@ def allowed_file(filename):
 # User
 @app.route('/')
 @app.route('/change-password')
+@app.route('/user-reset-password')
 @app.route('/applyforleave')
 def show_user_home():
     """Render user index html"""
@@ -190,6 +191,52 @@ def change_user_password():
 
     return jsonify({
         'message': 'Your password has been successfully changed.'
+    }), 201
+
+
+# User reset password
+@app.route('/user-reset-password', methods=['POST'])
+@cross_origin()
+def user_reset_password():
+    """Change password
+    Args:
+        email: email address
+    """
+    email = request.json.get('email')
+
+    if email is None:
+        return jsonify({'message': 'Missing argument!'})
+        abort(400)
+
+    user = session.query(User).filter_by(email=email).first()
+
+    if not user:
+        return jsonify({
+            'message':
+            'The email address you entered did not match our records. \
+            Please double-check and try again.'
+        })
+        abort(401)
+
+    password = ''.join(
+        random.SystemRandom().choice(string.ascii_uppercase + string.digits)
+        for _ in range(8))
+
+    user.hash_password(password)
+    session.add(user)
+    session.commit()
+
+    # Send email
+    send_email(
+        user.email, None, "Leave Management System update",
+        ("Your Leave Management System admin password has been reset to: " +
+         password),
+        file=None)
+
+    return jsonify({
+        'message':
+        'Your password has been reset. \
+        Check your mailbox for new login details.'
     }), 201
 
 
@@ -432,7 +479,7 @@ def change_admin_password():
     if not admin:
         return jsonify({
             'message':
-            'The username and password you entered did not match our records. \
+            'The email address you entered did not match our records. \
             Please double-check and try again.'
         })
         abort(401)
