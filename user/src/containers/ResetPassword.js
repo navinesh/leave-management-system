@@ -10,7 +10,8 @@ type Props = {
   dispatch: Function,
   isAuthenticated: boolean,
   message: string,
-  isFetching: boolean
+  isFetching: boolean,
+  dispatch: Function
 };
 
 const ResetPassword = (props: Props) => (
@@ -19,6 +20,7 @@ const ResetPassword = (props: Props) => (
       <UserResetPassword
         isFetching={props.isFetching}
         message={props.message}
+        dispatch={props.dispatch}
         onResetClick={email => props.dispatch(resetPassword(email))}
       />
     ) : (
@@ -28,10 +30,12 @@ const ResetPassword = (props: Props) => (
 );
 
 const mapStateToProps = state => {
-  const { userAuth } = state;
-  const { isAuthenticated, isFetching } = userAuth;
+  const { userAuth, resetPassword } = state;
 
-  return { isAuthenticated, isFetching };
+  const { isAuthenticated } = userAuth;
+  const { isFetching, message } = resetPassword;
+
+  return { isAuthenticated, isFetching, message };
 };
 
 export default connect(mapStateToProps)(ResetPassword);
