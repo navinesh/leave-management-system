@@ -2,11 +2,13 @@
 import React, { Component } from 'react';
 
 import '../spinners.css';
+import { clearResetPasswordMessage } from '../actions/ResetPassword';
 
 type Props = {
   onResetClick: Function,
   message: string,
-  isFetching: boolean
+  isFetching: boolean,
+  dispatch: Function
 };
 
 type State = {
@@ -24,6 +26,10 @@ export default class UserResetPassword extends Component<Props, State> {
 
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.dispatch(clearResetPasswordMessage());
   }
 
   handleEmailChange({ target }: SyntheticInputEvent<>) {
@@ -44,7 +50,7 @@ export default class UserResetPassword extends Component<Props, State> {
 
   render() {
     return (
-      <div className="col-md-4 ml-auto mr-auto" style={{ marginTop: '150px' }}>
+      <div className="col-md-3 ml-auto mr-auto" style={{ marginTop: '150px' }}>
         <div className="card card-body">
           <form onSubmit={this.handleSubmit}>
             <div className="form-group">
