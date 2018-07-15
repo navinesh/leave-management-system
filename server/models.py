@@ -6,7 +6,7 @@ from sqlalchemy import create_engine
 from passlib.apps import custom_app_context as pwd_context
 import random
 import string
-from itsdangerous import (TimedJSONWebSignatureSerializer as Serializer,
+from itsdangerous import (TimedSerializer as Serializer,
                           BadSignature, SignatureExpired)
 
 engine = create_engine('postgresql:///leavedb')
@@ -49,23 +49,23 @@ class User(Base):
     def verify_password(self, password):
         return pwd_context.verify(password, self.password_hash)
 
-    def generate_auth_token(self, expiration=3600):
-        s = Serializer(secret_key, expires_in=expiration)
-        return s.dumps({'id': self.id})
+    def generate_auth_token(self):
+        s = Serializer(admin_secret_key)
+        return s.dumps(self.id)
 
     @staticmethod
-    def verify_auth_token(token):
-        s = Serializer(secret_key)
+    def verify_auth_token(token, max_age=3600):
+        s = Serializer(admin_secret_key)
         try:
-            data = s.loads(token)
+            data = s.loads(token, max_age=max_age)
         except SignatureExpired:
             # Valid Token, but expired
             return None
         except BadSignature:
             # Invalid Token
             return None
-        user_id = data['id']
-        return user_id
+
+        return data
 
     @property
     def serialize(self):
@@ -234,23 +234,23 @@ class Adminuser(Base):
     def verify_password(self, password):
         return pwd_context.verify(password, self.password_hash)
 
-    def generate_auth_token(self, expiration=86400):
-        s = Serializer(admin_secret_key, expires_in=expiration)
-        return s.dumps({'id': self.id})
+    def generate_auth_token(self):
+        s = Serializer(admin_secret_key)
+        return s.dumps(self.id)
 
     @staticmethod
-    def verify_auth_token(token):
+    def verify_auth_token(token, max_age=86400):
         s = Serializer(admin_secret_key)
         try:
-            data = s.loads(token)
+            data = s.loads(token, max_age=max_age)
         except SignatureExpired:
             # Valid Token, but expired
             return None
         except BadSignature:
             # Invalid Token
             return None
-        admin_id = data['id']
-        return admin_id
+
+        return data
 
     @property
     def serialize(self):
