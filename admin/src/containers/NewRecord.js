@@ -39,6 +39,10 @@ class NewRecord extends Component<Props> {
     this.verifyToken();
   }
 
+  componentWillUnmount() {
+    this.props.dispatch(clearNewUserRecordMessage());
+  }
+
   verifyToken = async () => {
     const { auth_info, dispatch, verifyAdminToken } = this.props;
 
@@ -62,10 +66,6 @@ class NewRecord extends Component<Props> {
       }
     }
   };
-
-  componentWillUnmount() {
-    this.props.dispatch(clearNewUserRecordMessage());
-  }
 
   render() {
     const { isAuthenticated, dispatch, message, isFetching } = this.props;
