@@ -139,7 +139,7 @@ export default class NewRecordForm extends Component<Props, State> {
     const christmasDays = this.state.christmasLeave;
     const maternityDays = this.state.maternityLeave
       ? this.state.maternityLeave
-      : null;
+      : 0;
     const dateOfBirth = moment(this.state.dob).format('MM DD YYYY');
 
     // verify data
@@ -177,10 +177,6 @@ export default class NewRecordForm extends Component<Props, State> {
     };
 
     this.props.onNewUserRecordSubmit(newUserDetails);
-
-    setTimeout(() => {
-      this.props.dispatch({ type: 'CLEAR_NEW_USER_RECORD' });
-    }, 5000);
   }
 
   render() {
