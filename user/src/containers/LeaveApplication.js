@@ -10,7 +10,10 @@ import {
   receiveUserLoginFromToken,
   loginUserErrorFromToken
 } from '../actions/UserLogin';
-import { fetchLeaveApplication } from '../actions/LeaveApplication';
+import {
+  fetchLeaveApplication,
+  clearLeaveApplicationMessage
+} from '../actions/LeaveApplication';
 import Application from '../components/LeaveApplication';
 
 const VERIFY_USER_TOKEN = gql`
@@ -38,6 +41,10 @@ class LeaveApplication extends Component<Props> {
   componentDidMount() {
     this.verifyToken();
     setInterval(this.verifyToken, 600000);
+  }
+
+  componentWillUnmount() {
+    this.props.dispatch(clearLeaveApplicationMessage());
   }
 
   verifyToken = async () => {
