@@ -5495,9 +5495,9 @@ react-apollo@^2.1.4:
     lodash "4.17.5"
     prop-types "^15.6.0"
 
-react-dates@^17.0.0:
-  version "17.0.0"
-  resolved "https://registry.yarnpkg.com/react-dates/-/react-dates-17.0.0.tgz#f3e632614f0d4ae346f3797633856e4c0d836cfa"
+react-dates@^17.1.0:
+  version "17.1.0"
+  resolved "https://registry.yarnpkg.com/react-dates/-/react-dates-17.1.0.tgz#97f4bcf81e68711599834561ec6fb0d69b7ffcde"
   dependencies:
     airbnb-prop-types "^2.10.0"
     consolidated-events "^1.1.1 || ^2.0.0"
