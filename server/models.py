@@ -102,7 +102,7 @@ class Userupdates(Base):
     bereavement = Column(Numeric)
     christmas = Column(Numeric)
     maternity = Column(Numeric)
-    editReason = Column(Text)
+    edit_reason = Column(Text)
     date_posted = Column(String)
     user = relationship(
         User, backref=backref("userupdates", cascade="all, delete-orphan"))
@@ -121,7 +121,7 @@ class Userupdates(Base):
             'bereavement': self.bereavement,
             'christmas': self.christmas,
             'maternity': self.maternity,
-            'editReason': self.archiveReason,
+            'edit_reason': self.edit_reason,
             'user_id': self.user_id,
             'dated_posted': self.dated_posted
         }
@@ -181,7 +181,7 @@ class Leaveupdates(Base):
     updated_leave_days = Column(Numeric)
     leave_status = Column(String)
     date_posted = Column(String)
-    editReason = Column(Text)
+    edit_reason = Column(Text)
     previous_leave_days = Column(Numeric)
     previous_leave_name = Column(String)
     previous_leave_type = Column(String)
@@ -203,7 +203,7 @@ class Leaveupdates(Base):
             'updated_start_date': self.updated_start_date,
             'updated_end_date': self.updated_end_date,
             'updated_leave_days': self.updated_leave_days,
-            'editReason': self.editReason,
+            'edit_reason': self.edit_reason,
             'previous_leave_days': self.previous_leave_days,
             'previous_leave_name': self.previous_leave_name,
             'previous_leave_type': self.previous_leave_type,
