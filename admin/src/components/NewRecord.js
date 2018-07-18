@@ -140,7 +140,7 @@ export default class NewRecordForm extends Component<Props, State> {
     const maternityDays = this.state.maternityLeave
       ? this.state.maternityLeave
       : 0;
-    const dateOfBirth = moment(this.state.dob).format('MM DD YYYY');
+    const dateOfBirth = moment(this.state.dob).format('DD/MM/YYYY');
 
     // verify data
     if (
