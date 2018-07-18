@@ -250,10 +250,10 @@ export default class StaffRecordList extends Component<Props, State> {
     const gender = this.gender.value;
 
     let dobDate = new Date(this.dob.value);
-    let dob = moment(dobDate).format('MM DD YYYY');
+    let dob = moment(dobDate).format('DD/MM/YYYY');
 
     const dateOfBirth = this.state.dob
-      ? moment(this.state.dob).format('MM DD YYYY')
+      ? moment(this.state.dob).format('DD/MM/YYYY')
       : dob;
 
     const mDays = gender => {
