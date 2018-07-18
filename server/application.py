@@ -600,7 +600,7 @@ def modify_user():
         bereavement: bereavement leave days balance
         date_of_birth: date of birth of the user
         maternity: maternity leave days balance
-        editReason: reason for editing leave record
+        edit_reason: reason for editing leave record
     """
     user_id = request.json.get('user_id')
     surname = request.json.get('surname')
@@ -676,7 +676,7 @@ def modify_user():
         bereavement=bereavement,
         christmas=christmas,
         maternity=maternity,
-        editReason=edit_reason,
+        edit_reason=edit_reason,
         user_id=user_record.id,
         date_posted=str(datetime.now().date()))
 
@@ -845,7 +845,6 @@ def edit_leave():
         date_to: leave end date
         leave_reason: reason for editing leave
         leave_days: number of leave days
-        application_days: leave balance
         previous_leave_days: number of previous leave days
         previous_leave_name: name of previous leave
         previous_leave_type: type pf previous leave
@@ -859,7 +858,6 @@ def edit_leave():
     date_to = request.json.get('endDate')
     leave_reason = request.json.get('reason')
     leave_days = request.json.get('leaveDays')
-    # application_days = request.json.get('applicationDays')
     previous_leave_days = request.json.get('previousLeaveDays')
     previous_leave_name = request.json.get('previousLeaveName')
     previous_leave_type = request.json.get('previousLeaveType')
@@ -898,7 +896,7 @@ def edit_leave():
         previous_start_date=previous_start_date,
         previous_end_date=previous_end_date,
         date_posted=str(datetime.now().date()),
-        editReason=leave_reason,
+        edit_reason=leave_reason,
         leave_id=leave_id,
         user_id=user_id)
     session.add(update_log)
@@ -983,7 +981,7 @@ def edit_approved_leave():
         previous_start_date=previous_start_date,
         previous_end_date=previous_end_date,
         date_posted=str(datetime.now().date()),
-        editReason=leave_reason,
+        edit_reason=leave_reason,
         leave_id=leave_id,
         user_id=user_id)
     session.add(update_log)
