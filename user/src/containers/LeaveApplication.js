@@ -19,10 +19,6 @@ import Application from '../components/LeaveApplication';
 const VERIFY_USER_TOKEN = gql`
   mutation verifyUserToken($userToken: String!) {
     verifyUserToken(userToken: $userToken) {
-      User {
-        id
-        dbId
-      }
       token
       ok
     }
@@ -61,9 +57,7 @@ class LeaveApplication extends Component<Props> {
           variables: { userToken }
         });
         const auth_info = {
-          auth_token: response.data.verifyUserToken.token,
-          user_id: response.data.verifyUserToken.User.dbId,
-          id: response.data.verifyUserToken.User.id
+          auth_token: response.data.verifyUserToken.token
         };
         dispatch(receiveUserLoginFromToken(auth_info));
       } catch (error) {
