@@ -6,8 +6,7 @@ from sqlalchemy import create_engine
 from passlib.apps import custom_app_context as pwd_context
 import random
 import string
-from itsdangerous import (TimedSerializer as Serializer,
-                          BadSignature, SignatureExpired)
+from itsdangerous import (TimestampSigner, BadSignature, SignatureExpired)
 
 engine = create_engine('postgresql:///leavedb')
 
@@ -20,11 +19,10 @@ Base.query = db_session.query_property()
 
 Base.metadata.create_all(engine)
 
-secret_key = ''.join(
-    random.choice(string.ascii_uppercase + string.digits) for x in range(32))
-
-
 # user
+secret_key = 'secret_key'
+
+
 class User(Base):
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
@@ -50,22 +48,13 @@ class User(Base):
         return pwd_context.verify(password, self.password_hash)
 
     def generate_auth_token(self):
-        s = Serializer(admin_secret_key)
-        return s.dumps(self.id)
+        s = TimestampSigner(secret_key)
+        return s.sign('foo'.encode()).decode()
 
     @staticmethod
     def verify_auth_token(token, max_age=3600):
-        s = Serializer(admin_secret_key)
-        try:
-            data = s.loads(token, max_age=max_age)
-        except SignatureExpired:
-            # Valid Token, but expired
-            return None
-        except BadSignature:
-            # Invalid Token
-            return None
-
-        return data
+        s = TimestampSigner(secret_key)
+        return s.unsign(token, max_age=max_age)
 
     @property
     def serialize(self):
@@ -216,8 +205,7 @@ class Leaveupdates(Base):
 
 
 # admin
-admin_secret_key = ''.join(
-    random.choice(string.ascii_uppercase + string.digits) for x in range(32))
+admin_secret_key = 'admin_secret_key'
 
 
 class Adminuser(Base):
@@ -235,22 +223,13 @@ class Adminuser(Base):
         return pwd_context.verify(password, self.password_hash)
 
     def generate_auth_token(self):
-        s = Serializer(admin_secret_key)
-        return s.dumps(self.id)
+        s = TimestampSigner(admin_secret_key)
+        return s.sign('foo'.encode()).decode()
 
     @staticmethod
     def verify_auth_token(token, max_age=86400):
-        s = Serializer(admin_secret_key)
-        try:
-            data = s.loads(token, max_age=max_age)
-        except SignatureExpired:
-            # Valid Token, but expired
-            return None
-        except BadSignature:
-            # Invalid Token
-            return None
-
-        return data
+        s = TimestampSigner(admin_secret_key)
+        return s.unsign(token, max_age=max_age)
 
     @property
     def serialize(self):
