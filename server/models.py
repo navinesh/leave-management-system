@@ -6,7 +6,7 @@ from sqlalchemy import create_engine
 from passlib.apps import custom_app_context as pwd_context
 import random
 import string
-from itsdangerous import (TimestampSigner, BadSignature, SignatureExpired)
+from itsdangerous import (TimestampSigner)
 
 engine = create_engine('postgresql:///leavedb')
 
