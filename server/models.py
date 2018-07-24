@@ -66,7 +66,6 @@ class User(Base):
             'othernames': self.othernames,
             'designation': self.designation,
             'gender': self.gender,
-            'date_of_birth': self.date_of_birth,
             'annual': self.annual,
             'sick': self.sick,
             'bereavement': self.bereavement,
