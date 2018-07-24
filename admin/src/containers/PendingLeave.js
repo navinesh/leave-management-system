@@ -80,7 +80,7 @@ class PendingLeave extends Component<Props> {
     const { auth_info, dispatch, verifyAdminToken } = this.props;
 
     const adminToken = auth_info.admin_token
-      ? auth_info.admin_token
+      ? auth_info
       : localStorage.getItem('admin_token');
 
     if (adminToken) {
