@@ -126,7 +126,7 @@ class Login extends Component<Props, State> {
 
   render() {
     return (
-      <div className="Login" style={{ marginTop: '80px' }}>
+      <div className="Login">
         <div className="card card-body">
           <form onSubmit={this.handleSubmit}>
             <div className="form-group">
