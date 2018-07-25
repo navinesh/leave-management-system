@@ -623,7 +623,7 @@ export default (props: Props) => (
               }
 
               return (
-                <div className="container" style={{ marginTop: '80px' }}>
+                <div className="container">
                   <div className="row">
                     <div className="col-md-12">
                       <div className="col-md-9 ml-auto mr-auto">
