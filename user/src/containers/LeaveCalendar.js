@@ -35,7 +35,7 @@ export default () => (
       if (error) {
         console.log(error.message);
         return (
-          <div className="col mx-auto" style={{ marginTop: '100px' }}>
+          <div className="col mx-auto">
             <div className="text-center">
               <p className="display-4">Something went wrong!</p>
             </div>
@@ -44,7 +44,7 @@ export default () => (
       }
 
       return (
-        <div className="container" style={{ marginTop: '80px' }}>
+        <div className="container">
           <Leaves data={data} />
         </div>
       );
