@@ -1,6 +1,9 @@
 /*
  * Base structure
  */
+body {
+  padding-top: 80px;
+}
 
 .navbar {
   background-color: #ffffff;
