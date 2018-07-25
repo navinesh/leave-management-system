@@ -50,7 +50,7 @@ export default class UserResetPassword extends Component<Props, State> {
 
   render() {
     return (
-      <div className="col-md-3 ml-auto mr-auto" style={{ marginTop: '150px' }}>
+      <div className="col-md-3 ml-auto mr-auto">
         <div className="card card-body">
           <form onSubmit={this.handleSubmit}>
             <div className="form-group">
