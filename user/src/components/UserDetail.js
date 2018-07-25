@@ -58,13 +58,7 @@ export default (props: Props) => (
       }
 
       return (
-        <div
-          style={{
-            backgroundColor: '#FFFFFF',
-            paddingTop: '100px',
-            paddingBottom: '30px'
-          }}
-        >
+        <div style={{ paddingBottom: '30px' }}>
           <div className="container">
             <div className="row">
               <div className="col-md-8">
