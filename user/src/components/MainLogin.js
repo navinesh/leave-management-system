@@ -103,24 +103,19 @@ export default (props: Props) => (
         <div className="container">
           <div className="row">
             <div className="col-md-8">
-              <div style={{ marginTop: '80px' }}>
-                <div className="table-responsive">
-                  <table
-                    className="table table-bordered table-hover"
-                    style={{ backgroundColor: '#FFFFFF' }}
-                  >
-                    <thead className="thead-light">
-                      <tr>
-                        <th>Name</th>
-                        <th>Leave type</th>
-                        <th>Start date</th>
-                        <th>End date</th>
-                        <th>Leave days</th>
-                      </tr>
-                    </thead>
-                    <tbody>{leaveRecords}</tbody>
-                  </table>
-                </div>
+              <div className="table-responsive">
+                <table className="table table-bordered table-hover">
+                  <thead className="thead-light">
+                    <tr>
+                      <th>Name</th>
+                      <th>Leave type</th>
+                      <th>Start date</th>
+                      <th>End date</th>
+                      <th>Leave days</th>
+                    </tr>
+                  </thead>
+                  <tbody>{leaveRecords}</tbody>
+                </table>
               </div>
             </div>
             <div className="col-md-4">
