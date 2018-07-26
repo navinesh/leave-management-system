@@ -17,6 +17,8 @@ const USER_DETAIL = gql`
       bereavement
       christmas
       maternity
+      familyCare
+      paternity
       gender
       designation
     }
@@ -92,6 +94,12 @@ export default (props: Props) => (
                     </span>
                   </li>
                   <li className="list-group-item d-flex justify-content-between align-items-center">
+                    Family care
+                    <span className="badge badge-primary badge-pill">
+                      {data.user.familyCare}
+                    </span>
+                  </li>
+                  <li className="list-group-item d-flex justify-content-between align-items-center">
                     Christmas
                     <span className="badge badge-primary badge-pill">
                       {data.user.christmas}
@@ -103,6 +111,15 @@ export default (props: Props) => (
                         Maternity
                         <span className="badge badge-primary badge-pill">
                           {data.user.maternity}
+                        </span>
+                      </li>
+                    )}
+                  {data.user.gender.toLowerCase() === 'male' &&
+                    data.user.paternity > 0 && (
+                      <li className="list-group-item d-flex justify-content-between align-items-center">
+                        Paternity
+                        <span className="badge badge-primary badge-pill">
+                          {data.user.paternity}
                         </span>
                       </li>
                     )}
