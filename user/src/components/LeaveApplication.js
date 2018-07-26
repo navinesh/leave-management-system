@@ -24,6 +24,8 @@ const USER_DETAIL = gql`
       bereavement
       christmas
       maternity
+      familyCare
+      paternity
       gender
       designation
     }
@@ -94,6 +96,12 @@ const UserRecord = props => {
         </span>
       </li>
       <li className="list-group-item d-flex justify-content-between align-items-center">
+        Family care
+        <span className="badge badge-primary badge-pill">
+          {props.user_detail.familyCare}
+        </span>
+      </li>
+      <li className="list-group-item d-flex justify-content-between align-items-center">
         Christmas
         <span className="badge badge-primary badge-pill">
           {props.user_detail.christmas}
@@ -105,6 +113,15 @@ const UserRecord = props => {
             Maternity
             <span className="badge badge-primary badge-pill">
               {props.user_detail.maternity}
+            </span>
+          </li>
+        )}
+      {gender === 'male' &&
+        props.user_detail.paternity > 0 && (
+          <li className="list-group-item d-flex justify-content-between align-items-center">
+            Paternity
+            <span className="badge badge-primary badge-pill">
+              {props.user_detail.paternity}
             </span>
           </li>
         )}
@@ -221,7 +238,9 @@ class LeaveApplication extends Component<
     const bereavementDays = user_detail.bereavement;
     const christmasDays = user_detail.christmas;
     const dateOfBirth = user_detail.date_of_birth;
+    const familyCareDays = user_detail.familyCare;
     const maternityDays = user_detail.maternity ? user_detail.maternity : null;
+    const paternityDays = user_detail.paternity ? user_detail.paternity : null;
     const leave = this.state.leave;
     const leaveType = this.state.leaveType;
     const startDate = this.state.startDate ? this.state.startDate : null;
@@ -347,6 +366,9 @@ class LeaveApplication extends Component<
             ? myLeaveDays
             : undefined;
         },
+        'family care': () => {
+          return familyCareDays - myLeaveDays;
+        },
         maternity: () => {
           if (!sickSheet) {
             return false;
@@ -354,6 +376,11 @@ class LeaveApplication extends Component<
             if (maternityDays) {
               return maternityDays - myLeaveDays;
             }
+          }
+        },
+        paternity: () => {
+          if (paternityDays) {
+            return paternityDays - myLeaveDays;
           }
         },
         lwop: () => {
@@ -450,9 +477,13 @@ class LeaveApplication extends Component<
                   <option>annual</option>
                   <option>sick</option>
                   <option>bereavement</option>
+                  <option>family care</option>
                   <option>christmas</option>
                   <option>birthday</option>
-                  {gender === 'female' && <option>maternity</option>}
+                  {gender === 'female' &&
+                    user_detail.maternity > 0 && <option>maternity</option>}
+                  {gender === 'male' &&
+                    user_detail.paternity > 0 && <option>paternity</option>}
                   <option>lwop</option>
                   <option>other</option>
                 </select>
