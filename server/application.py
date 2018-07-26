@@ -301,8 +301,16 @@ def apply_for_leave():
         current_leave_balance = user_record.bereavement
         new_leave_balance = application_days
 
+    if leave_name == 'family care':
+        current_leave_balance = user_record.family_care
+        new_leave_balance = application_days
+
     if leave_name == 'maternity':
         current_leave_balance = user_record.maternity
+        new_leave_balance = application_days
+
+    if leave_name == 'paternity':
+        current_leave_balance = user_record.paternity
         new_leave_balance = application_days
 
     # fetch sick sheet file
