@@ -541,9 +541,11 @@ def new_user():
         sick: sick leave days balance
         christmas: christmas leave days balance
         bereavement: bereavement leave days balance
+        family_care: family_care leave days balance
         date_of_birth: date of birth of the user
         maternity: maternity leave days balance
-    """
+        paternity: paternity leave days balance
+        """
     surname = request.json.get('surname')
     othernames = request.json.get('othernames')
     email = request.json.get('email')
