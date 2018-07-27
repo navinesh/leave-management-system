@@ -1428,6 +1428,22 @@ def cancel_approved_leave():
         session.add(user_record)
         session.commit()
 
+    if leave_name == 'bereavement':
+        previous_leave_balance = user_record.bereavement
+        updated_leave_balance = float(user_record.bereavement) + leave_days
+
+        user_record.bereavement = float(user_record.bereavement) + leave_days
+        session.add(user_record)
+        session.commit()
+
+    if leave_name == 'family care':
+        previous_leave_balance = user_record.family_care
+        updated_leave_balance = float(user_record.family_care) + leave_days
+
+        user_record.family_care = float(user_record.family_care) + leave_days
+        session.add(user_record)
+        session.commit()
+
     if leave_name == 'christmas':
         previous_leave_balance = user_record.christmas
         updated_leave_balance = float(user_record.christmas) + leave_days
@@ -1444,11 +1460,11 @@ def cancel_approved_leave():
         session.add(user_record)
         session.commit()
 
-    if leave_name == 'bereavement':
-        previous_leave_balance = user_record.bereavement
-        updated_leave_balance = float(user_record.bereavement) + leave_days
+    if leave_name == 'paternity':
+        previous_leave_balance = user_record.paternity
+        updated_leave_balance = float(user_record.paternity) + leave_days
 
-        user_record.bereavement = float(user_record.bereavement) + leave_days
+        user_record.paternity = float(user_record.paternity) + leave_days
         session.add(user_record)
         session.commit()
 
