@@ -610,12 +610,14 @@ def modify_user():
         gender: gender of the user
         annual: annual leave days balance
         sick: sick leave days balance
-        christmas: christmas leave days balance
         bereavement: bereavement leave days balance
+        family_care: family_care leave days balance
+        christmas: christmas leave days balance
         date_of_birth: date of birth of the user
         maternity: maternity leave days balance
+        paternity: paternity leave days balance
         edit_reason: reason for editing leave record
-    """
+        """
     user_id = request.json.get('user_id')
     surname = request.json.get('surname')
     othernames = request.json.get('othernames')
@@ -627,7 +629,9 @@ def modify_user():
     christmas = request.json.get('christmas')
     bereavement = request.json.get('bereavement')
     date_of_birth = request.json.get('date_of_birth')
+    family_care = request.json.get('family_care')
     maternity = request.json.get('maternity')
+    paternity = request.json.get('paternity')
     edit_reason = request.json.get('editReason')
 
     user_record = session.query(User).filter_by(id=user_id).one()
@@ -672,10 +676,12 @@ def modify_user():
     user_record.gender = gender
     user_record.annual = annual
     user_record.sick = sick
-    user_record.christmas = christmas
     user_record.bereavement = bereavement
+    user_record.family_care = family_care
+    user_record.christmas = christmas
     user_record.date_of_birth = date_of_birth
     user_record.maternity = maternity
+    user_record.paternity = paternity
 
     session.add(user_record)
     session.commit()
@@ -688,8 +694,10 @@ def modify_user():
         annual=annual,
         sick=sick,
         bereavement=bereavement,
+        family_care=family_care,
         christmas=christmas,
         maternity=maternity,
+        paternity=paternity,
         edit_reason=edit_reason,
         user_id=user_record.id,
         date_posted=str(datetime.now().date()))
