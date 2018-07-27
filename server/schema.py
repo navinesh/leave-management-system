@@ -20,8 +20,8 @@ class User(SQLAlchemyObjectType):
         only_fields = [
             'id', 'othernames', 'surname', 'email', 'designation', 'gender',
             'date_of_birth', 'annual', 'sick', 'bereavement', 'christmas',
-            'maternity', 'isArchived', 'archiveReason', 'userupdates',
-            'leaverecord'
+            'maternity', 'family_care', 'paternity', 'isArchived',
+            'archiveReason', 'userupdates', 'leaverecord'
         ]
 
 
