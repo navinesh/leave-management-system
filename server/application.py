@@ -293,16 +293,16 @@ def apply_for_leave():
         current_leave_balance = user_record.sick
         new_leave_balance = application_days
 
-    if leave_name == 'christmas':
-        current_leave_balance = user_record.christmas
-        new_leave_balance = application_days
-
     if leave_name == 'bereavement':
         current_leave_balance = user_record.bereavement
         new_leave_balance = application_days
 
     if leave_name == 'family care':
         current_leave_balance = user_record.family_care
+        new_leave_balance = application_days
+
+    if leave_name == 'christmas':
+        current_leave_balance = user_record.christmas
         new_leave_balance = application_days
 
     if leave_name == 'maternity':
