@@ -38,6 +38,8 @@ class User(Base):
     bereavement = Column(Numeric)
     christmas = Column(Numeric)
     maternity = Column(Numeric)
+    family_care = Column(Numeric)
+    paternity = Column(Numeric)
     isArchived = Column(Boolean)
     archiveReason = Column(Text)
 
@@ -71,6 +73,8 @@ class User(Base):
             'bereavement': self.bereavement,
             'christmas': self.christmas,
             'maternity': self.maternity,
+            'family_care': self.family_care,
+            'paternity': self.paternity,
             'date_of_birth': self.date_of_birth,
             'isArchived': self.isArchived,
             'archiveReason': self.archiveReason,
@@ -90,6 +94,8 @@ class Userupdates(Base):
     bereavement = Column(Numeric)
     christmas = Column(Numeric)
     maternity = Column(Numeric)
+    family_care = Column(Numeric)
+    paternity = Column(Numeric)
     edit_reason = Column(Text)
     date_posted = Column(String)
     user = relationship(
@@ -109,6 +115,8 @@ class Userupdates(Base):
             'bereavement': self.bereavement,
             'christmas': self.christmas,
             'maternity': self.maternity,
+            'family_care': self.family_care,
+            'paternity': self.paternity,
             'edit_reason': self.edit_reason,
             'user_id': self.user_id,
             'dated_posted': self.dated_posted
