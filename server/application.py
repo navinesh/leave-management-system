@@ -1036,14 +1036,6 @@ def edit_approved_leave():
             session.add(user_record)
             session.commit()
 
-        if previous_leave_name == 'christmas':
-            previous_leave_balance = user_record.christmas
-            previous_updated_leave_balance = new_leave_balance
-
-            user_record.christmas = new_leave_balance
-            session.add(user_record)
-            session.commit()
-
         if previous_leave_name == 'bereavement':
             previous_leave_balance = user_record.bereavement
             previous_updated_leave_balance = new_leave_balance
@@ -1052,11 +1044,35 @@ def edit_approved_leave():
             session.add(user_record)
             session.commit()
 
+        if previous_leave_name == 'family care':
+            previous_leave_balance = user_record.family_care
+            previous_updated_leave_balance = new_leave_balance
+
+            user_record.family_care = new_leave_balance
+            session.add(user_record)
+            session.commit()
+
+        if previous_leave_name == 'christmas':
+            previous_leave_balance = user_record.christmas
+            previous_updated_leave_balance = new_leave_balance
+
+            user_record.christmas = new_leave_balance
+            session.add(user_record)
+            session.commit()
+
         if previous_leave_name == 'maternity':
             previous_leave_balance = user_record.maternity
             previous_updated_leave_balance = new_leave_balance
 
             user_record.maternity = new_leave_balance
+            session.add(user_record)
+            session.commit()
+
+        if previous_leave_name == 'paternity':
+            previous_leave_balance = user_record.paternity
+            previous_updated_leave_balance = new_leave_balance
+
+            user_record.paternity = new_leave_balance
             session.add(user_record)
             session.commit()
 
@@ -1089,11 +1105,12 @@ def edit_approved_leave():
             session.add(user_record)
             session.commit()
 
-        if leave_name == 'maternity':
-            previous_new_leave_balance = user_record.maternity
-            updated_leave_balance = float(user_record.maternity) - leave_days
+        if leave_name == 'family care':
+            previous_new_leave_balance = user_record.family_care
+            updated_leave_balance = float(user_record.family_care) - leave_days
 
-            user_record.maternity = float(user_record.maternity) - leave_days
+            user_record.family_care = float(
+                user_record.family_care) - leave_days
             session.add(user_record)
             session.commit()
 
@@ -1102,6 +1119,22 @@ def edit_approved_leave():
             updated_leave_balance = float(user_record.christmas) - leave_days
 
             user_record.christmas = float(user_record.christmas) - leave_days
+            session.add(user_record)
+            session.commit()
+
+        if leave_name == 'maternity':
+            previous_new_leave_balance = user_record.maternity
+            updated_leave_balance = float(user_record.maternity) - leave_days
+
+            user_record.maternity = float(user_record.maternity) - leave_days
+            session.add(user_record)
+            session.commit()
+
+        if leave_name == 'paternity':
+            previous_new_leave_balance = user_record.paternity
+            updated_leave_balance = float(user_record.paternity) - leave_days
+
+            user_record.paternity = float(user_record.paternity) - leave_days
             session.add(user_record)
             session.commit()
 
@@ -1154,6 +1187,26 @@ def edit_approved_leave():
                     session.add(user_record)
                     session.commit()
 
+                if leave_name == 'bereavement':
+                    previous_leave_balance = user_record.bereavement
+                    updated_leave_balance = float(
+                        user_record.bereavement) - num_days_difference
+
+                    user_record.bereavement = float(
+                        user_record.bereavement) - num_days_difference
+                    session.add(user_record)
+                    session.commit()
+
+                if leave_name == 'family care':
+                    previous_leave_balance = user_record.family_care
+                    updated_leave_balance = float(
+                        user_record.family_care) - num_days_difference
+
+                    user_record.family_care = float(
+                        user_record.family_care) - num_days_difference
+                    session.add(user_record)
+                    session.commit()
+
                 if leave_name == 'christmas':
                     previous_leave_balance = user_record.christmas
                     updated_leave_balance = float(
@@ -1174,13 +1227,13 @@ def edit_approved_leave():
                     session.add(user_record)
                     session.commit()
 
-                if leave_name == 'bereavement':
-                    previous_leave_balance = user_record.bereavement
+                if leave_name == 'paternity':
+                    previous_leave_balance = user_record.paternity
                     updated_leave_balance = float(
-                        user_record.bereavement) - num_days_difference
+                        user_record.paternity) - num_days_difference
 
-                    user_record.bereavement = float(
-                        user_record.bereavement) - num_days_difference
+                    user_record.paternity = float(
+                        user_record.paternity) - num_days_difference
                     session.add(user_record)
                     session.commit()
 
@@ -1206,6 +1259,26 @@ def edit_approved_leave():
                     session.add(user_record)
                     session.commit()
 
+                if leave_name == 'bereavement':
+                    previous_leave_balance = user_record.bereavement
+                    updated_leave_balance = float(
+                        user_record.bereavement) + num_days_difference
+
+                    user_record.bereavement = float(
+                        user_record.bereavement) + num_days_difference
+                    session.add(user_record)
+                    session.commit()
+
+                if leave_name == 'family care':
+                    previous_leave_balance = user_record.family_care
+                    updated_leave_balance = float(
+                        user_record.family_care) + num_days_difference
+
+                    user_record.family_care = float(
+                        user_record.family_care) + num_days_difference
+                    session.add(user_record)
+                    session.commit()
+
                 if leave_name == 'christmas':
                     previous_leave_balance = user_record.christmas
                     updated_leave_balance = float(
@@ -1226,13 +1299,13 @@ def edit_approved_leave():
                     session.add(user_record)
                     session.commit()
 
-                if leave_name == 'bereavement':
-                    previous_leave_balance = user_record.bereavement
+                if leave_name == 'paternity':
+                    previous_leave_balance = user_record.paternity
                     updated_leave_balance = float(
-                        user_record.bereavement) + num_days_difference
+                        user_record.paternity) + num_days_difference
 
-                    user_record.bereavement = float(
-                        user_record.bereavement) + num_days_difference
+                    user_record.paternity = float(
+                        user_record.paternity) + num_days_difference
                     session.add(user_record)
                     session.commit()
 
@@ -1245,6 +1318,14 @@ def edit_approved_leave():
                 previous_leave_balance = user_record.sick
                 updated_leave_balance = user_record.sick
 
+            if leave_name == 'bereavement':
+                previous_leave_balance = user_record.bereavement
+                updated_leave_balance = user_record.bereavement
+
+            if leave_name == 'family care':
+                previous_leave_balance = user_record.family_care
+                updated_leave_balance = user_record.family_care
+
             if leave_name == 'christmas':
                 previous_leave_balance = user_record.christmas
                 updated_leave_balance = user_record.christmas
@@ -1253,9 +1334,9 @@ def edit_approved_leave():
                 previous_leave_balance = user_record.maternity
                 updated_leave_balance = user_record.maternity
 
-            if leave_name == 'bereavement':
-                previous_leave_balance = user_record.bereavement
-                updated_leave_balance = user_record.bereavement
+            if leave_name == 'paternity':
+                previous_leave_balance = user_record.paternity
+                updated_leave_balance = user_record.paternity
 
             if leave_name == 'lwop' or leave_name == 'other':
                 previous_leave_balance = 0
