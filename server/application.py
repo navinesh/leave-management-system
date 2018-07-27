@@ -749,15 +749,16 @@ def approve_leave():
             session.add(user_record)
             session.commit()
 
-    if leave_name == 'maternity':
-        maternity = float(user_record.maternity) - leave_days
-        if maternity < 0:
+    if leave_name == 'family care':
+        family_care = float(user_record.family_care) - leave_days
+        if family_care < 0:
             return jsonify({'message': 'Leave balance cannot be negative!'})
             abort(400)
         else:
-            user_record.maternity = maternity
+            user_record.family_care = family_care
             session.add(user_record)
             session.commit()
+            leave_balance = family_care
 
     if leave_name == 'christmas':
         christmas = float(user_record.christmas) - leave_days
@@ -768,6 +769,27 @@ def approve_leave():
             user_record.christmas = christmas
             session.add(user_record)
             session.commit()
+
+    if leave_name == 'maternity':
+        maternity = float(user_record.maternity) - leave_days
+        if maternity < 0:
+            return jsonify({'message': 'Leave balance cannot be negative!'})
+            abort(400)
+        else:
+            user_record.maternity = maternity
+            session.add(user_record)
+            session.commit()
+
+    if leave_name == 'paternity':
+        paternity = float(user_record.paternity) - leave_days
+        if paternity < 0:
+            return jsonify({'message': 'Leave balance cannot be negative!'})
+            abort(400)
+        else:
+            user_record.paternity = paternity
+            session.add(user_record)
+            session.commit()
+            leave_balance = paternity
 
     if leave_name == 'lwop' or leave_name == 'other':
         leave_balance = 0
