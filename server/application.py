@@ -551,9 +551,11 @@ def new_user():
     annual = request.json.get('annual')
     sick = request.json.get('sick')
     bereavement = request.json.get('bereavement')
+    family_care = request.json.get('family_care')
     christmas = request.json.get('christmas')
     date_of_birth = request.json.get('date_of_birth')
     maternity = request.json.get('maternity')
+    paternity = request.json.get('paternity')
     gender = request.json.get('gender')
     password = ''.join(
         random.SystemRandom().choice(string.ascii_uppercase + string.digits)
@@ -573,8 +575,10 @@ def new_user():
         annual=annual,
         sick=sick,
         bereavement=bereavement,
+        family_care=family_care,
         christmas=christmas,
         maternity=maternity,
+        paternity=paternity,
         isArchived=False)
 
     user.hash_password(password)
