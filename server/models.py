@@ -237,12 +237,18 @@ class Adminuser(Base):
 
     def generate_auth_token(self):
         s = TimedSerializer(admin_secret_key)
-        return s.sign('foo'.encode()).decode()
+        return s.dumps(self.id)
 
     @staticmethod
     def verify_auth_token(token, max_age=86400):
-        s = TimedSerializer(admin_secret_key)
-        return s.unsign(token, max_age=max_age)
+        s = TimedSerializer(secret_key)
+        try:
+            data = s.loads(token, max_age=max_age)
+        except SignatureExpired:
+            return None
+        except BadSignature:
+            return None
+        return data
 
     @property
     def serialize(self):
