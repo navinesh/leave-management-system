@@ -36,7 +36,9 @@ export const submitModifyUserRecord = (modifyUserDetails: Object) => async (
       bereavement: modifyUserDetails.bereavmentDays,
       christmas: modifyUserDetails.christmasDays,
       date_of_birth: modifyUserDetails.dateOfBirth,
+      family_care: modifyUserDetails.familyCare,
       maternity: modifyUserDetails.maternityDays,
+      paternity: modifyUserDetails.paternityDays,
       gender: modifyUserDetails.gender,
       editReason: modifyUserDetails.editReason
     });
