@@ -241,7 +241,7 @@ class Adminuser(Base):
 
     @staticmethod
     def verify_auth_token(token, max_age=86400):
-        s = TimedSerializer(secret_key)
+        s = TimedSerializer(admin_secret_key)
         try:
             data = s.loads(token, max_age=max_age)
         except SignatureExpired:
