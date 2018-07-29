@@ -146,15 +146,21 @@ class VerifyUserToken(graphene.Mutation):
     class Arguments:
         userToken = graphene.String()
 
+    User = graphene.Field(User)
     token = graphene.String()
     ok = graphene.Boolean()
 
     def mutate(self, info, userToken):
+        query = User.get_query(info)
+
         if not userToken or not UserModel.verify_auth_token(userToken):
             raise Exception('Your session has expired!')
 
+        id = UserModel.verify_auth_token(userToken)
+        user = query.filter(UserModel.id == id).first()
+
         ok = True
-        return VerifyUserToken(token=userToken, ok=ok)
+        return VerifyUserToken(User=user, token=userToken, ok=ok)
 
 
 class AuthenticateAdmin(graphene.Mutation):
