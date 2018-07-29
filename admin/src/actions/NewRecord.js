@@ -46,9 +46,11 @@ export const submitNewUserRecord = (newUserDetails: Object) => async (
       annual: newUserDetails.annualDays,
       sick: newUserDetails.sickDays,
       bereavement: newUserDetails.bereavementDays,
+      family_care: newUserDetails.familyCareDays,
       christmas: newUserDetails.christmasDays,
       date_of_birth: newUserDetails.dateOfBirth,
       maternity: newUserDetails.maternityDays,
+      paternity: newUserDetails.paternityDays,
       gender: newUserDetails.gender
     });
 
