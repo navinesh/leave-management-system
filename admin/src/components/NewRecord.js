@@ -23,10 +23,12 @@ type State = {
   designation: string,
   gender: string,
   annualLeave: string,
-  sickLeave: string,
+  familyCareLeave: string,
   bereavementLeave: string,
+  sickLeave: string,
   christmasLeave: string,
   maternityLeave: string,
+  paternityLeave: string,
   dob: any
 };
 
@@ -57,8 +59,10 @@ export default class NewRecordForm extends Component<Props, State> {
       gender: '',
       sickLeave: '',
       bereavementLeave: '',
+      familyCareLeave: '',
       christmasLeave: '',
       maternityLeave: '',
+      paternityLeave: '',
       dob: null
     };
 
@@ -70,13 +74,19 @@ export default class NewRecordForm extends Component<Props, State> {
     this.handleDOBChange = this.handleDOBChange.bind(this);
     this.handleAnnualLeaveChange = this.handleAnnualLeaveChange.bind(this);
     this.handleSickLeaveChange = this.handleSickLeaveChange.bind(this);
-    this.handleChristmasLeaveChange = this.handleChristmasLeaveChange.bind(
-      this
-    );
     this.handleBereavementLeaveChange = this.handleBereavementLeaveChange.bind(
       this
     );
+    this.handleFamilyCareLeaveChange = this.handleFamilyCareLeaveChange.bind(
+      this
+    );
+    this.handleChristmasLeaveChange = this.handleChristmasLeaveChange.bind(
+      this
+    );
     this.handleMaternityLeaveChange = this.handleMaternityLeaveChange.bind(
+      this
+    );
+    this.handlePaternityLeaveChange = this.handlePaternityLeaveChange.bind(
       this
     );
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -110,16 +120,24 @@ export default class NewRecordForm extends Component<Props, State> {
     this.setState({ sickLeave: target.value });
   }
 
-  handleChristmasLeaveChange({ target }: SyntheticInputEvent<>) {
-    this.setState({ christmasLeave: target.value });
+  handleFamilyCareLeaveChange({ target }: SyntheticInputEvent<>) {
+    this.setState({ familyCareLeave: target.value });
   }
 
   handleBereavementLeaveChange({ target }: SyntheticInputEvent<>) {
     this.setState({ bereavementLeave: target.value });
   }
 
+  handleChristmasLeaveChange({ target }: SyntheticInputEvent<>) {
+    this.setState({ christmasLeave: target.value });
+  }
+
   handleMaternityLeaveChange({ target }: SyntheticInputEvent<>) {
     this.setState({ maternityLeave: target.value });
+  }
+
+  handlePaternityLeaveChange({ target }: SyntheticInputEvent<>) {
+    this.setState({ PaternityLeave: target.value });
   }
 
   handleDOBChange(e: Event) {
@@ -136,9 +154,13 @@ export default class NewRecordForm extends Component<Props, State> {
     const annualDays = this.state.annualLeave;
     const sickDays = this.state.sickLeave;
     const bereavementDays = this.state.bereavementLeave;
+    const familyCareDays = this.state.familyCareLeave;
     const christmasDays = this.state.christmasLeave;
     const maternityDays = this.state.maternityLeave
       ? this.state.maternityLeave
+      : 0;
+    const paternityDays = this.state.paternityLeave
+      ? this.state.paternityLeave
       : 0;
     const dateOfBirth = moment(this.state.dob).format('DD/MM/YYYY');
 
@@ -151,6 +173,7 @@ export default class NewRecordForm extends Component<Props, State> {
       !annualDays ||
       !sickDays ||
       !bereavementDays ||
+      !familyCareDays ||
       !christmasDays ||
       !dateOfBirth ||
       !gender
@@ -170,9 +193,11 @@ export default class NewRecordForm extends Component<Props, State> {
       annualDays: annualDays,
       sickDays: sickDays,
       bereavementDays: bereavementDays,
+      familyCareDays: familyCareDays,
       christmasDays: christmasDays,
       dateOfBirth: dateOfBirth,
       maternityDays: maternityDays,
+      paternityDays: paternityDays,
       gender: gender
     };
 
@@ -180,9 +205,7 @@ export default class NewRecordForm extends Component<Props, State> {
   }
 
   render() {
-    let staffGender = this.state.gender
-      ? this.state.gender.toLowerCase()
-      : 'female';
+    let staffGender = this.state.gender.toLowerCase();
     const { isFetching, message } = this.props;
 
     return (
@@ -296,6 +319,32 @@ export default class NewRecordForm extends Component<Props, State> {
               <div className="row">
                 <div className="col-md-6">
                   <div className="form-group">
+                    <label htmlFor="bereavementLeave">Bereavement leave</label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      placeholder="Bereavement leave"
+                      id="bereavementLeave"
+                      onChange={this.handleBereavementLeaveChange}
+                    />
+                  </div>
+                </div>
+                <div className="col-md-6">
+                  <div className="form-group">
+                    <label htmlFor="familyCareLeave">Family care leave</label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      placeholder="Family care leave"
+                      id="familyCareLeave"
+                      onChange={this.handleFamilyCareLeaveChange}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="row">
+                <div className="col-md-6">
+                  <div className="form-group">
                     <label htmlFor="christmasLeave">Christmas leave</label>
                     <input
                       type="number"
@@ -308,13 +357,16 @@ export default class NewRecordForm extends Component<Props, State> {
                 </div>
                 <div className="col-md-6">
                   <div className="form-group">
-                    <label htmlFor="bereavementLeave">Bereavement leave</label>
-                    <input
-                      type="number"
+                    <label htmlFor="dob">Date of birth</label>
+                    <DatePicker
                       className="form-control"
-                      placeholder="Bereavement leave"
-                      id="bereavementLeave"
-                      onChange={this.handleBereavementLeaveChange}
+                      dateFormat="DD/MM/YYYY"
+                      placeholderText="Click to select a date"
+                      selected={this.state.dob}
+                      onChange={this.handleDOBChange}
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
                     />
                   </div>
                 </div>
@@ -334,21 +386,20 @@ export default class NewRecordForm extends Component<Props, State> {
                     </div>
                   </div>
                 )}
-                <div className="col-md-6">
-                  <div className="form-group">
-                    <label htmlFor="dob">Date of birth</label>
-                    <DatePicker
-                      className="form-control"
-                      dateFormat="DD/MM/YYYY"
-                      placeholderText="Click to select a date"
-                      selected={this.state.dob}
-                      onChange={this.handleDOBChange}
-                      showMonthDropdown
-                      showYearDropdown
-                      dropdownMode="select"
-                    />
+                {staffGender === 'male' && (
+                  <div className="col-md-6">
+                    <div className="form-group">
+                      <label htmlFor="Paternity leave">Paternity leave</label>
+                      <input
+                        type="number"
+                        className="form-control"
+                        placeholder="Paternity leave"
+                        id="paternityLeave"
+                        onChange={this.handlePaternityLeaveChange}
+                      />
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
               <div className="form-group">
                 <button type="submit" className="btn btn-primary col">
