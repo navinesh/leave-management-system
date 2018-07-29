@@ -39,6 +39,10 @@ const LEAVE_RECORD = gql`
       user {
         othernames
         surname
+        gender
+        familyCare
+        maternity
+        paternity
       }
     }
   }
