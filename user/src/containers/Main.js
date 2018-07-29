@@ -16,6 +16,10 @@ import UserRecord from './UserRecord';
 const VERIFY_USER_TOKEN = gql`
   mutation verifyUserToken($userToken: String!) {
     verifyUserToken(userToken: $userToken) {
+      User {
+        id
+        dbId
+      }
       token
       ok
     }
@@ -49,7 +53,9 @@ class Main extends Component<Props> {
           variables: { userToken }
         });
         const auth_info = {
-          auth_token: response.data.verifyUserToken.token
+          auth_token: response.data.verifyUserToken.token,
+          user_id: response.data.verifyUserToken.User.dbId,
+          id: response.data.verifyUserToken.User.id
         };
         dispatch(receiveUserLoginFromToken(auth_info));
       } catch (error) {
