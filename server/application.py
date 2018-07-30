@@ -646,7 +646,7 @@ def modify_user():
                  str(user_record.annual) + " annual day(s), " +
                  str(user_record.sick) + " sick day(s), " +
                  str(user_record.bereavement) + " bereavement day(s), " +
-                 str(user_record.family_care) + " family_care day(s) and " +
+                 str(user_record.family_care) + " family care day(s) and " +
                  str(user_record.christmas) +
                  " christmas day(s). Your updated leave records are: " +
                  annual + " annual day(s), " + sick + " sick day(s), " +
@@ -662,7 +662,7 @@ def modify_user():
                  str(user_record.annual) + " annual day(s), " +
                  str(user_record.sick) + " sick day(s), " +
                  str(user_record.bereavement) + " bereavement day(s), " +
-                 str(user_record.family_care) + " family_care day(s), " +
+                 str(user_record.family_care) + " family care day(s), " +
                  str(user_record.christmas) + " christmas day(s) and " +
                  str(user_record.paternity) + " paternity day(s). " +
                  "Your updated leave records are: " +
