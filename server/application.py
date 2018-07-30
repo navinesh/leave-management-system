@@ -637,37 +637,75 @@ def modify_user():
     user_record = session.query(User).filter_by(id=user_id).one()
 
     # Email message
-    if gender == 'male' or (float(maternity) <= 0 and
-                            user_record.maternity <= 0):
-        send_email(
-            email, None, "Leave record update",
-            ("Your leave records have been updated. \
-             Your previous leave records were: " + str(user_record.annual) + " \
-             annual day(s), " +
-             str(user_record.sick) + " sick day(s), " + str(
-                 user_record.bereavement) + " bereavement day(s) and " + str(
-                     user_record.christmas) +
-             " christmas day(s). Your updated leave records are: " + annual +
-             " annual day(s), " + sick + " sick day(s), " + bereavement +
-             " bereavement day(s) and " + christmas + " christmas day(s). " +
-             "Reason for update: " + edit_reason),
-            file=None)
-    else:
-        send_email(
-            email, None, "Leave record update",
-            ("Your leave records have been updated. \
-            Your previous leave records were: " + str(user_record.annual) +
-             " annual day(s), " +
-             str(user_record.sick) + " sick day(s), " + str(
-                 user_record.bereavement) + " bereavement day(s), " + str(
-                     user_record.christmas) + " christmas day(s) and " + str(
-                         user_record.maternity) +
-             " maternity day(s). Your updated leave records are: " + annual +
-             " annual day(s), " + sick + " sick day(s), " + bereavement +
-             " bereavement day(s), " + christmas + " christmas day(s) and " +
-             maternity + " maternity day(s). " + "Reason for update: " +
-             edit_reason),
-            file=None)
+    if gender.lower() == 'male':
+        if (float(paternity) <= 0 and user_record.paternity <= 0):
+            send_email(
+                email, None, "Leave record update",
+                ("Your leave records have been updated. \
+                Your previous leave records were: " +
+                 str(user_record.annual) + " annual day(s), " +
+                 str(user_record.sick) + " sick day(s), " +
+                 str(user_record.bereavement) + " bereavement day(s), " +
+                 str(user_record.family_care) + " family_care day(s) and " +
+                 str(user_record.christmas) +
+                 " christmas day(s). Your updated leave records are: " +
+                 annual + " annual day(s), " + sick + " sick day(s), " +
+                 bereavement + " bereavement day(s), " + family_care +
+                 " family care day(s) and " + christmas + " christmas day(s). \
+                 Reason for update: " + edit_reason), file=None)
+
+        else:
+            send_email(
+                email, None, "Leave record update",
+                ("Your leave records have been updated. \
+                Your previous leave records were: " +
+                 str(user_record.annual) + " annual day(s), " +
+                 str(user_record.sick) + " sick day(s), " +
+                 str(user_record.bereavement) + " bereavement day(s), " +
+                 str(user_record.family_care) + " family_care day(s), " +
+                 str(user_record.christmas) + " christmas day(s) and " +
+                 str(user_record.paternity) + " paternity day(s). " +
+                 "Your updated leave records are: " +
+                 annual + " annual day(s), " + sick + " sick day(s), " +
+                 bereavement + " bereavement day(s), " + family_care +
+                 " family care day(s), " + christmas + " christmas day(s) and \
+                 " + paternity + " paternity day(s). Reason for update: " +
+                 edit_reason), file=None)
+
+    if gender.lower() == 'female':
+        if (float(maternity) <= 0 and user_record.maternity <= 0):
+            send_email(
+                email, None, "Leave record update",
+                ("Your leave records have been updated. \
+                Your previous leave records were: " +
+                 str(user_record.annual) + " annual day(s), " +
+                 str(user_record.sick) + " sick day(s), " +
+                 str(user_record.bereavement) + " bereavement day(s), " +
+                 str(user_record.family_care) + " family care day(s) and " +
+                 str(user_record.christmas) + " christmas day(s). " +
+                 "Your updated leave records are: " +
+                 annual + " annual day(s), " + sick + " sick day(s), " +
+                 bereavement + " bereavement day(s), " + family_care +
+                 " family care day(s) and " + christmas + " christmas day(s). \
+                 Reason for update: " + edit_reason), file=None)
+
+        else:
+            send_email(
+                email, None, "Leave record update",
+                ("Your leave records have been updated. \
+                Your previous leave records were: " +
+                 str(user_record.annual) + " annual day(s), " +
+                 str(user_record.sick) + " sick day(s), " +
+                 str(user_record.bereavement) + " bereavement day(s), " +
+                 str(user_record.family_care) + " family care day(s), " +
+                 str(user_record.christmas) + " christmas day(s) and " +
+                 str(user_record.maternity) +
+                 " maternity day(s). Your updated leave records are: " +
+                 annual + " annual day(s), " + sick + " sick day(s), " +
+                 bereavement + " bereavement day(s), " + family_care +
+                 " family care day(s), " + christmas + " christmas day(s) and \
+                 " + maternity + " maternity day(s). Reason for update: " +
+                 edit_reason), file=None)
 
     user_record.surname = surname
     user_record.othernames = othernames
