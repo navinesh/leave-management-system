@@ -29,10 +29,12 @@ const ARCHIVED_USERS = gql`
       email
       annual
       sick
-      christmas
       bereavement
+      familyCare
+      christmas
       dateOfBirth
       maternity
+      paternity
       gender
     }
   }
@@ -181,10 +183,12 @@ export default class StaffRecordList extends Component<Props, State> {
   annual: any;
   sick: any;
   bereavement: any;
+  familyCare: any;
   christmas: any;
   gender: any;
   dob: any;
   maternity: any;
+  paternity: any;
 
   constructor() {
     super();
@@ -248,6 +252,7 @@ export default class StaffRecordList extends Component<Props, State> {
     const bereavmentDays = this.bereavement.value;
     const christmasDays = this.christmas.value;
     const gender = this.gender.value;
+    const familyCare = this.familyCare.value;
 
     let dobDate = new Date(this.dob.value);
     let dob = moment(dobDate).format('DD/MM/YYYY');
@@ -265,6 +270,15 @@ export default class StaffRecordList extends Component<Props, State> {
     };
     const maternityDays = mDays(gender);
 
+    const pDays = gender => {
+      if (gender.toLowerCase() === 'male' && this.paternity) {
+        return this.paternity.value ? this.paternity.value : 0;
+      } else {
+        return 0;
+      }
+    };
+    const paternityDays = pDays(gender);
+
     const editReason = this.state.editReason
       ? this.state.editReason.trim()
       : null;
@@ -281,6 +295,7 @@ export default class StaffRecordList extends Component<Props, State> {
       !bereavmentDays ||
       !christmasDays ||
       !dateOfBirth ||
+      !familyCare ||
       !gender ||
       !editReason
     ) {
@@ -302,7 +317,9 @@ export default class StaffRecordList extends Component<Props, State> {
       bereavmentDays: bereavmentDays,
       christmasDays: christmasDays,
       dateOfBirth: dateOfBirth,
+      familyCare: familyCare,
       maternityDays: maternityDays,
+      paternityDays: paternityDays,
       gender: gender,
       editReason: editReason
     };
@@ -472,18 +489,6 @@ export default class StaffRecordList extends Component<Props, State> {
                         <div className="row">
                           <div className="col-md-6">
                             <div className="form-group">
-                              <label htmlFor="christmasLeave">
-                                Christmas leave
-                              </label>
-                              <input
-                                className="form-control"
-                                defaultValue={record.christmas}
-                                ref={input => (this.christmas = input)}
-                              />
-                            </div>
-                          </div>
-                          <div className="col-md-6">
-                            <div className="form-group">
                               <label htmlFor="bereavementLeave">
                                 Bereavement leave
                               </label>
@@ -494,22 +499,32 @@ export default class StaffRecordList extends Component<Props, State> {
                               />
                             </div>
                           </div>
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label htmlFor="familyCareLeave">
+                                Family care leave
+                              </label>
+                              <input
+                                className="form-control"
+                                defaultValue={record.familyCare}
+                                ref={input => (this.familyCare = input)}
+                              />
+                            </div>
+                          </div>
                         </div>
                         <div className="row">
-                          {record.gender.toLowerCase() === 'female' && (
-                            <div className="col-md-6">
-                              <div className="form-group">
-                                <label htmlFor="Maternity leave">
-                                  Maternity leave
-                                </label>
-                                <input
-                                  className="form-control"
-                                  defaultValue={record.maternity}
-                                  ref={input => (this.maternity = input)}
-                                />
-                              </div>
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label htmlFor="christmasLeave">
+                                Christmas leave
+                              </label>
+                              <input
+                                className="form-control"
+                                defaultValue={record.christmas}
+                                ref={input => (this.christmas = input)}
+                              />
                             </div>
-                          )}
+                          </div>
                           <div className="col-md-6">
                             <div className="form-group">
                               <label htmlFor="dob">Date of birth</label>
@@ -531,6 +546,36 @@ export default class StaffRecordList extends Component<Props, State> {
                               />
                             </div>
                           </div>
+                        </div>
+                        <div className="row">
+                          {record.gender.toLowerCase() === 'female' && (
+                            <div className="col-md-6">
+                              <div className="form-group">
+                                <label htmlFor="Maternity leave">
+                                  Maternity leave
+                                </label>
+                                <input
+                                  className="form-control"
+                                  defaultValue={record.maternity}
+                                  ref={input => (this.maternity = input)}
+                                />
+                              </div>
+                            </div>
+                          )}
+                          {record.gender.toLowerCase() === 'male' && (
+                            <div className="col-md-6">
+                              <div className="form-group">
+                                <label htmlFor="Paternity leave">
+                                  Paternity leave
+                                </label>
+                                <input
+                                  className="form-control"
+                                  defaultValue={record.paternity}
+                                  ref={input => (this.paternity = input)}
+                                />
+                              </div>
+                            </div>
+                          )}
                         </div>
                         <div className="row">
                           <div className="col">
@@ -632,6 +677,12 @@ export default class StaffRecordList extends Component<Props, State> {
                   </span>
                 </li>
                 <li className="list-group-item d-flex justify-content-between align-items-center">
+                  Family care
+                  <span className="badge badge-primary badge-pill">
+                    {record.familyCare}
+                  </span>
+                </li>
+                <li className="list-group-item d-flex justify-content-between align-items-center">
                   Christmas
                   <span className="badge badge-primary badge-pill">
                     {record.christmas}
@@ -649,6 +700,14 @@ export default class StaffRecordList extends Component<Props, State> {
                     Maternity
                     <span className="badge badge-primary badge-pill">
                       {record.maternity}
+                    </span>
+                  </li>
+                ) : record.gender.toLowerCase() === 'male' &&
+                record.paternity > 0 ? (
+                  <li className="list-group-item d-flex justify-content-between align-items-center">
+                    Paternity
+                    <span className="badge badge-primary badge-pill">
+                      {record.paternity}
                     </span>
                   </li>
                 ) : (
