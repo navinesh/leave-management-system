@@ -34,8 +34,10 @@ const ACTIVE_USERS = gql`
       sick
       christmas
       bereavement
+      familyCare
       dateOfBirth
       maternity
+      paternity
       gender
       designation
     }
