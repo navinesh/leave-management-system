@@ -40,8 +40,8 @@ class User(Base):
     maternity = Column(Numeric)
     family_care = Column(Numeric)
     paternity = Column(Numeric)
-    isArchived = Column(Boolean)
-    archiveReason = Column(Text)
+    is_archived = Column(Boolean)
+    archive_reason = Column(Text)
 
     def hash_password(self, password):
         self.password_hash = pwd_context.encrypt(password)
@@ -82,8 +82,8 @@ class User(Base):
             'family_care': self.family_care,
             'paternity': self.paternity,
             'date_of_birth': self.date_of_birth,
-            'isArchived': self.isArchived,
-            'archiveReason': self.archiveReason,
+            'is_archived': self.is_archived,
+            'archive_reason': self.archive_reason,
         }
 
 
@@ -104,6 +104,7 @@ class Userupdates(Base):
     paternity = Column(Numeric)
     edit_reason = Column(Text)
     date_posted = Column(String)
+    reviewed_by = Column(String)
     user = relationship(
         User, backref=backref("userupdates", cascade="all, delete-orphan"))
     user_id = Column(Integer, ForeignKey('user.id'))
@@ -124,6 +125,7 @@ class Userupdates(Base):
             'family_care': self.family_care,
             'paternity': self.paternity,
             'edit_reason': self.edit_reason,
+            'reviewed_by': self.reviewed_by,
             'user_id': self.user_id,
             'dated_posted': self.dated_posted
         }
@@ -145,6 +147,7 @@ class Leaverecord(Base):
     cancelled_reason = Column(String)
     date_reviewed = Column(String)
     declined_reason = Column(String)
+    reviewed_by = Column(String)
     file_name = Column(Text, nullable=True, unique=True)
     user = relationship(
         User, backref=backref("leaverecord", cascade="all, delete-orphan"))
@@ -165,6 +168,7 @@ class Leaverecord(Base):
             'date_posted': self.date_posted,
             'cancelled_reason': self.cancelled_reason,
             'date_reviewed': self.date_reviewed,
+            'reviewed_by': self.reviewed_by,
             'declined_reason': self.declined_reason,
             'file_name': self.file_name,
             'user_id': self.user_id
@@ -189,6 +193,7 @@ class Leaveupdates(Base):
     previous_leave_type = Column(String)
     previous_start_date = Column(String)
     previous_end_date = Column(String)
+    reviewed_by = Column(String)
     user_id = Column(Integer)
     leaverecord = relationship(
         Leaverecord,
@@ -211,6 +216,7 @@ class Leaveupdates(Base):
             'previous_leave_type': self.previous_leave_type,
             'previous_start_date': self.previous_start_date,
             'previous_end_date': self.previous_end_date,
+            'reviewed_by': self.reviewed_by,
             'date_posted': self.date_posted,
             'leave_id': self.leave_id,
             'user_id': self.user_id
