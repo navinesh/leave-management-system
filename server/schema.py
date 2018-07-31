@@ -20,7 +20,7 @@ class User(SQLAlchemyObjectType):
         only_fields = [
             'id', 'othernames', 'surname', 'email', 'designation', 'gender',
             'date_of_birth', 'annual', 'sick', 'bereavement', 'christmas',
-            'maternity', 'family_care', 'paternity', 'isArchived',
+            'maternity', 'isArchived', 'family_care', 'paternity',
             'archiveReason', 'userupdates', 'leaverecord'
         ]
 
@@ -169,6 +169,7 @@ class AuthenticateAdmin(graphene.Mutation):
         email = graphene.String()
         password = graphene.String()
 
+    Admin = graphene.Field(Adminuser)
     token = graphene.String()
     ok = graphene.Boolean()
 
@@ -184,7 +185,7 @@ class AuthenticateAdmin(graphene.Mutation):
 
         auth_token = admin.generate_auth_token()
         ok = True
-        return AuthenticateAdmin(token=auth_token, ok=ok)
+        return AuthenticateAdmin(Admin=admin, token=auth_token, ok=ok)
 
 
 class VerifyAdminToken(graphene.Mutation):
@@ -192,16 +193,22 @@ class VerifyAdminToken(graphene.Mutation):
     class Arguments:
         adminToken = graphene.String()
 
+    Admin = graphene.Field(Adminuser)
     token = graphene.String()
     ok = graphene.Boolean()
 
     def mutate(self, info, adminToken):
+        query = Adminuser.get_query(info)
+
         if not adminToken or \
                 not AdminuserModel.verify_auth_token(adminToken):
             raise Exception('Your session has expired!')
 
+        id = AdminuserModel.verify_auth_token(adminToken)
+        admin = query.filter(AdminuserModel.id == id).first()
+
         ok = True
-        return VerifyAdminToken(token=adminToken, ok=ok)
+        return VerifyAdminToken(Admin=admin, token=adminToken, ok=ok)
 
 
 class ArchiveUser(graphene.Mutation):
