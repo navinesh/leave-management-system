@@ -33,7 +33,7 @@ from schema import schema
 from models import db_session
 
 # https://pypi.python.org/pypi/Flask-Cors/1.10.3
-from flask_cors import cross_origin
+from flask_cors import cross_origin, CORS
 
 # from flask import session as login_session
 from flask_seasurf import SeaSurf
@@ -587,6 +587,25 @@ def new_user():
     session.add(user)
     session.commit()
 
+    # update logs table
+    user_updates = Userupdates(
+        designation=designation,
+        gender=gender,
+        date_of_birth=date_of_birth,
+        annual=annual,
+        sick=sick,
+        bereavement=bereavement,
+        family_care=family_care,
+        christmas=christmas,
+        maternity=maternity,
+        paternity=paternity,
+        edit_reason='New record',
+        user_id=user.id,
+        date_posted=str(datetime.now().date()))
+
+    session.add(user_updates)
+    session.commit()
+    
     # Send email
     send_email(
         email, None, "Leave Management System",
