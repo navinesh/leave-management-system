@@ -116,8 +116,11 @@ export default class ApprovedLeaveList extends Component<Props, State> {
     const sickDays = userRecord[0].user.sick;
     const bereavementDays = userRecord[0].user.bereavement;
     const christmasDays = userRecord[0].user.christmas;
+    const familyCareDays = userRecord[0].user.familyCare;
     const maternityDays =
       userRecord[0].user.maternity && userRecord[0].user.maternity;
+    const paternityDays =
+      userRecord[0].user.paternity && userRecord[0].user.paternity;
     const dateOfBirth = userRecord[0].user.date_of_birth;
 
     if (!listID || !leave || !leaveType || !startDate || !endDate || !reason) {
@@ -198,6 +201,9 @@ export default class ApprovedLeaveList extends Component<Props, State> {
         bereavement: () => {
           return bereavementDays - myLeaveDays;
         },
+        'family care': () => {
+          return familyCareDays - myLeaveDays;
+        },
         christmas: () => {
           return christmasDays - myLeaveDays;
         },
@@ -214,6 +220,9 @@ export default class ApprovedLeaveList extends Component<Props, State> {
         },
         maternity: () => {
           return maternityDays - myLeaveDays;
+        },
+        paternity: () => {
+          return paternityDays - myLeaveDays;
         },
         lwop: () => {
           return myLeaveDays;
@@ -258,11 +267,17 @@ export default class ApprovedLeaveList extends Component<Props, State> {
           bereavement: () => {
             return bereavementDays + previousLeaveDays;
           },
+          'family care': () => {
+            return familyCareDays + previousLeaveDays;
+          },
           christmas: () => {
             return christmasDays + previousLeaveDays;
           },
           maternity: () => {
             return maternityDays + previousLeaveDays;
+          },
+          paternity: () => {
+            return paternityDays + previousLeaveDays;
           }
         };
         return totalDays[type]();
@@ -290,7 +305,6 @@ export default class ApprovedLeaveList extends Component<Props, State> {
       previousEndDate: previousEndDate,
       newLeaveBalance: newLeaveBalance
     };
-
     onEditApprovedLeaveSubmit(editLeaveData);
   }
 
@@ -413,10 +427,16 @@ export default class ApprovedLeaveList extends Component<Props, State> {
                               <option>annual</option>
                               <option>sick</option>
                               <option>bereavement</option>
+                              <option>family care</option>
                               <option>christmas</option>
                               <option>birthday</option>
-                              {record.user.gender === 'female' ? (
+                              {record.user.gender === 'female' &&
+                              record.user.maternity > 0 ? (
                                 <option>maternity</option>
+                              ) : null}
+                              {record.user.gender === 'male' &&
+                              record.user.paternity > 0 ? (
+                                <option>paternity</option>
                               ) : null}
                               <option>lwop</option>
                               <option>other</option>
