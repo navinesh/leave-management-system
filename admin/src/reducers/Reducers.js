@@ -29,7 +29,7 @@ import {
   NEW_USER_RECORD_SUCCESS,
   NEW_USER_RECORD_FAILURE,
   CLEAR_NEW_USER_RECORD
-} from '../actions/NewRecord';
+} from '../actions/CreateUser;
 
 import {
   MODIFY_USER_RECORD_REQUEST,
