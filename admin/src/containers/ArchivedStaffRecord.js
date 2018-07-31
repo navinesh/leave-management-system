@@ -31,10 +31,12 @@ const ARCHIVED_USERS = gql`
       email
       annual
       sick
-      christmas
       bereavement
+      familyCare
+      christmas
       dateOfBirth
       maternity
+      paternity
       gender
     }
   }
