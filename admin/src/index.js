@@ -21,7 +21,7 @@ import StaffRecord from './containers/StaffRecord';
 import ArchivedStaffRecord from './containers/ArchivedStaffRecord';
 import LeaveReport from './containers/LeaveReport';
 import SickSheetRecord from './containers/SickSheetRecord';
-import NewRecord from './containers/NewRecord';
+import CreateUser from './containers/CreateUser';
 import PublicHoliday from './containers/PublicHoliday';
 import AdminResetPassword from './containers/AdminResetPassword';
 import Error from './components/Error';
@@ -69,7 +69,7 @@ const App = () => (
               path="/archivedstaffrecord"
               component={ArchivedStaffRecord}
             />
-            <PrivateRoute path="/newrecord" component={NewRecord} />
+            <PrivateRoute path="/createuser" component={CreateUser} />
             <PrivateRoute path="/publicholiday" component={PublicHoliday} />
             <Route path="/login" component={AdminLogin} />
             <Route path="/resetpassword" component={AdminResetPassword} />
