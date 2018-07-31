@@ -162,9 +162,11 @@ const ACTIVE_USERS = gql`
       surname
       annual
       sick
-      christmas
       bereavement
+      familyCare
+      christmas
       maternity
+      paternity
     }
   }
 `;
