@@ -694,26 +694,20 @@ export default class StaffRecordList extends Component<Props, State> {
                     {dateOfBirth}
                   </span>
                 </li>
-                {record.gender.toLowerCase() === 'female' &&
-                record.maternity > 0 ? (
+                {record.gender.toLowerCase() === 'female' ? (
                   <li className="list-group-item d-flex justify-content-between align-items-center">
                     Maternity
                     <span className="badge badge-primary badge-pill">
                       {record.maternity}
                     </span>
                   </li>
-                ) : record.gender.toLowerCase() === 'male' &&
-                record.paternity > 0 ? (
+                ) : (
                   <li className="list-group-item d-flex justify-content-between align-items-center">
                     Paternity
                     <span className="badge badge-primary badge-pill">
                       {record.paternity}
                     </span>
                   </li>
-                ) : (
-                  <p className="list-group-item d-flex justify-content-between align-items-center">
-                    <br />
-                  </p>
                 )}
                 <li className="list-group-item">
                   <button
