@@ -19,6 +19,7 @@ const ApprovedLeaveReportList = props => {
       <td>{record.leaveType}</td>
       <td>{record.startDate}</td>
       <td>{record.endDate}</td>
+      <td>{record.leaveDays}</td>
       <td>{record.leaveStatus}</td>
       <td>{record.leaveReason}</td>
       <td>{record.datePosted}</td>
@@ -34,6 +35,7 @@ const ApprovedLeaveReportList = props => {
     rObj['Type'] = a.leaveType;
     rObj['Start date'] = a.startDate;
     rObj['End date'] = a.endDate;
+    rObj['Leave days'] = a.leaveDays;
     rObj['Status'] = a.leaveStatus;
     rObj['Reason'] = a.leaveReason;
     rObj['Date posted'] = a.datePosted;
@@ -62,6 +64,7 @@ const ApprovedLeaveReportList = props => {
               <th>Type</th>
               <th>Start date</th>
               <th>End date</th>
+              <th>Leave days</th>
               <th>Status</th>
               <th>Reason</th>
               <th>Date posted</th>
@@ -98,10 +101,10 @@ const PendingLeaveReportList = props => {
       <td>{record.leaveType}</td>
       <td>{record.startDate}</td>
       <td>{record.endDate}</td>
+      <td>{record.leaveDays}</td>
       <td>{record.leaveStatus}</td>
       <td>{record.leaveReason}</td>
       <td>{record.datePosted}</td>
-      <td>{record.dateReviewed}</td>
     </tr>
   ));
 
@@ -113,10 +116,10 @@ const PendingLeaveReportList = props => {
     rObj['Type'] = a.leaveType;
     rObj['Start date'] = a.startDate;
     rObj['End date'] = a.endDate;
+    rObj['Leave days'] = a.leaveDays;
     rObj['Status'] = a.leaveStatus;
     rObj['Reason'] = a.leaveReason;
     rObj['Date posted'] = a.datePosted;
-    rObj['Date reviewed'] = a.dateReviewed;
     return rObj;
   });
 
@@ -141,10 +144,10 @@ const PendingLeaveReportList = props => {
               <th>Type</th>
               <th>Start date</th>
               <th>End date</th>
+              <th>Leave days</th>
               <th>Status</th>
               <th>Reason</th>
               <th>Date posted</th>
-              <th>Date reviewed</th>
             </tr>
           </thead>
           <tbody>{pendingRecordItems}</tbody>
@@ -177,6 +180,7 @@ const CancelledLeaveReportList = props => {
       <td>{record.leaveType}</td>
       <td>{record.startDate}</td>
       <td>{record.endDate}</td>
+      <td>{record.leaveDays}</td>
       <td>{record.leaveStatus}</td>
       <td>{record.cancelledReason}</td>
       <td>{record.datePosted}</td>
@@ -192,6 +196,7 @@ const CancelledLeaveReportList = props => {
     rObj['Type'] = a.leaveType;
     rObj['Start date'] = a.startDate;
     rObj['End date'] = a.endDate;
+    rObj['Leave days'] = a.leaveDays;
     rObj['Status'] = a.leaveStatus;
     rObj['Cancelled reason'] = a.cancelledReason;
     rObj['Date posted'] = a.datePosted;
@@ -220,6 +225,7 @@ const CancelledLeaveReportList = props => {
               <th>Type</th>
               <th>Start date</th>
               <th>End date</th>
+              <th>Leave days</th>
               <th>Status</th>
               <th>Reason</th>
               <th>Date posted</th>
@@ -256,6 +262,7 @@ const DeclinedLeaveReportList = props => {
       <td>{record.leaveType}</td>
       <td>{record.startDate}</td>
       <td>{record.endDate}</td>
+      <td>{record.leaveDays}</td>
       <td>{record.leaveStatus}</td>
       <td>{record.declinedReason}</td>
       <td>{record.datePosted}</td>
@@ -271,6 +278,7 @@ const DeclinedLeaveReportList = props => {
     rObj['Type'] = a.leaveType;
     rObj['Start date'] = a.startDate;
     rObj['End date'] = a.endDate;
+    rObj['Leave days'] = a.leaveDays;
     rObj['Status'] = a.leaveStatus;
     rObj['Declined reason'] = a.declinedReason;
     rObj['Date posted'] = a.datePosted;
@@ -299,6 +307,7 @@ const DeclinedLeaveReportList = props => {
               <th>Type</th>
               <th>Start date</th>
               <th>End date</th>
+              <th>Leave days</th>
               <th>Status</th>
               <th>Reason</th>
               <th>Date posted</th>
@@ -306,96 +315,6 @@ const DeclinedLeaveReportList = props => {
             </tr>
           </thead>
           <tbody>{declinedRecordItems}</tbody>
-        </table>
-      </div>
-    </Fragment>
-  ) : (
-    <div
-      className="card card-body border-0"
-      style={{ paddingTop: '100px', paddingBottom: '260px' }}
-    >
-      <h1 className="display-4 text-center">
-        <em>There is no record to display.</em>
-      </h1>
-    </div>
-  );
-};
-
-const UserUpdatesReportList = props => {
-  const userUpdates = props.user_updates.map(a => a).sort((b, c) => {
-    return b.userId - c.userId;
-  });
-
-  const userUpdateItems = userUpdates.map(record => {
-    let dob = new Date(record.dateOfBirth);
-    let dateOfBirth = moment(dob).format('DD/MM/YYYY');
-
-    return (
-      <tr key={record.id}>
-        <td>
-          {record.user.othernames} {record.user.surname}
-        </td>
-        <td>{record.annual}</td>
-        <td>{record.sick}</td>
-        <td>{record.bereavement}</td>
-        <td>{record.christmas}</td>
-        <td>{record.maternity}</td>
-        <td>{record.designation}</td>
-        <td>{dateOfBirth}</td>
-        <td>{record.gender}</td>
-        <td>{record.editReason}</td>
-        <td>{record.datePosted}</td>
-      </tr>
-    );
-  });
-
-  const records = props.user_updates.map(a => {
-    var rObj = {};
-    rObj['Othernames'] = a.user.othernames;
-    rObj['Surname'] = a.user.surname;
-    rObj['Annual'] = a.annual;
-    rObj['Sick'] = a.sick;
-    rObj['Bereavement'] = a.bereavement;
-    rObj['Christmas'] = a.christmas;
-    rObj['Maternity'] = a.maternity;
-    rObj['Designation'] = a.designation;
-    rObj['Date Of Birth'] = a.dateOfBirth;
-    rObj['Gender'] = a.gender;
-    rObj['Edit reason'] = a.editReason;
-    rObj['Date posted'] = a.datePosted;
-    return rObj;
-  });
-
-  return userUpdateItems.length > 0 ? (
-    <Fragment>
-      <CSVLink
-        data={records}
-        filename={'User-updates.csv'}
-        className="btn btn-primary btn-sm mb-2"
-      >
-        Download
-      </CSVLink>
-      <div className="table-responsive">
-        <table
-          className="table table-bordered table-hover"
-          style={{ backgroundColor: '#FFFFFF' }}
-        >
-          <thead className="thead-light">
-            <tr>
-              <th>Name</th>
-              <th>Annual </th>
-              <th>Sick</th>
-              <th>Bereavement</th>
-              <th>Christmas</th>
-              <th>Maternity</th>
-              <th>Designation</th>
-              <th>DOB</th>
-              <th>Gender</th>
-              <th>Reason</th>
-              <th>Date posted</th>
-            </tr>
-          </thead>
-          <tbody>{userUpdateItems}</tbody>
         </table>
       </div>
     </Fragment>
@@ -570,6 +489,102 @@ const StaffRecordList = props => {
   );
 };
 
+const UserUpdatesReportList = props => {
+  const userUpdates = props.user_updates.map(a => a).sort((b, c) => {
+    return b.userId - c.userId;
+  });
+
+  const userUpdateItems = userUpdates.map(record => {
+    let dob = new Date(record.dateOfBirth);
+    let dateOfBirth = moment(dob).format('DD/MM/YYYY');
+
+    return (
+      <tr key={record.id}>
+        <td>
+          {record.user.othernames} {record.user.surname}
+        </td>
+        <td>{record.annual}</td>
+        <td>{record.sick}</td>
+        <td>{record.bereavement}</td>
+        <td>{record.familyCare}</td>
+        <td>{record.christmas}</td>
+        <td>{record.maternity}</td>
+        <td>{record.paternity}</td>
+        <td>{record.designation}</td>
+        <td>{dateOfBirth}</td>
+        <td>{record.gender}</td>
+        <td>{record.editReason}</td>
+        <td>{record.datePosted}</td>
+      </tr>
+    );
+  });
+
+  const records = props.user_updates.map(a => {
+    var rObj = {};
+    rObj['Othernames'] = a.user.othernames;
+    rObj['Surname'] = a.user.surname;
+    rObj['Annual'] = a.annual;
+    rObj['Sick'] = a.sick;
+    rObj['Bereavement'] = a.bereavement;
+    rObj['Family care'] = a.familyCare;
+    rObj['Christmas'] = a.christmas;
+    rObj['Maternity'] = a.maternity;
+    rObj['Paternity'] = a.paternity;
+    rObj['Designation'] = a.designation;
+    rObj['Date Of Birth'] = a.dateOfBirth;
+    rObj['Gender'] = a.gender;
+    rObj['Edit reason'] = a.editReason;
+    rObj['Date posted'] = a.datePosted;
+    return rObj;
+  });
+
+  return userUpdateItems.length > 0 ? (
+    <Fragment>
+      <CSVLink
+        data={records}
+        filename={'User-updates.csv'}
+        className="btn btn-primary btn-sm mb-2"
+      >
+        Download
+      </CSVLink>
+      <div className="table-responsive">
+        <table
+          className="table table-bordered table-hover"
+          style={{ backgroundColor: '#FFFFFF' }}
+        >
+          <thead className="thead-light">
+            <tr>
+              <th>Name</th>
+              <th>Annual </th>
+              <th>Sick</th>
+              <th>Bereavement</th>
+              <th>Family care</th>
+              <th>Christmas</th>
+              <th>Maternity</th>
+              <th>Paternity</th>
+              <th>Designation</th>
+              <th>DOB</th>
+              <th>Gender</th>
+              <th>Reason</th>
+              <th>Date posted</th>
+            </tr>
+          </thead>
+          <tbody>{userUpdateItems}</tbody>
+        </table>
+      </div>
+    </Fragment>
+  ) : (
+    <div
+      className="card card-body border-0"
+      style={{ paddingTop: '100px', paddingBottom: '260px' }}
+    >
+      <h1 className="display-4 text-center">
+        <em>There is no record to display.</em>
+      </h1>
+    </div>
+  );
+};
+
 type tabsProps = {
   data: Array<any>
 };
@@ -673,12 +688,6 @@ export default class LeaveReportList extends Component<Props> {
         )
       },
       {
-        label: 'User updates',
-        content: (
-          <UserUpdatesReportList user_updates={this.props.user_updates} />
-        )
-      },
-      {
         label: 'Leave updates',
         content: (
           <LeaveUpdatesReportList leave_updates={this.props.leave_updates} />
@@ -687,6 +696,12 @@ export default class LeaveReportList extends Component<Props> {
       {
         label: 'User record',
         content: <StaffRecordList staff_record={this.props.staff_record} />
+      },
+      {
+        label: 'User updates',
+        content: (
+          <UserUpdatesReportList user_updates={this.props.user_updates} />
+        )
       }
     ];
 
