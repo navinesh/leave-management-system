@@ -55,7 +55,6 @@ const PENDING_RECORD = gql`
       leaveStatus
       leaveReason
       datePosted
-      dateReviewed
       user {
         othernames
         surname
@@ -106,29 +105,6 @@ const DECLINED_RECORD = gql`
   }
 `;
 
-const USER_UPDATES_RECORD = gql`
-  {
-    findUserUpdates(isArchived: "false") {
-      id
-      userId
-      annual
-      sick
-      bereavement
-      christmas
-      maternity
-      designation
-      dateOfBirth
-      gender
-      editReason
-      datePosted
-      user {
-        othernames
-        surname
-      }
-    }
-  }
-`;
-
 const LEAVE_UPDATES_RECORD = gql`
   {
     findLeaveUpdates(isArchived: "false") {
@@ -167,6 +143,31 @@ const ACTIVE_USERS = gql`
       christmas
       maternity
       paternity
+    }
+  }
+`;
+
+const USER_UPDATES_RECORD = gql`
+  {
+    findUserUpdates(isArchived: "false") {
+      id
+      userId
+      annual
+      sick
+      bereavement
+      familyCare
+      christmas
+      maternity
+      paternity
+      designation
+      dateOfBirth
+      gender
+      editReason
+      datePosted
+      user {
+        othernames
+        surname
+      }
     }
   }
 `;
