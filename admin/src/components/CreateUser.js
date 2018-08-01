@@ -296,6 +296,7 @@ export default class CreateUserForm extends Component<Props, State> {
                     <label htmlFor="annualLeave">Annual leave</label>
                     <input
                       type="number"
+                      step="0.1"
                       className="form-control"
                       placeholder="Annual leave"
                       id="annualLeave"
@@ -308,6 +309,7 @@ export default class CreateUserForm extends Component<Props, State> {
                     <label htmlFor="sickLeave">Sick leave</label>
                     <input
                       type="number"
+                      step="0.1"
                       className="form-control"
                       placeholder="Sick leave"
                       id="sickLeave"
@@ -322,6 +324,7 @@ export default class CreateUserForm extends Component<Props, State> {
                     <label htmlFor="bereavementLeave">Bereavement leave</label>
                     <input
                       type="number"
+                      step="0.1"
                       className="form-control"
                       placeholder="Bereavement leave"
                       id="bereavementLeave"
@@ -334,6 +337,7 @@ export default class CreateUserForm extends Component<Props, State> {
                     <label htmlFor="familyCareLeave">Family care leave</label>
                     <input
                       type="number"
+                      step="0.1"
                       className="form-control"
                       placeholder="Family care leave"
                       id="familyCareLeave"
@@ -348,6 +352,7 @@ export default class CreateUserForm extends Component<Props, State> {
                     <label htmlFor="christmasLeave">Christmas leave</label>
                     <input
                       type="number"
+                      step="0.1"
                       className="form-control"
                       placeholder="Christmas leave"
                       id="christmasLeave"
@@ -378,6 +383,7 @@ export default class CreateUserForm extends Component<Props, State> {
                       <label htmlFor="Maternity leave">Maternity leave</label>
                       <input
                         type="number"
+                        step="0.1"
                         className="form-control"
                         placeholder="Maternity leave"
                         id="maternityLeave"
@@ -392,6 +398,7 @@ export default class CreateUserForm extends Component<Props, State> {
                       <label htmlFor="Paternity leave">Paternity leave</label>
                       <input
                         type="number"
+                        step="0.1"
                         className="form-control"
                         placeholder="Paternity leave"
                         id="paternityLeave"
