@@ -642,8 +642,10 @@ export default class StaffRecordList extends Component<Props, State> {
     const filteredElements = staff_record
       .filter(
         e =>
-          e.othernames.toLowerCase().includes(this.state.searchTerm) ||
-          e.surname.toLowerCase().includes(this.state.searchTerm)
+          e.othernames
+            .toLowerCase()
+            .includes(this.state.searchTerm.toLowerCase()) ||
+          e.surname.toLowerCase().includes(this.state.searchTerm.toLowerCase())
       )
       .map(record => {
         let dob = new Date(record.dateOfBirth);
@@ -651,7 +653,7 @@ export default class StaffRecordList extends Component<Props, State> {
 
         return (
           <div className="col-md-3" key={record.id}>
-            <div className="card mb-3">
+            <div className="card mb-3 shadow p-3 mb-5 bg-white rounded">
               <ul className="list-group list-group-flush">
                 <li className="list-group-item">
                   <p className="h5">
@@ -738,8 +740,8 @@ export default class StaffRecordList extends Component<Props, State> {
           <div>
             <div className="row">
               <Search
-                handleSearchChange={this.handleSearchChange}
                 searchTerm={this.state.searchTerm}
+                handleSearchChange={this.handleSearchChange}
               />
               {this.state.searchTerm && (
                 <ClearSearch handleClearSearch={this.handleClearSearch} />
