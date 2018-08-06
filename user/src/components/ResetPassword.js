@@ -45,12 +45,14 @@ export default class UserResetPassword extends Component<Props, State> {
       return;
     }
 
+    this.setState({ email: '' });
+
     this.props.onResetClick(email);
   }
 
   render() {
     return (
-      <div className="col-md-3 ml-auto mr-auto">
+      <div className="col-md-5 ml-auto mr-auto">
         <div className="card card-body">
           <form onSubmit={this.handleSubmit}>
             <div className="form-group">
@@ -60,6 +62,7 @@ export default class UserResetPassword extends Component<Props, State> {
                 className="form-control"
                 placeholder="Enter email"
                 id="email"
+                value={this.state.email}
                 onChange={this.handleEmailChange}
               />
             </div>
