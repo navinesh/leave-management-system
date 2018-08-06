@@ -1,5 +1,5 @@
 // @flow
-import React, { Fragment } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
@@ -15,7 +15,7 @@ type Props = {
 };
 
 const ResetPassword = (props: Props) => (
-  <Fragment>
+  <div className="container">
     {!props.isAuthenticated ? (
       <UserResetPassword
         isFetching={props.isFetching}
@@ -26,7 +26,7 @@ const ResetPassword = (props: Props) => (
     ) : (
       <Redirect to="/" />
     )}
-  </Fragment>
+  </div>
 );
 
 const mapStateToProps = state => {
