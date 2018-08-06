@@ -229,7 +229,7 @@ export default class CreateUserForm extends Component<Props, State> {
     return (
       <div className="container">
         <div className="col-md-6 ml-auto mr-auto pb-2">
-          <div className="card card-body">
+          <div className="card card-body shadow p-3 mb-5 bg-white rounded">
             <form encType="multipart/form-data" onSubmit={this.handleSubmit}>
               <div className="row">
                 <div className="col-md-6">
