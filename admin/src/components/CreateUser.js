@@ -184,6 +184,24 @@ export default class CreateUserForm extends Component<Props, State> {
       return null;
     }
 
+    this.setState({
+      errorMessage: '',
+      successMessage: '',
+      surname: '',
+      otherNames: '',
+      annualLeave: '',
+      staffEmail: '',
+      designation: '',
+      gender: '',
+      sickLeave: '',
+      bereavementLeave: '',
+      familyCareLeave: '',
+      christmasLeave: '',
+      maternityLeave: '',
+      paternityLeave: '',
+      dob: null
+    });
+
     // prepare data to post to database
     const newUserDetails = {
       surname: surname,
@@ -222,6 +240,7 @@ export default class CreateUserForm extends Component<Props, State> {
                       className="form-control"
                       placeholder="Surname"
                       id="surName"
+                      value={this.state.surname}
                       onChange={this.handleSurnameChange}
                     />
                   </div>
@@ -234,6 +253,7 @@ export default class CreateUserForm extends Component<Props, State> {
                       className="form-control"
                       placeholder="Other Names"
                       id="otherNames"
+                      value={this.state.otherNames}
                       onChange={this.handleOtherNamesChange}
                     />
                   </div>
@@ -246,6 +266,7 @@ export default class CreateUserForm extends Component<Props, State> {
                   className="form-control"
                   placeholder="Staff email"
                   id="staffEmail"
+                  value={this.state.staffEmail}
                   onChange={this.handleStaffEmailChange}
                 />
               </div>
@@ -256,6 +277,7 @@ export default class CreateUserForm extends Component<Props, State> {
                     <select
                       className="form-control"
                       id="designation"
+                      value={this.state.designation}
                       onChange={this.handleDesignationChange}
                     >
                       <option />
@@ -281,6 +303,7 @@ export default class CreateUserForm extends Component<Props, State> {
                     <select
                       className="form-control"
                       id="gender"
+                      value={this.state.gender}
                       onChange={this.handleGenderChange}
                     >
                       <option />
@@ -300,6 +323,7 @@ export default class CreateUserForm extends Component<Props, State> {
                       className="form-control"
                       placeholder="Annual leave"
                       id="annualLeave"
+                      value={this.state.annualLeave}
                       onChange={this.handleAnnualLeaveChange}
                     />
                   </div>
@@ -313,6 +337,7 @@ export default class CreateUserForm extends Component<Props, State> {
                       className="form-control"
                       placeholder="Sick leave"
                       id="sickLeave"
+                      value={this.state.sickLeave}
                       onChange={this.handleSickLeaveChange}
                     />
                   </div>
@@ -328,6 +353,7 @@ export default class CreateUserForm extends Component<Props, State> {
                       className="form-control"
                       placeholder="Bereavement leave"
                       id="bereavementLeave"
+                      value={this.state.bereavementLeave}
                       onChange={this.handleBereavementLeaveChange}
                     />
                   </div>
@@ -341,6 +367,7 @@ export default class CreateUserForm extends Component<Props, State> {
                       className="form-control"
                       placeholder="Family care leave"
                       id="familyCareLeave"
+                      value={this.state.familyCareLeave}
                       onChange={this.handleFamilyCareLeaveChange}
                     />
                   </div>
@@ -356,6 +383,7 @@ export default class CreateUserForm extends Component<Props, State> {
                       className="form-control"
                       placeholder="Christmas leave"
                       id="christmasLeave"
+                      value={this.state.christmasLeave}
                       onChange={this.handleChristmasLeaveChange}
                     />
                   </div>
@@ -387,6 +415,7 @@ export default class CreateUserForm extends Component<Props, State> {
                         className="form-control"
                         placeholder="Maternity leave"
                         id="maternityLeave"
+                        value={this.state.maternityLeave}
                         onChange={this.handleMaternityLeaveChange}
                       />
                     </div>
@@ -402,6 +431,7 @@ export default class CreateUserForm extends Component<Props, State> {
                         className="form-control"
                         placeholder="Paternity leave"
                         id="paternityLeave"
+                        value={this.state.paternityLeave}
                         onChange={this.handlePaternityLeaveChange}
                       />
                     </div>
