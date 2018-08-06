@@ -2,8 +2,10 @@
 import React, { Component } from 'react';
 
 import '../spinners.css';
+import { clearChangePasswordError } from '../actions/ChangePassword';
 
 type Props = {
+  dispatch: Function,
   onChangeClick: Function,
   message: string,
   isFetching: boolean,
@@ -57,6 +59,7 @@ export default class UserChange extends Component<Props, State> {
   handleSubmit(e: Event) {
     e.preventDefault();
     this.setState({ errorMessage: '' });
+    this.props.dispatch(clearChangePasswordError());
 
     let auth_token = this.props.auth_info.auth_token;
     if (!auth_token) {
@@ -85,27 +88,37 @@ export default class UserChange extends Component<Props, State> {
       return;
     }
 
-    if (newPassword.length <= 7) {
+    if (
+      !newPassword.match(
+        '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})'
+      )
+    ) {
       this.setState({
-        errorMessage: 'Your password should be 8 or more characters!'
+        errorMessage:
+          'Your password must be more than 8 characters long, contain upper and lower case letters, number and special character!'
       });
       return;
     }
 
-    this.setState({ errorMessage: '' });
+    this.setState({
+      currentPassword: '',
+      newPassword: '',
+      newPasswordConfirm: ''
+    });
 
     const creds = {
       currentPassword: currentPassword,
       newPassword: newPassword,
       auth_token: auth_token
     };
+
     this.props.onChangeClick(creds);
   }
 
   render() {
     return (
       <div className="col-md-3 ml-auto mr-auto">
-        <div className="card card-body">
+        <div className="card card-body shadow p-3 mb-5 bg-white rounded">
           <form onSubmit={this.handleSubmit}>
             <div className="form-group">
               <label htmlFor="currentPassword">Current password</label>
@@ -114,6 +127,7 @@ export default class UserChange extends Component<Props, State> {
                 className="form-control"
                 placeholder="Current password"
                 id="currentPassword"
+                value={this.state.currentPassword}
                 onChange={this.handleCurrentPasswordChange}
               />
             </div>
@@ -124,6 +138,7 @@ export default class UserChange extends Component<Props, State> {
                 className="form-control"
                 placeholder="New password"
                 id="newPassword"
+                value={this.state.newPassword}
                 onChange={this.handlePasswordChange}
               />
             </div>
@@ -134,6 +149,7 @@ export default class UserChange extends Component<Props, State> {
                 className="form-control"
                 placeholder="Confirm new password"
                 id="newPasswordConfirm"
+                value={this.state.newPasswordConfirm}
                 onChange={this.handlePasswordChangeConfirm}
               />
             </div>
