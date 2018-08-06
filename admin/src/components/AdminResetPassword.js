@@ -32,6 +32,8 @@ export default class AdminResetPassword extends Component<Props, State> {
       return;
     }
 
+    this.setState({ email: '' });
+
     this.props.onResetClick(email);
   }
 
@@ -49,6 +51,7 @@ export default class AdminResetPassword extends Component<Props, State> {
                   className="form-control"
                   placeholder="Enter email"
                   id="email"
+                  value={this.state.email}
                   onChange={this.handleEmailChange.bind(this)}
                 />
               </div>
