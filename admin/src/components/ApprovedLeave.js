@@ -9,6 +9,28 @@ import Moment from 'moment';
 import { extendMoment } from 'moment-range';
 const moment = extendMoment(Moment);
 
+const Search = props => (
+  <div className="col-md-3">
+    <div className="form-group">
+      <input
+        type="text"
+        className="form-control"
+        placeholder="Search"
+        value={props.searchTerm}
+        onChange={props.handleSearchChange}
+      />
+    </div>
+  </div>
+);
+
+const ClearSearch = props => (
+  <div className="col-md-3">
+    <button className="btn btn-link" onClick={props.handleClearSearch}>
+      Clear
+    </button>
+  </div>
+);
+
 type Props = {
   approved_items: Object,
   public_holiday: Object,
@@ -43,6 +65,8 @@ export default class ApprovedLeaveList extends Component<Props, State> {
   handleCancelReason: Function;
   handleCancelSubmit: Function;
   handleCloseCancel: Function;
+  handleSearchChange: Function;
+  handleClearSearch: Function;
 
   leaveName: any;
   leaveType: any;
@@ -60,9 +84,12 @@ export default class ApprovedLeaveList extends Component<Props, State> {
       listID: '',
       isEditing: false,
       isCancel: false,
-      focusedInput: null
+      focusedInput: null,
+      searchTerm: ''
     };
 
+    this.handleSearchChange = this.handleSearchChange.bind(this);
+    this.handleClearSearch = this.handleClearSearch.bind(this);
     this.handleOpenEdit = this.handleOpenEdit.bind(this);
     this.handleEditReason = this.handleEditReason.bind(this);
     this.handleEditSubmit = this.handleEditSubmit.bind(this);
@@ -71,6 +98,14 @@ export default class ApprovedLeaveList extends Component<Props, State> {
     this.handleCancelReason = this.handleCancelReason.bind(this);
     this.handleCancelSubmit = this.handleCancelSubmit.bind(this);
     this.handleCloseCancel = this.handleCloseCancel.bind(this);
+  }
+
+  handleSearchChange({ target }: SyntheticInputEvent<>) {
+    this.setState({ searchTerm: target.value });
+  }
+
+  handleClearSearch() {
+    this.setState({ searchTerm: '' });
   }
 
   handleOpenEdit(e: SyntheticEvent<HTMLElement>) {
@@ -305,6 +340,7 @@ export default class ApprovedLeaveList extends Component<Props, State> {
       previousEndDate: previousEndDate,
       newLeaveBalance: newLeaveBalance
     };
+
     onEditApprovedLeaveSubmit(editLeaveData);
   }
 
@@ -616,6 +652,15 @@ export default class ApprovedLeaveList extends Component<Props, State> {
     }
 
     const items = approved_items
+      .filter(
+        e =>
+          e.user.othernames
+            .toLowerCase()
+            .includes(this.state.searchTerm.toLowerCase()) ||
+          e.user.surname
+            .toLowerCase()
+            .includes(this.state.searchTerm.toLowerCase())
+      )
       //.filter(record => {
       // get current date and format it
       //let dateToday = moment();
@@ -671,32 +716,45 @@ export default class ApprovedLeaveList extends Component<Props, State> {
         </tr>
       ));
 
-    return items.length > 0 ? (
-      <div className="table-responsive">
-        <table className="table table-bordered table-hover">
-          <thead className="thead-light">
-            <tr>
-              <th>Name</th>
-              <th>Leave</th>
-              <th>Type</th>
-              <th>Start date</th>
-              <th>End date</th>
-              <th>Leave days</th>
-              <th>Edit</th>
-              <th>Delete</th>
-            </tr>
-          </thead>
-          <tbody>{items}</tbody>
-        </table>
-      </div>
-    ) : (
-      <div
-        className="card card-body border-0"
-        style={{ paddingTop: '100px', paddingBottom: '260px' }}
-      >
-        <h1 className="display-4 text-center">
-          <em>There is no record to display.</em>
-        </h1>
+    return (
+      <div>
+        <div className="row">
+          <Search
+            searchTerm={this.state.searchTerm}
+            handleSearchChange={this.handleSearchChange}
+          />
+          {this.state.searchTerm && (
+            <ClearSearch handleClearSearch={this.handleClearSearch} />
+          )}
+        </div>
+        {items.length > 0 ? (
+          <div className="table-responsive">
+            <table className="table table-bordered table-hover">
+              <thead className="thead-light">
+                <tr>
+                  <th>Name</th>
+                  <th>Leave</th>
+                  <th>Type</th>
+                  <th>Start date</th>
+                  <th>End date</th>
+                  <th>Leave days</th>
+                  <th>Edit</th>
+                  <th>Delete</th>
+                </tr>
+              </thead>
+              <tbody>{items}</tbody>
+            </table>
+          </div>
+        ) : (
+          <div
+            className="card card-body border-0"
+            style={{ paddingTop: '100px', paddingBottom: '260px' }}
+          >
+            <h1 className="display-4 text-center">
+              <em>There is no record to display.</em>
+            </h1>
+          </div>
+        )}
       </div>
     );
   }
