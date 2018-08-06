@@ -35,6 +35,7 @@ class UserChangePassword extends Component<Props> {
       <Fragment>
         {isAuthenticated ? (
           <UserChange
+            dispatch={dispatch}
             isFetching={isFetching}
             message={message}
             auth_info={auth_info}
