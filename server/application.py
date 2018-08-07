@@ -146,9 +146,13 @@ def allowed_file(filename):
 
 # User
 @app.route('/')
+@app.route('/login')
+@app.route('/leaveapplication')
+@app.route('/leavecalendar')
 @app.route('/change-password')
 @app.route('/user-reset-password')
 @app.route('/applyforleave')
+@cross_origin()
 def show_user_home():
     """Render user index html"""
     return render_template('userhome.html')
@@ -156,6 +160,7 @@ def show_user_home():
 
 # Change password
 @app.route('/change-password', methods=['POST'])
+@auth.login_required
 @cross_origin()
 def change_user_password():
     """Change password
@@ -185,7 +190,7 @@ def change_user_password():
     # Send email
     send_email(
         user.email, None,
-        "Leave application",
+        "Leave Management System update",
         ("Your password has been reset to: " + new_password),
         file=None)
 
@@ -293,16 +298,16 @@ def apply_for_leave():
         current_leave_balance = user_record.sick
         new_leave_balance = application_days
 
+    if leave_name == 'christmas':
+        current_leave_balance = user_record.christmas
+        new_leave_balance = application_days
+
     if leave_name == 'bereavement':
         current_leave_balance = user_record.bereavement
         new_leave_balance = application_days
 
     if leave_name == 'family care':
         current_leave_balance = user_record.family_care
-        new_leave_balance = application_days
-
-    if leave_name == 'christmas':
-        current_leave_balance = user_record.christmas
         new_leave_balance = application_days
 
     if leave_name == 'maternity':
@@ -424,6 +429,15 @@ def apply_for_leave():
 
 # Admin
 @app.route('/admin')
+@app.route('/admin/login')
+@app.route('/admin/approvedleave')
+@app.route('/admin/staffrecord')
+@app.route('/admin/archivedstaffrecord')
+@app.route('/admin/createuser')
+@app.route('/admin/leavereport')
+@app.route('/admin/sicksheet')
+@app.route('/admin/publicholiday')
+@app.route('/admin/resetpassword')
 @app.route('/addadminuser')
 @app.route('/admin-reset-password')
 @app.route('/sicksheetrecord')
@@ -434,6 +448,7 @@ def apply_for_leave():
 @app.route('/editleave')
 @app.route('/editapprovedleave')
 @app.route('/cancelleave')
+@cross_origin()
 def show_admin_home():
     """Render admin index html"""
     return render_template('index.html')
@@ -545,6 +560,7 @@ def new_user():
         date_of_birth: date of birth of the user
         maternity: maternity leave days balance
         paternity: paternity leave days balance
+        admin_user: admin user name
         """
     surname = request.json.get('surname')
     othernames = request.json.get('othernames')
@@ -555,10 +571,11 @@ def new_user():
     bereavement = request.json.get('bereavement')
     family_care = request.json.get('family_care')
     christmas = request.json.get('christmas')
-    date_of_birth = request.json.get('date_of_birth')
     maternity = request.json.get('maternity')
     paternity = request.json.get('paternity')
+    date_of_birth = request.json.get('date_of_birth')
     gender = request.json.get('gender')
+    admin_user = request.json.get('admin_user')
     password = ''.join(
         random.SystemRandom().choice(string.ascii_uppercase + string.digits)
         for _ in range(8))
@@ -581,7 +598,7 @@ def new_user():
         christmas=christmas,
         maternity=maternity,
         paternity=paternity,
-        isArchived=False)
+        is_archived=False)
 
     user.hash_password(password)
     session.add(user)
@@ -601,11 +618,12 @@ def new_user():
         paternity=paternity,
         edit_reason='New record',
         user_id=user.id,
+        reviewed_by=admin_user,
         date_posted=str(datetime.now().date()))
 
     session.add(user_updates)
     session.commit()
-    
+
     # Send email
     send_email(
         email, None, "Leave Management System",
@@ -636,6 +654,7 @@ def modify_user():
         maternity: maternity leave days balance
         paternity: paternity leave days balance
         edit_reason: reason for editing leave record
+        admin_user: admin user name        
         """
     user_id = request.json.get('user_id')
     surname = request.json.get('surname')
@@ -652,6 +671,7 @@ def modify_user():
     maternity = request.json.get('maternity')
     paternity = request.json.get('paternity')
     edit_reason = request.json.get('editReason')
+    admin_user = request.json.get('admin_user')
 
     user_record = session.query(User).filter_by(id=user_id).one()
 
@@ -757,6 +777,7 @@ def modify_user():
         paternity=paternity,
         edit_reason=edit_reason,
         user_id=user_record.id,
+        reviewed_by=admin_user,
         date_posted=str(datetime.now().date()))
 
     session.add(user_updates)
@@ -780,6 +801,7 @@ def approve_leave():
     leave_status = request.json.get('leaveStatus')
     leave_days = float(request.json.get('leaveDays'))
     leave_name = request.json.get('leaveName')
+    admin_user = request.json.get('admin_user')
 
     leave_record = session.query(Leaverecord).filter_by(id=leave_id).one()
 
@@ -799,6 +821,7 @@ def approve_leave():
             user_record.annual = annual
             session.add(user_record)
             session.commit()
+            leave_balance = annual
 
     if leave_name == 'sick':
         sick = float(user_record.sick) - leave_days
@@ -809,6 +832,7 @@ def approve_leave():
             user_record.sick = sick
             session.add(user_record)
             session.commit()
+            leave_balance = sick
 
     if leave_name == 'bereavement':
         bereavement = float(user_record.bereavement) - leave_days
@@ -819,6 +843,7 @@ def approve_leave():
             user_record.bereavement = bereavement
             session.add(user_record)
             session.commit()
+            leave_balance = bereavement
 
     if leave_name == 'family care':
         family_care = float(user_record.family_care) - leave_days
@@ -840,6 +865,7 @@ def approve_leave():
             user_record.christmas = christmas
             session.add(user_record)
             session.commit()
+            leave_balance = christmas
 
     if leave_name == 'maternity':
         maternity = float(user_record.maternity) - leave_days
@@ -850,6 +876,7 @@ def approve_leave():
             user_record.maternity = maternity
             session.add(user_record)
             session.commit()
+            leave_balance = maternity
 
     if leave_name == 'paternity':
         paternity = float(user_record.paternity) - leave_days
@@ -867,11 +894,11 @@ def approve_leave():
 
     leave_record.leave_status = leave_status
     leave_record.date_reviewed = str(datetime.now().date())
+    leave_record.reviewed_by = admin_user
     session.add(leave_record)
     session.commit()
 
     # Send email
-
     if leave_name == 'lwop' or leave_name == 'other' or \
             leave_name == 'birthday':
         send_email(
@@ -883,12 +910,13 @@ def approve_leave():
     else:
         send_email(
             user_record.email, None, "Leave application approved",
-            ("Your " + leave_name + " leave application for " +
-             str(format_number(leave_days)) + " day(s) from " +
+            ("Your " + leave_name + " leave application for " + str(
+                format_number(leave_days)) + " day(s) from " +
              leave_record.start_date + " to " + leave_record.end_date +
-             " has been aprroved. " + "Your new " + leave_name +
-             " leave balance is " + str(format_number(leave_balance)) +
-             " day(s)."), file=None)
+             " has been aprroved. " + "Your new " +
+             leave_name + " leave balance is " + str(
+                 format_number(leave_balance)) + " day(s)."),
+            file=None)
 
     return jsonify({'message': 'Leave has been approved.'}), 201
 
@@ -902,10 +930,12 @@ def decline_leave():
         leave_id (int): the leave id to decline
         leave_status: status of leave
         decline_reason: reason for declining leave
+        admin_user: admin user name
     """
     leave_id = request.json.get('leave_id')
     leave_status = request.json.get('LeaveStatus')
     decline_reason = request.json.get('DeclineReason')
+    admin_user = request.json.get('admin_user')
 
     leave_record = session.query(Leaverecord).filter_by(id=leave_id).one()
 
@@ -917,7 +947,7 @@ def decline_leave():
     leave_record.leave_status = leave_status
     leave_record.declined_reason = decline_reason
     leave_record.date_reviewed = str(datetime.now().date())
-
+    leave_record.reviewed_by = admin_user
     session.add(leave_record)
     session.commit()
 
@@ -951,6 +981,7 @@ def edit_leave():
         previous_leave_type: type pf previous leave
         previous_start_date: previous leave start date
         previous_end_date: previous leave end date
+        admin_user: admin user name
     """
     leave_id = request.json.get('leave_id')
     leave_name = request.json.get('leave')
@@ -964,6 +995,7 @@ def edit_leave():
     previous_leave_type = request.json.get('previousLeaveType')
     previous_start_date = request.json.get('previousStartDate')
     previous_end_date = request.json.get('previousEndDate')
+    admin_user = request.json.get('admin_user')
 
     leave_record = session.query(Leaverecord).filter_by(id=leave_id).one()
 
@@ -998,6 +1030,7 @@ def edit_leave():
         previous_end_date=previous_end_date,
         date_posted=str(datetime.now().date()),
         edit_reason=leave_reason,
+        reviewed_by=admin_user,
         leave_id=leave_id,
         user_id=user_id)
     session.add(update_log)
@@ -1035,6 +1068,7 @@ def edit_approved_leave():
         previous_leave_type: type pf previous leave
         previous_start_date: previous leave start date
         previous_end_date: previous leave end date
+        admin_user: admin user name
     """
     leave_id = request.json.get('leave_id')
     leave_name = request.json.get('leave')
@@ -1049,6 +1083,7 @@ def edit_approved_leave():
     previous_start_date = request.json.get('previousStartDate')
     previous_end_date = request.json.get('previousEndDate')
     new_leave_balance = request.json.get('newLeaveBalance')
+    admin_user = request.json.get('admin_user')
 
     leave_record = session.query(Leaverecord).filter_by(id=leave_id).one()
 
@@ -1083,6 +1118,7 @@ def edit_approved_leave():
         previous_end_date=previous_end_date,
         date_posted=str(datetime.now().date()),
         edit_reason=leave_reason,
+        reviewed_by=admin_user,
         leave_id=leave_id,
         user_id=user_id)
     session.add(update_log)
@@ -1409,10 +1445,6 @@ def edit_approved_leave():
                 previous_leave_balance = user_record.paternity
                 updated_leave_balance = user_record.paternity
 
-            if leave_name == 'lwop' or leave_name == 'other':
-                previous_leave_balance = 0
-                updated_leave_balance = 0
-
         # Send email
         if leave_name == 'lwop' or leave_name == 'other':
             send_email(
@@ -1452,6 +1484,7 @@ def cancel_approved_leave():
     """Cancels approved leave.
     Args:
         leave_id (int): the approved leave id to cancel
+        admin_user: admin user name
     """
     leave_id = request.json.get('leaveID')
     cancel_reason = request.json.get('cancelReason')
@@ -1459,6 +1492,7 @@ def cancel_approved_leave():
     leave_days = float(request.json.get('leaveDays'))
     leave_name = request.json.get('leaveName')
     leave_status = request.json.get('leaveStatus')
+    admin_user = request.json.get('admin_user')
 
     leave_record = session.query(Leaverecord).filter_by(id=leave_id).one()
 
@@ -1480,6 +1514,7 @@ def cancel_approved_leave():
     leave_record.leave_status = leave_status
     leave_record.cancelled_reason = cancel_reason
     leave_record.date_reviewed = str(datetime.now().date())
+        leave_record.reviewed_by = admin_user
     session.add(leave_record)
     session.commit()
 
@@ -1546,12 +1581,8 @@ def cancel_approved_leave():
             user_record.email, None, "Leave application cancelled",
             ("Your " + leave_name + " leave application for " + str(
                 format_number(leave_days)) + " day(s) from " + start_date +
-             " to " + end_date + " has been cancelled. Your previous " +
-             leave_name + " leave balance was " + str(
-                 format_number(previous_leave_balance)) +
-             " day(s). Your updated " + leave_name + " leave balance is " +
-             str(format_number(updated_leave_balance)) +
-             " day(s). Reason for update: " + cancel_reason),
+             " to " + end_date + " has been cancelled. Reason for update: " +
+             cancel_reason),
             file=None)
     else:
         send_email(
