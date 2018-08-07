@@ -14,4 +14,5 @@ export const logoutAdmin = () => (dispatch: Function) => {
   dispatch(requestLogout());
   dispatch(receiveLogout());
   localStorage.removeItem('admin_token');
+  localStorage.removeItem('admin_user');
 };
