@@ -69,6 +69,7 @@ class SickSheetRecord extends Component<Props> {
       } catch (error) {
         console.log(error);
         localStorage.removeItem('admin_token');
+        localStorage.removeItem('admin_user');
         dispatch(loginAdminErrorFromToken('Your session has expired!'));
       }
     }
