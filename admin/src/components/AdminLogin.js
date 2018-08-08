@@ -13,6 +13,9 @@ import {
 const AUTHENTICATE_ADMIN = gql`
   mutation authenticateAdmin($email: String!, $password: String!) {
     authenticateAdmin(email: $email, password: $password) {
+      Admin {
+        othernames
+      }
       token
       ok
     }
@@ -84,11 +87,16 @@ class Login extends Component<Props, State> {
         'admin_token',
         response.data.authenticateAdmin.token
       );
-      dispatch(receiveAdminLogin(response.data.authenticateAdmin.token));
+      localStorage.setItem(
+        'admin_user',
+        response.data.authenticateAdmin.Admin.othernames
+      );
+      dispatch(receiveAdminLogin(response.data.authenticateAdmin));
     } catch (error) {
       console.log(error);
       this.setState({ errorMessage: error.message });
       localStorage.removeItem('admin_token');
+      localStorage.removeItem('admin_user');
       dispatch(loginAdminError());
     }
   };
