@@ -6,14 +6,14 @@
     "flow-bin": "^0.71.0"
   },
   "dependencies": {
-    "apollo-boost": "^0.1.7",
+    "apollo-boost": "^0.1.12",
     "axios": "^0.18.0",
     "graphql": "^0.13.2",
     "moment": "^2.22.1",
     "moment-range": "^4.0.1",
     "react": "^16.4.1",
     "react-addons-shallow-compare": "^15.6.2",
-    "react-apollo": "^2.1.4",
+    "react-apollo": "^2.1.9",
     "react-dates": "^17.1.0",
     "react-dom": "^16.4.1",
     "react-redux": "^5.0.7",
