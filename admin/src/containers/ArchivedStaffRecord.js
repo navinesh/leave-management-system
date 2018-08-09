@@ -85,7 +85,7 @@ class ArchivedStaffRecord extends Component<Props> {
     return (
       <div className="container">
         {isAuthenticated ? (
-          <Query query={ARCHIVED_USERS}>
+          <Query query={ARCHIVED_USERS} pollInterval={60000}>
             {({
               loading,
               error,
