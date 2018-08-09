@@ -35,7 +35,8 @@ export const submitApproveLeave = (approveLeaveData: Object) => async (
       leaveStatus: approveLeaveData.leaveStatus,
       userID: approveLeaveData.userID,
       leaveDays: approveLeaveData.leaveDays,
-      leaveName: approveLeaveData.leaveName
+      leaveName: approveLeaveData.leaveName,
+      admin_user: approveLeaveData.adminUser
     });
 
     if (response.status !== 201) {
