@@ -54,12 +54,14 @@ class ApproveLeave extends Component<approveProps, approveState> {
     const leaveID = userRecord[0].dbId;
     const leaveDays = userRecord[0].leaveDays;
     const leaveName = userRecord[0].leaveName;
+    const adminUser = localStorage.getItem('admin_user');
 
     const approveLeaveData = {
       leaveID: leaveID,
       leaveStatus: leaveStatus,
       leaveDays: leaveDays,
-      leaveName: leaveName
+      leaveName: leaveName,
+      adminUser: adminUser
     };
 
     onApproveLeaveSubmit(approveLeaveData);
@@ -223,11 +225,13 @@ class DeclineLeave extends Component<declineProps, declineState> {
     }
     const userRecord = pending_items.filter(e => e.id === listID);
     const leaveID = userRecord[0].dbId;
+    const adminUser = localStorage.getItem('admin_user');
 
     const declineLeaveData = {
       leaveID: leaveID,
       LeaveStatus: 'declined',
-      DeclineReason: reason
+      DeclineReason: reason,
+      adminUser: adminUser
     };
 
     onDeclineLeaveSubmit(declineLeaveData);
