@@ -92,7 +92,7 @@ class StaffRecord extends Component<Props> {
     return (
       <div className="container">
         {isAuthenticated ? (
-          <Query query={ACTIVE_USERS}>
+          <Query query={ACTIVE_USERS} pollInterval={60000}>
             {({
               loading,
               error,
