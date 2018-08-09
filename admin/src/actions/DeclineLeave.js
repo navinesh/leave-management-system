@@ -31,7 +31,8 @@ export const submitDeclineLeave = (declineLeaveData: Object) => async (
     const response = await axios.post('http://localhost:8080/declineleave', {
       leave_id: declineLeaveData.leaveID,
       LeaveStatus: declineLeaveData.LeaveStatus,
-      DeclineReason: declineLeaveData.DeclineReason
+      DeclineReason: declineLeaveData.DeclineReason,
+      admin_user: declineLeaveData.adminUser
     });
 
     if (response.status !== 201) {
