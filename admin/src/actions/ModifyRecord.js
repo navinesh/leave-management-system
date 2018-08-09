@@ -40,7 +40,8 @@ export const submitModifyUserRecord = (modifyUserDetails: Object) => async (
       maternity: modifyUserDetails.maternityDays,
       paternity: modifyUserDetails.paternityDays,
       gender: modifyUserDetails.gender,
-      editReason: modifyUserDetails.editReason
+      editReason: modifyUserDetails.editReason,
+      admin_user: modifyUserDetails.adminUser
     });
 
     if (response.status !== 201) {
