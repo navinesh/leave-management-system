@@ -33,15 +33,13 @@ Server
 
 Admin and User module is developed using Create React App tool https://github.com/facebookincubator/create-react-app
 
-You can create an app using this tool and replace the src folder with the folder in admin and user modules.
-
-Install required libraries and dependencies.
+Download the modules and install using ```yarn install``` or ```npm install```
 
 And then run your project using ```npm start``` or ```yarn start```.
 
 ***Server:***
 
-Server has been developed in Python and PostgreSQL database using flask web framework.
+Server has been developed in Python and PostgreSQL database using flask web framework. Install the listed dependencies. 
 
 ## Creator
 Navinesh Chand
