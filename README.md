@@ -39,7 +39,7 @@ And then run your project using ```npm start``` or ```yarn start```.
 
 ***Server:***
 
-Server has been developed in Python and PostgreSQL database using flask web framework.
+Server has been developed in Python and PostgreSQL database using flask web framework. Install the listed dependencies. 
 
 ## Creator
 Navinesh Chand
