@@ -37,7 +37,8 @@ export const submitEditLeave = (editLeaveData: Object) => async (
       previousLeaveName: editLeaveData.previousLeaveName,
       previousLeaveType: editLeaveData.previousLeaveType,
       previousStartDate: editLeaveData.previousStartDate,
-      previousEndDate: editLeaveData.previousEndDate
+      previousEndDate: editLeaveData.previousEndDate,
+      admin_user: editLeaveData.adminUser
     });
 
     if (response.status !== 201) {
