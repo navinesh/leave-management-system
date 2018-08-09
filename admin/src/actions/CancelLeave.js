@@ -36,7 +36,8 @@ export const submitCancelLeave = (cancelLeaveData: Object) => async (
       userID: cancelLeaveData.userID,
       leaveDays: cancelLeaveData.leaveDays,
       leaveName: cancelLeaveData.leaveName,
-      leaveStatus: cancelLeaveData.leaveStatus
+      leaveStatus: cancelLeaveData.leaveStatus,
+      admin_user: cancelLeaveData.adminUser
     });
 
     if (response.status !== 201) {
