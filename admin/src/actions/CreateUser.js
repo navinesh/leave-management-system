@@ -51,7 +51,8 @@ export const submitNewUserRecord = (newUserDetails: Object) => async (
       date_of_birth: newUserDetails.dateOfBirth,
       maternity: newUserDetails.maternityDays,
       paternity: newUserDetails.paternityDays,
-      gender: newUserDetails.gender
+      gender: newUserDetails.gender,
+      admin_user: newUserDetails.adminUser
     });
 
     if (response.status !== 201) {
