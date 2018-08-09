@@ -283,6 +283,8 @@ export default class StaffRecordList extends Component<Props, State> {
       ? this.state.editReason.trim()
       : null;
 
+    const adminUser = localStorage.getItem('admin_user');
+
     // verify data
     if (
       !dbid ||
@@ -321,7 +323,8 @@ export default class StaffRecordList extends Component<Props, State> {
       maternityDays: maternityDays,
       paternityDays: paternityDays,
       gender: gender,
-      editReason: editReason
+      editReason: editReason,
+      adminUser: adminUser
     };
 
     this.props.onModifyUserRecordSubmit(modifyUserDetails);
