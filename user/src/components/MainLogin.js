@@ -87,6 +87,9 @@ export default (props: Props) => (
           // return true for current and future dates
           return isCurrentDate || isEndDate ? true : false;
         })
+        .sort((a, b) => {
+          return a.user.othernames.localeCompare(b.user.othernames);
+        })
         .map(data => (
           <tr key={data.id}>
             <td>
