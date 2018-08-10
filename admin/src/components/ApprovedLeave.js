@@ -53,7 +53,8 @@ type State = {
   endDate: any,
   isEditing: boolean,
   isCancel: boolean,
-  focusedInput: ?boolean
+  focusedInput: ?boolean,
+  searchTerm: string
 };
 
 export default class ApprovedLeaveList extends Component<Props, State> {
@@ -325,6 +326,8 @@ export default class ApprovedLeaveList extends Component<Props, State> {
 
     this.setState({ errorMessage: '' });
 
+    const adminUser = localStorage.getItem('admin_user');
+
     const editLeaveData = {
       leave_id: leaveID,
       leave: leave,
@@ -338,7 +341,8 @@ export default class ApprovedLeaveList extends Component<Props, State> {
       previousLeaveType: previousLeaveType,
       previousStartDate: previousStartDate,
       previousEndDate: previousEndDate,
-      newLeaveBalance: newLeaveBalance
+      newLeaveBalance: newLeaveBalance,
+      adminUser: adminUser
     };
 
     onEditApprovedLeaveSubmit(editLeaveData);
@@ -388,12 +392,13 @@ export default class ApprovedLeaveList extends Component<Props, State> {
 
     const userRecord = approved_items.filter(e => e.id === listID);
 
-    const userID = userRecord[0].user.id;
+    const userID = userRecord[0].userId;
     const leaveID = userRecord[0].dbId;
     const leaveDays = userRecord[0].leaveDays;
     const leaveName = userRecord[0].leaveName;
 
     const leaveStatus = 'cancelled';
+    const adminUser = localStorage.getItem('admin_user');
 
     const cancelLeaveData = {
       leaveID: leaveID,
@@ -401,7 +406,8 @@ export default class ApprovedLeaveList extends Component<Props, State> {
       userID: userID,
       leaveDays: leaveDays,
       leaveName: leaveName,
-      leaveStatus: leaveStatus
+      leaveStatus: leaveStatus,
+      adminUser: adminUser
     };
 
     onCancelLeaveSubmit(cancelLeaveData);
