@@ -314,6 +314,25 @@ class LeaveApplication extends Component<
     );
     const leaveDays = daysExcludingHolidaysSet.size;
 
+    // since maternity leave is for consecutive days (do not exclude weekends)
+    const daysExcludingOnlyPublicHolidaysSet = new Set(
+      [...dateRangeSet].filter(x => !publicHolidaysSet.has(x))
+    );
+    const maternityLeaveDays = daysExcludingOnlyPublicHolidaysSet.size;
+
+    if (maternityLeaveDays === 0) {
+      this.setState({
+        errorMessage: 'The dates you selected either fall on public holiday!'
+      });
+      return;
+    }
+
+    // if half day then subtract 0.5
+    const myMaternityDays =
+      leaveType === 'half day am' || leaveType === 'half day pm'
+        ? maternityLeaveDays - 0.5
+        : maternityLeaveDays;
+
     if (leaveDays === 0) {
       this.setState({
         errorMessage:
@@ -374,7 +393,7 @@ class LeaveApplication extends Component<
             return false;
           } else {
             if (maternityDays) {
-              return maternityDays - myLeaveDays;
+              return maternityDays - myMaternityDays;
             }
           }
         },
