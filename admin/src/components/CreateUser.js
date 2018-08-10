@@ -41,9 +41,11 @@ export default class CreateUserForm extends Component<Props, State> {
   handleDOBChange: Function;
   handleAnnualLeaveChange: Function;
   handleSickLeaveChange: Function;
-  handleChristmasLeaveChange: Function;
   handleBereavementLeaveChange: Function;
+  handleFamilyCareLeaveChange: Function;
+  handleChristmasLeaveChange: Function;
   handleMaternityLeaveChange: Function;
+  handlePaternityLeaveChange: Function;
   handleSubmit: Function;
 
   constructor() {
@@ -137,7 +139,7 @@ export default class CreateUserForm extends Component<Props, State> {
   }
 
   handlePaternityLeaveChange({ target }: SyntheticInputEvent<>) {
-    this.setState({ PaternityLeave: target.value });
+    this.setState({ paternityLeave: target.value });
   }
 
   handleDOBChange(e: Event) {
@@ -184,6 +186,8 @@ export default class CreateUserForm extends Component<Props, State> {
       return null;
     }
 
+    const adminUser = localStorage.getItem('admin_user');
+
     this.setState({
       errorMessage: '',
       successMessage: '',
@@ -216,7 +220,8 @@ export default class CreateUserForm extends Component<Props, State> {
       dateOfBirth: dateOfBirth,
       maternityDays: maternityDays,
       paternityDays: paternityDays,
-      gender: gender
+      gender: gender,
+      adminUser: adminUser
     };
 
     this.props.onNewUserRecordSubmit(newUserDetails);
