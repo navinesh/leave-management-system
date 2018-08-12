@@ -94,8 +94,7 @@ export default class UserChange extends Component<Props, State> {
       )
     ) {
       this.setState({
-        errorMessage:
-          'Your password must be more than 8 characters long, contain upper and lower case letters, number and special character!'
+        errorMessage: 'Password does not meet complexity requirements!'
       });
       return;
     }
@@ -152,6 +151,16 @@ export default class UserChange extends Component<Props, State> {
                 value={this.state.newPasswordConfirm}
                 onChange={this.handlePasswordChangeConfirm}
               />
+              <small className="text-muted">
+                Password must meet complexity requirements:
+                <ul>
+                  <li>English uppercase characters (A through Z)</li>
+                  <li>English lowercase characters (a through z)</li>
+                  <li>Numerals (0 through 9)</li>
+                  <li>Non-alphabetic characters (such as !, $, #, %)</li>
+                  <li>More than 8 characters</li>
+                </ul>
+              </small>
             </div>
             <div className="form-group">
               <button type="submit" className="btn btn-primary col">
@@ -159,7 +168,7 @@ export default class UserChange extends Component<Props, State> {
               </button>
             </div>
           </form>
-          <div className="text-danger text-center">
+          <div className="text-primary text-center">
             {this.props.isFetching ? (
               <div className="loader" />
             ) : (
