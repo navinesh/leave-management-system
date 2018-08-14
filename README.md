@@ -1,6 +1,6 @@
 # Leave management system
 
-A web application to manage employee leave records. There are two web apps; user and admin. User module is for the employees to login and check their leave balance and apply for leave. Admin module is for HR. HR can approve/decline leave, manage employee record, create/archive/unarchive staff record.
+A web application to manage employee leave records. There are two web apps; user and admin. User app is for the employees to login and check their leave balance and apply for leave. Admin app is for HR. HR can approve/decline leave, manage employee record, create/archive/unarchive staff record.
 
 ### Required Libraries and Dependencies
 
