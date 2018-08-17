@@ -12,7 +12,9 @@ type Props = {
 };
 
 export default (props: Props) => {
-  const { data: { findLeaveRecord } } = props;
+  const {
+    data: { findLeaveRecord }
+  } = props;
   const leaveRecords = findLeaveRecord
     .filter(record => {
       // get current date and format it
@@ -51,10 +53,7 @@ export default (props: Props) => {
 
   return leaveRecords.length > 0 ? (
     <div className="table-responsive">
-      <table
-        className="table table-bordered table-hover"
-        style={{ backgroundColor: '#FFFFFF' }}
-      >
+      <table className="table table-bordered table-hover">
         <thead className="thead-light">
           <tr>
             <th>Name</th>
