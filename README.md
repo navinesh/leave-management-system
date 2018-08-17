@@ -1,6 +1,6 @@
 # Leave management system
 
-A web application to manage employee leave records. There are two web apps; user and admin. User app is for the employees to login and check their leave balance and apply for leave. Admin app is for HR. HR can approve/decline leave, manage employee record, create/archive/unarchive staff record.
+There are two web apps; user and admin. User app is for the employees to login and check their leave balance and apply for leave. Admin app is for HR. HR can approve/decline leave, manage employee record, create/archive/unarchive staff record.
 
 ### Required Libraries and Dependencies
 
@@ -31,7 +31,7 @@ Server
 
 ***For Admin and User web apps:***
 
-Admin and User module is developed using Create React App tool https://github.com/facebookincubator/create-react-app
+Admin and User app is developed using Create React App tool https://github.com/facebookincubator/create-react-app
 
 Clone the repo and install using ```yarn install``` or ```npm install```
 
