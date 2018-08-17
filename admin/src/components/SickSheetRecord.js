@@ -23,10 +23,7 @@ export default (props: Props) => {
 
   return itemNodes.length > 0 ? (
     <div className="table-responsive">
-      <table
-        className="table table-bordered table-hover"
-        style={{ backgroundColor: '#FFFFFF' }}
-      >
+      <table className="table table-bordered table-hover">
         <thead className="thead-light">
           <tr>
             <th>Name</th>
