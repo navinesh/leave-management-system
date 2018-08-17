@@ -6,17 +6,17 @@ Server has been developed in Python and PostgreSQL database using flask web fram
 
 Install the following repositories:
 
-*flask
-*httplib2
-*sqlalchemy
-*graphene
-*graphene_sqlalchemy
-*passlib
-*psycopg2
-*flask_graphql
-*flask_seasurf
-*flask_httpauth
-*flask_cors
+* flask
+* httplib2
+* sqlalchemy
+* graphene
+* graphene_sqlalchemy
+* passlib
+* psycopg2
+* flask_graphql
+* flask_seasurf
+* flask_httpauth
+* flask_cors
 
 
 ## Creator
