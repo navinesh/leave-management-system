@@ -53,10 +53,7 @@ const ApprovedLeaveReportList = props => {
         Download
       </CSVLink>
       <div className="table-responsive">
-        <table
-          className="table table-bordered table-hover"
-          style={{ backgroundColor: '#FFFFFF' }}
-        >
+        <table className="table table-bordered table-hover">
           <thead className="thead-light">
             <tr>
               <th>Name</th>
@@ -133,10 +130,7 @@ const PendingLeaveReportList = props => {
         Download
       </CSVLink>
       <div className="table-responsive">
-        <table
-          className="table table-bordered table-hover"
-          style={{ backgroundColor: '#FFFFFF' }}
-        >
+        <table className="table table-bordered table-hover">
           <thead className="thead-light">
             <tr>
               <th>Name</th>
@@ -214,10 +208,7 @@ const CancelledLeaveReportList = props => {
         Download
       </CSVLink>
       <div className="table-responsive">
-        <table
-          className="table table-bordered table-hover"
-          style={{ backgroundColor: '#FFFFFF' }}
-        >
+        <table className="table table-bordered table-hover">
           <thead className="thead-light">
             <tr>
               <th>Name</th>
@@ -296,10 +287,7 @@ const DeclinedLeaveReportList = props => {
         Download
       </CSVLink>
       <div className="table-responsive">
-        <table
-          className="table table-bordered table-hover"
-          style={{ backgroundColor: '#FFFFFF' }}
-        >
+        <table className="table table-bordered table-hover">
           <thead className="thead-light">
             <tr>
               <th>Name</th>
@@ -381,10 +369,7 @@ const LeaveUpdatesReportList = props => {
         Download
       </CSVLink>
       <div className="table-responsive">
-        <table
-          className="table table-bordered table-hover"
-          style={{ backgroundColor: '#FFFFFF' }}
-        >
+        <table className="table table-bordered table-hover">
           <thead className="thead-light">
             <tr>
               <th>ID</th>
@@ -457,10 +442,7 @@ const StaffRecordList = props => {
         Download
       </CSVLink>
       <div className="table-responsive">
-        <table
-          className="table table-bordered table-hover"
-          style={{ backgroundColor: '#FFFFFF' }}
-        >
+        <table className="table table-bordered table-hover">
           <thead className="thead-light">
             <tr>
               <th>Name</th>
@@ -548,10 +530,7 @@ const UserUpdatesReportList = props => {
         Download
       </CSVLink>
       <div className="table-responsive">
-        <table
-          className="table table-bordered table-hover"
-          style={{ backgroundColor: '#FFFFFF' }}
-        >
+        <table className="table table-bordered table-hover">
           <thead className="thead-light">
             <tr>
               <th>Name</th>
