@@ -4,7 +4,7 @@ Server has been developed in Python and PostgreSQL database using flask web fram
 
 ### How to Run the Project
 
-Install the following repositories:
+Install the following libraries:
 
 * flask
 * httplib2
@@ -18,6 +18,10 @@ Install the following repositories:
 * flask_httpauth
 * flask_cors
 
+Create Postgres database:
+`psql -f database.sql`
+
+Run the command `python application.py` to run the application
 
 ## Creator
 Navinesh Chand
