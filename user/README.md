@@ -26,7 +26,7 @@ And then run your project using ```npm start``` or ```yarn start```.
 
 User module is developed using Create React App tool https://github.com/facebookincubator/create-react-app
 
-You can create an app using this tool and replace the src folder with the folder in user module.
+You can create an app using this tool and replace the src folder with the folder in user app.
 
 Install required libraries and dependencies.
 
