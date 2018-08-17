@@ -40,10 +40,7 @@ const ApprovedRecordList = props => {
 
   if (approvedList.length > 0) {
     return (
-      <table
-        className="table table-bordered table-hover"
-        style={{ backgroundColor: '#FFFFFF' }}
-      >
+      <table className="table table-bordered table-hover">
         <thead className="thead-light">
           <tr>
             <th>Leave type</th>
@@ -76,10 +73,7 @@ const PendingRecordList = props => {
 
   if (pendingList.length > 0) {
     return (
-      <table
-        className="table table-bordered table-hover"
-        style={{ backgroundColor: '#FFFFFF' }}
-      >
+      <table className="table table-bordered table-hover">
         <thead className="thead-light">
           <tr>
             <th>Leave type</th>
