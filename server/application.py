@@ -1,16 +1,16 @@
 import os
 from flask import Flask, render_template, request, \
     jsonify, send_from_directory, abort, g
-from flask import Response, make_response
+
 from werkzeug import secure_filename
-from functools import wraps
+
 
 import random
 import json
 from httplib2 import Http
 import string
 from models import Base, User, Userupdates, \
-    Leaverecord, Adminuser, Publicholiday, Leaveupdates
+    Leaverecord, Leaveupdates, Adminuser, Publicholiday
 from sqlalchemy import create_engine
 from sqlalchemy.orm import relationship, sessionmaker, join
 from sqlalchemy.ext.declarative import declarative_base
@@ -120,13 +120,25 @@ def send_email(toaddr, ccaddr, subject, body, file):
 
 
 # Helper functions
+def get_user(user_id):
+    """Retrieves user object associated with the user ID.
+    Args:
+        user_id (int): the user id to filter query
+    """
+    try:
+        user = session.query(User).filter_by(id=user_id).one()
+        return user
+    except:
+        None
+
+
 @auth.verify_password
 def verify_password(email_or_token, password):
     """Verify password or user token"""
     user_id = User.verify_auth_token(email_or_token)
 
     if user_id:
-        user = session.query(User).filter_by(id=user_id).one()
+        user = get_user(user_id)
     else:
         user = session.query(User).filter_by(email=email_or_token).first()
 
@@ -282,13 +294,12 @@ def apply_for_leave():
     pa_email = "pa@example.com"
     ceo_email = "ceo@example.com"
 
-    if session.query(User).filter_by(id=user_id).one() is None:
-        return jsonify({
-            'message':
-            'This user could not be found in the database.'
-        }), 200
+    user_record = get_user(user_id)
 
-    user_record = session.query(User).filter_by(id=user_id).one()
+    if user_record is None:
+        return jsonify({
+            'message': 'Cannot find this record in the database.'
+        }), 200
 
     if leave_name == 'annual':
         current_leave_balance = user_record.annual
@@ -440,6 +451,7 @@ def apply_for_leave():
 @app.route('/admin/resetpassword')
 @app.route('/addadminuser')
 @app.route('/admin-reset-password')
+@app.route('/admin/sicksheetrecord')
 @app.route('/sicksheetrecord')
 @app.route('/adduser')
 @app.route('/modifyuser')
@@ -654,7 +666,7 @@ def modify_user():
         maternity: maternity leave days balance
         paternity: paternity leave days balance
         edit_reason: reason for editing leave record
-        admin_user: admin user name        
+        admin_user: admin user name
         """
     user_id = request.json.get('user_id')
     surname = request.json.get('surname')
@@ -673,7 +685,12 @@ def modify_user():
     edit_reason = request.json.get('editReason')
     admin_user = request.json.get('admin_user')
 
-    user_record = session.query(User).filter_by(id=user_id).one()
+    user_record = get_user(user_id)
+
+    if user_record is None:
+        return jsonify({
+            'message': 'Cannot find this record in the database.'
+        }), 200   
 
     # Email message
     if gender.lower() == 'male':
@@ -796,6 +813,7 @@ def approve_leave():
         leave_status: status of leave
         leave_days: number of leave days
         leave_name: name of the leave
+        admin_user: admin user name
     """
     leave_id = request.json.get('leave_id')
     leave_status = request.json.get('leaveStatus')
@@ -1501,7 +1519,7 @@ def cancel_approved_leave():
             'message': 'Cannot find this record in the database.'
         }), 200
 
-    user_record = session.query(User).filter_by(id=user_id).one()
+    user_record = get_user(user_id)
 
     if user_record is None:
         return jsonify({
@@ -1514,7 +1532,7 @@ def cancel_approved_leave():
     leave_record.leave_status = leave_status
     leave_record.cancelled_reason = cancel_reason
     leave_record.date_reviewed = str(datetime.now().date())
-        leave_record.reviewed_by = admin_user
+    leave_record.reviewed_by = admin_user
     session.add(leave_record)
     session.commit()
 
