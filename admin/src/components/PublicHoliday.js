@@ -167,7 +167,7 @@ type PublicHolidayProps = {
 
 const PublicHolidays = (props: PublicHolidayProps) => (
   <Query query={PUBLIC_HOLIDAY}>
-    {({ loading, error, data: { publicHoliday } }) => {
+    {({ loading, error, data }) => {
       if (loading) {
         return (
           <div
@@ -195,8 +195,8 @@ const PublicHolidays = (props: PublicHolidayProps) => (
         );
       }
 
-      let list = publicHoliday.edges.map(a => a.node).sort((b, c) => {
-        return new Date(b.holidayDate) - new Date(c.holidayDate);
+      let list = data.publicHoliday.edges.map(a => a.node).sort((b, c) => {
+        return new Date(c.holidayDate) - new Date(b.holidayDate);
       });
 
       const public_holidays = list.map(item => {
