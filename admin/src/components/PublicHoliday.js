@@ -161,7 +161,11 @@ const DeleteHoliday = (props: deleteHolidayProps) => (
   </Mutation>
 );
 
-const PublicHolidays = () => (
+type PublicHolidayProps = {
+  render: any
+};
+
+const PublicHolidays = (props: PublicHolidayProps) => (
   <Query query={PUBLIC_HOLIDAY}>
     {({ loading, error, data: { publicHoliday } }) => {
       if (loading) {
@@ -202,7 +206,7 @@ const PublicHolidays = () => (
         return (
           <li key={item.id}>
             {holiday_date}
-            <DeleteHoliday id={item.id} />
+            {props.render(item.id)}
           </li>
         );
       });
@@ -224,7 +228,7 @@ export default () => (
     <div className=" card-body">
       <div className="row">
         <div className="col">
-          <PublicHolidays />
+          <PublicHolidays render={id => <DeleteHoliday id={id} />} />
         </div>
         <div className="col">
           <AddPublicHoliday
