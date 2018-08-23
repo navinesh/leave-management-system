@@ -667,30 +667,9 @@ export default class ApprovedLeaveList extends Component<Props, State> {
             .toLowerCase()
             .includes(this.state.searchTerm.toLowerCase())
       )
-      //.filter(record => {
-      // get current date and format it
-      //let dateToday = moment();
-
-      // let todayDate = dateToday.format('DD/MM/YYYY');
-
-      // get end date and format it
-      //let end_Date = moment(record.endDate, 'DD/MM/YYYY').format(
-      //  'DD/MM/YYYY'
-      // );
-
-      // check if current date and end date is same
-      //let isCurrentDate = todayDate === end_Date ? true : false;
-
-      // check if end date is same or greater than current date
-      // let eDate = moment(record.endDate, 'DD/MM/YYYY').format('MM/DD/YYYY');
-
-      //let endDate = moment(new Date(eDate));
-
-      // let isEndDate = endDate.isSameOrAfter(dateToday);
-
-      // return true for current and future leaves
-      // return isCurrentDate || isEndDate ? true : false;
-      //})
+      .sort((a, b) => {
+        return a.user.othernames.localeCompare(b.user.othernames);
+      })
       .map(data => (
         <tr key={data.id}>
           <td>
