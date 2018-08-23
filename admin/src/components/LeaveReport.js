@@ -6,8 +6,8 @@ import { CSVLink } from 'react-csv';
 const moment = require('moment');
 
 const ApprovedLeaveReportList = props => {
-  const approvedRecord = props.approved_record.map(a => a).sort((b, c) => {
-    return b.userId - c.userId;
+  const approvedRecord = props.approved_record.map(a => a).sort((a, b) => {
+    return a.user.othernames.localeCompare(b.user.othernames);
   });
 
   const approvedRecordItems = approvedRecord.map(record => (
@@ -27,7 +27,7 @@ const ApprovedLeaveReportList = props => {
     </tr>
   ));
 
-  const records = props.approved_record.map(a => {
+  const records = approvedRecord.map(a => {
     var rObj = {};
     rObj['Othernames'] = a.user.othernames;
     rObj['Surname'] = a.user.surname;
@@ -85,8 +85,8 @@ const ApprovedLeaveReportList = props => {
 };
 
 const PendingLeaveReportList = props => {
-  const pendingRecord = props.pending_record.map(a => a).sort((b, c) => {
-    return b.userId - c.userId;
+  const pendingRecord = props.pending_record.map(a => a).sort((a, b) => {
+    return a.user.othernames.localeCompare(b.user.othernames);
   });
 
   const pendingRecordItems = pendingRecord.map(record => (
@@ -105,7 +105,7 @@ const PendingLeaveReportList = props => {
     </tr>
   ));
 
-  const records = props.pending_record.map(a => {
+  const records = pendingRecord.map(a => {
     var rObj = {};
     rObj['Othernames'] = a.user.othernames;
     rObj['Surname'] = a.user.surname;
@@ -161,8 +161,8 @@ const PendingLeaveReportList = props => {
 };
 
 const CancelledLeaveReportList = props => {
-  const cancelledRecord = props.cancelled_record.map(a => a).sort((b, c) => {
-    return b.userId - c.userId;
+  const cancelledRecord = props.cancelled_record.map(a => a).sort((a, b) => {
+    return a.user.othernames.localeCompare(b.user.othernames);
   });
 
   const cancelledRecordItems = cancelledRecord.map(record => (
@@ -182,7 +182,7 @@ const CancelledLeaveReportList = props => {
     </tr>
   ));
 
-  const records = props.cancelled_record.map(a => {
+  const records = cancelledRecord.map(a => {
     var rObj = {};
     rObj['Othernames'] = a.user.othernames;
     rObj['Surname'] = a.user.surname;
@@ -240,8 +240,8 @@ const CancelledLeaveReportList = props => {
 };
 
 const DeclinedLeaveReportList = props => {
-  const declinedRecord = props.declined_record.map(a => a).sort((b, c) => {
-    return b.userId - c.userId;
+  const declinedRecord = props.declined_record.map(a => a).sort((a, b) => {
+    return a.user.othernames.localeCompare(b.user.othernames);
   });
 
   const declinedRecordItems = declinedRecord.map(record => (
@@ -261,7 +261,7 @@ const DeclinedLeaveReportList = props => {
     </tr>
   ));
 
-  const records = props.declined_record.map(a => {
+  const records = declinedRecord.map(a => {
     var rObj = {};
     rObj['Othernames'] = a.user.othernames;
     rObj['Surname'] = a.user.surname;
@@ -403,7 +403,11 @@ const LeaveUpdatesReportList = props => {
 };
 
 const StaffRecordList = props => {
-  const staffRecordItems = props.staff_record.map(record => (
+  const staffRecordList = props.staff_record.map(a => a).sort((a, b) => {
+    return a.othernames.localeCompare(b.othernames);
+  });
+
+  const staffRecordItems = staffRecordList.map(record => (
     <tr key={record.id}>
       <td>
         {record.othernames} {record.surname}
@@ -418,7 +422,7 @@ const StaffRecordList = props => {
     </tr>
   ));
 
-  const records = props.staff_record.map(a => {
+  const records = staffRecordList.map(a => {
     var rObj = {};
     rObj['Othernames'] = a.othernames;
     rObj['Surname'] = a.surname;
