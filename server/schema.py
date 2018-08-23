@@ -270,6 +270,12 @@ class AddPublicholiday(graphene.Mutation):
     publicHoliday = graphene.Field(Publicholiday)
 
     def mutate(self, info, holiday_date):
+        query = Publicholiday.get_query(info)
+        date = query.filter(
+            PublicholidayModel.holiday_date == holiday_date).first()
+        if date:
+            raise Exception('The date you selected already exists!')
+
         publicHoliday = PublicholidayModel(
             holiday_date=holiday_date)
         db_session.add(publicHoliday)
