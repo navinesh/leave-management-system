@@ -650,6 +650,9 @@ export default class StaffRecordList extends Component<Props, State> {
             .includes(this.state.searchTerm.toLowerCase()) ||
           e.surname.toLowerCase().includes(this.state.searchTerm.toLowerCase())
       )
+      .sort((a, b) => {
+        return a.othernames.localeCompare(b.othernames);
+      })
       .map(record => {
         let dob = new Date(record.dateOfBirth);
         let dateOfBirth = moment(dob).format('DD/MM/YYYY');
