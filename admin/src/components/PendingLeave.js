@@ -927,7 +927,11 @@ export default class PendingLeaveList extends Component<Props, State> {
       );
     }
 
-    const itemNodes = this.props.pending_items.map(record => (
+    const items = this.props.pending_items.map(a => a).sort((a, b) => {
+      return a.user.othernames.localeCompare(b.user.othernames);
+    });
+
+    const itemNodes = items.map(record => (
       <tr key={record.id}>
         <td>
           {record.user.othernames} {record.user.surname}
