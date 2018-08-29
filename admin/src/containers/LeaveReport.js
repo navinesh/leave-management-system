@@ -144,6 +144,7 @@ const ACTIVE_USERS = gql`
       christmas
       maternity
       paternity
+      employeeNumber
     }
   }
 `;
@@ -168,7 +169,6 @@ const USER_UPDATES_RECORD = gql`
       user {
         othernames
         surname
-        employeeNumber
       }
     }
   }
