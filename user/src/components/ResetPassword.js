@@ -72,7 +72,7 @@ export default class UserResetPassword extends Component<Props, State> {
               </button>
             </div>
           </form>
-          <div className="text-danger text-primary">
+          <div className="text-primary text-center">
             {this.props.isFetching ? (
               <div className="loader1" />
             ) : (
