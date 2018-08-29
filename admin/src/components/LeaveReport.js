@@ -420,6 +420,7 @@ const StaffRecordList = props => {
       <td>{record.christmas}</td>
       <td>{record.maternity}</td>
       <td>{record.paternity}</td>
+      <td>{record.employeeNumber}</td>
     </tr>
   ));
 
@@ -434,6 +435,7 @@ const StaffRecordList = props => {
     rObj['Christmas'] = a.christmas;
     rObj['Maternity'] = a.maternity;
     rObj['Paternity'] = a.paternity;
+    rObj['employeeNumber'] = a.paternity;
     return rObj;
   });
 
@@ -458,6 +460,7 @@ const StaffRecordList = props => {
               <th>Christmas</th>
               <th>Maternity</th>
               <th>Paternity</th>
+              <th>Employee #</th>
             </tr>
           </thead>
           <tbody>{staffRecordItems}</tbody>
@@ -500,7 +503,6 @@ const UserUpdatesReportList = props => {
         <td>{record.designation}</td>
         <td>{dateOfBirth}</td>
         <td>{record.gender}</td>
-        <td>{record.employeeNumber}</td>
         <td>{record.editReason}</td>
       </tr>
     );
@@ -549,7 +551,6 @@ const UserUpdatesReportList = props => {
               <th>Designation</th>
               <th>DOB</th>
               <th>Gender</th>
-              <th>Employee #</th>
               <th>Reason</th>
             </tr>
           </thead>
