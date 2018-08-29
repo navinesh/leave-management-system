@@ -31,6 +31,7 @@ const ApprovedLeaveReportList = props => {
     var rObj = {};
     rObj['Othernames'] = a.user.othernames;
     rObj['Surname'] = a.user.surname;
+    rObj['Employee #'] = a.user.employeeNumber;
     rObj['Leave'] = a.leaveName;
     rObj['Type'] = a.leaveType;
     rObj['Start date'] = a.startDate;
@@ -499,8 +500,8 @@ const UserUpdatesReportList = props => {
         <td>{record.designation}</td>
         <td>{dateOfBirth}</td>
         <td>{record.gender}</td>
+        <td>{record.employeeNumber}</td>
         <td>{record.editReason}</td>
-        <td>{record.datePosted}</td>
       </tr>
     );
   });
@@ -548,8 +549,8 @@ const UserUpdatesReportList = props => {
               <th>Designation</th>
               <th>DOB</th>
               <th>Gender</th>
+              <th>Employee #</th>
               <th>Reason</th>
-              <th>Date posted</th>
             </tr>
           </thead>
           <tbody>{userUpdateItems}</tbody>
