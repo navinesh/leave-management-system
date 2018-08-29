@@ -20,8 +20,8 @@ class User(SQLAlchemyObjectType):
         only_fields = [
             'id', 'othernames', 'surname', 'email', 'designation', 'gender',
             'date_of_birth', 'annual', 'sick', 'bereavement', 'christmas',
-            'maternity', 'isArchived', 'family_care', 'paternity',
-            'archiveReason', 'userupdates', 'leaverecord'
+            'maternity', 'is_archived', 'family_care', 'paternity',
+            'archive_reason', 'employee_number', 'userupdates', 'leaverecord'
         ]
 
 
@@ -75,7 +75,7 @@ class Query(graphene.ObjectType):
         query = Userupdates.get_query(info)
 
         return query.join(UserModel).filter(
-            UserModel.isArchived == is_archived)
+            UserModel.is_archived == is_archived)
 
     find_users = graphene.List(lambda: User, is_archived=graphene.String())
 
@@ -83,7 +83,7 @@ class Query(graphene.ObjectType):
         """Returns users"""
         query = User.get_query(info)
 
-        return query.filter(UserModel.isArchived == is_archived)
+        return query.filter(UserModel.is_archived == is_archived)
 
     find_leave_updates = graphene.List(
         lambda: Leaveupdates, is_archived=graphene.String())
@@ -93,7 +93,7 @@ class Query(graphene.ObjectType):
         query = Leaveupdates.get_query(info)
 
         return query.join(LeaverecordModel).join(UserModel).filter(
-            UserModel.isArchived == is_archived)
+            UserModel.is_archived == is_archived)
 
     find_leave_record = graphene.List(
         lambda: Leaverecord,
@@ -106,7 +106,7 @@ class Query(graphene.ObjectType):
 
         return query.filter(LeaverecordModel.leave_status ==
                             leave_status).join(UserModel).filter(
-                                UserModel.isArchived == is_archived)
+                                UserModel.is_archived == is_archived)
 
     find_sicksheet_record = graphene.List(lambda: Leaverecord)
 
