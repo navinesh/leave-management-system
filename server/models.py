@@ -42,6 +42,7 @@ class User(Base):
     paternity = Column(Numeric)
     is_archived = Column(Boolean)
     archive_reason = Column(Text)
+    employee_number = Column(Numeric)
 
     def hash_password(self, password):
         self.password_hash = pwd_context.encrypt(password)
@@ -84,6 +85,7 @@ class User(Base):
             'date_of_birth': self.date_of_birth,
             'is_archived': self.is_archived,
             'archive_reason': self.archive_reason,
+            'employee_number': self.employee_number
         }
 
 
@@ -92,16 +94,17 @@ class Userupdates(Base):
     __tablename__ = 'userupdates'  # representation of table inside database
 
     id = Column(Integer, primary_key=True)
-    designation = Column(Text)
-    gender = Column(Text)
-    date_of_birth = Column(Date)
     annual = Column(Numeric)
     sick = Column(Numeric)
     bereavement = Column(Numeric)
+    family_care = Column(Numeric)
     christmas = Column(Numeric)
     maternity = Column(Numeric)
-    family_care = Column(Numeric)
     paternity = Column(Numeric)
+    date_of_birth = Column(Date)
+    designation = Column(Text)
+    gender = Column(Text)
+    employee_number = Column(Numeric)
     edit_reason = Column(Text)
     date_posted = Column(String)
     reviewed_by = Column(String)
@@ -114,16 +117,17 @@ class Userupdates(Base):
         """Return data in serializeable format"""
         return {
             'id': self.id,
-            'designation': self.designation,
-            'gender': self.gender,
-            'date_of_birth': self.date_of_birth,
             'annual': self.annual,
             'sick': self.sick,
             'bereavement': self.bereavement,
+            'family_care': self.family_care,
             'christmas': self.christmas,
             'maternity': self.maternity,
-            'family_care': self.family_care,
             'paternity': self.paternity,
+            'date_of_birth': self.date_of_birth,
+            'designation': self.designation,
+            'gender': self.gender,
+            'employee_number': self.employee_number,
             'edit_reason': self.edit_reason,
             'reviewed_by': self.reviewed_by,
             'user_id': self.user_id,
