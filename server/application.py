@@ -246,7 +246,7 @@ def user_reset_password():
     # Send email
     send_email(
         user.email, None, "Leave Management System update",
-        ("Your Leave Management System admin password has been reset to: " +
+        ("Your Leave Management System password has been reset to: " +
          password),
         file=None)
 
