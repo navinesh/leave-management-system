@@ -38,6 +38,7 @@ const APPROVED_RECORD = gql`
       user {
         othernames
         surname
+        employeeNumber
       }
     }
   }
@@ -167,6 +168,7 @@ const USER_UPDATES_RECORD = gql`
       user {
         othernames
         surname
+        employeeNumber
       }
     }
   }
