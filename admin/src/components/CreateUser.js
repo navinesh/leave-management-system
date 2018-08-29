@@ -29,6 +29,7 @@ type State = {
   christmasLeave: string,
   maternityLeave: string,
   paternityLeave: string,
+  employeeNumber: number,
   dob: any
 };
 
@@ -46,6 +47,7 @@ export default class CreateUserForm extends Component<Props, State> {
   handleChristmasLeaveChange: Function;
   handleMaternityLeaveChange: Function;
   handlePaternityLeaveChange: Function;
+  handleEmployeeNumberChange: Function;
   handleSubmit: Function;
 
   constructor() {
@@ -65,6 +67,7 @@ export default class CreateUserForm extends Component<Props, State> {
       christmasLeave: '',
       maternityLeave: '',
       paternityLeave: '',
+      employeeNumber: '',
       dob: null
     };
 
@@ -91,6 +94,7 @@ export default class CreateUserForm extends Component<Props, State> {
     this.handlePaternityLeaveChange = this.handlePaternityLeaveChange.bind(
       this
     );
+    this.handleEmployeeNumber = this.handleEmployeeNumberChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -146,6 +150,10 @@ export default class CreateUserForm extends Component<Props, State> {
     this.setState({ dob: e });
   }
 
+  handleEmployeeNumberChange({ target }: SyntheticInputEvent<>) {
+    this.setState({ employeeNumber: target.value });
+  }
+
   handleSubmit(e: Event) {
     e.preventDefault();
     const surname = this.state.surname;
@@ -164,6 +172,7 @@ export default class CreateUserForm extends Component<Props, State> {
     const paternityDays = this.state.paternityLeave
       ? this.state.paternityLeave
       : 0;
+    const employeeNumber = this.state.employeeNumber;
     const dateOfBirth = moment(this.state.dob).format('DD/MM/YYYY');
 
     // verify data
@@ -178,7 +187,8 @@ export default class CreateUserForm extends Component<Props, State> {
       !familyCareDays ||
       !christmasDays ||
       !dateOfBirth ||
-      !gender
+      !gender ||
+      !employeeNumber
     ) {
       this.setState({
         errorMessage: 'One or more required fields are missing!'
@@ -203,6 +213,7 @@ export default class CreateUserForm extends Component<Props, State> {
       christmasLeave: '',
       maternityLeave: '',
       paternityLeave: '',
+      employeeNumber: '',
       dob: null
     });
 
@@ -221,6 +232,7 @@ export default class CreateUserForm extends Component<Props, State> {
       maternityDays: maternityDays,
       paternityDays: paternityDays,
       gender: gender,
+      employeeNumber: employeeNumber,
       adminUser: adminUser
     };
 
@@ -410,6 +422,19 @@ export default class CreateUserForm extends Component<Props, State> {
                 </div>
               </div>
               <div className="row">
+                <div className="col-md-6">
+                  <div className="form-group">
+                    <label htmlFor="employeeNumber">Employee number</label>
+                    <input
+                      type="number"
+                      className="form-control"
+                      placeholder="Employee number"
+                      id="employeeNumber"
+                      value={this.state.employeeNumber}
+                      onChange={this.handleEmployeeNumberChange}
+                    />
+                  </div>
+                </div>
                 {staffGender === 'female' && (
                   <div className="col-md-6">
                     <div className="form-group">
