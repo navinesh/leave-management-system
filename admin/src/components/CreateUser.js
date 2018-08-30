@@ -67,7 +67,7 @@ export default class CreateUserForm extends Component<Props, State> {
       christmasLeave: '',
       maternityLeave: '',
       paternityLeave: '',
-      employeeNumber: '',
+      employeeNumber: 0,
       dob: null
     };
 
@@ -94,7 +94,9 @@ export default class CreateUserForm extends Component<Props, State> {
     this.handlePaternityLeaveChange = this.handlePaternityLeaveChange.bind(
       this
     );
-    this.handleEmployeeNumber = this.handleEmployeeNumberChange.bind(this);
+    this.handleEmployeeNumberChange = this.handleEmployeeNumberChange.bind(
+      this
+    );
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -213,7 +215,7 @@ export default class CreateUserForm extends Component<Props, State> {
       christmasLeave: '',
       maternityLeave: '',
       paternityLeave: '',
-      employeeNumber: '',
+      employeeNumber: 0,
       dob: null
     });
 
