@@ -41,6 +41,7 @@ export const submitModifyUserRecord = (modifyUserDetails: Object) => async (
       paternity: modifyUserDetails.paternityDays,
       gender: modifyUserDetails.gender,
       editReason: modifyUserDetails.editReason,
+      employee_number: modifyUserDetails.employeeNumber,
       admin_user: modifyUserDetails.adminUser
     });
 
