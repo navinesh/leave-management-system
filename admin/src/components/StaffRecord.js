@@ -189,6 +189,7 @@ export default class StaffRecordList extends Component<Props, State> {
   dob: any;
   maternity: any;
   paternity: any;
+  employeeNumber: any;
 
   constructor() {
     super();
@@ -253,6 +254,7 @@ export default class StaffRecordList extends Component<Props, State> {
     const christmasDays = this.christmas.value;
     const gender = this.gender.value;
     const familyCare = this.familyCare.value;
+    const employeeNumber = this.employeeNumber.value;
 
     let dobDate = new Date(this.dob.value);
     let dob = moment(dobDate).format('DD/MM/YYYY');
@@ -299,7 +301,8 @@ export default class StaffRecordList extends Component<Props, State> {
       !dateOfBirth ||
       !familyCare ||
       !gender ||
-      !editReason
+      !editReason ||
+      !employeeNumber
     ) {
       this.setState({
         errorMessage: 'One or more required fields are missing!'
@@ -324,6 +327,7 @@ export default class StaffRecordList extends Component<Props, State> {
       paternityDays: paternityDays,
       gender: gender,
       editReason: editReason,
+      employeeNumber: employeeNumber,
       adminUser: adminUser
     };
 
@@ -551,6 +555,16 @@ export default class StaffRecordList extends Component<Props, State> {
                           </div>
                         </div>
                         <div className="row">
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label htmlFor="employeeNumber">Employee #</label>
+                              <input
+                                className="form-control"
+                                defaultValue={record.employeeNumber}
+                                ref={input => (this.employeeNumber = input)}
+                              />
+                            </div>
+                          </div>
                           {record.gender.toLowerCase() === 'female' && (
                             <div className="col-md-6">
                               <div className="form-group">
