@@ -40,6 +40,7 @@ const ACTIVE_USERS = gql`
       paternity
       gender
       designation
+      employeeNumber
     }
   }
 `;
