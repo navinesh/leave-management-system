@@ -39,6 +39,7 @@ type State = {
 };
 
 class Login extends Component<Props, State> {
+  authenticateUser: Function;
   handleEmailChange: Function;
   handlePasswordChange: Function;
   handleSubmit: Function;
@@ -47,56 +48,13 @@ class Login extends Component<Props, State> {
     super();
     this.state = { email: '', password: '', errorMessage: '' };
 
+    this.authenticateUser = this.authenticateUser.bind(this);
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleEmailChange({ target }: SyntheticInputEvent<>) {
-    this.setState({ email: target.value });
-  }
-
-  handlePasswordChange({ target }: SyntheticInputEvent<>) {
-    this.setState({ password: target.value });
-  }
-
-  handleSubmit(e: Event) {
-    e.preventDefault();
-    const email = this.state.email ? this.state.email.trim() : null;
-    const password = this.state.password ? this.state.password.trim() : null;
-
-    if (!email && !password) {
-      this.setState({
-        errorMessage:
-          'The username you entered does not belong to an account. Please check your username and try again.'
-      });
-      return;
-    }
-
-    if (!email && password) {
-      this.setState({
-        errorMessage:
-          'The username you entered does not belong to an account. Please check your username and try again.'
-      });
-      return;
-    }
-
-    if (email && !password) {
-      this.setState({
-        errorMessage:
-          'Sorry, your password was incorrect. Please double-check your password.'
-      });
-      return;
-    }
-
-    this.setState({
-      errorMessage: ''
-    });
-
-    this.authenticateUser();
-  }
-
-  authenticateUser = async () => {
+  async authenticateUser() {
     const { logInUser, dispatch } = this.props;
     const { email, password } = this.state;
 
@@ -122,12 +80,56 @@ class Login extends Component<Props, State> {
       localStorage.removeItem('id');
       dispatch(loginUserError());
     }
-  };
+  }
+
+  handleEmailChange({ target }: SyntheticInputEvent<>) {
+    this.setState({ email: target.value });
+  }
+
+  handlePasswordChange({ target }: SyntheticInputEvent<>) {
+    this.setState({ password: target.value });
+  }
+
+  handleSubmit(e: Event) {
+    e.preventDefault();
+    const email = this.state.email ? this.state.email.trim() : null;
+    const password = this.state.password ? this.state.password.trim() : null;
+
+    if (!email && !password) {
+      this.setState({
+        errorMessage:
+          'The username you entered does not belong to any account. Please check your username and try again.'
+      });
+      return;
+    }
+
+    if (!email && password) {
+      this.setState({
+        errorMessage:
+          'The username you entered does not belong to any account. Please check your username and try again.'
+      });
+      return;
+    }
+
+    if (email && !password) {
+      this.setState({
+        errorMessage:
+          'Sorry, your password was incorrect. Please double-check your password.'
+      });
+      return;
+    }
+
+    this.setState({
+      errorMessage: ''
+    });
+
+    this.authenticateUser();
+  }
 
   render() {
     return (
       <div className="Login">
-        <div className="card card-body">
+        <div className="card card-body shadow p-3 mb-5 bg-white rounded">
           <form onSubmit={this.handleSubmit}>
             <div className="form-group">
               <label htmlFor="email">Email address</label>

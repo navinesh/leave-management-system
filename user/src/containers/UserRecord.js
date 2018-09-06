@@ -8,16 +8,16 @@ type Props = {
   auth_info: Object
 };
 
-const UserRecords = (props: Props) => {
+function UserRecords(props: Props) {
   let id = props.auth_info.id ? props.auth_info.id : localStorage.getItem('id');
 
   return <UserRecord id={id} />;
-};
+}
 
-const mapStateToProps = state => {
+function mapStateToProps(state) {
   const { userAuth } = state;
   const { auth_info } = userAuth;
   return { auth_info };
-};
+}
 
 export default connect(mapStateToProps)(UserRecords);

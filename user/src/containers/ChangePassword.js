@@ -39,7 +39,9 @@ class UserChangePassword extends Component<Props> {
             isFetching={isFetching}
             message={message}
             auth_info={auth_info}
-            onChangeClick={creds => dispatch(changePassword(creds))}
+            onChangeClick={function creds() {
+              return dispatch(changePassword(creds));
+            }}
           />
         ) : (
           <Redirect to="/" />
@@ -49,13 +51,13 @@ class UserChangePassword extends Component<Props> {
   }
 }
 
-const mapStateToProps = state => {
+function mapStateToProps(state) {
   const { changePassword } = state;
   const { userAuth } = state;
   const { auth_info, isAuthenticated } = userAuth;
   const { isFetching, message } = changePassword;
 
   return { auth_info, isAuthenticated, isFetching, message };
-};
+}
 
 export default connect(mapStateToProps)(UserChangePassword);

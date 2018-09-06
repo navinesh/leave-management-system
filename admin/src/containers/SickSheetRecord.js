@@ -46,11 +46,19 @@ type Props = {
 };
 
 class SickSheetRecord extends Component<Props> {
-  componentDidMount() {
-    this.verifyToken();
+  verifyToken: Function;
+
+  constructor() {
+    super();
+    this.verifyToken = this.verifyToken.bind(this);
   }
 
-  verifyToken = async () => {
+  componentDidMount() {
+    this.verifyToken();
+    setInterval(this.verifyToken, 600000);
+  }
+
+  async verifyToken() {
     const { auth_info, dispatch, verifyAdminToken } = this.props;
 
     const adminToken = auth_info.admin_token
@@ -73,7 +81,7 @@ class SickSheetRecord extends Component<Props> {
         dispatch(loginAdminErrorFromToken('Your session has expired!'));
       }
     }
-  };
+  }
 
   render() {
     const { isAuthenticated } = this.props;
@@ -115,12 +123,12 @@ class SickSheetRecord extends Component<Props> {
   }
 }
 
-const mapStateToProps = state => {
+function mapStateToProps(state) {
   const { adminAuth } = state;
   const { auth_info, isAuthenticated } = adminAuth;
 
   return { auth_info, isAuthenticated };
-};
+}
 
 export default compose(
   connect(mapStateToProps),
