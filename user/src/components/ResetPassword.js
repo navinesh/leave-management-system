@@ -53,7 +53,7 @@ export default class UserResetPassword extends Component<Props, State> {
   render() {
     return (
       <div className="col-md-5 ml-auto mr-auto">
-        <div className="card card-body">
+        <div className="card card-body shadow p-3 mb-5 bg-white rounded">
           <form onSubmit={this.handleSubmit}>
             <div className="form-group">
               <label htmlFor="email">Email address</label>

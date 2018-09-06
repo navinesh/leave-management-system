@@ -25,7 +25,7 @@ const USER_RECORD = gql`
   }
 `;
 
-const ApprovedRecordList = props => {
+function ApprovedRecordList(props) {
   const approvedList = props.user_record.leaverecord.edges
     .filter(data => data.node.leaveStatus === 'approved')
     .map(record => (
@@ -56,9 +56,9 @@ const ApprovedRecordList = props => {
   } else {
     return <div />;
   }
-};
+}
 
-const PendingRecordList = props => {
+function PendingRecordList(props) {
   const pendingList = props.user_record.leaverecord.edges
     .filter(data => data.node.leaveStatus === 'pending')
     .map(record => (
@@ -89,7 +89,7 @@ const PendingRecordList = props => {
   } else {
     return <div />;
   }
-};
+}
 
 type tabsProps = {
   data: Array<any>
@@ -154,52 +154,58 @@ type Props = {
   id: any
 };
 
-export default (props: Props) => (
-  <Query query={USER_RECORD} variables={{ id: props.id }} pollInterval={60000}>
-    {({ loading, error, data }) => {
-      if (loading) {
-        return (
-          <div
-            className="container text-center"
-            style={{ paddingTop: '100px' }}
-          >
-            <div className="col-md-8 ml-auto mr-auto">
-              <div className="loader1" />
+export default function(props: Props) {
+  return (
+    <Query
+      query={USER_RECORD}
+      variables={{ id: props.id }}
+      pollInterval={60000}
+    >
+      {({ loading, error, data }) => {
+        if (loading) {
+          return (
+            <div
+              className="container text-center"
+              style={{ paddingTop: '100px' }}
+            >
+              <div className="col-md-8 ml-auto mr-auto">
+                <div className="loader1" />
+              </div>
             </div>
-          </div>
-        );
-      }
-
-      if (error) {
-        console.log(error.message);
-        return (
-          <div
-            className="container text-center"
-            style={{ paddingTop: '100px' }}
-          >
-            <div className="col-md-8 ml-auto mr-auto">
-              <p>Something went wrong!</p>
-            </div>
-          </div>
-        );
-      }
-
-      const tabData = [
-        {
-          label: 'Approved leave schedule',
-          content: <ApprovedRecordList user_record={data.user} />
-        },
-        {
-          label: 'Pending leave schedule',
-          content: <PendingRecordList user_record={data.user} />
+          );
         }
-      ];
 
-      return (
-        <div className="container">
-          <Tabs data={tabData} />
-        </div>
-      );
-    }}
-  </Query>
-);
+        if (error) {
+          console.log(error.message);
+          return (
+            <div
+              className="container text-center"
+              style={{ paddingTop: '100px' }}
+            >
+              <div className="col-md-8 ml-auto mr-auto">
+                <p>Something went wrong!</p>
+              </div>
+            </div>
+          );
+        }
+
+        const tabData = [
+          {
+            label: 'Approved leave schedule',
+            content: <ApprovedRecordList user_record={data.user} />
+          },
+          {
+            label: 'Pending leave schedule',
+            content: <PendingRecordList user_record={data.user} />
+          }
+        ];
+
+        return (
+          <div className="container">
+            <Tabs data={tabData} />
+          </div>
+        );
+      }}
+    </Query>
+  );
+}

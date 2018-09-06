@@ -64,13 +64,15 @@ const PUBLIC_HOLIDAY = gql`
   }
 `;
 
-const UserName = props => (
-  <p>
-    {props.user_detail.othernames} {props.user_detail.surname}
-  </p>
-);
+function UserName(props) {
+  return (
+    <p>
+      {props.user_detail.othernames} {props.user_detail.surname}
+    </p>
+  );
+}
 
-const UserRecord = props => {
+function UserRecord(props) {
   let gender = props.user_detail.gender
     ? props.user_detail.gender.toLowerCase()
     : null;
@@ -127,7 +129,7 @@ const UserRecord = props => {
         )}
     </ul>
   );
-};
+}
 
 type leaveApplicationProps = {
   id: Number,
@@ -357,24 +359,24 @@ class LeaveApplication extends Component<
     );
 
     // calculate total leave days
-    const getLeaveDays = type => {
+    function getLeaveDays(type) {
       const totalDays = {
-        annual: () => {
+        annual: function() {
           return annualDays - myLeaveDays;
         },
-        sick: () => {
+        sick: function() {
           return (myLeaveDays >= 2 || approvedSingleSickLeaves.length >= 4) &&
             !sickSheet
             ? null
             : sickDays - myLeaveDays;
         },
-        bereavement: () => {
+        bereavement: function() {
           return bereavementDays - myLeaveDays;
         },
-        christmas: () => {
+        christmas: function() {
           return christmasDays - myLeaveDays;
         },
-        birthday: () => {
+        birthday: function() {
           // create date
           const dOB = new Date(dateOfBirth);
           dOB.setHours(dOB.getHours() - 12);
@@ -385,10 +387,10 @@ class LeaveApplication extends Component<
             ? myLeaveDays
             : undefined;
         },
-        'family care': () => {
+        'family care': function() {
           return familyCareDays - myLeaveDays;
         },
-        maternity: () => {
+        maternity: function() {
           if (!sickSheet) {
             return false;
           } else {
@@ -397,20 +399,20 @@ class LeaveApplication extends Component<
             }
           }
         },
-        paternity: () => {
+        paternity: function() {
           if (paternityDays) {
             return paternityDays - myLeaveDays;
           }
         },
-        lwop: () => {
+        lwop: function() {
           return myLeaveDays;
         },
-        other: () => {
+        other: function() {
           return myLeaveDays;
         }
       };
       return totalDays[type]();
-    };
+    }
 
     const applicationDays = getLeaveDays(leave);
 
@@ -481,7 +483,7 @@ class LeaveApplication extends Component<
     }
 
     return (
-      <div className="card card-body">
+      <div className="card card-body shadow p-3 mb-5 bg-white rounded">
         <form encType="multipart/form-data" onSubmit={this.handleSubmit}>
           <div className="row">
             <div className="col-md-6">
@@ -622,104 +624,110 @@ type Props = {
   dispatch: Function
 };
 
-export default (props: Props) => (
-  <Query query={USER_DETAIL} variables={{ id: props.id }} pollInterval={60000}>
-    {({ loading, error, data: { user }, refetch }) => (
-      <Query
-        query={USER_RECORD}
-        variables={{ id: props.id }}
-        pollInterval={60000}
-      >
-        {({
-          loading: recordLoading,
-          error: recordError,
-          data: { user: userRecord }
-        }) => (
-          <Query query={PUBLIC_HOLIDAY}>
-            {({
-              loading: holidayLoading,
-              error: holidayError,
-              data: { publicHoliday }
-            }) => {
-              if (loading || recordLoading || holidayLoading) {
-                return (
-                  <div
-                    className="container text-center"
-                    style={{ paddingTop: '100px' }}
-                  >
-                    <div className="col-md-8 ml-auto mr-auto">
-                      <div className="loader1" />
-                    </div>
-                  </div>
-                );
-              }
-
-              if (error || recordError || holidayError) {
-                console.log(
-                  error.message,
-                  recordError.message,
-                  holidayError.message
-                );
-                return (
-                  <div
-                    className="container text-center"
-                    style={{ paddingTop: '100px' }}
-                  >
-                    <div className="col-md-8 ml-auto mr-auto">
-                      <p>Something went wrong!</p>
-                    </div>
-                  </div>
-                );
-              }
-
-              return (
-                <div className="container">
-                  <div className="row">
-                    <div className="col-md-12">
-                      <div className="col-md-9 ml-auto mr-auto">
-                        <UserName user_detail={user} />
+export default function(props: Props) {
+  return (
+    <Query
+      query={USER_DETAIL}
+      variables={{ id: props.id }}
+      pollInterval={60000}
+    >
+      {({ loading, error, data: { user }, refetch }) => (
+        <Query
+          query={USER_RECORD}
+          variables={{ id: props.id }}
+          pollInterval={60000}
+        >
+          {({
+            loading: recordLoading,
+            error: recordError,
+            data: { user: userRecord }
+          }) => (
+            <Query query={PUBLIC_HOLIDAY}>
+              {({
+                loading: holidayLoading,
+                error: holidayError,
+                data: { publicHoliday }
+              }) => {
+                if (loading || recordLoading || holidayLoading) {
+                  return (
+                    <div
+                      className="container text-center"
+                      style={{ paddingTop: '100px' }}
+                    >
+                      <div className="col-md-8 ml-auto mr-auto">
+                        <div className="loader1" />
                       </div>
                     </div>
-                    <div className="col-md-3 ml-auto">
-                      <UserRecord user_detail={user} />
+                  );
+                }
+
+                if (error || recordError || holidayError) {
+                  console.log(
+                    error.message,
+                    recordError.message,
+                    holidayError.message
+                  );
+                  return (
+                    <div
+                      className="container text-center"
+                      style={{ paddingTop: '100px' }}
+                    >
+                      <div className="col-md-8 ml-auto mr-auto">
+                        <p>Something went wrong!</p>
+                      </div>
                     </div>
-                    <div className="col-md-6 mr-auto mb-2">
-                      {props.message ? (
-                        <div className="card">
-                          <div className="card-body text-center">
-                            <p>{props.message}</p>
-                            <button
-                              className="btn btn-primary btn-sm"
-                              onClick={() =>
-                                props.dispatch({
-                                  type: 'CLEAR_LEAVE_APPLICATION_MESSAGE'
-                                })
-                              }
-                            >
-                              Apply for leave
-                            </button>
-                          </div>
+                  );
+                }
+
+                return (
+                  <div className="container">
+                    <div className="row">
+                      <div className="col-md-12">
+                        <div className="col-md-9 ml-auto mr-auto">
+                          <UserName user_detail={user} />
                         </div>
-                      ) : (
-                        <LeaveApplication
-                          id={props.id}
-                          user_detail={user}
-                          user_record={userRecord}
-                          public_holiday={publicHoliday}
-                          refetch={refetch}
-                          onLeaveApplicationClick={
-                            props.onLeaveApplicationClick
-                          }
-                        />
-                      )}
+                      </div>
+                      <div className="col-md-3 ml-auto">
+                        <UserRecord user_detail={user} />
+                      </div>
+                      <div className="col-md-6 mr-auto mb-2">
+                        {props.message ? (
+                          <div className="card">
+                            <div className="card-body text-center">
+                              <p>{props.message}</p>
+                              <button
+                                className="btn btn-primary btn-sm"
+                                onClick={() =>
+                                  props.dispatch({
+                                    type: 'CLEAR_LEAVE_APPLICATION_MESSAGE'
+                                  })
+                                }
+                              >
+                                Apply for leave
+                              </button>
+                            </div>
+                          </div>
+                        ) : (
+                          <LeaveApplication
+                            id={props.id}
+                            user_detail={user}
+                            user_record={userRecord}
+                            public_holiday={publicHoliday}
+                            refetch={refetch}
+                            onLeaveApplicationClick={
+                              props.onLeaveApplicationClick
+                            }
+                          />
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            }}
-          </Query>
-        )}
-      </Query>
-    )}
-  </Query>
-);
+                );
+              }}
+            </Query>
+          )}
+        </Query>
+      )}
+    </Query>
+  );
+}

@@ -29,7 +29,7 @@ type State = {
   christmasLeave: string,
   maternityLeave: string,
   paternityLeave: string,
-  employeeNumber: number,
+  employeeNumber: any,
   dob: any
 };
 

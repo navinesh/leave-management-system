@@ -52,8 +52,8 @@ export default class Header extends Component<Props> {
                 <Link className="nav-item nav-link" to="/archivedstaffrecord">
                   Archived
                 </Link>
-                <Link className="nav-item nav-link" to="/newrecord">
-                  New
+                <Link className="nav-item nav-link" to="/createuser">
+                  Create user
                 </Link>
                 <Link className="nav-item nav-link" to="/leavereport">
                   Reports

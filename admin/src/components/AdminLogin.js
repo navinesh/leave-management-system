@@ -36,6 +36,7 @@ type State = {
 };
 
 class Login extends Component<Props, State> {
+  authenticateAdmin: Function;
   handleSubmit: Function;
   handleEmailChange: Function;
   handlePasswordChange: Function;
@@ -44,9 +45,37 @@ class Login extends Component<Props, State> {
     super();
     this.state = { errorMessage: '', email: '', password: '' };
 
+    this.authenticateAdmin = this.authenticateAdmin.bind(this);
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  async authenticateAdmin() {
+    const { logInAdmin, dispatch } = this.props;
+    const { email, password } = this.state;
+
+    try {
+      dispatch(requestAdminLogin());
+      const response = await logInAdmin({
+        variables: { email, password }
+      });
+      localStorage.setItem(
+        'admin_token',
+        response.data.authenticateAdmin.token
+      );
+      localStorage.setItem(
+        'admin_user',
+        response.data.authenticateAdmin.Admin.othernames
+      );
+      dispatch(receiveAdminLogin(response.data.authenticateAdmin));
+    } catch (error) {
+      console.log(error);
+      this.setState({ errorMessage: error.message });
+      localStorage.removeItem('admin_token');
+      localStorage.removeItem('admin_user');
+      dispatch(loginAdminError());
+    }
   }
 
   handleEmailChange({ target }: SyntheticInputEvent<>) {
@@ -73,33 +102,6 @@ class Login extends Component<Props, State> {
 
     this.authenticateAdmin();
   }
-
-  authenticateAdmin = async () => {
-    const { logInAdmin, dispatch } = this.props;
-    const { email, password } = this.state;
-
-    try {
-      dispatch(requestAdminLogin());
-      const response = await logInAdmin({
-        variables: { email, password }
-      });
-      localStorage.setItem(
-        'admin_token',
-        response.data.authenticateAdmin.token
-      );
-      localStorage.setItem(
-        'admin_user',
-        response.data.authenticateAdmin.Admin.othernames
-      );
-      dispatch(receiveAdminLogin(response.data.authenticateAdmin));
-    } catch (error) {
-      console.log(error);
-      this.setState({ errorMessage: error.message });
-      localStorage.removeItem('admin_token');
-      localStorage.removeItem('admin_user');
-      dispatch(loginAdminError());
-    }
-  };
 
   render() {
     return (

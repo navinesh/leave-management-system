@@ -5,7 +5,7 @@ import { CSVLink } from 'react-csv';
 
 const moment = require('moment');
 
-const ApprovedLeaveReportList = props => {
+function ApprovedLeaveReportList(props) {
   const approvedRecord = props.approved_record.map(a => a).sort((a, b) => {
     return a.user.othernames.localeCompare(b.user.othernames);
   });
@@ -83,9 +83,9 @@ const ApprovedLeaveReportList = props => {
       </h1>
     </div>
   );
-};
+}
 
-const PendingLeaveReportList = props => {
+function PendingLeaveReportList(props) {
   const pendingRecord = props.pending_record.map(a => a).sort((a, b) => {
     return a.user.othernames.localeCompare(b.user.othernames);
   });
@@ -159,9 +159,9 @@ const PendingLeaveReportList = props => {
       </h1>
     </div>
   );
-};
+}
 
-const CancelledLeaveReportList = props => {
+function CancelledLeaveReportList(props) {
   const cancelledRecord = props.cancelled_record.map(a => a).sort((a, b) => {
     return a.user.othernames.localeCompare(b.user.othernames);
   });
@@ -238,9 +238,9 @@ const CancelledLeaveReportList = props => {
       </h1>
     </div>
   );
-};
+}
 
-const DeclinedLeaveReportList = props => {
+function DeclinedLeaveReportList(props) {
   const declinedRecord = props.declined_record.map(a => a).sort((a, b) => {
     return a.user.othernames.localeCompare(b.user.othernames);
   });
@@ -317,9 +317,9 @@ const DeclinedLeaveReportList = props => {
       </h1>
     </div>
   );
-};
+}
 
-const LeaveUpdatesReportList = props => {
+function LeaveUpdatesReportList(props) {
   const leaveUpdates = props.leave_updates.map(a => a).sort((b, c) => {
     return b.leaveId - c.leaveId;
   });
@@ -401,9 +401,9 @@ const LeaveUpdatesReportList = props => {
       </h1>
     </div>
   );
-};
+}
 
-const StaffRecordList = props => {
+function StaffRecordList(props) {
   const staffRecordList = props.staff_record.map(a => a).sort((a, b) => {
     return a.othernames.localeCompare(b.othernames);
   });
@@ -477,9 +477,9 @@ const StaffRecordList = props => {
       </h1>
     </div>
   );
-};
+}
 
-const UserUpdatesReportList = props => {
+function UserUpdatesReportList(props) {
   const userUpdates = props.user_updates.map(a => a).sort((b, c) => {
     return b.userId - c.userId;
   });
@@ -568,7 +568,7 @@ const UserUpdatesReportList = props => {
       </h1>
     </div>
   );
-};
+}
 
 type tabsProps = {
   data: Array<any>

@@ -76,11 +76,18 @@ type Props = {
 };
 
 class ApprovedLeave extends Component<Props> {
+  verifyToken: Function;
+
+  constructor() {
+    super();
+    this.verifyToken = this.verifyToken.bind(this);
+  }
   componentDidMount() {
     this.verifyToken();
+    setInterval(this.verifyToken, 600000);
   }
 
-  verifyToken = async () => {
+  async verifyToken() {
     const { auth_info, dispatch, verifyAdminToken } = this.props;
 
     const adminToken = auth_info.admin_token
@@ -103,7 +110,7 @@ class ApprovedLeave extends Component<Props> {
         dispatch(loginAdminErrorFromToken('Your session has expired!'));
       }
     }
-  };
+  }
 
   render() {
     const {
@@ -158,12 +165,12 @@ class ApprovedLeave extends Component<Props> {
                       editLeaveMessage={editLeaveMessage}
                       isCancelLeaveFetching={isCancelLeaveFetching}
                       cancelLeaveMessage={cancelLeaveMessage}
-                      onEditApprovedLeaveSubmit={editLeaveData =>
-                        dispatch(submitEditApprovedLeave(editLeaveData))
-                      }
-                      onCancelLeaveSubmit={cancelLeaveData =>
-                        dispatch(submitCancelLeave(cancelLeaveData))
-                      }
+                      onEditApprovedLeaveSubmit={function editLeaveData() {
+                        return dispatch(submitEditApprovedLeave(editLeaveData));
+                      }}
+                      onCancelLeaveSubmit={function cancelLeaveData() {
+                        return dispatch(submitCancelLeave(cancelLeaveData));
+                      }}
                     />
                   );
                 }}
@@ -178,7 +185,7 @@ class ApprovedLeave extends Component<Props> {
   }
 }
 
-const mapStateToProps = state => {
+function mapStateToProps(state) {
   const { adminAuth, editLeave, cancelLeave } = state;
   const { auth_info, isAuthenticated } = adminAuth;
 
@@ -193,7 +200,7 @@ const mapStateToProps = state => {
     isCancelLeaveFetching,
     cancelLeaveMessage
   };
-};
+}
 
 export default compose(
   connect(mapStateToProps),

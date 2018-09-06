@@ -7,29 +7,37 @@ export const LOGIN_ADMIN_REQUEST_FROM_TOKEN = 'LOGIN_ADMIN_REQUEST_FROM_TOKEN';
 export const LOGIN_ADMIN_SUCCESS_FROM_TOKEN = 'LOGIN_ADMIN_SUCCESS_FROM_TOKEN';
 export const LOGIN_ADMIN_FAILURE_FROM_TOKEN = 'LOGIN_ADMIN_FAILURE_FROM_TOKEN';
 
-export const requestAdminLogin = () => ({
-  type: LOGIN_ADMIN_REQUEST
-});
+export function requestAdminLogin() {
+  return { type: LOGIN_ADMIN_REQUEST };
+}
 
-export const receiveAdminLogin = (data: Object) => ({
-  type: LOGIN_ADMIN_SUCCESS,
-  auth_info: data
-});
+export function receiveAdminLogin(data: Object) {
+  return {
+    type: LOGIN_ADMIN_SUCCESS,
+    auth_info: data
+  };
+}
 
-export const loginAdminError = () => ({
-  type: LOGIN_ADMIN_FAILURE
-});
+export function loginAdminError() {
+  return {
+    type: LOGIN_ADMIN_FAILURE
+  };
+}
 
-export const requestAdminLoginFromToken = () => ({
-  type: LOGIN_ADMIN_REQUEST_FROM_TOKEN
-});
+export function requestAdminLoginFromToken() {
+  return { type: LOGIN_ADMIN_REQUEST_FROM_TOKEN };
+}
 
-export const receiveAdminLoginFromToken = (data: Object) => ({
-  type: LOGIN_ADMIN_SUCCESS_FROM_TOKEN,
-  auth_info: data
-});
+export function receiveAdminLoginFromToken(data: Object) {
+  return {
+    type: LOGIN_ADMIN_SUCCESS_FROM_TOKEN,
+    auth_info: data
+  };
+}
 
-export const loginAdminErrorFromToken = (data: string) => ({
-  type: LOGIN_ADMIN_FAILURE_FROM_TOKEN,
-  message: data
-});
+export function loginAdminErrorFromToken(data: string) {
+  return {
+    type: LOGIN_ADMIN_FAILURE_FROM_TOKEN,
+    message: data
+  };
+}

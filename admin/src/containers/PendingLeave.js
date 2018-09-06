@@ -75,12 +75,19 @@ type Props = {
 };
 
 class PendingLeave extends Component<Props> {
+  verifyToken: Function;
+
+  constructor() {
+    super();
+    this.verifyToken = this.verifyToken.bind(this);
+  }
+
   componentDidMount() {
     this.verifyToken();
     setInterval(this.verifyToken, 600000);
   }
 
-  verifyToken = async () => {
+  async verifyToken() {
     const { auth_info, dispatch, verifyAdminToken } = this.props;
 
     const adminToken = auth_info.admin_token
@@ -103,7 +110,7 @@ class PendingLeave extends Component<Props> {
         dispatch(loginAdminErrorFromToken('Your session has expired!'));
       }
     }
-  };
+  }
 
   render() {
     const {
@@ -162,15 +169,15 @@ class PendingLeave extends Component<Props> {
                       editLeaveMessage={editLeaveMessage}
                       isDeclineLeaveFetching={isDeclineLeaveFetching}
                       declineLeaveMessage={declineLeaveMessage}
-                      onApproveLeaveSubmit={approveLeaveData =>
-                        dispatch(submitApproveLeave(approveLeaveData))
-                      }
-                      onDeclineLeaveSubmit={declineLeaveData =>
-                        dispatch(submitDeclineLeave(declineLeaveData))
-                      }
-                      onEditLeaveSubmit={editLeaveData =>
-                        dispatch(submitEditLeave(editLeaveData))
-                      }
+                      onApproveLeaveSubmit={function approveLeaveData() {
+                        return dispatch(submitApproveLeave(approveLeaveData));
+                      }}
+                      onDeclineLeaveSubmit={function declineLeaveData() {
+                        return dispatch(submitDeclineLeave(declineLeaveData));
+                      }}
+                      onEditLeaveSubmit={function editLeaveData() {
+                        return dispatch(submitEditLeave(editLeaveData));
+                      }}
                     />
                   );
                 }}
@@ -185,7 +192,7 @@ class PendingLeave extends Component<Props> {
   }
 }
 
-const mapStateToProps = state => {
+function mapStateToProps(state) {
   const { adminAuth, approveLeave, editLeave, declineLeave } = state;
   const { auth_info, isAuthenticated } = adminAuth;
   const { isApproveLeaveFetching, approveLeavemessage } = approveLeave;
@@ -202,7 +209,7 @@ const mapStateToProps = state => {
     isDeclineLeaveFetching,
     declineLeaveMessage
   };
-};
+}
 
 export default compose(
   connect(mapStateToProps),

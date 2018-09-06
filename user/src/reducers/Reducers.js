@@ -39,7 +39,7 @@ type UserAuth = {
   auth_info: Object
 };
 
-const userAuth = (
+function userAuth(
   state: UserAuth = {
     isFetching: false,
     isAuthenticated: localStorage.getItem('auth_token') ? true : false,
@@ -47,7 +47,7 @@ const userAuth = (
     auth_info: {}
   },
   action
-) => {
+) {
   switch (action.type) {
     case LOGIN_USER_REQUEST:
       return {
@@ -93,20 +93,20 @@ const userAuth = (
     default:
       return state;
   }
-};
+}
 
 type LeaveApplication = {
   isFetching: boolean,
   message: string
 };
 
-const leaveApplication = (
+function leaveApplication(
   state: LeaveApplication = {
     isFetching: false,
     message: ''
   },
   action
-) => {
+) {
   switch (action.type) {
     case LEAVE_APPLICATION_REQUEST:
       return {
@@ -135,20 +135,20 @@ const leaveApplication = (
     default:
       return state;
   }
-};
+}
 
 type ChangePassword = {
   isFetching: boolean,
   message: string
 };
 
-const changePassword = (
+function changePassword(
   state: ChangePassword = {
     isFetching: false,
     message: ''
   },
   action
-) => {
+) {
   switch (action.type) {
     case REQUEST_PASSWORD_CHANGE:
       return {
@@ -176,20 +176,20 @@ const changePassword = (
     default:
       return state;
   }
-};
+}
 
 type ResetPassword = {
   isFetching: boolean,
   message: string
 };
 
-const resetPassword = (
+function resetPassword(
   state: ResetPassword = {
     isFetching: false,
     message: ''
   },
   action
-) => {
+) {
   switch (action.type) {
     case REQUEST_PASSWORD_RESET:
       return {
@@ -217,7 +217,7 @@ const resetPassword = (
     default:
       return state;
   }
-};
+}
 
 const appReducer = combineReducers({
   userAuth,
@@ -226,12 +226,12 @@ const appReducer = combineReducers({
   resetPassword
 });
 
-const rootReducer = (state, action) => {
+function rootReducer(state, action) {
   if (action.type === LOGOUT_USER) {
     state = undefined;
   }
 
   return appReducer(state, action);
-};
+}
 
 export default rootReducer;
