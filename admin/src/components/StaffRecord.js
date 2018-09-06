@@ -40,116 +40,108 @@ const ARCHIVED_USERS = gql`
   }
 `;
 
-function Search(props) {
-  return (
-    <div className="col-md-3">
-      <div className="form-group">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Search"
-          value={props.searchTerm}
-          onChange={props.handleSearchChange}
-        />
-      </div>
+const Search = props => (
+  <div className="col-md-3">
+    <div className="form-group">
+      <input
+        type="text"
+        className="form-control"
+        placeholder="Search"
+        value={props.searchTerm}
+        onChange={props.handleSearchChange}
+      />
     </div>
-  );
-}
+  </div>
+);
 
-function ClearSearch(props) {
-  return (
-    <div className="col-md-3">
-      <button className="btn btn-link" onClick={props.handleClearSearch}>
-        Clear
-      </button>
-    </div>
-  );
-}
+const ClearSearch = props => (
+  <div className="col-md-3">
+    <button className="btn btn-link" onClick={props.handleClearSearch}>
+      Clear
+    </button>
+  </div>
+);
 
-function Archive(props) {
-  return (
-    <Mutation
-      mutation={ARCHIVE_USER}
-      variables={{
-        id: props.id,
-        archiveReason: props.archiveReason
-      }}
-      refetchQueries={[{ query: ARCHIVED_USERS }]}
-    >
-      {(archiveUser, { loading, error, data }) => {
-        if (loading) {
-          return <p className="font-italic text-primary mr-3">Loading...</p>;
-        }
+const Archive = props => (
+  <Mutation
+    mutation={ARCHIVE_USER}
+    variables={{
+      id: props.id,
+      archiveReason: props.archiveReason
+    }}
+    refetchQueries={[{ query: ARCHIVED_USERS }]}
+  >
+    {(archiveUser, { loading, error, data }) => {
+      if (loading) {
+        return <p className="font-italic text-primary mr-3">Loading...</p>;
+      }
 
-        if (error) {
-          return <p className="font-italic text-warning mr-3">Error...</p>;
-        }
+      if (error) {
+        return <p className="font-italic text-warning mr-3">Error...</p>;
+      }
 
-        if (data) {
-          return (
-            <p className="font-italic text-success mr-3">
-              User has been archived!
-            </p>
-          );
-        }
-
+      if (data) {
         return (
-          <button onClick={archiveUser} className="btn btn-primary mr-3">
-            Confirm
-          </button>
+          <p className="font-italic text-success mr-3">
+            User has been archived!
+          </p>
         );
-      }}
-    </Mutation>
-  );
-}
+      }
 
-function ArchiveUser(props) {
-  return (
-    <Fragment>
-      {props.staff_record.filter(e => e.id === props.id).map(record => (
-        <div key={record.id}>
-          <div
-            className="col-md-6 ml-auto mr-auto"
-            style={{ paddingTop: '10px' }}
-          >
-            <div className="card">
-              <h5 className="card-header">Archive</h5>
-              <div className="card-body">
-                <div className="row">
-                  <div className="col">
-                    <p>
-                      {record.othernames} {record.surname}
-                    </p>
-                    <div className="form-group">
-                      <label htmlFor="reason">Reason</label>
-                      <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Enter reason"
-                        id="reason"
-                        onChange={props.handleArchiveReason}
-                      />
-                    </div>
+      return (
+        <button onClick={archiveUser} className="btn btn-primary mr-3">
+          Confirm
+        </button>
+      );
+    }}
+  </Mutation>
+);
+
+const ArchiveUser = props => (
+  <Fragment>
+    {props.staff_record.filter(e => e.id === props.id).map(record => (
+      <div key={record.id}>
+        <div
+          className="col-md-6 ml-auto mr-auto"
+          style={{ paddingTop: '10px' }}
+        >
+          <div className="card">
+            <h5 className="card-header">Archive</h5>
+            <div className="card-body">
+              <div className="row">
+                <div className="col">
+                  <p>
+                    {record.othernames} {record.surname}
+                  </p>
+                  <div className="form-group">
+                    <label htmlFor="reason">Reason</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      placeholder="Enter reason"
+                      id="reason"
+                      onChange={props.handleArchiveReason}
+                    />
                   </div>
                 </div>
-                <div className="row justify-content-end">
-                  <Archive id={props.id} archiveReason={props.archiveReason} />
-                  <button
-                    type="button"
-                    className="btn btn-outline-primary"
-                    onClick={props.handleCloseArchive}
-                  >
-                    Close
-                  </button>
-                </div>
+              </div>
+              <div className="row justify-content-end">
+                <Archive id={props.id} archiveReason={props.archiveReason} />
+                <button
+                  type="button"
+                  className="btn btn-outline-primary"
+                  onClick={props.handleCloseArchive}
+                >
+                  Close
+                </button>
               </div>
             </div>
           </div>
         </div>
-      ))}
-    </Fragment>
-  );
-}
+      </div>
+    ))}
+  </Fragment>
+);
 
 type Props = {
   staff_record: Object,
@@ -271,22 +263,22 @@ export default class StaffRecordList extends Component<Props, State> {
       ? moment(this.state.dob).format('DD/MM/YYYY')
       : dob;
 
-    function mDays(gender) {
+    const mDays = gender => {
       if (gender.toLowerCase() === 'female' && this.maternity) {
         return this.maternity.value ? this.maternity.value : 0;
       } else {
         return 0;
       }
-    }
+    };
     const maternityDays = mDays(gender);
 
-    function pDays(gender) {
+    const pDays = gender => {
       if (gender.toLowerCase() === 'male' && this.paternity) {
         return this.paternity.value ? this.paternity.value : 0;
       } else {
         return 0;
       }
-    }
+    };
     const paternityDays = pDays(gender);
 
     const editReason = this.state.editReason
@@ -565,9 +557,7 @@ export default class StaffRecordList extends Component<Props, State> {
                         <div className="row">
                           <div className="col-md-6">
                             <div className="form-group">
-                              <label htmlFor="employeeNumber">
-                                Employee number
-                              </label>
+                              <label htmlFor="employeeNumber">Employee #</label>
                               <input
                                 className="form-control"
                                 defaultValue={record.employeeNumber}

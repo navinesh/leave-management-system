@@ -14,31 +14,29 @@ type Props = {
   verifyUserToken: Function
 };
 
-function Login(props: Props) {
-  return (
-    <Fragment>
-      {!props.isAuthenticated ? (
-        <div className="container">
-          <div className="row">
-            <MainLogin
-              dispatch={props.dispatch}
-              isFetching={props.isFetching}
-              message={props.message}
-            />
-          </div>
+const Login = (props: Props) => (
+  <Fragment>
+    {!props.isAuthenticated ? (
+      <div className="container">
+        <div className="row">
+          <MainLogin
+            dispatch={props.dispatch}
+            isFetching={props.isFetching}
+            message={props.message}
+          />
         </div>
-      ) : (
-        <Redirect to="/" />
-      )}
-    </Fragment>
-  );
-}
+      </div>
+    ) : (
+      <Redirect to="/" />
+    )}
+  </Fragment>
+);
 
-function mapStateToProps(state) {
+const mapStateToProps = state => {
   const { userAuth } = state;
   const { auth_info, isAuthenticated, message, isFetching } = userAuth;
 
   return { auth_info, isAuthenticated, message, isFetching };
-}
+};
 
 export default connect(mapStateToProps)(Login);

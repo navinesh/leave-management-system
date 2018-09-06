@@ -12,27 +12,25 @@ type Props = {
   dispatch: Function
 };
 
-function AdminLogin(props: Props) {
-  return (
-    <Fragment>
-      {!props.isAuthenticated ? (
-        <Login
-          isFetching={props.isFetching}
-          message={props.message}
-          dispatch={props.dispatch}
-        />
-      ) : (
-        <Redirect to="/" />
-      )}
-    </Fragment>
-  );
-}
+const AdminLogin = (props: Props) => (
+  <Fragment>
+    {!props.isAuthenticated ? (
+      <Login
+        isFetching={props.isFetching}
+        message={props.message}
+        dispatch={props.dispatch}
+      />
+    ) : (
+      <Redirect to="/" />
+    )}
+  </Fragment>
+);
 
-function mapStateToProps(state) {
+const mapStateToProps = state => {
   const { adminAuth } = state;
   const { isFetching, message, isAuthenticated } = adminAuth;
 
   return { isFetching, message, isAuthenticated };
-}
+};
 
 export default connect(mapStateToProps)(AdminLogin);

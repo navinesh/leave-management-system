@@ -182,18 +182,11 @@ type Props = {
 };
 
 class LeaveReport extends Component<Props> {
-  verifyToken: Function;
-
-  constructor() {
-    super();
-    this.verifyToken = this.verifyToken.bind(this);
-  }
   componentDidMount() {
     this.verifyToken();
-    setInterval(this.verifyToken, 600000);
   }
 
-  async verifyToken() {
+  verifyToken = async () => {
     const { auth_info, dispatch, verifyAdminToken } = this.props;
 
     const adminToken = auth_info.admin_token
@@ -216,7 +209,7 @@ class LeaveReport extends Component<Props> {
         dispatch(loginAdminErrorFromToken('Your session has expired!'));
       }
     }
-  }
+  };
 
   render() {
     const { isAuthenticated } = this.props;
@@ -349,12 +342,12 @@ class LeaveReport extends Component<Props> {
   }
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = state => {
   const { adminAuth } = state;
   const { auth_info, isAuthenticated } = adminAuth;
 
   return { auth_info, isAuthenticated };
-}
+};
 
 export default compose(
   connect(mapStateToProps),

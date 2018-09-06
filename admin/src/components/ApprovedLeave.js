@@ -9,31 +9,27 @@ import Moment from 'moment';
 import { extendMoment } from 'moment-range';
 const moment = extendMoment(Moment);
 
-function Search(props) {
-  return (
-    <div className="col-md-3">
-      <div className="form-group">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Search"
-          value={props.searchTerm}
-          onChange={props.handleSearchChange}
-        />
-      </div>
+const Search = props => (
+  <div className="col-md-3">
+    <div className="form-group">
+      <input
+        type="text"
+        className="form-control"
+        placeholder="Search"
+        value={props.searchTerm}
+        onChange={props.handleSearchChange}
+      />
     </div>
-  );
-}
+  </div>
+);
 
-function ClearSearch(props) {
-  return (
-    <div className="col-md-3">
-      <button className="btn btn-link" onClick={props.handleClearSearch}>
-        Clear
-      </button>
-    </div>
-  );
-}
+const ClearSearch = props => (
+  <div className="col-md-3">
+    <button className="btn btn-link" onClick={props.handleClearSearch}>
+      Clear
+    </button>
+  </div>
+);
 
 type Props = {
   approved_items: Object,
@@ -230,24 +226,24 @@ export default class ApprovedLeaveList extends Component<Props, State> {
         : leaveDays;
 
     // calculate total leave days
-    function getLeaveDays(type) {
+    const getLeaveDays = type => {
       const totalDays = {
-        annual: function() {
+        annual: () => {
           return annualDays - myLeaveDays;
         },
-        sick: function() {
+        sick: () => {
           return sickDays - myLeaveDays;
         },
-        bereavement: function() {
+        bereavement: () => {
           return bereavementDays - myLeaveDays;
         },
-        'family care': function() {
+        'family care': () => {
           return familyCareDays - myLeaveDays;
         },
-        christmas: function() {
+        christmas: () => {
           return christmasDays - myLeaveDays;
         },
-        birthday: function() {
+        birthday: () => {
           // create date
           const dOB = new Date(dateOfBirth);
           dOB.setHours(dOB.getHours() - 12);
@@ -258,21 +254,21 @@ export default class ApprovedLeaveList extends Component<Props, State> {
             ? myLeaveDays
             : undefined;
         },
-        maternity: function() {
+        maternity: () => {
           return maternityDays - myLeaveDays;
         },
-        paternity: function() {
+        paternity: () => {
           return paternityDays - myLeaveDays;
         },
-        lwop: function() {
+        lwop: () => {
           return myLeaveDays;
         },
-        other: function() {
+        other: () => {
           return myLeaveDays;
         }
       };
       return totalDays[type]();
-    }
+    };
 
     const applicationDays = getLeaveDays(leave);
 
@@ -290,7 +286,7 @@ export default class ApprovedLeaveList extends Component<Props, State> {
     }
 
     // check if leave days need to be credited back
-    function getPreviousLeaveDays(type) {
+    const getPreviousLeaveDays = type => {
       if (
         leave !== previousLeaveName &&
         previousLeaveName !== 'birthday' &&
@@ -298,31 +294,31 @@ export default class ApprovedLeaveList extends Component<Props, State> {
         previousLeaveName !== 'other'
       ) {
         const totalDays = {
-          annual: function() {
+          annual: () => {
             return annualDays + previousLeaveDays;
           },
-          sick: function() {
+          sick: () => {
             return sickDays + previousLeaveDays;
           },
-          bereavement: function() {
+          bereavement: () => {
             return bereavementDays + previousLeaveDays;
           },
-          'family care': function() {
+          'family care': () => {
             return familyCareDays + previousLeaveDays;
           },
-          christmas: function() {
+          christmas: () => {
             return christmasDays + previousLeaveDays;
           },
-          maternity: function() {
+          maternity: () => {
             return maternityDays + previousLeaveDays;
           },
-          paternity: function() {
+          paternity: () => {
             return paternityDays + previousLeaveDays;
           }
         };
         return totalDays[type]();
       }
-    }
+    };
 
     const newLeaveBalance = getPreviousLeaveDays(previousLeaveName);
     const sDate = moment(startDate).format('DD/MM/YYYY');

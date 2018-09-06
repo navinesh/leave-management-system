@@ -34,18 +34,12 @@ type Props = {
 };
 
 class Main extends Component<Props> {
-  verifyToken: Function;
-
-  constructor() {
-    super();
-    this.verifyToken = this.verifyToken.bind(this);
-  }
   componentDidMount() {
     this.verifyToken();
     setInterval(this.verifyToken, 600000);
   }
 
-  async verifyToken() {
+  verifyToken = async () => {
     const { auth_info, dispatch, verifyUserToken } = this.props;
 
     const userToken = auth_info.auth_token
@@ -72,7 +66,7 @@ class Main extends Component<Props> {
         dispatch(loginUserErrorFromToken('Your session has expired!'));
       }
     }
-  }
+  };
 
   render() {
     return (
@@ -89,12 +83,12 @@ class Main extends Component<Props> {
   }
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = state => {
   const { userAuth } = state;
   const { auth_info, isAuthenticated } = userAuth;
 
   return { auth_info, isAuthenticated };
-}
+};
 
 export default compose(
   connect(mapStateToProps),

@@ -73,7 +73,7 @@ type adminState = {
   auth_info: Object
 };
 
-function adminAuth(
+const adminAuth = (
   state: adminState = {
     isFetching: false,
     message: '',
@@ -81,7 +81,7 @@ function adminAuth(
     auth_info: {}
   },
   action
-) {
+) => {
   switch (action.type) {
     case LOGIN_ADMIN_REQUEST:
       return {
@@ -132,20 +132,20 @@ function adminAuth(
     default:
       return state;
   }
-}
+};
 
 type ResetPassword = {
   isFetching: boolean,
   message: string
 };
 
-function resetPassword(
+const resetPassword = (
   state: ResetPassword = {
     isFetching: false,
     message: ''
   },
   action
-) {
+) => {
   switch (action.type) {
     case REQUEST_PASSWORD_RESET:
       return {
@@ -167,17 +167,17 @@ function resetPassword(
     default:
       return state;
   }
-}
+};
 
 type addUserState = {
   isFetching: boolean,
   message: string
 };
 
-function addUser(
+const addUser = (
   state: addUserState = { isFetching: false, message: '' },
   action
-) {
+) => {
   switch (action.type) {
     case NEW_USER_RECORD_REQUEST:
       return { ...state, isFetching: true };
@@ -190,17 +190,17 @@ function addUser(
     default:
       return state;
   }
-}
+};
 
 type modifyUserState = {
   isFetching: boolean,
   message: string
 };
 
-function modifyUser(
+const modifyUser = (
   state: modifyUserState = { isFetching: false, message: '' },
   action
-) {
+) => {
   switch (action.type) {
     case MODIFY_USER_RECORD_REQUEST:
       return { ...state, isFetching: true };
@@ -213,20 +213,20 @@ function modifyUser(
     default:
       return state;
   }
-}
+};
 
 type approveLeaveState = {
   isApproveLeaveFetching: boolean,
   approveLeavemessage: string
 };
 
-function approveLeave(
+const approveLeave = (
   state: approveLeaveState = {
     isApproveLeaveFetching: false,
     approveLeavemessage: ''
   },
   action
-) {
+) => {
   switch (action.type) {
     case APPROVE_LEAVE_REQUEST:
       return { ...state, isApproveLeaveFetching: true };
@@ -251,17 +251,17 @@ function approveLeave(
     default:
       return state;
   }
-}
+};
 
 type declineLeaveState = {
   isDeclineLeaveFetching: boolean,
   message: string
 };
 
-function declineLeave(
+const declineLeave = (
   state: declineLeaveState = { isDeclineLeaveFetching: false, message: '' },
   action
-) {
+) => {
   switch (action.type) {
     case DECLINE_LEAVE_REQUEST:
       return { ...state, isApproveLeaveFetching: true };
@@ -286,17 +286,17 @@ function declineLeave(
     default:
       return state;
   }
-}
+};
 
 type editLeaveState = {
   isEditLeaveFetching: boolean,
   editLeaveMessage: string
 };
 
-function editLeave(
+const editLeave = (
   state: editLeaveState = { isEditLeaveFetching: false, editLeaveMessage: '' },
   action
-) {
+) => {
   switch (action.type) {
     case EDIT_LEAVE_REQUEST:
       return { ...state, isEditLeaveFetching: true };
@@ -321,20 +321,20 @@ function editLeave(
     default:
       return state;
   }
-}
+};
 
 type cancelLeaveState = {
   isCancelLeaveFetching: boolean,
   cancelLeaveMessage: string
 };
 
-function cancelLeave(
+const cancelLeave = (
   state: cancelLeaveState = {
     isCancelLeaveFetching: false,
     cancelLeaveMessage: ''
   },
   action
-) {
+) => {
   switch (action.type) {
     case CANCEL_LEAVE_REQUEST:
       return { ...state, isCancelLeaveFetching: true };
@@ -359,7 +359,7 @@ function cancelLeave(
     default:
       return state;
   }
-}
+};
 
 const rootReducer = combineReducers({
   adminAuth,

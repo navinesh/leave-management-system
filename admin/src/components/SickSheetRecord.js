@@ -5,7 +5,7 @@ type Props = {
   sickSheet_items: Object
 };
 
-export default function(props: Props) {
+export default (props: Props) => {
   const itemNodes = props.sickSheet_items.map(record => (
     <tr key={record.id}>
       <td>
@@ -47,4 +47,4 @@ export default function(props: Props) {
       </h1>
     </div>
   );
-}
+};

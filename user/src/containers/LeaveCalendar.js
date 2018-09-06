@@ -21,35 +21,33 @@ const LeaveRecord = gql`
   }
 `;
 
-export default function() {
-  return (
-    <Query query={LeaveRecord} pollInterval={60000}>
-      {({ loading, error, data }) => {
-        if (loading) {
-          return (
-            <div className="text-center">
-              <div className="loader1" />
-            </div>
-          );
-        }
-
-        if (error) {
-          console.log(error.message);
-          return (
-            <div className="col mx-auto">
-              <div className="text-center">
-                <p className="display-4">Something went wrong!</p>
-              </div>
-            </div>
-          );
-        }
-
+export default () => (
+  <Query query={LeaveRecord} pollInterval={60000}>
+    {({ loading, error, data }) => {
+      if (loading) {
         return (
-          <div className="container">
-            <Leaves data={data} />
+          <div className="text-center">
+            <div className="loader1" />
           </div>
         );
-      }}
-    </Query>
-  );
-}
+      }
+
+      if (error) {
+        console.log(error.message);
+        return (
+          <div className="col mx-auto">
+            <div className="text-center">
+              <p className="display-4">Something went wrong!</p>
+            </div>
+          </div>
+        );
+      }
+
+      return (
+        <div className="container">
+          <Leaves data={data} />
+        </div>
+      );
+    }}
+  </Query>
+);

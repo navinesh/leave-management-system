@@ -35,105 +35,95 @@ const ACTIVE_USERS = gql`
   }
 `;
 
-function Search(props) {
-  return (
-    <div className="col-md-3">
-      <div className="form-group">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Search"
-          value={props.searchTerm}
-          onChange={props.handleSearchChange}
-        />
-      </div>
+const Search = props => (
+  <div className="col-md-3">
+    <div className="form-group">
+      <input
+        type="text"
+        className="form-control"
+        placeholder="Search"
+        value={props.searchTerm}
+        onChange={props.handleSearchChange}
+      />
     </div>
-  );
-}
+  </div>
+);
 
-function ClearSearch(props) {
-  return (
-    <div className="col-md-3">
-      <button className="btn btn-link" onClick={props.handleClearSearch}>
-        Clear
-      </button>
-    </div>
-  );
-}
+const ClearSearch = props => (
+  <div className="col-md-3">
+    <button className="btn btn-link" onClick={props.handleClearSearch}>
+      Clear
+    </button>
+  </div>
+);
 
-function UnArchive(props) {
-  return (
-    <Mutation
-      mutation={UNARCHIVE_USER}
-      variables={{ id: props.id }}
-      refetchQueries={[{ query: ACTIVE_USERS }]}
-    >
-      {(unArchiveUser, { loading, error, data }) => {
-        if (loading) {
-          return <p className="font-italic text-primary mr-3">Loading...</p>;
-        }
+const UnArchive = props => (
+  <Mutation
+    mutation={UNARCHIVE_USER}
+    variables={{ id: props.id }}
+    refetchQueries={[{ query: ACTIVE_USERS }]}
+  >
+    {(unArchiveUser, { loading, error, data }) => {
+      if (loading) {
+        return <p className="font-italic text-primary mr-3">Loading...</p>;
+      }
 
-        if (error) {
-          return <p className="font-italic text-warning mr-3">Error...</p>;
-        }
+      if (error) {
+        return <p className="font-italic text-warning mr-3">Error...</p>;
+      }
 
-        if (data) {
-          return (
-            <p className="font-italic text-success mr-3">
-              User has been unarchived!
-            </p>
-          );
-        }
-
+      if (data) {
         return (
-          <button onClick={unArchiveUser} className="btn btn-primary mr-3">
-            Yes
-          </button>
+          <p className="font-italic text-success mr-3">
+            User has been unarchived!
+          </p>
         );
-      }}
-    </Mutation>
-  );
-}
+      }
 
-function UnArchiveLeave(props) {
-  return (
-    <div className="col-md-10 ml-auto mr-auto">
-      {props.archived_staff_record
-        .filter(e => e.id === props.id)
-        .map(record => (
-          <div key={record.id}>
-            <div
-              className="col-md-6 ml-auto mr-auto"
-              style={{ paddingTop: '10px' }}
-            >
-              <div className="card">
-                <h5 className="card-header">Unarchive</h5>
-                <div className="card-body">
-                  <div className="row">
-                    <div className="col">
-                      <p>
-                        {record.othernames} {record.surname}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="row justify-content-end">
-                    <UnArchive id={props.id} />
-                    <button
-                      type="button"
-                      className="btn btn-outline-primary"
-                      onClick={props.handleCloseUnarchive}
-                    >
-                      Close
-                    </button>
-                  </div>
+      return (
+        <button onClick={unArchiveUser} className="btn btn-primary mr-3">
+          Yes
+        </button>
+      );
+    }}
+  </Mutation>
+);
+
+const UnArchiveLeave = props => (
+  <div className="col-md-10 ml-auto mr-auto">
+    {props.archived_staff_record.filter(e => e.id === props.id).map(record => (
+      <div key={record.id}>
+        <div
+          className="col-md-6 ml-auto mr-auto"
+          style={{ paddingTop: '10px' }}
+        >
+          <div className="card">
+            <h5 className="card-header">Unarchive</h5>
+            <div className="card-body">
+              <div className="row">
+                <div className="col">
+                  <p>
+                    {record.othernames} {record.surname}
+                  </p>
                 </div>
+              </div>
+              <div className="row justify-content-end">
+                <UnArchive id={props.id} />
+                <button
+                  type="button"
+                  className="btn btn-outline-primary"
+                  onClick={props.handleCloseUnarchive}
+                >
+                  Close
+                </button>
               </div>
             </div>
           </div>
-        ))}
-    </div>
-  );
-}
+        </div>
+      </div>
+    ))}
+  </div>
+);
 
 type Props = {
   archived_staff_record: Array<any>,
