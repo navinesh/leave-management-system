@@ -11,7 +11,7 @@ type Props = {
   data: Object
 };
 
-export default function(props: Props) {
+export default (props: Props) => {
   const {
     data: { findLeaveRecord }
   } = props;
@@ -38,9 +38,6 @@ export default function(props: Props) {
 
       // return true for current and future dates
       return isCurrentDate || isEndDate ? true : false;
-    })
-    .sort((a, b) => {
-      return a.user.othernames.localeCompare(b.user.othernames);
     })
     .map(data => (
       <tr key={data.id}>
@@ -82,4 +79,4 @@ export default function(props: Props) {
       <h1 className="display-4">You're all caught up.</h1>
     </div>
   );
-}
+};

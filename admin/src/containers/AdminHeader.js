@@ -10,21 +10,19 @@ type Props = {
   dispatch: Function
 };
 
-function AdminHeader(props: Props) {
-  return (
-    <Fragment>
-      {props.isAuthenticated && (
-        <Header dispatch={props.dispatch} logoutAdmin={logoutAdmin} />
-      )}
-    </Fragment>
-  );
-}
+const AdminHeader = (props: Props) => (
+  <Fragment>
+    {props.isAuthenticated && (
+      <Header dispatch={props.dispatch} logoutAdmin={logoutAdmin} />
+    )}
+  </Fragment>
+);
 
-function mapStateToProps(state) {
+const mapStateToProps = state => {
   const { adminAuth } = state;
   const { isAuthenticated } = adminAuth;
 
   return { isAuthenticated };
-}
+};
 
 export default connect(mapStateToProps)(AdminHeader);

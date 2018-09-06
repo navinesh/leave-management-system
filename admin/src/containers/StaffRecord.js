@@ -32,9 +32,9 @@ const ACTIVE_USERS = gql`
       email
       annual
       sick
+      christmas
       bereavement
       familyCare
-      christmas
       dateOfBirth
       maternity
       paternity
@@ -58,18 +58,11 @@ type Props = {
 };
 
 class StaffRecord extends Component<Props> {
-  verifyToken: Function;
-
-  constructor() {
-    super();
-    this.verifyToken = this.verifyToken.bind(this);
-  }
   componentDidMount() {
     this.verifyToken();
-    setInterval(this.verifyToken, 600000);
   }
 
-  async verifyToken() {
+  verifyToken = async () => {
     const { auth_info, dispatch, verifyAdminToken } = this.props;
 
     const adminToken = auth_info.admin_token
@@ -92,7 +85,7 @@ class StaffRecord extends Component<Props> {
         dispatch(loginAdminErrorFromToken('Your session has expired!'));
       }
     }
-  }
+  };
 
   render() {
     const { isAuthenticated, dispatch, isFetching, message } = this.props;
@@ -130,9 +123,9 @@ class StaffRecord extends Component<Props> {
                   dispatch={dispatch}
                   isFetching={isFetching}
                   message={message}
-                  onModifyUserRecordSubmit={function modifyUserDetails() {
-                    return dispatch(submitModifyUserRecord(modifyUserDetails));
-                  }}
+                  onModifyUserRecordSubmit={modifyUserDetails =>
+                    dispatch(submitModifyUserRecord(modifyUserDetails))
+                  }
                   refetch={refetch}
                 />
               );
@@ -146,7 +139,7 @@ class StaffRecord extends Component<Props> {
   }
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = state => {
   const { adminAuth, modifyUser } = state;
 
   const { auth_info, isAuthenticated } = adminAuth;
@@ -158,7 +151,7 @@ function mapStateToProps(state) {
     isFetching,
     message
   };
-}
+};
 
 export default compose(
   connect(mapStateToProps),

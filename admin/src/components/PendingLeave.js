@@ -510,24 +510,24 @@ class EditLeave extends Component<editProps, editState> {
         : leaveDays;
 
     // calculate total leave days
-    function getLeaveDays(type) {
+    const getLeaveDays = type => {
       const totalDays = {
-        annual: function() {
+        annual: () => {
           return annualDays - myLeaveDays;
         },
-        sick: function() {
+        sick: () => {
           return sickDays - myLeaveDays;
         },
-        bereavement: function() {
+        bereavement: () => {
           return bereavementDays - myLeaveDays;
         },
-        'family care': function() {
+        'family care': () => {
           return familyCareDays - myLeaveDays;
         },
-        christmas: function() {
+        christmas: () => {
           return christmasDays - myLeaveDays;
         },
-        birthday: function() {
+        birthday: () => {
           // create date
           const dOB = new Date(dateOfBirth);
           dOB.setHours(dOB.getHours() - 12);
@@ -538,21 +538,21 @@ class EditLeave extends Component<editProps, editState> {
             ? myLeaveDays
             : undefined;
         },
-        maternity: function() {
+        maternity: () => {
           return maternityDays - myLeaveDays;
         },
-        paternity: function() {
+        paternity: () => {
           return paternityDays - myLeaveDays;
         },
-        lwop: function() {
+        lwop: () => {
           return myLeaveDays;
         },
-        other: function() {
+        other: () => {
           return myLeaveDays;
         }
       };
       return totalDays[type]();
-    }
+    };
 
     const applicationDays = getLeaveDays(leave);
 

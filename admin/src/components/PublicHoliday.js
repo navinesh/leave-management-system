@@ -48,42 +48,34 @@ type addHolidayProps = {
   holidayDate: any
 };
 
-function AddHoliday(props: addHolidayProps) {
-  return (
-    <Mutation
-      mutation={ADD_PUBLIC_HOLIDAY}
-      variables={{ holidayDate: props.holidayDate }}
-      refetchQueries={[{ query: PUBLIC_HOLIDAY }]}
-    >
-      {(addPublicHoliday, { loading, error, refetch }) => {
-        if (loading) {
-          return <p className="font-italic text-primary mt-4">Loading...</p>;
-        }
+const AddHoliday = (props: addHolidayProps) => (
+  <Mutation
+    mutation={ADD_PUBLIC_HOLIDAY}
+    variables={{ holidayDate: props.holidayDate }}
+    refetchQueries={[{ query: PUBLIC_HOLIDAY }]}
+  >
+    {(addPublicHoliday, { loading, error }) => {
+      if (loading) {
+        return <p className="font-italic text-primary mt-4">Loading...</p>;
+      }
 
-        if (error) {
-          console.log(error);
-          return (
-            <Fragment>
-              <p className="font-italic text-danger mt-4">{error.message}</p>
-              <button
-                onClick={addPublicHoliday}
-                className="btn btn-primary mt-2"
-              >
-                Add
-              </button>
-            </Fragment>
-          );
-        }
-
-        return (
-          <button onClick={addPublicHoliday} className="btn btn-primary mt-4">
+      if (error) {
+        <Fragment>
+          <p className="font-italic text-danger mt-4">{error.message}</p>
+          <button onClick={addPublicHoliday} className="btn btn-primary mt-2">
             Add
           </button>
-        );
-      }}
-    </Mutation>
-  );
-}
+        </Fragment>;
+      }
+
+      return (
+        <button onClick={addPublicHoliday} className="btn btn-primary mt-4">
+          Add
+        </button>
+      );
+    }}
+  </Mutation>
+);
 
 type addPublicHolidayProps = {
   render: any
@@ -144,119 +136,111 @@ type deleteHolidayProps = {
   id: string
 };
 
-function DeleteHoliday(props: deleteHolidayProps) {
-  return (
-    <Mutation
-      mutation={DELETE_PUBLIC_HOLIDAY}
-      variables={{ id: props.id }}
-      refetchQueries={[{ query: PUBLIC_HOLIDAY }]}
-    >
-      {(deletePublicHoliday, { loading, error }) => {
-        if (loading) {
-          return (
-            <span className="ml-2 font-italic text-primary">Loading...</span>
-          );
-        }
-
-        if (error) {
-          console.log(error);
-          return (
-            <span className="ml-2 font-italic text-warning">Error...</span>
-          );
-        }
-
+const DeleteHoliday = (props: deleteHolidayProps) => (
+  <Mutation
+    mutation={DELETE_PUBLIC_HOLIDAY}
+    variables={{ id: props.id }}
+    refetchQueries={[{ query: PUBLIC_HOLIDAY }]}
+  >
+    {(deletePublicHoliday, { loading, error }) => {
+      if (loading) {
         return (
-          <button
-            className="btn btn-link btn-sm text-danger"
-            onClick={deletePublicHoliday}
-          >
-            Delete
-          </button>
+          <span className="ml-2 font-italic text-primary">Loading...</span>
         );
-      }}
-    </Mutation>
-  );
-}
+      }
+
+      if (error) {
+        console.log(error);
+        return <span className="ml-2 font-italic text-warning">Error...</span>;
+      }
+
+      return (
+        <button
+          className="btn btn-link btn-sm text-danger"
+          onClick={deletePublicHoliday}
+        >
+          Delete
+        </button>
+      );
+    }}
+  </Mutation>
+);
 
 type PublicHolidayProps = {
   render: any
 };
 
-function PublicHolidays(props: PublicHolidayProps) {
-  return (
-    <Query query={PUBLIC_HOLIDAY}>
-      {({ loading, error, data }) => {
-        if (loading) {
-          return (
-            <div
-              className="container text-center"
-              style={{ paddingTop: '100px' }}
-            >
-              <div className="col-md-8 ml-auto mr-auto">
-                <div className="loader1" />
-              </div>
-            </div>
-          );
-        }
-
-        if (error) {
-          console.log(error.message);
-          return (
-            <div
-              className="container text-center"
-              style={{ paddingTop: '100px' }}
-            >
-              <div className="col-md-8 ml-auto mr-auto">
-                <p>Something went wrong!</p>
-              </div>
-            </div>
-          );
-        }
-
-        let list = data.publicHoliday.edges.map(a => a.node).sort((b, c) => {
-          return new Date(c.holidayDate) - new Date(b.holidayDate);
-        });
-
-        const public_holidays = list.map(item => {
-          let hDate = new Date(item.holidayDate);
-          let holiday_date = moment(hDate).format('dddd, Do MMMM YYYY');
-
-          return (
-            <li key={item.id}>
-              {holiday_date}
-              {props.render(item.id)}
-            </li>
-          );
-        });
-
+const PublicHolidays = (props: PublicHolidayProps) => (
+  <Query query={PUBLIC_HOLIDAY}>
+    {({ loading, error, data }) => {
+      if (loading) {
         return (
-          <div className="DeletePublicHolidays">
-            <ul>{public_holidays}</ul>
+          <div
+            className="container text-center"
+            style={{ paddingTop: '100px' }}
+          >
+            <div className="col-md-8 ml-auto mr-auto">
+              <div className="loader1" />
+            </div>
           </div>
         );
-      }}
-    </Query>
-  );
-}
+      }
 
-export default function() {
-  return (
-    <div className="card">
-      <div className="card-header">
-        <h4>Public Holidays</h4>
-      </div>
-      <div className=" card-body">
-        <div className="row">
-          <div className="col">
-            <PublicHolidays render={id => <DeleteHoliday id={id} />} />
+      if (error) {
+        console.log(error.message);
+        return (
+          <div
+            className="container text-center"
+            style={{ paddingTop: '100px' }}
+          >
+            <div className="col-md-8 ml-auto mr-auto">
+              <p>Something went wrong!</p>
+            </div>
           </div>
-          <div className="col">
-            <AddPublicHoliday
-              render={date => <AddHoliday holidayDate={date} />}
-            />
-          </div>
+        );
+      }
+
+      let list = data.publicHoliday.edges.map(a => a.node).sort((b, c) => {
+        return new Date(c.holidayDate) - new Date(b.holidayDate);
+      });
+
+      const public_holidays = list.map(item => {
+        let hDate = new Date(item.holidayDate);
+        let holiday_date = moment(hDate).format('dddd, Do MMMM YYYY');
+
+        return (
+          <li key={item.id}>
+            {holiday_date}
+            {props.render(item.id)}
+          </li>
+        );
+      });
+
+      return (
+        <div className="DeletePublicHolidays">
+          <ul>{public_holidays}</ul>
+        </div>
+      );
+    }}
+  </Query>
+);
+
+export default () => (
+  <div className="card">
+    <div className="card-header">
+      <h4>Public Holidays</h4>
+    </div>
+    <div className=" card-body">
+      <div className="row">
+        <div className="col">
+          <PublicHolidays render={id => <DeleteHoliday id={id} />} />
+        </div>
+        <div className="col">
+          <AddPublicHoliday
+            render={date => <AddHoliday holidayDate={date} />}
+          />
         </div>
       </div>
     </div>
-  );
-}
+  </div>
+);

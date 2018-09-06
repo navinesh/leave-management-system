@@ -34,13 +34,6 @@ type Props = {
 };
 
 class LeaveApplication extends Component<Props> {
-  verifyToken: Function;
-
-  constructor() {
-    super();
-    this.verifyToken = this.verifyToken.bind(this);
-  }
-
   componentDidMount() {
     this.verifyToken();
     setInterval(this.verifyToken, 600000);
@@ -50,7 +43,7 @@ class LeaveApplication extends Component<Props> {
     this.props.dispatch(clearLeaveApplicationMessage());
   }
 
-  async verifyToken() {
+  verifyToken = async () => {
     const { auth_info, dispatch, verifyUserToken } = this.props;
 
     const userToken = auth_info.auth_token
@@ -75,7 +68,7 @@ class LeaveApplication extends Component<Props> {
         dispatch(loginUserErrorFromToken('Your session has expired!'));
       }
     }
-  }
+  };
 
   render() {
     const { dispatch, isAuthenticated, auth_info, message } = this.props;
@@ -88,9 +81,9 @@ class LeaveApplication extends Component<Props> {
             id={id}
             message={message}
             dispatch={dispatch}
-            onLeaveApplicationClick={function applicationDetails() {
-              return dispatch(fetchLeaveApplication(applicationDetails));
-            }}
+            onLeaveApplicationClick={applicationDetails =>
+              dispatch(fetchLeaveApplication(applicationDetails))
+            }
           />
         ) : (
           <Redirect to="/" />
@@ -100,7 +93,7 @@ class LeaveApplication extends Component<Props> {
   }
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = state => {
   const { userAuth, leaveApplication } = state;
   const { auth_info, isAuthenticated } = userAuth;
   const { message } = leaveApplication;
@@ -110,7 +103,7 @@ function mapStateToProps(state) {
     isAuthenticated,
     message
   };
-}
+};
 
 export default compose(
   connect(mapStateToProps),

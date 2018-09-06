@@ -35,22 +35,15 @@ type Props = {
 };
 
 class CreateUser extends Component<Props> {
-  verifyToken: Function;
-
-  constructor() {
-    super();
-    this.verifyToken = this.verifyToken.bind(this);
-  }
   componentDidMount() {
     this.verifyToken();
-    setInterval(this.verifyToken, 600000);
   }
 
   componentWillUnmount() {
     this.props.dispatch(clearNewUserRecordMessage());
   }
 
-  async verifyToken() {
+  verifyToken = async () => {
     const { auth_info, dispatch, verifyAdminToken } = this.props;
 
     const adminToken = auth_info.admin_token
@@ -73,7 +66,7 @@ class CreateUser extends Component<Props> {
         dispatch(loginAdminErrorFromToken('Your session has expired!'));
       }
     }
-  }
+  };
 
   render() {
     const { isAuthenticated, dispatch, message, isFetching } = this.props;
@@ -85,9 +78,9 @@ class CreateUser extends Component<Props> {
             isFetching={isFetching}
             message={message}
             dispatch={dispatch}
-            onNewUserRecordSubmit={function newUserDetails() {
-              return dispatch(submitNewUserRecord(newUserDetails));
-            }}
+            onNewUserRecordSubmit={newUserDetails =>
+              dispatch(submitNewUserRecord(newUserDetails))
+            }
           />
         ) : (
           <Redirect to="/login" />
@@ -97,13 +90,13 @@ class CreateUser extends Component<Props> {
   }
 }
 
-function mapStateToProps(state) {
+const mapStateToProps = state => {
   const { adminAuth, addUser } = state;
   const { auth_info, isAuthenticated } = adminAuth;
   const { isFetching, message } = addUser;
 
   return { auth_info, isAuthenticated, isFetching, message };
-}
+};
 
 export default compose(
   connect(mapStateToProps),
