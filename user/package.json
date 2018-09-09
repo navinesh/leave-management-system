@@ -3,19 +3,19 @@
   "version": "0.2.0",
   "private": true,
   "devDependencies": {
-    "flow-bin": "^0.79.1"
+    "flow-bin": "^0.80.0"
   },
   "dependencies": {
     "apollo-boost": "^0.1.15",
     "axios": "^0.18.0",
-    "graphql": "^0.13.2",
+    "graphql": "^14.0.2",
     "moment": "^2.22.2",
     "moment-range": "^4.0.1",
-    "react": "^16.4.2",
+    "react": "^16.5.0",
     "react-addons-shallow-compare": "^15.6.2",
     "react-apollo": "^2.1.11",
-    "react-dates": "^17.2.0",
-    "react-dom": "^16.4.2",
+    "react-dates": "^18.0.1",
+    "react-dom": "^16.5.0",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.5",
