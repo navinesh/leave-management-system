@@ -22,7 +22,7 @@ function ResetPassword(props: Props) {
           isFetching={props.isFetching}
           message={props.message}
           dispatch={props.dispatch}
-          onResetClick={function email() {
+          onResetClick={function(email) {
             return props.dispatch(resetPassword(email));
           }}
         />
