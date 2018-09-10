@@ -130,7 +130,7 @@ class StaffRecord extends Component<Props> {
                   dispatch={dispatch}
                   isFetching={isFetching}
                   message={message}
-                  onModifyUserRecordSubmit={function modifyUserDetails() {
+                  onModifyUserRecordSubmit={function(modifyUserDetails) {
                     return dispatch(submitModifyUserRecord(modifyUserDetails));
                   }}
                   refetch={refetch}
