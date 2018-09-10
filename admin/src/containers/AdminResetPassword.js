@@ -16,7 +16,9 @@ function ResetPassword(props: Props) {
     <AdminResetPassword
       isFetching={props.isFetching}
       message={props.message}
-      onResetClick={email => props.dispatch(resetPassword(email))}
+      onResetClick={function(email) {
+        return props.dispatch(resetPassword(email));
+      }}
     />
   );
 }
