@@ -85,7 +85,7 @@ class CreateUser extends Component<Props> {
             isFetching={isFetching}
             message={message}
             dispatch={dispatch}
-            onNewUserRecordSubmit={function newUserDetails() {
+            onNewUserRecordSubmit={function(newUserDetails) {
               return dispatch(submitNewUserRecord(newUserDetails));
             }}
           />
