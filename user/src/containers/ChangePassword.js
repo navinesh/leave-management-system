@@ -39,7 +39,7 @@ class UserChangePassword extends Component<Props> {
             isFetching={isFetching}
             message={message}
             auth_info={auth_info}
-            onChangeClick={function creds() {
+            onChangeClick={function(creds) {
               return dispatch(changePassword(creds));
             }}
           />
