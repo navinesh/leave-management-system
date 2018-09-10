@@ -88,7 +88,7 @@ class LeaveApplication extends Component<Props> {
             id={id}
             message={message}
             dispatch={dispatch}
-            onLeaveApplicationClick={function applicationDetails() {
+            onLeaveApplicationClick={function(applicationDetails) {
               return dispatch(fetchLeaveApplication(applicationDetails));
             }}
           />
