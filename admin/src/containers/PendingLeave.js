@@ -169,13 +169,13 @@ class PendingLeave extends Component<Props> {
                       editLeaveMessage={editLeaveMessage}
                       isDeclineLeaveFetching={isDeclineLeaveFetching}
                       declineLeaveMessage={declineLeaveMessage}
-                      onApproveLeaveSubmit={function approveLeaveData() {
+                      onApproveLeaveSubmit={function(approveLeaveData) {
                         return dispatch(submitApproveLeave(approveLeaveData));
                       }}
-                      onDeclineLeaveSubmit={function declineLeaveData() {
+                      onDeclineLeaveSubmit={function(declineLeaveData) {
                         return dispatch(submitDeclineLeave(declineLeaveData));
                       }}
-                      onEditLeaveSubmit={function editLeaveData() {
+                      onEditLeaveSubmit={function(editLeaveData) {
                         return dispatch(submitEditLeave(editLeaveData));
                       }}
                     />
