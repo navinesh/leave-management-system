@@ -165,10 +165,10 @@ class ApprovedLeave extends Component<Props> {
                       editLeaveMessage={editLeaveMessage}
                       isCancelLeaveFetching={isCancelLeaveFetching}
                       cancelLeaveMessage={cancelLeaveMessage}
-                      onEditApprovedLeaveSubmit={function editLeaveData() {
+                      onEditApprovedLeaveSubmit={function(editLeaveData) {
                         return dispatch(submitEditApprovedLeave(editLeaveData));
                       }}
-                      onCancelLeaveSubmit={function cancelLeaveData() {
+                      onCancelLeaveSubmit={function(cancelLeaveData) {
                         return dispatch(submitCancelLeave(cancelLeaveData));
                       }}
                     />
