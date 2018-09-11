@@ -248,11 +248,17 @@ export default function() {
       <div className=" card-body">
         <div className="row">
           <div className="col">
-            <PublicHolidays render={id => <DeleteHoliday id={id} />} />
+            <PublicHolidays
+              render={function(id) {
+                return <DeleteHoliday id={id} />;
+              }}
+            />
           </div>
           <div className="col">
             <AddPublicHoliday
-              render={date => <AddHoliday holidayDate={date} />}
+              render={function(date) {
+                return <AddHoliday holidayDate={date} />;
+              }}
             />
           </div>
         </div>
