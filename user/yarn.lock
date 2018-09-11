@@ -6060,9 +6060,9 @@ react-apollo@^2.1.11:
     lodash "^4.17.10"
     prop-types "^15.6.0"
 
-react-dates@^18.0.1:
-  version "18.0.1"
-  resolved "https://registry.yarnpkg.com/react-dates/-/react-dates-18.0.1.tgz#6a6a6510fc3cb754743db2f7488ee1fa7d245e15"
+react-dates@^18.0.2:
+  version "18.0.2"
+  resolved "https://registry.yarnpkg.com/react-dates/-/react-dates-18.0.2.tgz#26f482a9ba352427e6f09fe0df13de94dab15995"
   dependencies:
     airbnb-prop-types "^2.10.0"
     consolidated-events "^1.1.1 || ^2.0.0"
