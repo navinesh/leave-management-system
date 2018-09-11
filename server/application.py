@@ -381,7 +381,7 @@ def apply_for_leave():
                  date_from + " to " + date_to + ". Current " +
                  leave_name + " leave balance is " +
                  str(format_number(current_leave_balance)) +
-                 " day(s) and uppon approval new balance will be " +
+                 " day(s) and upon approval new balance will be " +
                  str(new_leave_balance) + " day(s). Reason: " +
                  leave_reason), file=None)
     else:
@@ -431,7 +431,7 @@ def apply_for_leave():
                  " to " + date_to + ". Current " + leave_name +
                  " leave balance is " +
                  str(format_number(current_leave_balance)) +
-                 " day(s) and uppon approval new balance will be " +
+                 " day(s) and upon approval new balance will be " +
                  str(new_leave_balance) + " day(s). Reason: " +
                  leave_reason), new_file_name)
 
