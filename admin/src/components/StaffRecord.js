@@ -263,23 +263,15 @@ export default class StaffRecordList extends Component<Props, State> {
       ? moment(this.state.dob).format('DD/MM/YYYY')
       : dob;
 
-    const mDays = gender => {
-      if (gender.toLowerCase() === 'female' && this.maternity) {
-        return this.maternity.value ? this.maternity.value : 0;
-      } else {
-        return 0;
-      }
-    };
-    const maternityDays = mDays(gender);
+    const maternityDays =
+      gender.toLowerCase() === 'female' && this.maternity.value
+        ? this.maternity.value
+        : 0;
 
-    const pDays = gender => {
-      if (gender.toLowerCase() === 'male' && this.paternity) {
-        return this.paternity.value ? this.paternity.value : 0;
-      } else {
-        return 0;
-      }
-    };
-    const paternityDays = pDays(gender);
+    const paternityDays =
+      gender.toLowerCase() === 'male' && this.paternity.value
+        ? this.paternity.value
+        : 0;
 
     const editReason = this.state.editReason
       ? this.state.editReason.trim()
