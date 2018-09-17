@@ -3,21 +3,21 @@
   "version": "0.2.0",
   "private": true,
   "devDependencies": {
-    "flow-bin": "^0.80.0"
+    "flow-bin": "^0.81.0"
   },
   "dependencies": {
-    "apollo-boost": "^0.1.13",
+    "apollo-boost": "^0.1.16",
     "axios": "^0.18.0",
     "graphql": "^14.0.2",
     "moment": "^2.22.2",
     "moment-range": "^4.0.1",
-    "react": "^16.5.0",
+    "react": "^16.5.1",
     "react-addons-shallow-compare": "^15.6.2",
     "react-apollo": "^2.1.11",
     "react-csv": "^1.0.14",
     "react-datepicker": "^1.6.0",
-    "react-dates": "^18.0.2",
-    "react-dom": "^16.5.0",
+    "react-dates": "^18.0.4",
+    "react-dom": "^16.5.1",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
     "react-scripts": "1.1.5",
