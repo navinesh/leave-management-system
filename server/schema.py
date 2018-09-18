@@ -226,11 +226,11 @@ class ArchiveUser(graphene.Mutation):
 
         user = query.filter(UserModel.id == user_id).first()
 
-        if user.isArchived is True:
+        if user.is_archived is True:
             raise Exception('This user has an archived status!')
 
-        user.isArchived = True
-        user.archiveReason = archiveReason
+        user.is_archived = True
+        user.archive_reason = archiveReason
         db_session.add(user)
         db_session.commit()
         ok = True
@@ -250,11 +250,11 @@ class UnArchiveUser(graphene.Mutation):
         user_id = from_global_id(id)[1]
         user = query.filter(UserModel.id == user_id).first()
 
-        if user.isArchived is False:
+        if user.is_archived is False:
             raise Exception('This user has an unarchived status!')
 
-        user.isArchived = False
-        user.archiveReason = None
+        user.is_archived = False
+        user.archive_reason = None
         db_session.add(user)
         db_session.commit()
         ok = True
