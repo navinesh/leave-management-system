@@ -67,7 +67,7 @@ export default class CreateUserForm extends Component<Props, State> {
       christmasLeave: '',
       maternityLeave: '',
       paternityLeave: '',
-      employeeNumber: null,
+      employeeNumber: '',
       dob: null
     };
 
