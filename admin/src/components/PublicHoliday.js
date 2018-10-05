@@ -60,12 +60,14 @@ const AddHoliday = (props: addHolidayProps) => (
       }
 
       if (error) {
-        <Fragment>
-          <p className="font-italic text-danger mt-4">{error.message}</p>
-          <button onClick={addPublicHoliday} className="btn btn-primary mt-2">
-            Add
-          </button>
-        </Fragment>;
+        return (
+          <Fragment>
+            <p className="font-italic text-danger mt-4">{error.message}</p>
+            <button onClick={addPublicHoliday} className="btn btn-primary mt-2">
+              Add
+            </button>
+          </Fragment>
+        );
       }
 
       return (
