@@ -3,7 +3,7 @@
   "version": "0.2.0",
   "private": true,
   "devDependencies": {
-    "flow-bin": "^0.81.0"
+    "flow-bin": "^0.82.0"
   },
   "dependencies": {
     "apollo-boost": "^0.1.16",
@@ -18,7 +18,7 @@
     "react-dom": "^16.5.2",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "2.0.3",
+    "react-scripts": "2.0.4",
     "redux": "^4.0.0",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0"
