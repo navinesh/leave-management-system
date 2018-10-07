@@ -924,14 +924,14 @@ def approve_leave():
             ("Your " + leave_name + " leave application for " +
              str(format_number(leave_days)) + " day(s) from " +
              leave_record.start_date + " to " + leave_record.end_date +
-             " has been aprroved."), file=None)
+             " has been approved."), file=None)
     else:
         send_email(
             user_record.email, None, "Leave application approved",
             ("Your " + leave_name + " leave application for " + str(
                 format_number(leave_days)) + " day(s) from " +
              leave_record.start_date + " to " + leave_record.end_date +
-             " has been aprroved. " + "Your new " +
+             " has been approved. " + "Your new " +
              leave_name + " leave balance is " + str(
                  format_number(leave_balance)) + " day(s)."),
             file=None)
