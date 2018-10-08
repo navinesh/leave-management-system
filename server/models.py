@@ -43,6 +43,7 @@ class User(Base):
     is_archived = Column(Boolean)
     archive_reason = Column(Text)
     employee_number = Column(Numeric)
+    employee_start_date = Column(Date)
 
     def hash_password(self, password):
         self.password_hash = pwd_context.encrypt(password)
@@ -85,7 +86,8 @@ class User(Base):
             'date_of_birth': self.date_of_birth,
             'is_archived': self.is_archived,
             'archive_reason': self.archive_reason,
-            'employee_number': self.employee_number
+            'employee_number': self.employee_number,
+            'employee_start_date': self.employee_start_date
         }
 
 
@@ -105,6 +107,7 @@ class Userupdates(Base):
     designation = Column(Text)
     gender = Column(Text)
     employee_number = Column(Numeric)
+    employee_start_date = Column(Date)
     edit_reason = Column(Text)
     date_posted = Column(String)
     reviewed_by = Column(String)
@@ -128,6 +131,7 @@ class Userupdates(Base):
             'designation': self.designation,
             'gender': self.gender,
             'employee_number': self.employee_number,
+            'employee_start_date': self.employee_start_date,
             'edit_reason': self.edit_reason,
             'reviewed_by': self.reviewed_by,
             'user_id': self.user_id,
