@@ -21,7 +21,8 @@ class User(SQLAlchemyObjectType):
             'id', 'othernames', 'surname', 'email', 'designation', 'gender',
             'date_of_birth', 'annual', 'sick', 'bereavement', 'christmas',
             'maternity', 'is_archived', 'family_care', 'paternity',
-            'archive_reason', 'employee_number', 'userupdates', 'leaverecord'
+            'archive_reason', 'employee_number', 'employee_start_date'
+            'userupdates', 'leaverecord'
         ]
 
 
