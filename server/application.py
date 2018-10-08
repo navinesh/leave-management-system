@@ -573,6 +573,8 @@ def new_user():
         maternity: maternity leave days balance
         paternity: paternity leave days balance
         admin_user: admin user name
+        employee_number: payroll emplyee number
+        employee_start_date: employee start date
         """
     surname = request.json.get('surname')
     othernames = request.json.get('othernames')
@@ -587,6 +589,8 @@ def new_user():
     paternity = request.json.get('paternity')
     date_of_birth = request.json.get('date_of_birth')
     gender = request.json.get('gender')
+    employee_number = request.json.get('employee_number')
+    employee_start_date = request.json.get('employee_start_date')
     admin_user = request.json.get('admin_user')
     password = ''.join(
         random.SystemRandom().choice(string.ascii_uppercase + string.digits)
@@ -610,6 +614,8 @@ def new_user():
         christmas=christmas,
         maternity=maternity,
         paternity=paternity,
+        employee_number=employee_number,
+        employee_start_date=employee_start_date,
         is_archived=False)
 
     user.hash_password(password)
@@ -628,6 +634,8 @@ def new_user():
         christmas=christmas,
         maternity=maternity,
         paternity=paternity,
+        employee_number=employee_number,
+        employee_start_date=employee_start_date,
         edit_reason='New record',
         user_id=user.id,
         reviewed_by=admin_user,
@@ -665,6 +673,8 @@ def modify_user():
         date_of_birth: date of birth of the user
         maternity: maternity leave days balance
         paternity: paternity leave days balance
+        employee_number: payroll employee number
+        employee_start_date: employee start date
         edit_reason: reason for editing leave record
         admin_user: admin user name
         """
@@ -682,6 +692,8 @@ def modify_user():
     family_care = request.json.get('family_care')
     maternity = request.json.get('maternity')
     paternity = request.json.get('paternity')
+    employee_number = request.json.get('employee_number')
+    employee_start_date = request.json.get('employee_start_date')
     edit_reason = request.json.get('editReason')
     admin_user = request.json.get('admin_user')
 
@@ -690,7 +702,7 @@ def modify_user():
     if user_record is None:
         return jsonify({
             'message': 'Cannot find this record in the database.'
-        }), 200   
+        }), 200    
 
     # Email message
     if gender.lower() == 'male':
@@ -776,6 +788,8 @@ def modify_user():
     user_record.date_of_birth = date_of_birth
     user_record.maternity = maternity
     user_record.paternity = paternity
+    user_record.employee_number = employee_number
+    user_record.employee_start_date = employee_start_date
 
     session.add(user_record)
     session.commit()
@@ -793,6 +807,8 @@ def modify_user():
         maternity=maternity,
         paternity=paternity,
         edit_reason=edit_reason,
+        employee_number=employee_number,
+        employee_start_date=employee_start_date,
         user_id=user_record.id,
         reviewed_by=admin_user,
         date_posted=str(datetime.now().date()))
