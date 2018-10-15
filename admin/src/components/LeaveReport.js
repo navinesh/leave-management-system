@@ -421,6 +421,7 @@ function StaffRecordList(props) {
       <td>{record.maternity}</td>
       <td>{record.paternity}</td>
       <td>{record.employeeNumber}</td>
+      <td>{record.employeeStartDate}</td>
     </tr>
   ));
 
@@ -435,7 +436,8 @@ function StaffRecordList(props) {
     rObj['Christmas'] = a.christmas;
     rObj['Maternity'] = a.maternity;
     rObj['Paternity'] = a.paternity;
-    rObj['employeeNumber'] = a.paternity;
+    rObj['employeeNumber'] = a.employeeNumber;
+    rObj['employeeStartDate'] = a.employeeStartDate;
     return rObj;
   });
 
@@ -461,6 +463,7 @@ function StaffRecordList(props) {
               <th>Maternity</th>
               <th>Paternity</th>
               <th>Employee #</th>
+              <th>Start date</th>
             </tr>
           </thead>
           <tbody>{staffRecordItems}</tbody>
