@@ -165,6 +165,7 @@ type State = {
   id: string,
   dbid: string,
   dob: any,
+  employeeStartDate: any,
   archiveReason: any,
   isEditing: boolean,
   isArchiving: boolean,
@@ -198,6 +199,7 @@ export default class StaffRecordList extends Component<Props, State> {
   maternity: any;
   paternity: any;
   employeeNumber: any;
+  employeeStartDate: any;
 
   constructor() {
     super();
@@ -206,6 +208,7 @@ export default class StaffRecordList extends Component<Props, State> {
       id: '',
       dbid: '',
       dob: null,
+      employeeStartDate: null,
       archiveReason: null,
       editReason: '',
       isEditing: false,
@@ -217,6 +220,9 @@ export default class StaffRecordList extends Component<Props, State> {
     this.handleClearSearch = this.handleClearSearch.bind(this);
     this.handleOpenEdit = this.handleOpenEdit.bind(this);
     this.handleDateChange = this.handleDateChange.bind(this);
+    this.handleEmployeeStartDateChange = this.handleEmployeeStartDateChange.bind(
+      this
+    );
     this.handleEditReason = this.handleEditReason.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleCloseEdit = this.handleCloseEdit.bind(this);
@@ -245,6 +251,10 @@ export default class StaffRecordList extends Component<Props, State> {
     this.setState({ dob: e });
   }
 
+  handleEmployeeStartDateChange(e: Event) {
+    this.setState({ employeeStartDate: e });
+  }
+
   handleEditReason({ target }: SyntheticInputEvent<>) {
     this.setState({ editReason: target.value });
   }
@@ -270,6 +280,13 @@ export default class StaffRecordList extends Component<Props, State> {
     const dateOfBirth = this.state.dob
       ? moment(this.state.dob).format('DD/MM/YYYY')
       : dob;
+
+    let eStartDate = new Date(this.employeeStartDate.value);
+    let employeeSD = moment(eStartDate).format('DD/MM/YYYY');
+
+    const employeeStartDate = this.state.employeeStartDate
+      ? moment(this.state.employeeStartDate).format('DD/MM/YYYY')
+      : employeeSD;
 
     const maternityDays =
       gender.toLowerCase() === 'female' && this.maternity.value
@@ -301,8 +318,7 @@ export default class StaffRecordList extends Component<Props, State> {
       !dateOfBirth ||
       !familyCare ||
       !gender ||
-      !editReason ||
-      !employeeNumber
+      !editReason
     ) {
       this.setState({
         errorMessage: 'One or more required fields are missing!'
@@ -328,6 +344,7 @@ export default class StaffRecordList extends Component<Props, State> {
       gender: gender,
       editReason: editReason,
       employeeNumber: employeeNumber,
+      employeeStartDate: employeeStartDate,
       adminUser: adminUser
     };
 
@@ -341,6 +358,7 @@ export default class StaffRecordList extends Component<Props, State> {
       isEditing: !this.state.isEditing,
       errorMessage: '',
       dob: null,
+      employeeStartDate: null,
       id: '',
       dbid: ''
     });
@@ -385,6 +403,10 @@ export default class StaffRecordList extends Component<Props, State> {
           {staff_record.filter(e => e.id === id).map(record => {
             let dob = new Date(record.dateOfBirth);
             let dateOfBirth = moment(dob).format('DD/MM/YYYY');
+
+            let eSD = new Date(record.employeeStartDate);
+            let employeeStartDate = moment(eSD).format('DD/MM/YYYY');
+
             return (
               <div key={record.id}>
                 <div className="col-md-6 ml-auto mr-auto pb-2">
@@ -567,6 +589,29 @@ export default class StaffRecordList extends Component<Props, State> {
                               />
                             </div>
                           </div>
+                          <div className="col-md-6">
+                            <div className="form-group">
+                              <label htmlFor="dob">Employee start date</label>
+                              <input
+                                type="hidden"
+                                defaultValue={record.employeeStartDate}
+                                ref={input => (this.employeeStartDate = input)}
+                              />
+                              <DatePicker
+                                className="form-control"
+                                dateFormat="DD/MM/YYYY"
+                                openToDate={moment(employeeStartDate)}
+                                selected={this.state.employeeStartDate}
+                                showMonthDropdown
+                                showYearDropdown
+                                dropdownMode="select"
+                                onChange={this.handleEmployeeStartDateChange}
+                                placeholderText={employeeStartDate}
+                              />
+                            </div>
+                          </div>
+                        </div>
+                        <div className="row">
                           {record.gender.toLowerCase() === 'female' && (
                             <div className="col-md-6">
                               <div className="form-group">
@@ -673,6 +718,9 @@ export default class StaffRecordList extends Component<Props, State> {
         let dob = new Date(record.dateOfBirth);
         let dateOfBirth = moment(dob).format('DD/MM/YYYY');
 
+        let eStarteDate = new Date(record.employeeStartDate);
+        let employeeStartDate = moment(eStarteDate).format('DD/MM/YYYY');
+
         return (
           <div className="col-md-3" key={record.id}>
             <div className="card mb-3 shadow p-3 mb-5 bg-white rounded">
@@ -710,6 +758,18 @@ export default class StaffRecordList extends Component<Props, State> {
                   Christmas
                   <span className="badge badge-primary badge-pill">
                     {record.christmas}
+                  </span>
+                </li>
+                <li className="list-group-item d-flex justify-content-between align-items-center">
+                  Employee #
+                  <span className="badge badge-primary badge-pill">
+                    {record.employeeNumber}
+                  </span>
+                </li>
+                <li className="list-group-item d-flex justify-content-between align-items-center">
+                  Start Date
+                  <span className="badge badge-primary badge-pill">
+                    {employeeStartDate}
                   </span>
                 </li>
                 <li className="list-group-item d-flex justify-content-between align-items-center">
