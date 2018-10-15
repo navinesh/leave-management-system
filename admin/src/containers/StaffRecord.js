@@ -41,6 +41,7 @@ const ACTIVE_USERS = gql`
       gender
       designation
       employeeNumber
+      employeeStartDate
     }
   }
 `;
