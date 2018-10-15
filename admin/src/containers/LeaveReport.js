@@ -145,6 +145,7 @@ const ACTIVE_USERS = gql`
       maternity
       paternity
       employeeNumber
+      employeeStartDate
     }
   }
 `;
