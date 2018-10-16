@@ -1,6 +1,7 @@
 // @flow
 import React, { Fragment } from 'react';
-import { render } from 'react-dom';
+import ReactDOM from 'react-dom';
+import registerServiceWorker from './registerServiceWorker';
 
 import { Provider } from 'react-redux';
 
@@ -84,5 +85,7 @@ const App = () => (
 const root = document.getElementById('root');
 
 if (root instanceof Element) {
-  render(<App />, root);
+  ReactDOM.render(<App />, root);
 }
+
+registerServiceWorker();
