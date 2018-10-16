@@ -37,6 +37,7 @@ type Props = {
 class CreateUser extends Component<Props> {
   componentDidMount() {
     this.verifyToken();
+    setInterval(this.verifyToken, 600000);
   }
 
   componentWillUnmount() {
