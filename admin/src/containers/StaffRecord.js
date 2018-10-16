@@ -32,15 +32,16 @@ const ACTIVE_USERS = gql`
       email
       annual
       sick
-      christmas
       bereavement
       familyCare
+      christmas
       dateOfBirth
       maternity
       paternity
       gender
       designation
       employeeNumber
+      employeeStartDate
     }
   }
 `;
@@ -60,6 +61,7 @@ type Props = {
 class StaffRecord extends Component<Props> {
   componentDidMount() {
     this.verifyToken();
+    setInterval(this.verifyToken, 600000);
   }
 
   verifyToken = async () => {
