@@ -48,6 +48,7 @@ type Props = {
 class SickSheetRecord extends Component<Props> {
   componentDidMount() {
     this.verifyToken();
+    setInterval(this.verifyToken, 600000);
   }
 
   verifyToken = async () => {
