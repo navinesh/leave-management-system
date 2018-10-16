@@ -43,6 +43,7 @@ export function submitModifyUserRecord(modifyUserDetails: Object) {
         gender: modifyUserDetails.gender,
         editReason: modifyUserDetails.editReason,
         employee_number: modifyUserDetails.employeeNumber,
+        employee_start_date: modifyUserDetails.employeeStartDate,
         admin_user: modifyUserDetails.adminUser
       });
 
