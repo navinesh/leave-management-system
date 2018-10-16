@@ -145,6 +145,7 @@ const ACTIVE_USERS = gql`
       maternity
       paternity
       employeeNumber
+      employeeStartDate
     }
   }
 `;
@@ -184,6 +185,7 @@ type Props = {
 class LeaveReport extends Component<Props> {
   componentDidMount() {
     this.verifyToken();
+    setInterval(this.verifyToken, 600000);
   }
 
   verifyToken = async () => {
