@@ -53,6 +53,7 @@ export const submitNewUserRecord = (newUserDetails: Object) => async (
       paternity: newUserDetails.paternityDays,
       gender: newUserDetails.gender,
       employee_number: newUserDetails.employeeNumber,
+      employee_start_date: newUserDetails.employeeStartDate,
       admin_user: newUserDetails.adminUser
     });
 
