@@ -30,6 +30,7 @@ type State = {
   maternityLeave: string,
   paternityLeave: string,
   employeeNumber: any,
+  employeeStartDate: any,
   dob: any
 };
 
@@ -48,6 +49,7 @@ export default class CreateUserForm extends Component<Props, State> {
   handleMaternityLeaveChange: Function;
   handlePaternityLeaveChange: Function;
   handleEmployeeNumberChange: Function;
+  handleEmployeeStartDateChange: Function;
   handleSubmit: Function;
 
   constructor() {
@@ -68,6 +70,7 @@ export default class CreateUserForm extends Component<Props, State> {
       maternityLeave: '',
       paternityLeave: '',
       employeeNumber: '',
+      employeeStartDate: null,
       dob: null
     };
 
@@ -95,6 +98,9 @@ export default class CreateUserForm extends Component<Props, State> {
       this
     );
     this.handleEmployeeNumberChange = this.handleEmployeeNumberChange.bind(
+      this
+    );
+    this.handleEmployeeStartDateChange = this.handleEmployeeStartDateChange.bind(
       this
     );
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -156,6 +162,10 @@ export default class CreateUserForm extends Component<Props, State> {
     this.setState({ employeeNumber: target.value });
   }
 
+  handleEmployeeStartDateChange(e: Event) {
+    this.setState({ employeeStartDate: e });
+  }
+
   handleSubmit(e: Event) {
     e.preventDefault();
     const surname = this.state.surname;
@@ -176,6 +186,9 @@ export default class CreateUserForm extends Component<Props, State> {
       : 0;
     const employeeNumber = this.state.employeeNumber;
     const dateOfBirth = moment(this.state.dob).format('DD/MM/YYYY');
+    const employeeStartDate = moment(this.state.employeeStartDate).format(
+      'DD/MM/YYYY'
+    );
 
     // verify data
     if (
@@ -189,8 +202,7 @@ export default class CreateUserForm extends Component<Props, State> {
       !familyCareDays ||
       !christmasDays ||
       !dateOfBirth ||
-      !gender ||
-      !employeeNumber
+      !gender
     ) {
       this.setState({
         errorMessage: 'One or more required fields are missing!'
@@ -216,7 +228,8 @@ export default class CreateUserForm extends Component<Props, State> {
       maternityLeave: '',
       paternityLeave: '',
       employeeNumber: 0,
-      dob: null
+      dob: null,
+      employeeStartDate: null
     });
 
     // prepare data to post to database
@@ -235,6 +248,7 @@ export default class CreateUserForm extends Component<Props, State> {
       paternityDays: paternityDays,
       gender: gender,
       employeeNumber: employeeNumber,
+      employeeStartDate: employeeStartDate,
       adminUser: adminUser
     };
 
@@ -437,6 +451,23 @@ export default class CreateUserForm extends Component<Props, State> {
                     />
                   </div>
                 </div>
+                <div className="col-md-6">
+                  <div className="form-group">
+                    <label htmlFor="dob">Employee start date</label>
+                    <DatePicker
+                      className="form-control"
+                      dateFormat="DD/MM/YYYY"
+                      placeholderText="Click to select a date"
+                      selected={this.state.employeeStartDate}
+                      onChange={this.handleEmployeeStartDateChange}
+                      showMonthDropdown
+                      showYearDropdown
+                      dropdownMode="select"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="row">
                 {staffGender === 'female' && (
                   <div className="col-md-6">
                     <div className="form-group">
