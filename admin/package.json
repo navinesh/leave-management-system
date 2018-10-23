@@ -6,7 +6,7 @@
     "flow-bin": "^0.83.0"
   },
   "dependencies": {
-    "apollo-boost": "^0.1.16",
+    "apollo-boost": "^0.1.17",
     "axios": "^0.18.0",
     "graphql": "^14.0.2",
     "moment": "^2.22.2",
@@ -14,8 +14,8 @@
     "react": "^16.5.2",
     "react-addons-shallow-compare": "^15.6.2",
     "react-apollo": "^2.2.1",
-    "react-csv": "^1.0.14",
-    "react-datepicker": "^1.6.0",
+    "react-csv": "^1.0.18",
+    "react-datepicker": "^1.7.0",
     "react-dates": "^18.1.1",
     "react-dom": "^16.5.2",
     "react-redux": "^5.0.7",
