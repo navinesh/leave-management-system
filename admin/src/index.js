@@ -1,5 +1,5 @@
 // @flow
-import React, { Fragment } from 'react';
+import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
 
@@ -14,20 +14,24 @@ import './index.css';
 import './bootstrap.min.css';
 import './spinners.css';
 
-import AdminHeader from './containers/AdminHeader';
+import configureStore from './stores/ConfigureStore';
+
 import AdminLogin from './containers/AdminLogin';
-import PendingLeave from './containers/PendingLeave';
-import ApprovedLeave from './containers/ApprovedLeave';
-import StaffRecord from './containers/StaffRecord';
-import ArchivedStaffRecord from './containers/ArchivedStaffRecord';
-import LeaveReport from './containers/LeaveReport';
-import SickSheetRecord from './containers/SickSheetRecord';
-import CreateUser from './containers/CreateUser';
-import PublicHoliday from './containers/PublicHoliday';
 import AdminResetPassword from './containers/AdminResetPassword';
 import Error from './components/Error';
 
-import configureStore from './stores/ConfigureStore';
+const AdminHeader = lazy(() => import('./containers/AdminHeader'));
+const PendingLeave = lazy(() => import('./containers/PendingLeave'));
+const ApprovedLeave = lazy(() => import('./containers/ApprovedLeave'));
+const StaffRecord = lazy(() => import('./containers/StaffRecord'));
+const ArchivedStaffRecord = lazy(() =>
+  import('./containers/ArchivedStaffRecord')
+);
+const LeaveReport = lazy(() => import('./containers/LeaveReport'));
+const SickSheetRecord = lazy(() => import('./containers/SickSheetRecord'));
+const CreateUser = lazy(() => import('./containers/CreateUser'));
+const PublicHoliday = lazy(() => import('./containers/PublicHoliday'));
+
 const store = configureStore();
 
 const client = new ApolloClient({ uri: 'http://localhost:8080/graphql' });
@@ -57,7 +61,13 @@ function App() {
     <ApolloProvider client={client}>
       <Provider store={store}>
         <BrowserRouter>
-          <Fragment>
+          <Suspense
+            fallback={
+              <div className="text-center">
+                <div className="loader1" />
+              </div>
+            }
+          >
             <AdminHeader />
             <Switch>
               <PrivateRoute exact path="/" component={PendingLeave} />
@@ -78,7 +88,7 @@ function App() {
               <Route path="/resetpassword" component={AdminResetPassword} />
               <Route component={Error} />
             </Switch>
-          </Fragment>
+          </Suspense>
         </BrowserRouter>
       </Provider>
     </ApolloProvider>
