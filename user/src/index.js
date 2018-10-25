@@ -1,5 +1,5 @@
 // @flow
-import React, { Fragment } from 'react';
+import React, { Fragment, Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
 
@@ -13,16 +13,18 @@ import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import './index.css';
 import './bootstrap.min.css';
 
-import Header from './containers/Header';
+import configureStore from './stores/ConfigureStore';
+
 import MainLogin from './containers/MainLogin';
-import Main from './containers/Main';
 import LeaveCalendar from './containers/LeaveCalendar';
 import ResetPassword from './containers/ResetPassword';
-import UserChangePassword from './containers/ChangePassword';
 import UserError from './components/UserError';
-import LeaveApplication from './containers/LeaveApplication';
 
-import configureStore from './stores/ConfigureStore';
+const Header = lazy(() => import('./containers/Header'));
+const Main = lazy(() => import('./containers/Main'));
+const UserChangePassword = lazy(() => import('./containers/ChangePassword'));
+const LeaveApplication = lazy(() => import('./containers/LeaveApplication'));
+
 const store = configureStore();
 
 const client = new ApolloClient({ uri: 'http://localhost:8080/graphql' });
@@ -52,7 +54,13 @@ function App() {
     <ApolloProvider client={client}>
       <Provider store={store}>
         <BrowserRouter>
-          <Fragment>
+          <Suspense
+            fallback={
+              <div className="text-center">
+                <div className="loader1" />
+              </div>
+            }
+          >
             <Header />
             <Switch>
               <PrivateRoute exact path="/" component={Main} />
@@ -69,7 +77,7 @@ function App() {
               />
               <Route component={UserError} />
             </Switch>
-          </Fragment>
+          </Suspense>
         </BrowserRouter>
       </Provider>
     </ApolloProvider>
