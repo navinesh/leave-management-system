@@ -1,5 +1,5 @@
 // @flow
-import React, { Fragment } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
@@ -15,22 +15,24 @@ type Props = {
 };
 
 function Login(props: Props) {
+  const { dispatch, isAuthenticated, message, isFetching } = props;
+
   return (
-    <Fragment>
-      {!props.isAuthenticated ? (
+    <>
+      {!isAuthenticated ? (
         <div className="container">
           <div className="row">
             <MainLogin
-              dispatch={props.dispatch}
-              isFetching={props.isFetching}
-              message={props.message}
+              dispatch={dispatch}
+              isFetching={isFetching}
+              message={message}
             />
           </div>
         </div>
       ) : (
         <Redirect to="/" />
       )}
-    </Fragment>
+    </>
   );
 }
 
