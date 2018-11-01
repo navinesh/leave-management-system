@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, Fragment } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { gql } from 'apollo-boost';
@@ -33,25 +33,18 @@ type Props = {
   verifyUserToken: Function
 };
 
-class LeaveApplication extends Component<Props> {
-  verifyToken: Function;
+function LeaveApplication(props: Props) {
+  useEffect(function() {
+    verifyToken();
+    setInterval(verifyToken, 600000);
 
-  constructor() {
-    super();
-    this.verifyToken = this.verifyToken.bind(this);
-  }
+    return function() {
+      props.dispatch(clearLeaveApplicationMessage());
+    };
+  }, []);
 
-  componentDidMount() {
-    this.verifyToken();
-    setInterval(this.verifyToken, 600000);
-  }
-
-  componentWillUnmount() {
-    this.props.dispatch(clearLeaveApplicationMessage());
-  }
-
-  async verifyToken() {
-    const { auth_info, dispatch, verifyUserToken } = this.props;
+  async function verifyToken() {
+    const { auth_info, dispatch, verifyUserToken } = props;
 
     const userToken = auth_info.auth_token
       ? auth_info.auth_token
@@ -77,27 +70,25 @@ class LeaveApplication extends Component<Props> {
     }
   }
 
-  render() {
-    const { dispatch, isAuthenticated, auth_info, message } = this.props;
-    let id = auth_info.id ? auth_info.id : localStorage.getItem('id');
+  const { dispatch, isAuthenticated, auth_info, message } = props;
+  let id = auth_info.id ? auth_info.id : localStorage.getItem('id');
 
-    return (
-      <Fragment>
-        {isAuthenticated ? (
-          <Application
-            id={id}
-            message={message}
-            dispatch={dispatch}
-            onLeaveApplicationClick={function(applicationDetails) {
-              return dispatch(fetchLeaveApplication(applicationDetails));
-            }}
-          />
-        ) : (
-          <Redirect to="/" />
-        )}
-      </Fragment>
-    );
-  }
+  return (
+    <>
+      {isAuthenticated ? (
+        <Application
+          id={id}
+          message={message}
+          dispatch={dispatch}
+          onLeaveApplicationClick={function(applicationDetails) {
+            return dispatch(fetchLeaveApplication(applicationDetails));
+          }}
+        />
+      ) : (
+        <Redirect to="/" />
+      )}
+    </>
+  );
 }
 
 function mapStateToProps(state) {
