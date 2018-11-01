@@ -15,6 +15,7 @@ export default function(props: Props) {
   const {
     data: { findLeaveRecord }
   } = props;
+
   const leaveRecords = findLeaveRecord
     .filter(record => {
       // get current date and format it
