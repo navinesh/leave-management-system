@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import '../spinners.css';
 import { clearResetPasswordMessage } from '../actions/ResetPassword';
@@ -11,77 +11,69 @@ type Props = {
   dispatch: Function
 };
 
-type State = {
-  errorMessage: string,
-  email: string
-};
+// type State = {
+//   errorMessage: string,
+//   email: string
+// };
 
-export default class UserResetPassword extends Component<Props, State> {
-  handleEmailChange: Function;
-  handleSubmit: Function;
+export default function UserResetPassword(props: Props) {
+  const [email, setEmail] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  constructor() {
-    super();
-    this.state = { errorMessage: '', email: '' };
-
-    this.handleEmailChange = this.handleEmailChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+  function handleEmailChange({ target }: SyntheticInputEvent<>) {
+    setEmail(target.value);
   }
 
-  componentDidMount() {
-    this.props.dispatch(clearResetPasswordMessage());
-  }
-
-  handleEmailChange({ target }: SyntheticInputEvent<>) {
-    this.setState({ email: target.value });
-  }
-
-  handleSubmit(e: Event) {
+  function handleSubmit(e: Event) {
     e.preventDefault();
-    const email = this.state.email ? this.state.email.trim() : null;
 
     if (!email) {
-      this.setState({ errorMessage: 'Enter a valid email address!' });
+      setErrorMessage('Enter a valid email address!');
       return;
     }
 
-    this.setState({ email: '' });
+    setErrorMessage('');
 
-    this.props.onResetClick(email);
+    props.onResetClick(email);
   }
 
-  render() {
-    return (
-      <div className="col-md-5 ml-auto mr-auto">
-        <div className="card card-body shadow p-3 mb-5 bg-white rounded">
-          <form onSubmit={this.handleSubmit}>
-            <div className="form-group">
-              <label htmlFor="email">Email address</label>
-              <input
-                type="email"
-                className="form-control"
-                placeholder="Enter email"
-                id="email"
-                value={this.state.email}
-                onChange={this.handleEmailChange}
-              />
-            </div>
-            <div className="form-group">
-              <button type="submit" className="btn btn-primary col">
-                Reset
-              </button>
-            </div>
-          </form>
-          <div className="text-primary text-center">
-            {this.props.isFetching ? (
-              <div className="loader1" />
-            ) : (
-              this.props.message
-            )}
-            {this.state.errorMessage}
+  useEffect(
+    function() {
+      return function() {
+        props.dispatch(clearResetPasswordMessage());
+      };
+    },
+    [errorMessage]
+  );
+
+  const { isFetching, message } = props;
+
+  return (
+    <div className="col-md-5 ml-auto mr-auto">
+      <div className="card card-body shadow p-3 mb-5 bg-white rounded">
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="email">Email address</label>
+            <input
+              type="email"
+              className="form-control"
+              placeholder="Enter email"
+              id="email"
+              value={email}
+              onChange={handleEmailChange}
+            />
           </div>
+          <div className="form-group">
+            <button type="submit" className="btn btn-primary col">
+              Reset
+            </button>
+          </div>
+        </form>
+        <div className="text-primary text-center">
+          {isFetching ? <div className="loader1" /> : message}
+          {errorMessage}
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
