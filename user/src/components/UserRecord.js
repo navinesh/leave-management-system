@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { gql } from 'apollo-boost';
 import { Query } from 'react-apollo';
 
@@ -95,29 +95,20 @@ type tabsProps = {
   data: Array<any>
 };
 
-type tabsState = {
-  activeIndex: number
-};
+// type tabsState = {
+//   activeIndex: number
+// };
 
-class Tabs extends Component<tabsProps, tabsState> {
-  selectTabIndex: Function;
+function Tabs(props: tabsProps) {
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  constructor() {
-    super();
-    this.state = { activeIndex: 0 };
-
-    this.selectTabIndex = this.selectTabIndex.bind(this);
+  function selectTabIndex(e: SyntheticEvent<HTMLElement>) {
+    setActiveIndex(parseInt(e.currentTarget.id, 10));
   }
 
-  selectTabIndex(e: SyntheticEvent<HTMLElement>) {
-    this.setState({
-      activeIndex: parseInt(e.currentTarget.id, 10)
-    });
-  }
-
-  renderTabs() {
-    return this.props.data.map((tab, index) => {
-      const isActive = this.state.activeIndex === index;
+  function renderTabs() {
+    return props.data.map((tab, index) => {
+      const isActive = activeIndex === index;
       return (
         <div className="nav-link btn" key={index}>
           <div
@@ -126,7 +117,7 @@ class Tabs extends Component<tabsProps, tabsState> {
                 ? 'border border-right-0 border-left-0 border-top-0 border-secondary'
                 : 'text-secondary'
             }
-            onClick={this.selectTabIndex}
+            onClick={selectTabIndex}
             id={index}
           >
             {tab.label}
@@ -136,18 +127,16 @@ class Tabs extends Component<tabsProps, tabsState> {
     });
   }
 
-  renderPanel() {
-    return <div>{this.props.data[this.state.activeIndex].content}</div>;
+  function renderPanel() {
+    return <>{props.data[activeIndex].content}</>;
   }
 
-  render() {
-    return (
-      <div>
-        <nav className="nav">{this.renderTabs()}</nav>
-        <div className="mt-2">{this.renderPanel()}</div>
-      </div>
-    );
-  }
+  return (
+    <>
+      <nav className="nav">{renderTabs()}</nav>
+      <div className="mt-2">{renderPanel()}</div>
+    </>
+  );
 }
 
 type Props = {
