@@ -32,6 +32,8 @@ type Props = {
 };
 
 export default function(props: Props) {
+  const { isFetching, message, dispatch } = props;
+
   return (
     <Query query={LEAVE_RECORD}>
       {({ loading, error, data }) => {
@@ -40,9 +42,9 @@ export default function(props: Props) {
             <div className="container">
               <div className="col-md-5 mx-auto pt-4">
                 <UserLogin
-                  isFetching={props.isFetching}
-                  message={props.message}
-                  dispatch={props.dispatch}
+                  isFetching={isFetching}
+                  message={message}
+                  dispatch={dispatch}
                 />
               </div>
             </div>
@@ -126,9 +128,9 @@ export default function(props: Props) {
               </div>
               <div className="col-md-4">
                 <UserLogin
-                  isFetching={props.isFetching}
-                  message={props.message}
-                  dispatch={props.dispatch}
+                  isFetching={isFetching}
+                  message={message}
+                  dispatch={dispatch}
                 />
               </div>
             </div>
@@ -137,9 +139,9 @@ export default function(props: Props) {
           <div className="container">
             <div className="col-md-5 mx-auto pt-4">
               <UserLogin
-                isFetching={props.isFetching}
-                message={props.message}
-                dispatch={props.dispatch}
+                isFetching={isFetching}
+                message={message}
+                dispatch={dispatch}
               />
             </div>
           </div>
