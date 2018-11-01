@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { gql } from 'apollo-boost';
 import { graphql } from 'react-apollo';
@@ -32,31 +32,56 @@ type Props = {
   dispatch: Function
 };
 
-type State = {
-  email: string,
-  password: string,
-  errorMessage: string
-};
+// type State = {
+//   email: string,
+//   password: string,
+//   errorMessage: string
+// };
 
-class Login extends Component<Props, State> {
-  authenticateUser: Function;
-  handleEmailChange: Function;
-  handlePasswordChange: Function;
-  handleSubmit: Function;
+function Login(props: Props) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  constructor() {
-    super();
-    this.state = { email: '', password: '', errorMessage: '' };
-
-    this.authenticateUser = this.authenticateUser.bind(this);
-    this.handleEmailChange = this.handleEmailChange.bind(this);
-    this.handlePasswordChange = this.handlePasswordChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+  function handleEmailChange({ target }: SyntheticInputEvent<>) {
+    setEmail(target.value);
   }
 
-  async authenticateUser() {
-    const { logInUser, dispatch } = this.props;
-    const { email, password } = this.state;
+  function handlePasswordChange({ target }: SyntheticInputEvent<>) {
+    setPassword(target.value);
+  }
+
+  function handleSubmit(e: Event) {
+    e.preventDefault();
+
+    if (!email && !password) {
+      setErrorMessage(
+        'The username you entered does not belong to any account. Please check your username and try again.'
+      );
+      return;
+    }
+
+    if (!email && password) {
+      setErrorMessage(
+        'The username you entered does not belong to any account. Please check your username and try again.'
+      );
+      return;
+    }
+
+    if (email && !password) {
+      setErrorMessage(
+        'Sorry, your password was incorrect. Please double-check your password.'
+      );
+      return;
+    }
+
+    setErrorMessage('');
+
+    authenticateUser();
+  }
+
+  async function authenticateUser() {
+    const { dispatch, logInUser } = props;
 
     try {
       dispatch(requestUserLogin());
@@ -74,7 +99,7 @@ class Login extends Component<Props, State> {
       dispatch(receiveUserLogin(auth_info));
     } catch (error) {
       console.log(error);
-      this.setState({ errorMessage: error.message });
+      setErrorMessage(error.message);
       localStorage.removeItem('auth_token');
       localStorage.removeItem('user_id');
       localStorage.removeItem('id');
@@ -82,101 +107,55 @@ class Login extends Component<Props, State> {
     }
   }
 
-  handleEmailChange({ target }: SyntheticInputEvent<>) {
-    this.setState({ email: target.value });
-  }
+  const { isFetching, message } = props;
 
-  handlePasswordChange({ target }: SyntheticInputEvent<>) {
-    this.setState({ password: target.value });
-  }
-
-  handleSubmit(e: Event) {
-    e.preventDefault();
-    const email = this.state.email ? this.state.email.trim() : null;
-    const password = this.state.password ? this.state.password.trim() : null;
-
-    if (!email && !password) {
-      this.setState({
-        errorMessage:
-          'The username you entered does not belong to any account. Please check your username and try again.'
-      });
-      return;
-    }
-
-    if (!email && password) {
-      this.setState({
-        errorMessage:
-          'The username you entered does not belong to any account. Please check your username and try again.'
-      });
-      return;
-    }
-
-    if (email && !password) {
-      this.setState({
-        errorMessage:
-          'Sorry, your password was incorrect. Please double-check your password.'
-      });
-      return;
-    }
-
-    this.setState({
-      errorMessage: ''
-    });
-
-    this.authenticateUser();
-  }
-
-  render() {
-    return (
-      <div className="Login">
-        <div className="card card-body shadow p-3 mb-5 bg-white rounded">
-          <form onSubmit={this.handleSubmit}>
-            <div className="form-group">
-              <label htmlFor="email">Email address</label>
-              <input
-                type="email"
-                className="form-control"
-                placeholder="Enter email"
-                id="email"
-                onChange={this.handleEmailChange}
-              />
-            </div>
-            <div className="form-group">
-              <label htmlFor="password">Password</label>
-              <input
-                type="password"
-                className="form-control"
-                placeholder="Password"
-                id="password"
-                onChange={this.handlePasswordChange}
-              />
-              <small className="text-muted">
-                Enter your leave management system password.
-              </small>
-            </div>
-            <div className="form-group">
-              <button type="submit" className="btn btn-primary col">
-                Log in
-              </button>
-            </div>
-          </form>
-          <div className="text-danger text-center">
-            {this.props.isFetching ? (
-              <div className="loader" />
-            ) : (
-              this.props.message
-            )}
-            {this.state.errorMessage}
+  return (
+    <>
+      <div className="card card-body shadow p-3 mb-5 bg-white rounded">
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="email">Email address</label>
+            <input
+              type="email"
+              className="form-control"
+              placeholder="Enter email"
+              id="email"
+              value={email}
+              onChange={handleEmailChange}
+            />
           </div>
-        </div>
-        <div className="card card-body mt-3">
-          <Link to="/reset" className="btn">
-            Forgot your password?
-          </Link>
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              className="form-control"
+              placeholder="Password"
+              id="password"
+              value={password}
+              onChange={handlePasswordChange}
+            />
+            <small className="text-muted">
+              Enter your leave management system password.
+            </small>
+          </div>
+          <div className="form-group">
+            <button type="submit" className="btn btn-primary col">
+              Log in
+            </button>
+          </div>
+        </form>
+        <div className="text-danger text-center">
+          {isFetching ? <div className="loader" /> : message}
+          {errorMessage}
         </div>
       </div>
-    );
-  }
+      <div className="card card-body mt-3">
+        <Link to="/reset" className="btn">
+          Forgot your password?
+        </Link>
+      </div>
+    </>
+  );
 }
 
 export default graphql(AUTHENTICATE_USER, { name: 'logInUser' })(Login);
