@@ -11,10 +11,12 @@ type Props = {
 };
 
 function Header(props: Props) {
+  const { dispatch, isAuthenticated } = props;
+
   return (
     <Navs
-      isAuthenticated={props.isAuthenticated}
-      dispatch={props.dispatch}
+      isAuthenticated={isAuthenticated}
+      dispatch={dispatch}
       logoutUser={logoutUser}
     />
   );
