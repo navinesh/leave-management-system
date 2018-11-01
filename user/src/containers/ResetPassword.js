@@ -15,15 +15,17 @@ type Props = {
 };
 
 function ResetPassword(props: Props) {
+  const { dispatch, isAuthenticated, message, isFetching } = props;
+
   return (
     <div className="container">
-      {!props.isAuthenticated ? (
+      {!isAuthenticated ? (
         <UserResetPassword
-          isFetching={props.isFetching}
-          message={props.message}
-          dispatch={props.dispatch}
+          isFetching={isFetching}
+          message={message}
+          dispatch={dispatch}
           onResetClick={function(email) {
-            return props.dispatch(resetPassword(email));
+            return dispatch(resetPassword(email));
           }}
         />
       ) : (
