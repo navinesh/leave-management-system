@@ -70,7 +70,13 @@ function Main(props: Props) {
 
   return (
     <>
-      <UserDetail /> <UserRecord />
+      {props.isAuthenticated ? (
+        <div>
+          <UserDetail /> <UserRecord />
+        </div>
+      ) : (
+        <Redirect to="/login" />
+      )}
     </>
   );
 }
