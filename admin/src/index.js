@@ -1,5 +1,5 @@
 // @flow
-import React, { Suspense, lazy } from 'react';
+import React, { lazy, Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
 
