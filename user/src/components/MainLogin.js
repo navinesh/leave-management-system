@@ -35,7 +35,7 @@ export default function(props: Props) {
   const { isFetching, message, dispatch } = props;
 
   return (
-    <Query query={LEAVE_RECORD}>
+    <Query query={LEAVE_RECORD} pollInterval={60000}>
       {({ loading, error, data }) => {
         if (loading) {
           return (
