@@ -15,13 +15,13 @@ import './bootstrap.min.css';
 
 import configureStore from './stores/ConfigureStore';
 
+import Header from './containers/Header';
 import MainLogin from './containers/MainLogin';
+import Main from './containers/Main';
 import LeaveCalendar from './containers/LeaveCalendar';
 import ResetPassword from './containers/ResetPassword';
 import UserError from './components/UserError';
 
-const Header = lazy(() => import('./containers/Header'));
-const Main = lazy(() => import('./containers/Main'));
 const UserChangePassword = lazy(() => import('./containers/ChangePassword'));
 const LeaveApplication = lazy(() => import('./containers/LeaveApplication'));
 
