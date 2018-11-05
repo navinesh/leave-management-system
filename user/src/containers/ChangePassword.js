@@ -1,6 +1,7 @@
 // @flow
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 import UserChange from '../components/ChangePassword';
 import {
@@ -22,18 +23,24 @@ function UserChangePassword(props: Props) {
     };
   }, []);
 
-  const { dispatch, message, isFetching, auth_info } = props;
+  const { dispatch, isAuthenticated, message, isFetching, auth_info } = props;
 
   return (
-    <UserChange
-      dispatch={dispatch}
-      isFetching={isFetching}
-      message={message}
-      auth_info={auth_info}
-      onChangeClick={function(creds) {
-        return dispatch(changePassword(creds));
-      }}
-    />
+    <>
+      {isAuthenticated ? (
+        <UserChange
+          dispatch={dispatch}
+          isFetching={isFetching}
+          message={message}
+          auth_info={auth_info}
+          onChangeClick={function(creds) {
+            return dispatch(changePassword(creds));
+          }}
+        />
+      ) : (
+        <Redirect to="/" />
+      )}
+    </>
   );
 }
 
