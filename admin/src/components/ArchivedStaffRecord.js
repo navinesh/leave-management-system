@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, Fragment } from 'react';
+import React, { useState } from 'react';
 import { gql } from 'apollo-boost';
 import { Mutation } from 'react-apollo';
 
@@ -141,185 +141,163 @@ type Props = {
   refetch: Function
 };
 
-type State = {
-  errorMessage: string,
-  isUnarchive: boolean,
-  id: string,
-  searchTerm: string
-};
+// type State = {
+//   errorMessage: string,
+//   isUnarchive: boolean,
+//   id: string,
+//   searchTerm: string
+// };
 
-export default class ArchivedStaffRecordList extends Component<Props, State> {
-  handleSearchChange: Function;
-  handleClearSearch: Function;
-  handleOpenUnarchive: Function;
-  handleCloseUnarchive: Function;
-  handleSubmit: Function;
+export default function ArchivedStaffRecordList(props: Props) {
+  const [id, setID] = useState('');
+  const [isUnarchive, setIsUnarchive] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
 
-  constructor() {
-    super();
-    this.state = {
-      errorMessage: '',
-      id: '',
-      isUnarchive: false,
-      searchTerm: ''
-    };
-
-    this.handleSearchChange = this.handleSearchChange.bind(this);
-    this.handleClearSearch = this.handleClearSearch.bind(this);
-    this.handleOpenUnarchive = this.handleOpenUnarchive.bind(this);
-    this.handleCloseUnarchive = this.handleCloseUnarchive.bind(this);
+  function handleSearchChange({ target }: SyntheticInputEvent<>) {
+    setSearchTerm(target.value.toLowerCase());
   }
 
-  handleSearchChange({ target }: SyntheticInputEvent<>) {
-    this.setState({ searchTerm: target.value.toLowerCase() });
+  function handleClearSearch() {
+    setSearchTerm('');
   }
 
-  handleClearSearch() {
-    this.setState({ searchTerm: '' });
+  function handleOpenUnarchive(e: SyntheticEvent<HTMLElement>) {
+    setIsUnarchive(true);
+    setID(e.currentTarget.id);
   }
 
-  handleOpenUnarchive(e: SyntheticEvent<HTMLElement>) {
-    this.setState({
-      isUnarchive: true,
-      id: e.currentTarget.id
-    });
+  function handleCloseUnarchive() {
+    setIsUnarchive(false);
+    setID('');
+
+    props.refetch();
   }
 
-  handleCloseUnarchive() {
-    this.setState({ isUnarchive: false, errorMessage: '', id: '' });
+  const { archived_staff_record } = props;
 
-    this.props.refetch();
-  }
-
-  render() {
-    const { archived_staff_record } = this.props;
-
-    if (this.state.isUnarchive) {
-      return (
-        <UnArchiveLeave
-          archived_staff_record={this.props.archived_staff_record}
-          id={this.state.id}
-          handleCloseUnarchive={this.handleCloseUnarchive}
-        />
-      );
-    }
-
-    const filteredElements = archived_staff_record
-      .filter(
-        e =>
-          e.othernames
-            .toLowerCase()
-            .includes(this.state.searchTerm.toLowerCase()) ||
-          e.surname.toLowerCase().includes(this.state.searchTerm.toLowerCase())
-      )
-      .sort((a, b) => {
-        return a.othernames.localeCompare(b.othernames);
-      })
-      .map(record => {
-        let dob = new Date(record.dateOfBirth);
-        let dateOfBirth = moment(dob).format('DD/MM/YYYY');
-
-        return (
-          <div className="col-md-3" key={record.id}>
-            <div className="card mb-3 shadow p-3 mb-5 bg-white rounded">
-              <ul className="list-group list-group-flush">
-                <li className="list-group-item">
-                  <p className="h5">
-                    {record.othernames} {record.surname}
-                  </p>
-                </li>
-                <li className="list-group-item d-flex justify-content-between align-items-center">
-                  Annual
-                  <span className="badge badge-primary badge-pill">
-                    {record.annual}
-                  </span>
-                </li>
-                <li className="list-group-item d-flex justify-content-between align-items-center">
-                  Sick
-                  <span className="badge badge-primary badge-pill">
-                    {record.sick}
-                  </span>
-                </li>
-                <li className="list-group-item d-flex justify-content-between align-items-center">
-                  Bereavement
-                  <span className="badge badge-primary badge-pill">
-                    {record.bereavement}
-                  </span>
-                </li>
-                <li className="list-group-item d-flex justify-content-between align-items-center">
-                  Family care
-                  <span className="badge badge-primary badge-pill">
-                    {record.familyCare}
-                  </span>
-                </li>
-                <li className="list-group-item d-flex justify-content-between align-items-center">
-                  Christmas
-                  <span className="badge badge-primary badge-pill">
-                    {record.christmas}
-                  </span>
-                </li>
-                <li className="list-group-item d-flex justify-content-between align-items-center">
-                  DOB
-                  <span className="badge badge-primary badge-pill">
-                    {dateOfBirth}
-                  </span>
-                </li>
-                {record.gender.toLowerCase() === 'female' ? (
-                  <li className="list-group-item d-flex justify-content-between align-items-center">
-                    Maternity
-                    <span className="badge badge-primary badge-pill">
-                      {record.maternity}
-                    </span>
-                  </li>
-                ) : (
-                  <li className="list-group-item d-flex justify-content-between align-items-center">
-                    Paternity
-                    <span className="badge badge-primary badge-pill">
-                      {record.paternity}
-                    </span>
-                  </li>
-                )}
-                <li className="list-group-item">
-                  <button
-                    className="btn btn-link text-primary pl-0"
-                    onClick={this.handleOpenUnarchive}
-                    id={record.id}
-                  >
-                    Unarchive
-                  </button>
-                </li>
-              </ul>
-            </div>
-          </div>
-        );
-      });
-
+  if (isUnarchive) {
     return (
-      <Fragment>
-        {archived_staff_record.length > 0 ? (
-          <div>
-            <div className="row">
-              <Search
-                searchTerm={this.state.searchTerm}
-                handleSearchChange={this.handleSearchChange}
-              />
-              {this.state.searchTerm && (
-                <ClearSearch handleClearSearch={this.handleClearSearch} />
-              )}
-            </div>
-            <div className="row">{filteredElements}</div>
-          </div>
-        ) : (
-          <div
-            className="card card-body border-0"
-            style={{ paddingTop: '100px', paddingBottom: '260px' }}
-          >
-            <h1 className="display-4 text-center">
-              <em>There is no record to display.</em>
-            </h1>
-          </div>
-        )}
-      </Fragment>
+      <UnArchiveLeave
+        archived_staff_record={props.archived_staff_record}
+        id={id}
+        handleCloseUnarchive={handleCloseUnarchive}
+      />
     );
   }
+
+  const filteredElements = archived_staff_record
+    .filter(
+      e =>
+        e.othernames.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        e.surname.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .sort((a, b) => {
+      return a.othernames.localeCompare(b.othernames);
+    })
+    .map(record => {
+      let dob = new Date(record.dateOfBirth);
+      let dateOfBirth = moment(dob).format('DD/MM/YYYY');
+
+      return (
+        <div className="col-md-3" key={record.id}>
+          <div className="card mb-3 shadow p-3 mb-5 bg-white rounded">
+            <ul className="list-group list-group-flush">
+              <li className="list-group-item">
+                <p className="h5">
+                  {record.othernames} {record.surname}
+                </p>
+              </li>
+              <li className="list-group-item d-flex justify-content-between align-items-center">
+                Annual
+                <span className="badge badge-primary badge-pill">
+                  {record.annual}
+                </span>
+              </li>
+              <li className="list-group-item d-flex justify-content-between align-items-center">
+                Sick
+                <span className="badge badge-primary badge-pill">
+                  {record.sick}
+                </span>
+              </li>
+              <li className="list-group-item d-flex justify-content-between align-items-center">
+                Bereavement
+                <span className="badge badge-primary badge-pill">
+                  {record.bereavement}
+                </span>
+              </li>
+              <li className="list-group-item d-flex justify-content-between align-items-center">
+                Family care
+                <span className="badge badge-primary badge-pill">
+                  {record.familyCare}
+                </span>
+              </li>
+              <li className="list-group-item d-flex justify-content-between align-items-center">
+                Christmas
+                <span className="badge badge-primary badge-pill">
+                  {record.christmas}
+                </span>
+              </li>
+              <li className="list-group-item d-flex justify-content-between align-items-center">
+                DOB
+                <span className="badge badge-primary badge-pill">
+                  {dateOfBirth}
+                </span>
+              </li>
+              {record.gender.toLowerCase() === 'female' ? (
+                <li className="list-group-item d-flex justify-content-between align-items-center">
+                  Maternity
+                  <span className="badge badge-primary badge-pill">
+                    {record.maternity}
+                  </span>
+                </li>
+              ) : (
+                <li className="list-group-item d-flex justify-content-between align-items-center">
+                  Paternity
+                  <span className="badge badge-primary badge-pill">
+                    {record.paternity}
+                  </span>
+                </li>
+              )}
+              <li className="list-group-item">
+                <button
+                  className="btn btn-link text-primary pl-0"
+                  onClick={handleOpenUnarchive}
+                  id={record.id}
+                >
+                  Unarchive
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+      );
+    });
+
+  return (
+    <>
+      {archived_staff_record.length > 0 ? (
+        <div>
+          <div className="row">
+            <Search
+              searchTerm={searchTerm}
+              handleSearchChange={handleSearchChange}
+            />
+            {searchTerm && (
+              <ClearSearch handleClearSearch={handleClearSearch} />
+            )}
+          </div>
+          <div className="row">{filteredElements}</div>
+        </div>
+      ) : (
+        <div
+          className="card card-body border-0"
+          style={{ paddingTop: '100px', paddingBottom: '260px' }}
+        >
+          <h1 className="display-4 text-center">
+            <em>There is no record to display.</em>
+          </h1>
+        </div>
+      )}
+    </>
+  );
 }
