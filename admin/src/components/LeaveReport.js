@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, Fragment } from 'react';
+import React, { useState } from 'react';
 
 import { CSVLink } from 'react-csv';
 
@@ -45,7 +45,7 @@ function ApprovedLeaveReportList(props) {
   });
 
   return approvedRecordItems.length > 0 ? (
-    <Fragment>
+    <>
       <CSVLink
         data={records}
         filename={'Approved-leave.csv'}
@@ -72,7 +72,7 @@ function ApprovedLeaveReportList(props) {
           <tbody>{approvedRecordItems}</tbody>
         </table>
       </div>
-    </Fragment>
+    </>
   ) : (
     <div
       className="card card-body border-0"
@@ -122,7 +122,7 @@ function PendingLeaveReportList(props) {
   });
 
   return pendingRecordItems.length > 0 ? (
-    <Fragment>
+    <>
       <CSVLink
         data={records}
         filename={'Pending-leave.csv'}
@@ -148,7 +148,7 @@ function PendingLeaveReportList(props) {
           <tbody>{pendingRecordItems}</tbody>
         </table>
       </div>
-    </Fragment>
+    </>
   ) : (
     <div
       className="card card-body border-0"
@@ -200,7 +200,7 @@ function CancelledLeaveReportList(props) {
   });
 
   return cancelledRecordItems.length > 0 ? (
-    <Fragment>
+    <>
       <CSVLink
         data={records}
         filename={'Cancelled-leave.csv'}
@@ -227,7 +227,7 @@ function CancelledLeaveReportList(props) {
           <tbody>{cancelledRecordItems}</tbody>
         </table>
       </div>
-    </Fragment>
+    </>
   ) : (
     <div
       className="card card-body border-0"
@@ -279,7 +279,7 @@ function DeclinedLeaveReportList(props) {
   });
 
   return declinedRecordItems.length > 0 ? (
-    <Fragment>
+    <>
       <CSVLink
         data={records}
         filename={'Declined-leave.csv'}
@@ -306,7 +306,7 @@ function DeclinedLeaveReportList(props) {
           <tbody>{declinedRecordItems}</tbody>
         </table>
       </div>
-    </Fragment>
+    </>
   ) : (
     <div
       className="card card-body border-0"
@@ -361,7 +361,7 @@ function LeaveUpdatesReportList(props) {
   });
 
   return leaveUpdateItems.length > 0 ? (
-    <Fragment>
+    <>
       <CSVLink
         data={records}
         filename={'Leave-updates.csv'}
@@ -390,7 +390,7 @@ function LeaveUpdatesReportList(props) {
           <tbody>{leaveUpdateItems}</tbody>
         </table>
       </div>
-    </Fragment>
+    </>
   ) : (
     <div
       className="card card-body border-0"
@@ -442,7 +442,7 @@ function StaffRecordList(props) {
   });
 
   return staffRecordItems.length > 0 ? (
-    <Fragment>
+    <>
       <CSVLink
         data={records}
         filename={'User-record.csv'}
@@ -469,7 +469,7 @@ function StaffRecordList(props) {
           <tbody>{staffRecordItems}</tbody>
         </table>
       </div>
-    </Fragment>
+    </>
   ) : (
     <div
       className="card card-body border-0"
@@ -531,7 +531,7 @@ function UserUpdatesReportList(props) {
   });
 
   return userUpdateItems.length > 0 ? (
-    <Fragment>
+    <>
       <CSVLink
         data={records}
         filename={'User-updates.csv'}
@@ -560,7 +560,7 @@ function UserUpdatesReportList(props) {
           <tbody>{userUpdateItems}</tbody>
         </table>
       </div>
-    </Fragment>
+    </>
   ) : (
     <div
       className="card card-body border-0"
@@ -577,29 +577,20 @@ type tabsProps = {
   data: Array<any>
 };
 
-type tabsState = {
-  activeIndex: number
-};
+// type tabsState = {
+//   activeIndex: number
+// };
 
-class Tabs extends Component<tabsProps, tabsState> {
-  selectTabIndex: Function;
+function Tabs(props: tabsProps) {
+  const [activeIndex, setActiveIndex] = useState(0);
 
-  constructor() {
-    super();
-    this.state = { activeIndex: 0 };
-
-    this.selectTabIndex = this.selectTabIndex.bind(this);
+  function selectTabIndex(e: SyntheticEvent<HTMLElement>) {
+    setActiveIndex(parseInt(e.currentTarget.id, 10));
   }
 
-  selectTabIndex(e: SyntheticEvent<HTMLElement>) {
-    this.setState({
-      activeIndex: parseInt(e.currentTarget.id, 10)
-    });
-  }
-
-  renderTabs() {
-    return this.props.data.map((tab, index) => {
-      const isActive = this.state.activeIndex === index;
+  function renderTabs() {
+    return props.data.map((tab, index) => {
+      const isActive = activeIndex === index;
       return (
         <div className="nav-link btn" key={index}>
           <div
@@ -608,7 +599,7 @@ class Tabs extends Component<tabsProps, tabsState> {
                 ? 'border border-right-0 border-left-0 border-top-0 border-secondary'
                 : 'text-secondary btn-link'
             }
-            onClick={this.selectTabIndex}
+            onClick={selectTabIndex}
             id={index}
           >
             {tab.label}
@@ -618,18 +609,16 @@ class Tabs extends Component<tabsProps, tabsState> {
     });
   }
 
-  renderPanel() {
-    return <div>{this.props.data[this.state.activeIndex].content}</div>;
+  function renderPanel() {
+    return <div>{props.data[activeIndex].content}</div>;
   }
 
-  render() {
-    return (
-      <div className="container">
-        <nav className="nav justify-content-center">{this.renderTabs()}</nav>
-        <div className="mt-1">{this.renderPanel()}</div>
-      </div>
-    );
-  }
+  return (
+    <div className="container">
+      <nav className="nav justify-content-center">{renderTabs()}</nav>
+      <div className="mt-1">{renderPanel()}</div>
+    </div>
+  );
 }
 
 type Props = {
@@ -642,57 +631,43 @@ type Props = {
   staff_record: Object
 };
 
-export default class LeaveReportList extends Component<Props> {
-  render() {
-    const tabData = [
-      {
-        label: 'Approved',
-        content: (
-          <ApprovedLeaveReportList
-            approved_record={this.props.approved_record}
-          />
-        )
-      },
-      {
-        label: 'Pending',
-        content: (
-          <PendingLeaveReportList pending_record={this.props.pending_record} />
-        )
-      },
-      {
-        label: 'Cancelled',
-        content: (
-          <CancelledLeaveReportList
-            cancelled_record={this.props.cancelled_record}
-          />
-        )
-      },
-      {
-        label: 'Declined',
-        content: (
-          <DeclinedLeaveReportList
-            declined_record={this.props.declined_record}
-          />
-        )
-      },
-      {
-        label: 'Leave updates',
-        content: (
-          <LeaveUpdatesReportList leave_updates={this.props.leave_updates} />
-        )
-      },
-      {
-        label: 'User record',
-        content: <StaffRecordList staff_record={this.props.staff_record} />
-      },
-      {
-        label: 'User updates',
-        content: (
-          <UserUpdatesReportList user_updates={this.props.user_updates} />
-        )
-      }
-    ];
+export default function LeaveReportList(props: Props) {
+  const tabData = [
+    {
+      label: 'Approved',
+      content: (
+        <ApprovedLeaveReportList approved_record={props.approved_record} />
+      )
+    },
+    {
+      label: 'Pending',
+      content: <PendingLeaveReportList pending_record={props.pending_record} />
+    },
+    {
+      label: 'Cancelled',
+      content: (
+        <CancelledLeaveReportList cancelled_record={props.cancelled_record} />
+      )
+    },
+    {
+      label: 'Declined',
+      content: (
+        <DeclinedLeaveReportList declined_record={props.declined_record} />
+      )
+    },
+    {
+      label: 'Leave updates',
+      content: <LeaveUpdatesReportList leave_updates={props.leave_updates} />
+    },
+    {
+      label: 'User record',
+      content: <StaffRecordList staff_record={props.staff_record} />
+    },
+    {
+      label: 'User updates',
+      content: <UserUpdatesReportList user_updates={props.user_updates} />
+    }
+  ];
 
-    return <Tabs data={tabData} />;
-  }
+  return <Tabs data={tabData} />;
 }
