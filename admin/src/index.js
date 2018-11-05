@@ -16,12 +16,12 @@ import './spinners.css';
 
 import configureStore from './stores/ConfigureStore';
 
+import AdminHeader from './containers/AdminHeader';
 import AdminLogin from './containers/AdminLogin';
+import PendingLeave from './containers/PendingLeave';
 import AdminResetPassword from './containers/AdminResetPassword';
 import Error from './components/Error';
 
-const AdminHeader = lazy(() => import('./containers/AdminHeader'));
-const PendingLeave = lazy(() => import('./containers/PendingLeave'));
 const ApprovedLeave = lazy(() => import('./containers/ApprovedLeave'));
 const StaffRecord = lazy(() => import('./containers/StaffRecord'));
 const ArchivedStaffRecord = lazy(() =>
