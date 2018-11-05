@@ -55,7 +55,11 @@ function ApprovedRecordList(props) {
       </table>
     );
   } else {
-    return <img src={NoData} alt="No data" align="middle" />;
+    return (
+      <div align="center">
+        <img src={NoData} alt="No data" />
+      </div>
+    );
   }
 }
 
@@ -88,7 +92,11 @@ function PendingRecordList(props) {
       </table>
     );
   } else {
-    return <img src={NoData} alt="No data" align="middle" />;
+    return (
+      <div align="center">
+        <img src={NoData} alt="No data" />
+      </div>
+    );
   }
 }
 
