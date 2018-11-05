@@ -4,6 +4,7 @@ import { gql } from 'apollo-boost';
 import { Query } from 'react-apollo';
 
 import '../spinners.css';
+import NoData from '../img/undraw_no_data_qbuo.svg';
 
 const USER_RECORD = gql`
   query($id: ID!) {
@@ -54,7 +55,7 @@ function ApprovedRecordList(props) {
       </table>
     );
   } else {
-    return <div />;
+    return <img src={NoData} alt="No data" align="middle" />;
   }
 }
 
@@ -87,7 +88,7 @@ function PendingRecordList(props) {
       </table>
     );
   } else {
-    return <div />;
+    return <img src={NoData} alt="No data" align="middle" />;
   }
 }
 
