@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { gql } from 'apollo-boost';
 import { graphql } from 'react-apollo';
@@ -29,31 +29,40 @@ type Props = {
   dispatch: Function
 };
 
-type State = {
-  errorMessage: string,
-  email: string,
-  password: string
-};
+// type State = {
+//   errorMessage: string,
+//   email: string,
+//   password: string
+// };
 
-class Login extends Component<Props, State> {
-  authenticateAdmin: Function;
-  handleSubmit: Function;
-  handleEmailChange: Function;
-  handlePasswordChange: Function;
+function Login(props: Props) {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  constructor() {
-    super();
-    this.state = { errorMessage: '', email: '', password: '' };
-
-    this.authenticateAdmin = this.authenticateAdmin.bind(this);
-    this.handleEmailChange = this.handleEmailChange.bind(this);
-    this.handlePasswordChange = this.handlePasswordChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+  function handleEmailChange({ target }: SyntheticInputEvent<>) {
+    setEmail(target.value);
   }
 
-  async authenticateAdmin() {
-    const { logInAdmin, dispatch } = this.props;
-    const { email, password } = this.state;
+  function handlePasswordChange({ target }: SyntheticInputEvent<>) {
+    setPassword(target.value);
+  }
+
+  function handleSubmit(e: Event) {
+    e.preventDefault();
+
+    if (!email || !password) {
+      setErrorMessage('One or more required fields are missing!');
+      return;
+    }
+
+    setErrorMessage('');
+
+    authenticateAdmin();
+  }
+
+  async function authenticateAdmin() {
+    const { logInAdmin, dispatch } = props;
 
     try {
       dispatch(requestAdminLogin());
@@ -71,91 +80,60 @@ class Login extends Component<Props, State> {
       dispatch(receiveAdminLogin(response.data.authenticateAdmin));
     } catch (error) {
       console.log(error);
-      this.setState({ errorMessage: error.message });
+      setErrorMessage(error.message);
       localStorage.removeItem('admin_token');
       localStorage.removeItem('admin_user');
       dispatch(loginAdminError());
     }
   }
 
-  handleEmailChange({ target }: SyntheticInputEvent<>) {
-    this.setState({ email: target.value });
-  }
-
-  handlePasswordChange({ target }: SyntheticInputEvent<>) {
-    this.setState({ password: target.value });
-  }
-
-  handleSubmit(e: Event) {
-    e.preventDefault();
-    const { email, password } = this.state;
-
-    if (!email || !password) {
-      this.setState({
-        errorMessage: 'One or more required fields are missing!'
-      });
-
-      return;
-    }
-
-    this.setState({ errorMessage: '' });
-
-    this.authenticateAdmin();
-  }
-
-  render() {
-    return (
-      <div className="container">
-        <h1 className="display-4 text-center pb-4">Leave Management System</h1>
-        <div className="col-md-5 mx-auto">
-          <div className="card card-body">
-            <form onSubmit={this.handleSubmit}>
-              <div className="form-group">
-                <label htmlFor="email">Email address</label>
-                <input
-                  type="email"
-                  className="form-control"
-                  placeholder="Enter email"
-                  id="email"
-                  onChange={this.handleEmailChange}
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="password">Password</label>
-                <input
-                  type="password"
-                  className="form-control"
-                  placeholder="Password"
-                  id="password"
-                  onChange={this.handlePasswordChange}
-                />
-              </div>
-              <div className="form-group">
-                <button type="submit" className="btn btn-primary col">
-                  Log in
-                </button>
-              </div>
-            </form>
-            <div className="text-danger text-center">
-              {this.props.isFetching ? (
-                <div className="loader" />
-              ) : (
-                this.props.message
-              )}
+  return (
+    <div className="container">
+      <h1 className="display-4 text-center pb-4">Leave Management System</h1>
+      <div className="col-md-5 mx-auto">
+        <div className="card card-body">
+          <form onSubmit={handleSubmit}>
+            <div className="form-group">
+              <label htmlFor="email">Email address</label>
+              <input
+                type="email"
+                className="form-control"
+                placeholder="Enter email"
+                id="email"
+                onChange={handleEmailChange}
+              />
             </div>
-            <div className="text-danger text-center">
-              <div>{this.state.errorMessage}</div>
+            <div className="form-group">
+              <label htmlFor="password">Password</label>
+              <input
+                type="password"
+                className="form-control"
+                placeholder="Password"
+                id="password"
+                onChange={handlePasswordChange}
+              />
             </div>
+            <div className="form-group">
+              <button type="submit" className="btn btn-primary col">
+                Log in
+              </button>
+            </div>
+          </form>
+          <div className="text-danger text-center">
+            {props.isFetching ? <div className="loader" /> : props.message}
           </div>
-          <div className="card card-body mt-3">
-            <Link to="/resetpassword" className="btn">
-              Forgot your password?
-            </Link>
+          <div className="text-danger text-center">
+            <div>{errorMessage}</div>
           </div>
         </div>
+        <div className="card card-body mt-3">
+          <Link to="/resetpassword" className="btn">
+            Forgot your password?
+          </Link>
+        </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 export default graphql(AUTHENTICATE_ADMIN, {
