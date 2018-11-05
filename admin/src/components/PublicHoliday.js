@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, Fragment } from 'react';
+import React, { useState } from 'react';
 import { gql } from 'apollo-boost';
 import { Query, Mutation } from 'react-apollo';
 
@@ -63,7 +63,7 @@ function AddHoliday(props: addHolidayProps) {
         if (error) {
           console.log(error);
           return (
-            <Fragment>
+            <>
               <p className="font-italic text-danger mt-4">{error.message}</p>
               <button
                 onClick={addPublicHoliday}
@@ -71,7 +71,7 @@ function AddHoliday(props: addHolidayProps) {
               >
                 Add
               </button>
-            </Fragment>
+            </>
           );
         }
 
@@ -89,55 +89,35 @@ type addPublicHolidayProps = {
   render: any
 };
 
-type addPublicHolidayState = {
-  date: any,
-  focused: any,
-  successMessage: string,
-  errorMessage: string
-};
+// type addPublicHolidayState = {
+//   date: any,
+//   focused: any,
+// };
 
-class AddPublicHoliday extends Component<
-  addPublicHolidayProps,
-  addPublicHolidayState
-> {
-  onDateChange: Function;
-  onFocusChange: Function;
+function AddPublicHoliday(props: addPublicHolidayProps) {
+  const [date, setDate] = useState(null);
+  const [focused, setFocused] = useState(false);
 
-  constructor() {
-    super();
-    this.state = {
-      date: null,
-      focused: false,
-      successMessage: '',
-      errorMessage: ''
-    };
-
-    this.onDateChange = this.onDateChange.bind(this);
-    this.onFocusChange = this.onFocusChange.bind(this);
+  function onDateChange(e: Event) {
+    setDate(e);
   }
 
-  onDateChange(e: Event) {
-    this.setState({ date: e });
+  function onFocusChange(e: Event & { focused: HTMLElement }) {
+    setFocused(e.focused);
   }
 
-  onFocusChange(e: Event & { focused: HTMLElement }) {
-    this.setState({ focused: e.focused });
-  }
-
-  render() {
-    return (
-      <Fragment>
-        <DayPickerSingleDateController
-          onDateChange={this.onDateChange}
-          onFocusChange={this.onFocusChange}
-          focused={this.state.focused}
-          date={this.state.date}
-          hideKeyboardShortcutsPanel
-        />
-        {this.props.render(this.state.date)}
-      </Fragment>
-    );
-  }
+  return (
+    <>
+      <DayPickerSingleDateController
+        onDateChange={onDateChange}
+        onFocusChange={onFocusChange}
+        focused={focused}
+        date={date}
+        hideKeyboardShortcutsPanel
+      />
+      {props.render(date)}
+    </>
+  );
 }
 
 type deleteHolidayProps = {
