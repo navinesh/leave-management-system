@@ -12,12 +12,14 @@ type Props = {
 };
 
 function ResetPassword(props: Props) {
+  const { isFetching, message, dispatch } = props;
+
   return (
     <AdminResetPassword
-      isFetching={props.isFetching}
-      message={props.message}
+      isFetching={isFetching}
+      message={message}
       onResetClick={function(email) {
-        return props.dispatch(resetPassword(email));
+        return dispatch(resetPassword(email));
       }}
     />
   );
