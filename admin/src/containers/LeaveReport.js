@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, Fragment } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { gql } from 'apollo-boost';
@@ -182,20 +182,14 @@ type Props = {
   verifyAdminToken: Function
 };
 
-class LeaveReport extends Component<Props> {
-  verifyToken: Function;
+function LeaveReport(props: Props) {
+  useEffect(function() {
+    verifyToken();
+    setInterval(verifyToken, 600000);
+  }, []);
 
-  constructor() {
-    super();
-    this.verifyToken = this.verifyToken.bind(this);
-  }
-  componentDidMount() {
-    this.verifyToken();
-    setInterval(this.verifyToken, 600000);
-  }
-
-  async verifyToken() {
-    const { auth_info, dispatch, verifyAdminToken } = this.props;
+  async function verifyToken() {
+    const { auth_info, dispatch, verifyAdminToken } = props;
 
     const adminToken = auth_info.admin_token
       ? auth_info
@@ -219,135 +213,130 @@ class LeaveReport extends Component<Props> {
     }
   }
 
-  render() {
-    const { isAuthenticated } = this.props;
+  const { isAuthenticated } = props;
 
-    return (
-      <Fragment>
-        {isAuthenticated ? (
-          <Query query={APPROVED_RECORD} pollInterval={60000}>
-            {({
-              loading: approvedLoading,
-              error: approvedError,
-              data: { findLeaveRecord: approved_record }
-            }) => (
-              <Query query={PENDING_RECORD} pollInterval={60000}>
-                {({
-                  loading: pendingLoading,
-                  error: pendingError,
-                  data: { findLeaveRecord: pending_record }
-                }) => (
-                  <Query query={CANCELLED_RECORD} pollInterval={60000}>
-                    {({
-                      loading: cancelledLoading,
-                      error: cancelledError,
-                      data: { findLeaveRecord: cancelled_record }
-                    }) => (
-                      <Query query={DECLINED_RECORD} pollInterval={60000}>
-                        {({
-                          loading: declinedLoading,
-                          error: declinedError,
-                          data: { findLeaveRecord: declined_record }
-                        }) => (
-                          <Query
-                            query={USER_UPDATES_RECORD}
-                            pollInterval={60000}
-                          >
-                            {({
-                              loading: userLoading,
-                              error: userError,
-                              data: { findUserUpdates: user_updates }
-                            }) => (
-                              <Query
-                                query={LEAVE_UPDATES_RECORD}
-                                pollInterval={60000}
-                              >
-                                {({
-                                  loading: leaveLoading,
-                                  error: leaveError,
-                                  data: { findLeaveUpdates: leave_updates }
-                                }) => (
-                                  <Query
-                                    query={ACTIVE_USERS}
-                                    pollInterval={60000}
-                                  >
-                                    {({
-                                      loading: activeUsersLoading,
-                                      error: activeUsersError,
-                                      data: { findUsers: staff_record }
-                                    }) => {
-                                      if (
-                                        approvedLoading ||
-                                        pendingLoading ||
-                                        cancelledLoading ||
-                                        declinedLoading ||
-                                        userLoading ||
-                                        leaveLoading ||
-                                        activeUsersLoading
-                                      ) {
-                                        return (
-                                          <div className="text-center">
-                                            <div className="loader1" />
-                                          </div>
-                                        );
-                                      }
-
-                                      if (
-                                        approvedError ||
-                                        pendingError ||
-                                        cancelledError ||
-                                        declinedError ||
-                                        userError ||
-                                        leaveError ||
-                                        activeUsersError
-                                      ) {
-                                        console.log(
-                                          approvedError ||
-                                            pendingError ||
-                                            cancelledError ||
-                                            declinedError ||
-                                            userError ||
-                                            leaveError ||
-                                            activeUsersError
-                                        );
-                                        return (
-                                          <div className="text-center">
-                                            <p>Something went wrong!</p>
-                                          </div>
-                                        );
-                                      }
-
+  return (
+    <>
+      {isAuthenticated ? (
+        <Query query={APPROVED_RECORD} pollInterval={60000}>
+          {({
+            loading: approvedLoading,
+            error: approvedError,
+            data: { findLeaveRecord: approved_record }
+          }) => (
+            <Query query={PENDING_RECORD} pollInterval={60000}>
+              {({
+                loading: pendingLoading,
+                error: pendingError,
+                data: { findLeaveRecord: pending_record }
+              }) => (
+                <Query query={CANCELLED_RECORD} pollInterval={60000}>
+                  {({
+                    loading: cancelledLoading,
+                    error: cancelledError,
+                    data: { findLeaveRecord: cancelled_record }
+                  }) => (
+                    <Query query={DECLINED_RECORD} pollInterval={60000}>
+                      {({
+                        loading: declinedLoading,
+                        error: declinedError,
+                        data: { findLeaveRecord: declined_record }
+                      }) => (
+                        <Query query={USER_UPDATES_RECORD} pollInterval={60000}>
+                          {({
+                            loading: userLoading,
+                            error: userError,
+                            data: { findUserUpdates: user_updates }
+                          }) => (
+                            <Query
+                              query={LEAVE_UPDATES_RECORD}
+                              pollInterval={60000}
+                            >
+                              {({
+                                loading: leaveLoading,
+                                error: leaveError,
+                                data: { findLeaveUpdates: leave_updates }
+                              }) => (
+                                <Query
+                                  query={ACTIVE_USERS}
+                                  pollInterval={60000}
+                                >
+                                  {({
+                                    loading: activeUsersLoading,
+                                    error: activeUsersError,
+                                    data: { findUsers: staff_record }
+                                  }) => {
+                                    if (
+                                      approvedLoading ||
+                                      pendingLoading ||
+                                      cancelledLoading ||
+                                      declinedLoading ||
+                                      userLoading ||
+                                      leaveLoading ||
+                                      activeUsersLoading
+                                    ) {
                                       return (
-                                        <LeaveReportList
-                                          approved_record={approved_record}
-                                          pending_record={pending_record}
-                                          cancelled_record={cancelled_record}
-                                          declined_record={declined_record}
-                                          user_updates={user_updates}
-                                          leave_updates={leave_updates}
-                                          staff_record={staff_record}
-                                        />
+                                        <div className="text-center">
+                                          <div className="loader1" />
+                                        </div>
                                       );
-                                    }}
-                                  </Query>
-                                )}
-                              </Query>
-                            )}
-                          </Query>
-                        )}
-                      </Query>
-                    )}
-                  </Query>
-                )}
-              </Query>
-            )}
-          </Query>
-        ) : (
-          <Redirect to="/login" />
-        )}
-      </Fragment>
-    );
-  }
+                                    }
+
+                                    if (
+                                      approvedError ||
+                                      pendingError ||
+                                      cancelledError ||
+                                      declinedError ||
+                                      userError ||
+                                      leaveError ||
+                                      activeUsersError
+                                    ) {
+                                      console.log(
+                                        approvedError ||
+                                          pendingError ||
+                                          cancelledError ||
+                                          declinedError ||
+                                          userError ||
+                                          leaveError ||
+                                          activeUsersError
+                                      );
+                                      return (
+                                        <div className="text-center">
+                                          <p>Something went wrong!</p>
+                                        </div>
+                                      );
+                                    }
+
+                                    return (
+                                      <LeaveReportList
+                                        approved_record={approved_record}
+                                        pending_record={pending_record}
+                                        cancelled_record={cancelled_record}
+                                        declined_record={declined_record}
+                                        user_updates={user_updates}
+                                        leave_updates={leave_updates}
+                                        staff_record={staff_record}
+                                      />
+                                    );
+                                  }}
+                                </Query>
+                              )}
+                            </Query>
+                          )}
+                        </Query>
+                      )}
+                    </Query>
+                  )}
+                </Query>
+              )}
+            </Query>
+          )}
+        </Query>
+      ) : (
+        <Redirect to="/login" />
+      )}
+    </>
+  );
 }
 
 function mapStateToProps(state) {
