@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { gql } from 'apollo-boost';
@@ -49,20 +49,14 @@ type Props = {
   dispatch: Function
 };
 
-class ArchivedStaffRecord extends Component<Props> {
-  verifyToken: Function;
+function ArchivedStaffRecord(props: Props) {
+  useEffect(function() {
+    verifyToken();
+    setInterval(verifyToken, 600000);
+  }, []);
 
-  constructor() {
-    super();
-    this.verifyToken = this.verifyToken.bind(this);
-  }
-  componentDidMount() {
-    this.verifyToken();
-    setInterval(this.verifyToken, 600000);
-  }
-
-  async verifyToken() {
-    const { auth_info, dispatch, verifyAdminToken } = this.props;
+  async function verifyToken() {
+    const { auth_info, dispatch, verifyAdminToken } = props;
 
     const adminToken = auth_info.admin_token
       ? auth_info
@@ -86,51 +80,44 @@ class ArchivedStaffRecord extends Component<Props> {
     }
   }
 
-  render() {
-    const { isAuthenticated, dispatch } = this.props;
+  const { isAuthenticated, dispatch } = props;
 
-    return (
-      <div className="container">
-        {isAuthenticated ? (
-          <Query query={ARCHIVED_USERS} pollInterval={60000}>
-            {({
-              loading,
-              error,
-              data: { findUsers: staff_record },
-              refetch
-            }) => {
-              if (loading) {
-                return (
-                  <div className="text-center">
-                    <div className="loader1" />
-                  </div>
-                );
-              }
-
-              if (error) {
-                console.log(error);
-                return (
-                  <div className="text-center">
-                    <p>Something went wrong!</p>
-                  </div>
-                );
-              }
-
+  return (
+    <div className="container">
+      {isAuthenticated ? (
+        <Query query={ARCHIVED_USERS} pollInterval={60000}>
+          {({ loading, error, data: { findUsers: staff_record }, refetch }) => {
+            if (loading) {
               return (
-                <ArchivedStaffRecordList
-                  archived_staff_record={staff_record}
-                  refetch={refetch}
-                  dispatch={dispatch}
-                />
+                <div className="text-center">
+                  <div className="loader1" />
+                </div>
               );
-            }}
-          </Query>
-        ) : (
-          <Redirect to="/login" />
-        )}
-      </div>
-    );
-  }
+            }
+
+            if (error) {
+              console.log(error);
+              return (
+                <div className="text-center">
+                  <p>Something went wrong!</p>
+                </div>
+              );
+            }
+
+            return (
+              <ArchivedStaffRecordList
+                archived_staff_record={staff_record}
+                refetch={refetch}
+                dispatch={dispatch}
+              />
+            );
+          }}
+        </Query>
+      ) : (
+        <Redirect to="/login" />
+      )}
+    </div>
+  );
 }
 
 function mapStateToProps(state) {
