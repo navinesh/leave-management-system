@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { gql } from 'apollo-boost';
@@ -28,21 +28,14 @@ type Props = {
   verifyAdminToken: Function
 };
 
-class PublicHoliday extends Component<Props> {
-  verifyToken: Function;
+function PublicHoliday(props: Props) {
+  useEffect(function() {
+    verifyToken();
+    setInterval(verifyToken, 600000);
+  }, []);
 
-  constructor() {
-    super();
-    this.verifyToken = this.verifyToken.bind(this);
-  }
-
-  componentDidMount() {
-    this.verifyToken();
-    setInterval(this.verifyToken, 600000);
-  }
-
-  async verifyToken() {
-    const { auth_info, dispatch, verifyAdminToken } = this.props;
+  async function verifyToken() {
+    const { auth_info, dispatch, verifyAdminToken } = props;
 
     const adminToken = auth_info.admin_token
       ? auth_info
@@ -66,15 +59,13 @@ class PublicHoliday extends Component<Props> {
     }
   }
 
-  render() {
-    const { isAuthenticated } = this.props;
+  const { isAuthenticated } = props;
 
-    return (
-      <div className="container">
-        {isAuthenticated ? <PublicHolidays /> : <Redirect to="/login" />}
-      </div>
-    );
-  }
+  return (
+    <div className="container">
+      {isAuthenticated ? <PublicHolidays /> : <Redirect to="/login" />}
+    </div>
+  );
 }
 
 function mapStateToProps(state) {
