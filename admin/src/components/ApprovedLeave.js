@@ -1,6 +1,8 @@
 // @flow
 import React, { useState, useRef } from 'react';
 
+import NoData from '../img/undraw_no_data_qbuo.svg';
+
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import { DateRangePicker } from 'react-dates';
@@ -654,39 +656,38 @@ export default function ApprovedLeaveList(props: Props) {
 
   return (
     <>
-      <div className="row">
-        <Search
-          searchTerm={searchTerm}
-          handleSearchChange={handleSearchChange}
-        />
-        {searchTerm && <ClearSearch handleClearSearch={handleClearSearch} />}
-      </div>
       {items.length > 0 ? (
-        <div className="table-responsive">
-          <table className="table table-bordered table-hover">
-            <thead className="thead-light">
-              <tr>
-                <th>Name</th>
-                <th>Leave</th>
-                <th>Type</th>
-                <th>Start date</th>
-                <th>End date</th>
-                <th>Leave days</th>
-                <th>Edit</th>
-                <th>Delete</th>
-              </tr>
-            </thead>
-            <tbody>{items}</tbody>
-          </table>
-        </div>
+        <>
+          <div className="row">
+            <Search
+              searchTerm={searchTerm}
+              handleSearchChange={handleSearchChange}
+            />
+            {searchTerm && (
+              <ClearSearch handleClearSearch={handleClearSearch} />
+            )}
+          </div>
+          <div className="table-responsive">
+            <table className="table table-bordered table-hover">
+              <thead className="thead-light">
+                <tr>
+                  <th>Name</th>
+                  <th>Leave</th>
+                  <th>Type</th>
+                  <th>Start date</th>
+                  <th>End date</th>
+                  <th>Leave days</th>
+                  <th>Edit</th>
+                  <th>Delete</th>
+                </tr>
+              </thead>
+              <tbody>{items}</tbody>
+            </table>
+          </div>
+        </>
       ) : (
-        <div
-          className="card card-body border-0"
-          style={{ paddingTop: '100px', paddingBottom: '260px' }}
-        >
-          <h1 className="display-4 text-center">
-            <em>There is no record to display.</em>
-          </h1>
+        <div align="center">
+          <img src={NoData} alt="No data" />
         </div>
       )}
     </>
