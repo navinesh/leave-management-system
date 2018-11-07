@@ -54,7 +54,7 @@ export default function(props: Props) {
         if (error) {
           console.log(error.message);
           return (
-            <div className="col mx-auto" style={{ marginTop: '100px' }}>
+            <div className="col mx-auto">
               <div className="text-center">
                 <p style={{ fontSize: '42px' }}>Oops!</p>
                 <p style={{ fontSize: '24px' }}>Something went wrong!</p>
