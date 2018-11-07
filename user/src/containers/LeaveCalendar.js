@@ -68,7 +68,6 @@ function LeaveCalendar(props: Props) {
 
 function mapStateToProps(state) {
   const { userAuth } = state;
-
   const { isAuthenticated } = userAuth;
 
   return { isAuthenticated };
