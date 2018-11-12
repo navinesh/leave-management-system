@@ -25,27 +25,18 @@ const LEAVE_RECORD = gql`
   }
 `;
 
-type Props = {
-  dispatch: Function,
-  isFetching: boolean,
-  message: string
-};
-
-export default function(props: Props) {
-  const { isFetching, message, dispatch } = props;
-
+function Leaves() {
   return (
     <Query query={LEAVE_RECORD} pollInterval={60000}>
       {({ loading, error, data }) => {
         if (loading) {
           return (
-            <div className="container">
-              <div className="col-md-5 mx-auto pt-4">
-                <UserLogin
-                  isFetching={isFetching}
-                  message={message}
-                  dispatch={dispatch}
-                />
+            <div
+              className="container text-center"
+              style={{ paddingTop: '100px' }}
+            >
+              <div className="col-md-8 ml-auto mr-auto">
+                <div className="loader" />
               </div>
             </div>
           );
@@ -107,46 +98,51 @@ export default function(props: Props) {
             </tr>
           ));
 
-        return leaveRecords.length > 0 ? (
-          <div className="container">
-            <div className="row">
-              <div className="col-md-8">
-                <div className="table-responsive">
-                  <table className="table table-bordered table-hover">
-                    <thead className="thead-light">
-                      <tr>
-                        <th>Name</th>
-                        <th>Leave type</th>
-                        <th>Start date</th>
-                        <th>End date</th>
-                        <th>Leave days</th>
-                      </tr>
-                    </thead>
-                    <tbody>{leaveRecords}</tbody>
-                  </table>
-                </div>
-              </div>
-              <div className="col-md-4">
-                <UserLogin
-                  isFetching={isFetching}
-                  message={message}
-                  dispatch={dispatch}
-                />
-              </div>
-            </div>
-          </div>
-        ) : (
-          <div className="container">
-            <div className="col-md-5 mx-auto pt-4">
-              <UserLogin
-                isFetching={isFetching}
-                message={message}
-                dispatch={dispatch}
-              />
-            </div>
+        return (
+          <div className="table-responsive">
+            <table className="table table-bordered table-hover">
+              <thead className="thead-light">
+                <tr>
+                  <th>Name</th>
+                  <th>Leave type</th>
+                  <th>Start date</th>
+                  <th>End date</th>
+                  <th>Leave days</th>
+                </tr>
+              </thead>
+              <tbody>{leaveRecords}</tbody>
+            </table>
           </div>
         );
       }}
     </Query>
+  );
+}
+
+type Props = {
+  dispatch: Function,
+  isFetching: boolean,
+  message: string
+};
+
+export default function(props: Props) {
+  const { isFetching, message, dispatch } = props;
+  return (
+    <>
+      <div className="container">
+        <div className="row">
+          <div className="col-md-8">
+            <Leaves />
+          </div>
+          <div className="col-md-4">
+            <UserLogin
+              isFetching={isFetching}
+              message={message}
+              dispatch={dispatch}
+            />
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
