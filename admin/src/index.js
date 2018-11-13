@@ -61,34 +61,36 @@ function App() {
     <ApolloProvider client={client}>
       <Provider store={store}>
         <BrowserRouter>
-          <Suspense
-            fallback={
-              <div className="text-center">
-                <div className="loader1" />
-              </div>
-            }
-          >
+          <>
             <AdminHeader />
-            <Switch>
-              <PrivateRoute exact path="/" component={PendingLeave} />
-              <PrivateRoute path="/staffrecord" component={StaffRecord} />
-              <PrivateRoute path="/approvedleave" component={ApprovedLeave} />
-              <PrivateRoute path="/leavereport" component={LeaveReport} />
-              <PrivateRoute
-                path="/sicksheetrecord"
-                component={SickSheetRecord}
-              />
-              <PrivateRoute
-                path="/archivedstaffrecord"
-                component={ArchivedStaffRecord}
-              />
-              <PrivateRoute path="/createuser" component={CreateUser} />
-              <PrivateRoute path="/publicholiday" component={PublicHoliday} />
-              <Route path="/login" component={AdminLogin} />
-              <Route path="/resetpassword" component={AdminResetPassword} />
-              <Route component={Error} />
-            </Switch>
-          </Suspense>
+            <Suspense
+              fallback={
+                <div className="text-center">
+                  <div className="loader1" />
+                </div>
+              }
+            >
+              <Switch>
+                <PrivateRoute exact path="/" component={PendingLeave} />
+                <PrivateRoute path="/staffrecord" component={StaffRecord} />
+                <PrivateRoute path="/approvedleave" component={ApprovedLeave} />
+                <PrivateRoute path="/leavereport" component={LeaveReport} />
+                <PrivateRoute
+                  path="/sicksheetrecord"
+                  component={SickSheetRecord}
+                />
+                <PrivateRoute
+                  path="/archivedstaffrecord"
+                  component={ArchivedStaffRecord}
+                />
+                <PrivateRoute path="/createuser" component={CreateUser} />
+                <PrivateRoute path="/publicholiday" component={PublicHoliday} />
+                <Route path="/login" component={AdminLogin} />
+                <Route path="/resetpassword" component={AdminResetPassword} />
+                <Route component={Error} />
+              </Switch>
+            </Suspense>
+          </>
         </BrowserRouter>
       </Provider>
     </ApolloProvider>
