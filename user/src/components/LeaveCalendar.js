@@ -11,10 +11,11 @@ type Props = {
   data: Object
 };
 
-export default (props: Props) => {
+export default function(props: Props) {
   const {
     data: { findLeaveRecord }
   } = props;
+
   const leaveRecords = findLeaveRecord
     .filter(record => {
       // get current date and format it
@@ -38,6 +39,9 @@ export default (props: Props) => {
 
       // return true for current and future dates
       return isCurrentDate || isEndDate ? true : false;
+    })
+    .sort((a, b) => {
+      return a.user.othernames.localeCompare(b.user.othernames);
     })
     .map(data => (
       <tr key={data.id}>
@@ -79,4 +83,4 @@ export default (props: Props) => {
       <h1 className="display-4">You're all caught up.</h1>
     </div>
   );
-};
+}
