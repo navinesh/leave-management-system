@@ -1,5 +1,5 @@
 // @flow
-import React, { Fragment } from 'react';
+import React, { lazy, Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
 
@@ -13,64 +13,78 @@ import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import './index.css';
 import './bootstrap.min.css';
 
+import configureStore from './stores/ConfigureStore';
+
 import Header from './containers/Header';
 import MainLogin from './containers/MainLogin';
 import Main from './containers/Main';
 import LeaveCalendar from './containers/LeaveCalendar';
 import ResetPassword from './containers/ResetPassword';
-import UserChangePassword from './containers/ChangePassword';
 import UserError from './components/UserError';
-import LeaveApplication from './containers/LeaveApplication';
 
-import configureStore from './stores/ConfigureStore';
+const UserChangePassword = lazy(() => import('./containers/ChangePassword'));
+const LeaveApplication = lazy(() => import('./containers/LeaveApplication'));
+
 const store = configureStore();
 
 const client = new ApolloClient({ uri: 'http://localhost:8080/graphql' });
 
-const PrivateRoute = ({ component, ...rest }) => (
-  <Route
-    {...rest}
-    render={props =>
-      store.getState().userAuth.isAuthenticated ? (
-        React.createElement(component, props)
-      ) : (
-        <Redirect
-          to={{
-            pathname: '/login',
-            state: { from: props.location }
-          }}
-        />
-      )
-    }
-  />
-);
+function PrivateRoute({ component, ...rest }) {
+  return (
+    <Route
+      {...rest}
+      render={props =>
+        store.getState().userAuth.isAuthenticated ? (
+          React.createElement(component, props)
+        ) : (
+          <Redirect
+            to={{
+              pathname: '/login',
+              state: { from: props.location }
+            }}
+          />
+        )
+      }
+    />
+  );
+}
 
-const App = () => (
-  <ApolloProvider client={client}>
-    <Provider store={store}>
-      <BrowserRouter>
-        <Fragment>
-          <Header />
-          <Switch>
-            <PrivateRoute exact path="/" component={Main} />
-            <Route path="/leavecalendar" component={LeaveCalendar} />
-            <Route path="/reset" component={ResetPassword} />
-            <Route path="/login" component={MainLogin} />
-            <PrivateRoute
-              path="/leaveapplication"
-              component={LeaveApplication}
-            />
-            <PrivateRoute
-              path="/changepassword"
-              component={UserChangePassword}
-            />
-            <Route component={UserError} />
-          </Switch>
-        </Fragment>
-      </BrowserRouter>
-    </Provider>
-  </ApolloProvider>
-);
+function App() {
+  return (
+    <ApolloProvider client={client}>
+      <Provider store={store}>
+        <BrowserRouter>
+          <>
+            <Header />
+            <Suspense
+              fallback={
+                <div className="text-center">
+                  <div className="loader1" />
+                </div>
+              }
+            >
+              <Switch>
+                <PrivateRoute exact path="/" component={Main} />
+                <Route path="/leavecalendar" component={LeaveCalendar} />
+                <Route path="/reset" component={ResetPassword} />
+                <Route path="/login" component={MainLogin} />
+                <PrivateRoute
+                  path="/leaveapplication"
+                  component={LeaveApplication}
+                />
+                <PrivateRoute
+                  path="/changepassword"
+                  component={UserChangePassword}
+                />
+                <Route component={UserError} />
+              </Switch>
+            </Suspense>
+          </>
+        </BrowserRouter>
+      </Provider>
+    </ApolloProvider>
+  );
+}
 
 const root = document.getElementById('root');
 
