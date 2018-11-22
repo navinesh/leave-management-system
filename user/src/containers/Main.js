@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, Fragment } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { gql } from 'apollo-boost';
@@ -33,14 +33,14 @@ type Props = {
   verifyUserToken: Function
 };
 
-class Main extends Component<Props> {
-  componentDidMount() {
-    this.verifyToken();
-    setInterval(this.verifyToken, 600000);
-  }
+function Main(props: Props) {
+  useEffect(function() {
+    verifyToken();
+    setInterval(verifyToken, 600000);
+  }, []);
 
-  verifyToken = async () => {
-    const { auth_info, dispatch, verifyUserToken } = this.props;
+  async function verifyToken() {
+    const { auth_info, dispatch, verifyUserToken } = props;
 
     const userToken = auth_info.auth_token
       ? auth_info.auth_token
@@ -66,29 +66,27 @@ class Main extends Component<Props> {
         dispatch(loginUserErrorFromToken('Your session has expired!'));
       }
     }
-  };
-
-  render() {
-    return (
-      <Fragment>
-        {this.props.isAuthenticated ? (
-          <div>
-            <UserDetail /> <UserRecord />
-          </div>
-        ) : (
-          <Redirect to="/login" />
-        )}
-      </Fragment>
-    );
   }
+
+  return (
+    <>
+      {props.isAuthenticated ? (
+        <div>
+          <UserDetail /> <UserRecord />
+        </div>
+      ) : (
+        <Redirect to="/login" />
+      )}
+    </>
+  );
 }
 
-const mapStateToProps = state => {
+function mapStateToProps(state) {
   const { userAuth } = state;
   const { auth_info, isAuthenticated } = userAuth;
 
   return { auth_info, isAuthenticated };
-};
+}
 
 export default compose(
   connect(mapStateToProps),
