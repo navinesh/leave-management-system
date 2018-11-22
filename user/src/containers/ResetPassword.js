@@ -14,28 +14,34 @@ type Props = {
   dispatch: Function
 };
 
-const ResetPassword = (props: Props) => (
-  <div className="container">
-    {!props.isAuthenticated ? (
-      <UserResetPassword
-        isFetching={props.isFetching}
-        message={props.message}
-        dispatch={props.dispatch}
-        onResetClick={email => props.dispatch(resetPassword(email))}
-      />
-    ) : (
-      <Redirect to="/" />
-    )}
-  </div>
-);
+function ResetPassword(props: Props) {
+  const { dispatch, isAuthenticated, message, isFetching } = props;
 
-const mapStateToProps = state => {
+  return (
+    <div className="container">
+      {!isAuthenticated ? (
+        <UserResetPassword
+          isFetching={isFetching}
+          message={message}
+          dispatch={dispatch}
+          onResetClick={function(email) {
+            return dispatch(resetPassword(email));
+          }}
+        />
+      ) : (
+        <Redirect to="/" />
+      )}
+    </div>
+  );
+}
+
+function mapStateToProps(state) {
   const { userAuth, resetPassword } = state;
 
   const { isAuthenticated } = userAuth;
   const { isFetching, message } = resetPassword;
 
   return { isAuthenticated, isFetching, message };
-};
+}
 
 export default connect(mapStateToProps)(ResetPassword);
