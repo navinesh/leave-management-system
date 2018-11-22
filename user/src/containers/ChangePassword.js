@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, Fragment } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
@@ -17,45 +17,41 @@ type Props = {
   isFetching: boolean
 };
 
-class UserChangePassword extends Component<Props> {
-  componentDidMount() {
-    this.props.dispatch(clearChangePasswordError());
-  }
+function UserChangePassword(props: Props) {
+  useEffect(function() {
+    return function() {
+      dispatch(clearChangePasswordError());
+    };
+  }, []);
 
-  render() {
-    const {
-      dispatch,
-      isAuthenticated,
-      message,
-      isFetching,
-      auth_info
-    } = this.props;
+  const { dispatch, isAuthenticated, message, isFetching, auth_info } = props;
 
-    return (
-      <Fragment>
-        {isAuthenticated ? (
-          <UserChange
-            dispatch={dispatch}
-            isFetching={isFetching}
-            message={message}
-            auth_info={auth_info}
-            onChangeClick={creds => dispatch(changePassword(creds))}
-          />
-        ) : (
-          <Redirect to="/" />
-        )}
-      </Fragment>
-    );
-  }
+  return (
+    <>
+      {isAuthenticated ? (
+        <UserChange
+          dispatch={dispatch}
+          isFetching={isFetching}
+          message={message}
+          auth_info={auth_info}
+          onChangeClick={function(creds) {
+            return dispatch(changePassword(creds));
+          }}
+        />
+      ) : (
+        <Redirect to="/" />
+      )}
+    </>
+  );
 }
 
-const mapStateToProps = state => {
+function mapStateToProps(state) {
   const { changePassword } = state;
   const { userAuth } = state;
   const { auth_info, isAuthenticated } = userAuth;
   const { isFetching, message } = changePassword;
 
   return { auth_info, isAuthenticated, isFetching, message };
-};
+}
 
 export default connect(mapStateToProps)(UserChangePassword);
