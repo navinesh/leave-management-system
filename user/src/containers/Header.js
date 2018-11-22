@@ -10,19 +10,23 @@ type Props = {
   dispatch: Function
 };
 
-const Header = (props: Props) => (
-  <Navs
-    isAuthenticated={props.isAuthenticated}
-    dispatch={props.dispatch}
-    logoutUser={logoutUser}
-  />
-);
+function Header(props: Props) {
+  const { dispatch, isAuthenticated } = props;
 
-const mapStateToProps = state => {
+  return (
+    <Navs
+      isAuthenticated={isAuthenticated}
+      dispatch={dispatch}
+      logoutUser={logoutUser}
+    />
+  );
+}
+
+function mapStateToProps(state) {
   const { userAuth } = state;
   const { isAuthenticated } = userAuth;
 
   return { isAuthenticated };
-};
+}
 
 export default connect(mapStateToProps)(Header);
