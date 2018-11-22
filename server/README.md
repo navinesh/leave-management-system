@@ -18,7 +18,7 @@ Install the following libraries:
 * flask_httpauth
 * flask_cors
 
-Create Postgres database:
+Create Postgres database (create a "lms" user in Postgres before running the command below else edit the file to change the user to that you have setup locally):
 `psql -f database.sql`
 
 Run the command `python application.py` to run the application
