@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { gql } from 'apollo-boost';
 import { Query } from 'react-apollo';
 
@@ -64,70 +64,72 @@ const PUBLIC_HOLIDAY = gql`
   }
 `;
 
-const UserName = props => (
-  <p>
-    {props.user_detail.othernames} {props.user_detail.surname}
-  </p>
-);
+function UserName(props) {
+  return (
+    <p>
+      {props.user_detail.othernames} {props.user_detail.surname}
+    </p>
+  );
+}
 
-const UserRecord = props => {
-  let gender = props.user_detail.gender
-    ? props.user_detail.gender.toLowerCase()
-    : null;
+function UserRecord(props) {
+  const { user_detail } = props;
+
+  let gender = user_detail.gender ? user_detail.gender.toLowerCase() : null;
 
   return (
     <ul className="list-group">
       <li className="list-group-item d-flex justify-content-between align-items-center">
         Annual
         <span className="badge badge-primary badge-pill">
-          {props.user_detail.annual}
+          {user_detail.annual}
         </span>
       </li>
       <li className="list-group-item d-flex justify-content-between align-items-center">
         Sick
         <span className="badge badge-primary badge-pill">
-          {props.user_detail.sick}
+          {user_detail.sick}
         </span>
       </li>
       <li className="list-group-item d-flex justify-content-between align-items-center">
         Bereavement
         <span className="badge badge-primary badge-pill">
-          {props.user_detail.bereavement}
+          {user_detail.bereavement}
         </span>
       </li>
       <li className="list-group-item d-flex justify-content-between align-items-center">
         Family care
         <span className="badge badge-primary badge-pill">
-          {props.user_detail.familyCare}
+          {user_detail.familyCare}
         </span>
       </li>
       <li className="list-group-item d-flex justify-content-between align-items-center">
         Christmas
         <span className="badge badge-primary badge-pill">
-          {props.user_detail.christmas}
+          {user_detail.christmas}
         </span>
       </li>
       {gender === 'female' &&
-        props.user_detail.maternity > 0 && (
+        user_detail.maternity > 0 && (
           <li className="list-group-item d-flex justify-content-between align-items-center">
             Maternity
             <span className="badge badge-primary badge-pill">
-              {props.user_detail.maternity}
+              {user_detail.maternity}
             </span>
           </li>
         )}
       {gender === 'male' &&
-        props.user_detail.paternity > 0 && (
+        user_detail.paternity > 0 && (
           <li className="list-group-item d-flex justify-content-between align-items-center">
             Paternity
             <span className="badge badge-primary badge-pill">
-              {props.user_detail.paternity}
+              {user_detail.paternity}
             </span>
           </li>
         )}
     </ul>
   );
-};
+}
 
 type leaveApplicationProps = {
   id: Number,
@@ -138,99 +140,65 @@ type leaveApplicationProps = {
   refetch: Function
 };
 
-type leaveApplicationState = {
-  leave: string,
-  leaveType: string,
-  startDate: any,
-  endDate: any,
-  supervisorEmail: string,
-  secretaryEmail: string,
-  reason: string,
-  sickSheet: any,
-  errorMessage: string,
-  checkingMessage: string,
-  focusedInput: ?boolean
-};
+// type leaveApplicationState = {
+//   leave: string,
+//   leaveType: string,
+//   startDate: any,
+//   endDate: any,
+//   supervisorEmail: string,
+//   secretaryEmail: string,
+//   reason: string,
+//   sickSheet: any,
+//   errorMessage: string,
+//   checkingMessage: string,
+//   focusedInput: ?boolean
+// };
 
-class LeaveApplication extends Component<
-  leaveApplicationProps,
-  leaveApplicationState
-> {
-  handleLeaveChange: Function;
-  handleLeaveTypeChange: Function;
-  handleSupervisorEmailChange: Function;
-  handleSecretaryEmailChange: Function;
-  handleReasonChange: Function;
-  handleFileChange: Function;
-  handleSubmit: Function;
-  handleUserConfirm: Function;
+function LeaveApplication(props: leaveApplicationProps) {
+  const [errorMessage, setErrorMessage] = useState('');
+  const [checkingMessage, setCheckingMessage] = useState('');
+  const [leave, setLeave] = useState('');
+  const [leaveType, setLeaveType] = useState('');
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [supervisorEmail, setSupervisorEmail] = useState('');
+  const [secretaryEmail, setSecretaryEmail] = useState('');
+  const [reason, setReason] = useState('');
+  const [sickSheet, setSickSheet] = useState('');
+  const [focusedInput, setFocusedInput] = useState(null);
 
-  constructor() {
-    super();
-    this.state = {
-      errorMessage: '',
-      checkingMessage: '',
-      leave: '',
-      leaveType: '',
-      startDate: null,
-      endDate: null,
-      supervisorEmail: '',
-      secretaryEmail: '',
-      reason: '',
-      sickSheet: '',
-      focusedInput: null
-    };
-
-    this.handleLeaveChange = this.handleLeaveChange.bind(this);
-    this.handleLeaveTypeChange = this.handleLeaveTypeChange.bind(this);
-    this.handleSupervisorEmailChange = this.handleSupervisorEmailChange.bind(
-      this
-    );
-    this.handleSecretaryEmailChange = this.handleSecretaryEmailChange.bind(
-      this
-    );
-    this.handleReasonChange = this.handleReasonChange.bind(this);
-    this.handleFileChange = this.handleFileChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleUserConfirm = this.handleUserConfirm.bind(this);
+  function handleLeaveChange({ target }: SyntheticInputEvent<>) {
+    setLeave(target.value);
   }
 
-  handleLeaveChange({ target }: SyntheticInputEvent<>) {
-    this.setState({ leave: target.value });
+  function handleLeaveTypeChange({ target }: SyntheticInputEvent<>) {
+    setLeaveType(target.value);
   }
 
-  handleLeaveTypeChange({ target }: SyntheticInputEvent<>) {
-    this.setState({ leaveType: target.value });
+  function handleSupervisorEmailChange({ target }: SyntheticInputEvent<>) {
+    setSupervisorEmail(target.value);
   }
 
-  handleSupervisorEmailChange({ target }: SyntheticInputEvent<>) {
-    this.setState({ supervisorEmail: target.value });
+  function handleSecretaryEmailChange({ target }: SyntheticInputEvent<>) {
+    setSecretaryEmail(target.value);
   }
 
-  handleSecretaryEmailChange({ target }: SyntheticInputEvent<>) {
-    this.setState({ secretaryEmail: target.value });
+  function handleReasonChange({ target }: SyntheticInputEvent<>) {
+    setReason(target.value);
   }
 
-  handleReasonChange({ target }: SyntheticInputEvent<>) {
-    this.setState({ reason: target.value });
+  function handleFileChange({ target }: SyntheticInputEvent<>) {
+    setSickSheet(target.files[0]);
   }
 
-  handleFileChange({ target }: SyntheticInputEvent<>) {
-    this.setState({ sickSheet: target.files[0] });
-  }
-
-  handleUserConfirm() {
-    this.setState({ checkingMessage: '' });
-  }
-
-  handleSubmit(e: Event) {
+  function handleSubmit(e: Event) {
     e.preventDefault();
     const {
       user_detail,
       user_record,
       onLeaveApplicationClick,
       refetch
-    } = this.props;
+    } = props;
 
     const user_id = user_detail.dbId;
     const annualDays = user_detail.annual;
@@ -241,18 +209,6 @@ class LeaveApplication extends Component<
     const familyCareDays = user_detail.familyCare;
     const maternityDays = user_detail.maternity ? user_detail.maternity : null;
     const paternityDays = user_detail.paternity ? user_detail.paternity : null;
-    const leave = this.state.leave;
-    const leaveType = this.state.leaveType;
-    const startDate = this.state.startDate ? this.state.startDate : null;
-    const endDate = this.state.endDate ? this.state.endDate : null;
-    const supervisorEmail = this.state.supervisorEmail
-      ? this.state.supervisorEmail.trim()
-      : null;
-    const secretaryEmail = this.state.secretaryEmail
-      ? this.state.secretaryEmail.trim()
-      : null;
-    const reason = this.state.reason ? this.state.reason.trim() : null;
-    const sickSheet = this.state.sickSheet ? this.state.sickSheet : null;
     const designation = user_detail.designation;
 
     if (
@@ -264,9 +220,7 @@ class LeaveApplication extends Component<
       !supervisorEmail ||
       !reason
     ) {
-      this.setState({
-        errorMessage: 'One or more required fields are missing!'
-      });
+      setErrorMessage('One or more required fields are missing!');
       return;
     }
 
@@ -275,7 +229,7 @@ class LeaveApplication extends Component<
 
     // check user data range selection
     if (leaveRangeDays <= 0) {
-      this.setState({ errorMessage: 'The dates you selected are invalid!' });
+      setErrorMessage('The dates you selected are invalid!');
       return;
     }
 
@@ -302,7 +256,7 @@ class LeaveApplication extends Component<
     );
 
     // exclude public holidays
-    const publicHolidays = this.props.public_holiday.edges.map(item => {
+    const publicHolidays = props.public_holiday.edges.map(item => {
       let hDate = new Date(item.node.holidayDate);
       let holiday_date = moment(hDate).format('DD, MM, YYYY');
       return holiday_date;
@@ -321,9 +275,7 @@ class LeaveApplication extends Component<
     const maternityLeaveDays = daysExcludingOnlyPublicHolidaysSet.size;
 
     if (maternityLeaveDays === 0) {
-      this.setState({
-        errorMessage: 'The dates you selected either fall on public holiday!'
-      });
+      setErrorMessage('The dates you selected either fall on public holiday!');
       return;
     }
 
@@ -334,10 +286,9 @@ class LeaveApplication extends Component<
         : maternityLeaveDays;
 
     if (leaveDays === 0) {
-      this.setState({
-        errorMessage:
-          'The dates you selected either fall on public holiday, Saturday or Sunday!'
-      });
+      setErrorMessage(
+        'The dates you selected either fall on public holiday, Saturday or Sunday!'
+      );
       return;
     }
 
@@ -357,24 +308,24 @@ class LeaveApplication extends Component<
     );
 
     // calculate total leave days
-    const getLeaveDays = type => {
+    function getLeaveDays(type) {
       const totalDays = {
-        annual: () => {
+        annual: function() {
           return annualDays - myLeaveDays;
         },
-        sick: () => {
+        sick: function() {
           return (myLeaveDays >= 2 || approvedSingleSickLeaves.length >= 4) &&
             !sickSheet
             ? null
             : sickDays - myLeaveDays;
         },
-        bereavement: () => {
+        bereavement: function() {
           return bereavementDays - myLeaveDays;
         },
-        christmas: () => {
+        christmas: function() {
           return christmasDays - myLeaveDays;
         },
-        birthday: () => {
+        birthday: function() {
           // create date
           const dOB = new Date(dateOfBirth);
           dOB.setHours(dOB.getHours() - 12);
@@ -385,10 +336,10 @@ class LeaveApplication extends Component<
             ? myLeaveDays
             : undefined;
         },
-        'family care': () => {
+        'family care': function() {
           return familyCareDays - myLeaveDays;
         },
-        maternity: () => {
+        maternity: function() {
           if (!sickSheet) {
             return false;
           } else {
@@ -397,60 +348,54 @@ class LeaveApplication extends Component<
             }
           }
         },
-        paternity: () => {
+        paternity: function() {
           if (paternityDays) {
             return paternityDays - myLeaveDays;
           }
         },
-        lwop: () => {
+        lwop: function() {
           return myLeaveDays;
         },
-        other: () => {
+        other: function() {
           return myLeaveDays;
         }
       };
       return totalDays[type]();
-    };
+    }
 
-    const applicationDays = getLeaveDays(leave);
+    const applicationDays: any = getLeaveDays(leave);
 
     if (applicationDays < 0) {
-      this.setState({ errorMessage: 'Your leave balance cannot be negative!' });
+      setErrorMessage('Your leave balance cannot be negative!');
       return;
     }
 
     if (applicationDays === false) {
-      this.setState({
-        errorMessage: 'A medical certificate is required for maternity leave!'
-      });
+      setErrorMessage('A medical certificate is required for maternity leave!');
       return;
     }
 
     if (applicationDays === null) {
-      this.setState({
-        errorMessage:
-          'A medical certificate is required for absence of two consecutive days or more and after four single day absences!'
-      });
+      setErrorMessage(
+        'A medical certificate is required for absence of two consecutive days or more and after four single day absences!'
+      );
       return;
     }
 
     if (applicationDays === undefined) {
-      this.setState({
-        errorMessage:
-          'The date you selected as your date of birth does not match our record!'
-      });
+      setErrorMessage(
+        'The date you selected as your date of birth does not match our record!'
+      );
       return;
     }
 
     const sDate = moment(startDate).format('DD/MM/YYYY');
     const eDate = moment(endDate).format('DD/MM/YYYY');
 
-    this.setState({
-      errorMessage: '',
-      startDate: null,
-      endDate: null,
-      checkingMessage: 'Checking...'
-    });
+    setErrorMessage('');
+    setStartDate(null);
+    setEndDate(null);
+    setCheckingMessage('Checking...');
 
     const applicationDetails = {
       user_id: user_id,
@@ -472,147 +417,144 @@ class LeaveApplication extends Component<
     refetch();
   }
 
-  render() {
-    const { user_detail } = this.props;
-    let gender = user_detail.gender ? user_detail.gender.toLowerCase() : null;
+  const { user_detail } = props;
+  let gender = user_detail.gender ? user_detail.gender.toLowerCase() : null;
 
-    if (this.state.checkingMessage) {
-      return <div className="loader" />;
-    }
-
-    return (
-      <div className="card card-body">
-        <form encType="multipart/form-data" onSubmit={this.handleSubmit}>
-          <div className="row">
-            <div className="col-md-6">
-              <div className="form-group">
-                <label htmlFor="leave">Leave</label>
-                <select
-                  className="form-control"
-                  id="leave"
-                  onChange={this.handleLeaveChange}
-                >
-                  <option />
-                  <option>annual</option>
-                  <option>sick</option>
-                  <option>bereavement</option>
-                  <option>family care</option>
-                  <option>christmas</option>
-                  <option>birthday</option>
-                  {gender === 'female' &&
-                    user_detail.maternity > 0 && <option>maternity</option>}
-                  {gender === 'male' &&
-                    user_detail.paternity > 0 && <option>paternity</option>}
-                  <option>lwop</option>
-                  <option>other</option>
-                </select>
-              </div>
-            </div>
-            <div className="col-md-6">
-              <div className="form-group">
-                <label htmlFor="leaveType">Leave type</label>
-                <select
-                  className="form-control"
-                  id="leaveType"
-                  onChange={this.handleLeaveTypeChange}
-                >
-                  <option />
-                  <option>full</option>
-                  <option>half day am</option>
-                  <option>half day pm</option>
-                </select>
-              </div>
-            </div>
-          </div>
-          <div className="row">
-            <div className="col">
-              <div className="form-group">
-                <label htmlFor="startDate-endDate">Start date - End date</label>
-                <DateRangePicker
-                  startDateId="startDate"
-                  endDateId="endDate"
-                  startDate={this.state.startDate}
-                  endDate={this.state.endDate}
-                  onDatesChange={({ startDate, endDate }) =>
-                    this.setState({ startDate, endDate })
-                  }
-                  focusedInput={this.state.focusedInput}
-                  onFocusChange={focusedInput =>
-                    this.setState({ focusedInput })
-                  }
-                  isOutsideRange={() => false}
-                  minimumNights={0}
-                  showDefaultInputIcon
-                  showClearDates
-                  withPortal
-                  displayFormat="DD/MM/YYYY"
-                  hideKeyboardShortcutsPanel
-                  renderCalendarInfo={() => (
-                    <p className="text-center font-italic">
-                      To select a single day click the date twice.
-                    </p>
-                  )}
-                />
-              </div>
-            </div>
-          </div>
-          <div className="form-group">
-            <label htmlFor="supervisorEmail">Supervisor email</label>
-            <input
-              type="email"
-              className="form-control"
-              placeholder="Supervisor email"
-              id="supervisorEmail"
-              onChange={this.handleSupervisorEmailChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="secretaryEmail">
-              Second supervisor / secretary email
-            </label>
-            <input
-              type="email"
-              className="form-control"
-              placeholder="Second supervisor / secretary email"
-              id="secretaryEmail"
-              onChange={this.handleSecretaryEmailChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="reason">Reason</label>
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Reason for leave"
-              id="reason"
-              onChange={this.handleReasonChange}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="sicksheet">Sick sheet</label>
-            <input
-              type="file"
-              className="form-control-file"
-              id="sicksheet"
-              onChange={this.handleFileChange}
-            />
-            <small className="form-text text-muted">
-              A medical certificate is required for absence of two consecutive
-              days or more and after four single day absences.
-            </small>
-          </div>
-          <div className="form-group">
-            <button type="submit" className="btn btn-primary col">
-              Submit
-            </button>
-          </div>
-        </form>
-        <div className="text-danger text-center pt-2">
-          <div>{this.state.errorMessage}</div>
-        </div>
-      </div>
-    );
+  if (checkingMessage) {
+    return <div className="loader" />;
   }
+
+  return (
+    <div className="card card-body shadow p-3 mb-5 bg-white rounded">
+      <form encType="multipart/form-data" onSubmit={handleSubmit}>
+        <div className="row">
+          <div className="col-md-6">
+            <div className="form-group">
+              <label htmlFor="leave">Leave</label>
+              <select
+                className="form-control"
+                id="leave"
+                onChange={handleLeaveChange}
+              >
+                <option />
+                <option>annual</option>
+                <option>sick</option>
+                <option>bereavement</option>
+                <option>family care</option>
+                <option>christmas</option>
+                <option>birthday</option>
+                {gender === 'female' &&
+                  user_detail.maternity > 0 && <option>maternity</option>}
+                {gender === 'male' &&
+                  user_detail.paternity > 0 && <option>paternity</option>}
+                <option>lwop</option>
+                <option>other</option>
+              </select>
+            </div>
+          </div>
+          <div className="col-md-6">
+            <div className="form-group">
+              <label htmlFor="leaveType">Leave type</label>
+              <select
+                className="form-control"
+                id="leaveType"
+                onChange={handleLeaveTypeChange}
+              >
+                <option />
+                <option>full</option>
+                <option>half day am</option>
+                <option>half day pm</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col">
+            <div className="form-group">
+              <label htmlFor="startDate-endDate">Start date - End date</label>
+              <DateRangePicker
+                startDateId="startDate"
+                endDateId="endDate"
+                startDate={startDate}
+                endDate={endDate}
+                onDatesChange={({ startDate, endDate }) => {
+                  setStartDate(startDate);
+                  setEndDate(endDate);
+                }}
+                focusedInput={focusedInput}
+                onFocusChange={focusedInput => setFocusedInput(focusedInput)}
+                isOutsideRange={() => false}
+                minimumNights={0}
+                showDefaultInputIcon
+                showClearDates
+                withPortal
+                displayFormat="DD/MM/YYYY"
+                hideKeyboardShortcutsPanel
+                renderCalendarInfo={() => (
+                  <p className="text-center font-italic">
+                    To select a single day click the date twice.
+                  </p>
+                )}
+              />
+            </div>
+          </div>
+        </div>
+        <div className="form-group">
+          <label htmlFor="supervisorEmail">Supervisor email</label>
+          <input
+            type="email"
+            className="form-control"
+            placeholder="Supervisor email"
+            id="supervisorEmail"
+            onChange={handleSupervisorEmailChange}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="secretaryEmail">
+            Second supervisor / secretary email
+          </label>
+          <input
+            type="email"
+            className="form-control"
+            placeholder="Second supervisor / secretary email"
+            id="secretaryEmail"
+            onChange={handleSecretaryEmailChange}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="reason">Reason</label>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Reason for leave"
+            id="reason"
+            onChange={handleReasonChange}
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="sicksheet">Sick sheet</label>
+          <input
+            type="file"
+            className="form-control-file"
+            id="sicksheet"
+            onChange={handleFileChange}
+          />
+          <small className="form-text text-muted">
+            A medical certificate is required for absence of two consecutive
+            days or more and after four single day absences.
+          </small>
+        </div>
+        <div className="form-group">
+          <button type="submit" className="btn btn-primary col">
+            Submit
+          </button>
+        </div>
+      </form>
+      <div className="text-danger text-center pt-2">
+        <div>{errorMessage}</div>
+      </div>
+    </div>
+  );
 }
 
 type Props = {
@@ -622,104 +564,102 @@ type Props = {
   dispatch: Function
 };
 
-export default (props: Props) => (
-  <Query query={USER_DETAIL} variables={{ id: props.id }} pollInterval={60000}>
-    {({ loading, error, data: { user }, refetch }) => (
-      <Query
-        query={USER_RECORD}
-        variables={{ id: props.id }}
-        pollInterval={60000}
-      >
-        {({
-          loading: recordLoading,
-          error: recordError,
-          data: { user: userRecord }
-        }) => (
-          <Query query={PUBLIC_HOLIDAY}>
-            {({
-              loading: holidayLoading,
-              error: holidayError,
-              data: { publicHoliday }
-            }) => {
-              if (loading || recordLoading || holidayLoading) {
-                return (
-                  <div
-                    className="container text-center"
-                    style={{ paddingTop: '100px' }}
-                  >
-                    <div className="col-md-8 ml-auto mr-auto">
-                      <div className="loader1" />
-                    </div>
-                  </div>
-                );
-              }
+export default function(props: Props) {
+  const { id, message, dispatch, onLeaveApplicationClick } = props;
 
-              if (error || recordError || holidayError) {
-                console.log(
-                  error.message,
-                  recordError.message,
-                  holidayError.message
-                );
-                return (
-                  <div
-                    className="container text-center"
-                    style={{ paddingTop: '100px' }}
-                  >
-                    <div className="col-md-8 ml-auto mr-auto">
-                      <p>Something went wrong!</p>
-                    </div>
-                  </div>
-                );
-              }
-
-              return (
-                <div className="container">
-                  <div className="row">
-                    <div className="col-md-12">
-                      <div className="col-md-9 ml-auto mr-auto">
-                        <UserName user_detail={user} />
+  return (
+    <Query query={USER_DETAIL} variables={{ id: id }} pollInterval={60000}>
+      {({ loading, error, data: { user }, refetch }) => (
+        <Query query={USER_RECORD} variables={{ id: id }} pollInterval={60000}>
+          {({
+            loading: recordLoading,
+            error: recordError,
+            data: { user: userRecord }
+          }) => (
+            <Query query={PUBLIC_HOLIDAY}>
+              {({
+                loading: holidayLoading,
+                error: holidayError,
+                data: { publicHoliday }
+              }) => {
+                if (loading || recordLoading || holidayLoading) {
+                  return (
+                    <div
+                      className="container text-center"
+                      style={{ paddingTop: '100px' }}
+                    >
+                      <div className="col-md-8 ml-auto mr-auto">
+                        <div className="loader1" />
                       </div>
                     </div>
-                    <div className="col-md-3 ml-auto">
-                      <UserRecord user_detail={user} />
+                  );
+                }
+
+                if (error || recordError || holidayError) {
+                  console.log(
+                    error.message,
+                    recordError.message,
+                    holidayError.message
+                  );
+                  return (
+                    <div
+                      className="container text-center"
+                      style={{ paddingTop: '100px' }}
+                    >
+                      <div className="col-md-8 ml-auto mr-auto">
+                        <p>Something went wrong!</p>
+                      </div>
                     </div>
-                    <div className="col-md-6 mr-auto mb-2">
-                      {props.message ? (
-                        <div className="card">
-                          <div className="card-body text-center">
-                            <p>{props.message}</p>
-                            <button
-                              className="btn btn-primary btn-sm"
-                              onClick={() =>
-                                props.dispatch({
-                                  type: 'CLEAR_LEAVE_APPLICATION_MESSAGE'
-                                })
-                              }
-                            >
-                              Apply for leave
-                            </button>
-                          </div>
+                  );
+                }
+
+                return (
+                  <div className="container">
+                    <div className="row">
+                      <div className="col-md-12">
+                        <div className="col-md-9 ml-auto mr-auto">
+                          <UserName user_detail={user} />
                         </div>
-                      ) : (
-                        <LeaveApplication
-                          id={props.id}
-                          user_detail={user}
-                          user_record={userRecord}
-                          public_holiday={publicHoliday}
-                          refetch={refetch}
-                          onLeaveApplicationClick={
-                            props.onLeaveApplicationClick
-                          }
-                        />
-                      )}
+                      </div>
+                      <div className="col-md-3 ml-auto">
+                        <UserRecord user_detail={user} />
+                      </div>
+                      <div className="col-md-6 mr-auto mb-2">
+                        {message ? (
+                          <div className="card">
+                            <div className="card-body text-center">
+                              <p>{message}</p>
+                              <button
+                                className="btn btn-primary btn-sm"
+                                onClick={function() {
+                                  dispatch({
+                                    type: 'CLEAR_LEAVE_APPLICATION_MESSAGE'
+                                  });
+                                }}
+                              >
+                                Apply for leave
+                              </button>
+                            </div>
+                          </div>
+                        ) : (
+                          <LeaveApplication
+                            id={id}
+                            user_detail={user}
+                            user_record={userRecord}
+                            public_holiday={publicHoliday}
+                            refetch={refetch}
+                            onLeaveApplicationClick={onLeaveApplicationClick}
+                          />
+                        )}
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            }}
-          </Query>
-        )}
-      </Query>
-    )}
-  </Query>
-);
+                );
+              }}
+            </Query>
+          )}
+        </Query>
+      )}
+    </Query>
+  );
+}
