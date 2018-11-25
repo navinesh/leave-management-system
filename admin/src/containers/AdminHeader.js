@@ -1,5 +1,5 @@
 // @flow
-import React, { Fragment } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
 import { logoutAdmin } from '../actions/AdminLogout';
@@ -10,19 +10,23 @@ type Props = {
   dispatch: Function
 };
 
-const AdminHeader = (props: Props) => (
-  <Fragment>
-    {props.isAuthenticated && (
-      <Header dispatch={props.dispatch} logoutAdmin={logoutAdmin} />
-    )}
-  </Fragment>
-);
+function AdminHeader(props: Props) {
+  const { isAuthenticated, dispatch } = props;
 
-const mapStateToProps = state => {
+  return (
+    <>
+      {isAuthenticated && (
+        <Header dispatch={dispatch} logoutAdmin={logoutAdmin} />
+      )}
+    </>
+  );
+}
+
+function mapStateToProps(state) {
   const { adminAuth } = state;
   const { isAuthenticated } = adminAuth;
 
   return { isAuthenticated };
-};
+}
 
 export default connect(mapStateToProps)(AdminHeader);
