@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { gql } from 'apollo-boost';
@@ -58,14 +58,14 @@ type Props = {
   archiveMessage: string
 };
 
-class StaffRecord extends Component<Props> {
-  componentDidMount() {
-    this.verifyToken();
-    setInterval(this.verifyToken, 600000);
-  }
+function StaffRecord(props: Props) {
+  useEffect(function() {
+    verifyToken();
+    setInterval(verifyToken, 600000);
+  }, []);
 
-  verifyToken = async () => {
-    const { auth_info, dispatch, verifyAdminToken } = this.props;
+  async function verifyToken() {
+    const { auth_info, dispatch, verifyAdminToken } = props;
 
     const adminToken = auth_info.admin_token
       ? auth_info
@@ -87,61 +87,54 @@ class StaffRecord extends Component<Props> {
         dispatch(loginAdminErrorFromToken('Your session has expired!'));
       }
     }
-  };
-
-  render() {
-    const { isAuthenticated, dispatch, isFetching, message } = this.props;
-
-    return (
-      <div className="container">
-        {isAuthenticated ? (
-          <Query query={ACTIVE_USERS} pollInterval={60000}>
-            {({
-              loading,
-              error,
-              data: { findUsers: staff_record },
-              refetch
-            }) => {
-              if (loading) {
-                return (
-                  <div className="text-center">
-                    <div className="loader1" />
-                  </div>
-                );
-              }
-
-              if (error) {
-                console.log(error);
-                return (
-                  <div className="text-center">
-                    <p>Something went wrong!</p>
-                  </div>
-                );
-              }
-
-              return (
-                <StaffRecordList
-                  staff_record={staff_record}
-                  dispatch={dispatch}
-                  isFetching={isFetching}
-                  message={message}
-                  onModifyUserRecordSubmit={modifyUserDetails =>
-                    dispatch(submitModifyUserRecord(modifyUserDetails))
-                  }
-                  refetch={refetch}
-                />
-              );
-            }}
-          </Query>
-        ) : (
-          <Redirect to="/login" />
-        )}
-      </div>
-    );
   }
+
+  const { isAuthenticated, dispatch, isFetching, message } = props;
+
+  return (
+    <div className="container">
+      {isAuthenticated ? (
+        <Query query={ACTIVE_USERS} pollInterval={60000}>
+          {({ loading, error, data: { findUsers: staff_record }, refetch }) => {
+            if (loading) {
+              return (
+                <div className="text-center">
+                  <div className="loader1" />
+                </div>
+              );
+            }
+
+            if (error) {
+              console.log(error);
+              return (
+                <div className="text-center">
+                  <p>Something went wrong!</p>
+                </div>
+              );
+            }
+
+            return (
+              <StaffRecordList
+                staff_record={staff_record}
+                dispatch={dispatch}
+                isFetching={isFetching}
+                message={message}
+                onModifyUserRecordSubmit={function(modifyUserDetails) {
+                  return dispatch(submitModifyUserRecord(modifyUserDetails));
+                }}
+                refetch={refetch}
+              />
+            );
+          }}
+        </Query>
+      ) : (
+        <Redirect to="/login" />
+      )}
+    </div>
+  );
 }
 
-const mapStateToProps = state => {
+function mapStateToProps(state) {
   const { adminAuth, modifyUser } = state;
 
   const { auth_info, isAuthenticated } = adminAuth;
@@ -153,7 +146,7 @@ const mapStateToProps = state => {
     isFetching,
     message
   };
-};
+}
 
 export default compose(
   connect(mapStateToProps),
