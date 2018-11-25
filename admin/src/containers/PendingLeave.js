@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { gql } from 'apollo-boost';
@@ -74,14 +74,14 @@ type Props = {
   verifyAdminToken: Function
 };
 
-class PendingLeave extends Component<Props> {
-  componentDidMount() {
-    this.verifyToken();
-    setInterval(this.verifyToken, 600000);
-  }
+function PendingLeave(props: Props) {
+  useEffect(function() {
+    verifyToken();
+    setInterval(verifyToken, 600000);
+  }, []);
 
-  verifyToken = async () => {
-    const { auth_info, dispatch, verifyAdminToken } = this.props;
+  async function verifyToken() {
+    const { auth_info, dispatch, verifyAdminToken } = props;
 
     const adminToken = auth_info.admin_token
       ? auth_info
@@ -103,89 +103,87 @@ class PendingLeave extends Component<Props> {
         dispatch(loginAdminErrorFromToken('Your session has expired!'));
       }
     }
-  };
-
-  render() {
-    const {
-      isAuthenticated,
-      dispatch,
-      isApproveLeaveFetching,
-      approveLeavemessage,
-      isEditLeaveFetching,
-      editLeaveMessage,
-      isDeclineLeaveFetching,
-      declineLeaveMessage
-    } = this.props;
-
-    return (
-      <div className="container">
-        {isAuthenticated ? (
-          <Query query={LEAVE_RECORD} pollInterval={60000}>
-            {({
-              loading,
-              error,
-              data: { findLeaveRecord: pending_items },
-              refetch
-            }) => (
-              <Query query={PUBLIC_HOLIDAY}>
-                {({
-                  loading: holidayLoading,
-                  error: holidayError,
-                  data: { publicHoliday }
-                }) => {
-                  if (loading || holidayLoading) {
-                    return (
-                      <div className="text-center">
-                        <div className="loader1" />
-                      </div>
-                    );
-                  }
-
-                  if (error || holidayError) {
-                    console.log(error || holidayError);
-                    return (
-                      <div className="text-center">
-                        <p>Something went wrong!</p>
-                      </div>
-                    );
-                  }
-
-                  return (
-                    <PendingLeaveList
-                      pending_items={pending_items}
-                      public_holiday={publicHoliday}
-                      refetch={refetch}
-                      dispatch={dispatch}
-                      isApproveLeaveFetching={isApproveLeaveFetching}
-                      approveLeavemessage={approveLeavemessage}
-                      isEditLeaveFetching={isEditLeaveFetching}
-                      editLeaveMessage={editLeaveMessage}
-                      isDeclineLeaveFetching={isDeclineLeaveFetching}
-                      declineLeaveMessage={declineLeaveMessage}
-                      onApproveLeaveSubmit={approveLeaveData =>
-                        dispatch(submitApproveLeave(approveLeaveData))
-                      }
-                      onDeclineLeaveSubmit={declineLeaveData =>
-                        dispatch(submitDeclineLeave(declineLeaveData))
-                      }
-                      onEditLeaveSubmit={editLeaveData =>
-                        dispatch(submitEditLeave(editLeaveData))
-                      }
-                    />
-                  );
-                }}
-              </Query>
-            )}
-          </Query>
-        ) : (
-          <Redirect to="/login" />
-        )}
-      </div>
-    );
   }
+
+  const {
+    isAuthenticated,
+    dispatch,
+    isApproveLeaveFetching,
+    approveLeavemessage,
+    isEditLeaveFetching,
+    editLeaveMessage,
+    isDeclineLeaveFetching,
+    declineLeaveMessage
+  } = props;
+
+  return (
+    <div className="container">
+      {isAuthenticated ? (
+        <Query query={LEAVE_RECORD} pollInterval={60000}>
+          {({
+            loading,
+            error,
+            data: { findLeaveRecord: pending_items },
+            refetch
+          }) => (
+            <Query query={PUBLIC_HOLIDAY}>
+              {({
+                loading: holidayLoading,
+                error: holidayError,
+                data: { publicHoliday }
+              }) => {
+                if (loading || holidayLoading) {
+                  return (
+                    <div className="text-center">
+                      <div className="loader1" />
+                    </div>
+                  );
+                }
+
+                if (error || holidayError) {
+                  console.log(error || holidayError);
+                  return (
+                    <div className="text-center">
+                      <p>Something went wrong!</p>
+                    </div>
+                  );
+                }
+
+                return (
+                  <PendingLeaveList
+                    pending_items={pending_items}
+                    public_holiday={publicHoliday}
+                    refetch={refetch}
+                    dispatch={dispatch}
+                    isApproveLeaveFetching={isApproveLeaveFetching}
+                    approveLeavemessage={approveLeavemessage}
+                    isEditLeaveFetching={isEditLeaveFetching}
+                    editLeaveMessage={editLeaveMessage}
+                    isDeclineLeaveFetching={isDeclineLeaveFetching}
+                    declineLeaveMessage={declineLeaveMessage}
+                    onApproveLeaveSubmit={function(approveLeaveData) {
+                      return dispatch(submitApproveLeave(approveLeaveData));
+                    }}
+                    onDeclineLeaveSubmit={function(declineLeaveData) {
+                      return dispatch(submitDeclineLeave(declineLeaveData));
+                    }}
+                    onEditLeaveSubmit={function(editLeaveData) {
+                      return dispatch(submitEditLeave(editLeaveData));
+                    }}
+                  />
+                );
+              }}
+            </Query>
+          )}
+        </Query>
+      ) : (
+        <Redirect to="/login" />
+      )}
+    </div>
+  );
 }
 
-const mapStateToProps = state => {
+function mapStateToProps(state) {
   const { adminAuth, approveLeave, editLeave, declineLeave } = state;
   const { auth_info, isAuthenticated } = adminAuth;
   const { isApproveLeaveFetching, approveLeavemessage } = approveLeave;
@@ -202,7 +200,7 @@ const mapStateToProps = state => {
     isDeclineLeaveFetching,
     declineLeaveMessage
   };
-};
+}
 
 export default compose(
   connect(mapStateToProps),
