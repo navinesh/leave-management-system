@@ -11,19 +11,25 @@ type Props = {
   message: string
 };
 
-const ResetPassword = (props: Props) => (
-  <AdminResetPassword
-    isFetching={props.isFetching}
-    message={props.message}
-    onResetClick={email => props.dispatch(resetPassword(email))}
-  />
-);
+function ResetPassword(props: Props) {
+  const { isFetching, message, dispatch } = props;
 
-const mapStateToProps = state => {
+  return (
+    <AdminResetPassword
+      isFetching={isFetching}
+      message={message}
+      onResetClick={function(email) {
+        return dispatch(resetPassword(email));
+      }}
+    />
+  );
+}
+
+function mapStateToProps(state) {
   const { resetPassword } = state;
   const { isFetching, message } = resetPassword;
 
   return { isFetching, message };
-};
+}
 
 export default connect(mapStateToProps)(ResetPassword);
