@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, Fragment } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { gql } from 'apollo-boost';
@@ -34,18 +34,19 @@ type Props = {
   verifyAdminToken: Function
 };
 
-class CreateUser extends Component<Props> {
-  componentDidMount() {
-    this.verifyToken();
-    setInterval(this.verifyToken, 600000);
-  }
+function CreateUser(props: Props) {
+  useEffect(function() {
+    verifyToken();
+    setInterval(verifyToken, 600000);
+    return {
+      function() {
+        props.dispatch(clearNewUserRecordMessage());
+      }
+    };
+  }, []);
 
-  componentWillUnmount() {
-    this.props.dispatch(clearNewUserRecordMessage());
-  }
-
-  verifyToken = async () => {
-    const { auth_info, dispatch, verifyAdminToken } = this.props;
+  async function verifyToken() {
+    const { auth_info, dispatch, verifyAdminToken } = props;
 
     const adminToken = auth_info.admin_token
       ? auth_info
@@ -67,37 +68,35 @@ class CreateUser extends Component<Props> {
         dispatch(loginAdminErrorFromToken('Your session has expired!'));
       }
     }
-  };
-
-  render() {
-    const { isAuthenticated, dispatch, message, isFetching } = this.props;
-
-    return (
-      <Fragment>
-        {isAuthenticated ? (
-          <CreateUserForm
-            isFetching={isFetching}
-            message={message}
-            dispatch={dispatch}
-            onNewUserRecordSubmit={newUserDetails =>
-              dispatch(submitNewUserRecord(newUserDetails))
-            }
-          />
-        ) : (
-          <Redirect to="/login" />
-        )}
-      </Fragment>
-    );
   }
+
+  const { isAuthenticated, dispatch, message, isFetching } = props;
+
+  return (
+    <>
+      {isAuthenticated ? (
+        <CreateUserForm
+          isFetching={isFetching}
+          message={message}
+          dispatch={dispatch}
+          onNewUserRecordSubmit={function(newUserDetails) {
+            return dispatch(submitNewUserRecord(newUserDetails));
+          }}
+        />
+      ) : (
+        <Redirect to="/login" />
+      )}
+    </>
+  );
 }
 
-const mapStateToProps = state => {
+function mapStateToProps(state) {
   const { adminAuth, addUser } = state;
   const { auth_info, isAuthenticated } = adminAuth;
   const { isFetching, message } = addUser;
 
   return { auth_info, isAuthenticated, isFetching, message };
-};
+}
 
 export default compose(
   connect(mapStateToProps),
