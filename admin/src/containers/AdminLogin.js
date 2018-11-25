@@ -1,5 +1,5 @@
 // @flow
-import React, { Fragment } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
@@ -12,25 +12,25 @@ type Props = {
   dispatch: Function
 };
 
-const AdminLogin = (props: Props) => (
-  <Fragment>
-    {!props.isAuthenticated ? (
-      <Login
-        isFetching={props.isFetching}
-        message={props.message}
-        dispatch={props.dispatch}
-      />
-    ) : (
-      <Redirect to="/" />
-    )}
-  </Fragment>
-);
+function AdminLogin(props: Props) {
+  const { isAuthenticated, dispatch, isFetching, message } = props;
 
-const mapStateToProps = state => {
+  return (
+    <>
+      {!isAuthenticated ? (
+        <Login isFetching={isFetching} message={message} dispatch={dispatch} />
+      ) : (
+        <Redirect to="/" />
+      )}
+    </>
+  );
+}
+
+function mapStateToProps(state) {
   const { adminAuth } = state;
   const { isFetching, message, isAuthenticated } = adminAuth;
 
   return { isFetching, message, isAuthenticated };
-};
+}
 
 export default connect(mapStateToProps)(AdminLogin);
