@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import { gql } from 'apollo-boost';
@@ -45,14 +45,14 @@ type Props = {
   verifyAdminToken: Function
 };
 
-class SickSheetRecord extends Component<Props> {
-  componentDidMount() {
-    this.verifyToken();
-    setInterval(this.verifyToken, 600000);
-  }
+function SickSheetRecord(props: Props) {
+  useEffect(function() {
+    verifyToken();
+    setInterval(verifyToken, 600000);
+  }, []);
 
-  verifyToken = async () => {
-    const { auth_info, dispatch, verifyAdminToken } = this.props;
+  async function verifyToken() {
+    const { auth_info, dispatch, verifyAdminToken } = props;
 
     const adminToken = auth_info.admin_token
       ? auth_info
@@ -74,54 +74,52 @@ class SickSheetRecord extends Component<Props> {
         dispatch(loginAdminErrorFromToken('Your session has expired!'));
       }
     }
-  };
-
-  render() {
-    const { isAuthenticated } = this.props;
-
-    return (
-      <div className="container">
-        {isAuthenticated ? (
-          <Query query={SICK_RECORD} pollInterval={60000}>
-            {({
-              loading,
-              error,
-              data: { findSicksheetRecord: sickSheet_items }
-            }) => {
-              if (loading) {
-                return (
-                  <div className="text-center">
-                    <div className="loader1" />
-                  </div>
-                );
-              }
-
-              if (error) {
-                console.log(error);
-                return (
-                  <div className="text-center">
-                    <p>Something went wrong!</p>
-                  </div>
-                );
-              }
-
-              return <SickSheetList sickSheet_items={sickSheet_items} />;
-            }}
-          </Query>
-        ) : (
-          <Redirect to="/login" />
-        )}
-      </div>
-    );
   }
+
+  const { isAuthenticated } = props;
+
+  return (
+    <div className="container">
+      {isAuthenticated ? (
+        <Query query={SICK_RECORD} pollInterval={60000}>
+          {({
+            loading,
+            error,
+            data: { findSicksheetRecord: sickSheet_items }
+          }) => {
+            if (loading) {
+              return (
+                <div className="text-center">
+                  <div className="loader1" />
+                </div>
+              );
+            }
+
+            if (error) {
+              console.log(error);
+              return (
+                <div className="text-center">
+                  <p>Something went wrong!</p>
+                </div>
+              );
+            }
+
+            return <SickSheetList sickSheet_items={sickSheet_items} />;
+          }}
+        </Query>
+      ) : (
+        <Redirect to="/login" />
+      )}
+    </div>
+  );
 }
 
-const mapStateToProps = state => {
+function mapStateToProps(state) {
   const { adminAuth } = state;
   const { auth_info, isAuthenticated } = adminAuth;
 
   return { auth_info, isAuthenticated };
-};
+}
 
 export default compose(
   connect(mapStateToProps),
