@@ -3,17 +3,20 @@ import React, { lazy, Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import registerServiceWorker from './registerServiceWorker';
 
-import { Provider } from 'react-redux';
-
-import ApolloClient from 'apollo-boost';
-import { ApolloProvider } from 'react-apollo';
+import { ApolloClient } from 'apollo-client';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { HttpLink } from 'apollo-link-http';
+import { Query, ApolloProvider } from 'react-apollo';
+import gql from 'graphql-tag';
+import { onError } from 'apollo-link-error';
+import { ApolloLink } from 'apollo-link';
 
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
 import './index.css';
 import './bootstrap.min.css';
 
-import configureStore from './stores/ConfigureStore';
+import { typeDefs } from './resolvers';
 
 import Header from './containers/Header';
 import MainLogin from './containers/MainLogin';
@@ -25,26 +28,68 @@ import UserError from './components/UserError';
 const UserChangePassword = lazy(() => import('./containers/ChangePassword'));
 const LeaveApplication = lazy(() => import('./containers/LeaveApplication'));
 
-const store = configureStore();
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: ApolloLink.from([
+    onError(({ graphQLErrors, networkError }) => {
+      if (graphQLErrors)
+        graphQLErrors.map(({ message, locations, path }) =>
+          console.log(
+            `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+          )
+        );
+      if (networkError) console.log(`[Network error]: ${networkError}`);
+    }),
+    new HttpLink({
+      uri: 'http://localhost:8000/graphql'
+    })
+  ]),
+  initializers: {
+    isAuthenticated: () => !!localStorage.getItem('auth_token'),
+    id: () => localStorage.getItem('id'),
+    auth_token: () => localStorage.getItem('auth_token'),
+    sessionError: () => ''
+  },
+  typeDefs,
+  defaultOptions: {
+    watchQuery: {
+      errorPolicy: 'all'
+    },
+    query: {
+      errorPolicy: 'all'
+    },
+    mutate: {
+      errorPolicy: 'all'
+    }
+  }
+});
 
-const client = new ApolloClient({ uri: 'http://localhost:8080/graphql' });
+const IS_AUTHENTICATED = gql`
+  query IsAuthenticated {
+    isAuthenticated @client
+  }
+`;
 
 function PrivateRoute({ component, ...rest }) {
   return (
     <Route
       {...rest}
-      render={props =>
-        store.getState().userAuth.isAuthenticated ? (
-          React.createElement(component, props)
-        ) : (
-          <Redirect
-            to={{
-              pathname: '/login',
-              state: { from: props.location }
-            }}
-          />
-        )
-      }
+      render={props => (
+        <Query query={IS_AUTHENTICATED}>
+          {({ data }) => {
+            return data.isAuthenticated ? (
+              React.createElement(component, props)
+            ) : (
+              <Redirect
+                to={{
+                  pathname: '/login',
+                  state: { from: props.location }
+                }}
+              />
+            );
+          }}
+        </Query>
+      )}
     />
   );
 }
@@ -52,16 +97,16 @@ function PrivateRoute({ component, ...rest }) {
 function App() {
   return (
     <ApolloProvider client={client}>
-      <Provider store={store}>
-        <BrowserRouter>
+      <BrowserRouter>
+        <>
+          <Header />
           <Suspense
             fallback={
-              <div className="text-center">
-                <div className="loader1" />
+              <div className="text-center" style={{ marginTop: '80px' }}>
+                <div className="loader" />
               </div>
             }
           >
-            <Header />
             <Switch>
               <PrivateRoute exact path="/" component={Main} />
               <Route path="/leavecalendar" component={LeaveCalendar} />
@@ -75,11 +120,11 @@ function App() {
                 path="/changepassword"
                 component={UserChangePassword}
               />
-              <Route component={UserError} />
+              <Route path="/login" component={UserError} />
             </Switch>
           </Suspense>
-        </BrowserRouter>
-      </Provider>
+        </>
+      </BrowserRouter>
     </ApolloProvider>
   );
 }
