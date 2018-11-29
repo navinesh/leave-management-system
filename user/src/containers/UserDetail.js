@@ -1,23 +1,23 @@
 // @flow
 import React from 'react';
-import { connect } from 'react-redux';
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
 
 import UserDetail from '../components/UserDetail';
 
-type Props = {
-  auth_info: Object
-};
+const GET_ID = gql`
+  query Id {
+    id @client
+  }
+`;
 
-function UserDetails(props: Props) {
-  let id = props.auth_info.id ? props.auth_info.id : localStorage.getItem('id');
-
-  return <UserDetail id={id} />;
+export default function UserDetails() {
+  return (
+    <Query query={GET_ID}>
+      {({ data }) => {
+        let id = data.id ? data.id : localStorage.getItem('id');
+        return <UserDetail id={id} />;
+      }}
+    </Query>
+  );
 }
-
-function mapStateToProps(state) {
-  const { userAuth } = state;
-  const { auth_info } = userAuth;
-  return { auth_info };
-}
-
-export default connect(mapStateToProps)(UserDetails);

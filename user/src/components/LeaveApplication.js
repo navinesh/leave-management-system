@@ -1,11 +1,13 @@
 // @flow
 import React, { useState } from 'react';
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import { DateRangePicker } from 'react-dates';
+
+import axios from 'axios';
 
 import '../spinners.css';
 
@@ -109,24 +111,22 @@ function UserRecord(props) {
           {user_detail.christmas}
         </span>
       </li>
-      {gender === 'female' &&
-        user_detail.maternity > 0 && (
-          <li className="list-group-item d-flex justify-content-between align-items-center">
-            Maternity
-            <span className="badge badge-primary badge-pill">
-              {user_detail.maternity}
-            </span>
-          </li>
-        )}
-      {gender === 'male' &&
-        user_detail.paternity > 0 && (
-          <li className="list-group-item d-flex justify-content-between align-items-center">
-            Paternity
-            <span className="badge badge-primary badge-pill">
-              {user_detail.paternity}
-            </span>
-          </li>
-        )}
+      {gender === 'female' && user_detail.maternity > 0 && (
+        <li className="list-group-item d-flex justify-content-between align-items-center">
+          Maternity
+          <span className="badge badge-primary badge-pill">
+            {user_detail.maternity}
+          </span>
+        </li>
+      )}
+      {gender === 'male' && user_detail.paternity > 0 && (
+        <li className="list-group-item d-flex justify-content-between align-items-center">
+          Paternity
+          <span className="badge badge-primary badge-pill">
+            {user_detail.paternity}
+          </span>
+        </li>
+      )}
     </ul>
   );
 }
@@ -136,7 +136,6 @@ type leaveApplicationProps = {
   user_detail: Object,
   user_record: Object,
   public_holiday: Object,
-  onLeaveApplicationClick: Function,
   refetch: Function
 };
 
@@ -155,8 +154,6 @@ type leaveApplicationProps = {
 // };
 
 function LeaveApplication(props: leaveApplicationProps) {
-  const [errorMessage, setErrorMessage] = useState('');
-  const [checkingMessage, setCheckingMessage] = useState('');
   const [leave, setLeave] = useState('');
   const [leaveType, setLeaveType] = useState('');
   const [startDate, setStartDate] = useState(null);
@@ -166,6 +163,9 @@ function LeaveApplication(props: leaveApplicationProps) {
   const [reason, setReason] = useState('');
   const [sickSheet, setSickSheet] = useState('');
   const [focusedInput, setFocusedInput] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [serverMessage, setServerMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   function handleLeaveChange({ target }: SyntheticInputEvent<>) {
     setLeave(target.value);
@@ -193,12 +193,7 @@ function LeaveApplication(props: leaveApplicationProps) {
 
   function handleSubmit(e: Event) {
     e.preventDefault();
-    const {
-      user_detail,
-      user_record,
-      onLeaveApplicationClick,
-      refetch
-    } = props;
+    const { user_detail, user_record, refetch } = props;
 
     const user_id = user_detail.dbId;
     const annualDays = user_detail.annual;
@@ -393,9 +388,7 @@ function LeaveApplication(props: leaveApplicationProps) {
     const eDate = moment(endDate).format('DD/MM/YYYY');
 
     setErrorMessage('');
-    setStartDate(null);
-    setEndDate(null);
-    setCheckingMessage('Checking...');
+    setServerMessage('');
 
     const applicationDetails = {
       user_id: user_id,
@@ -412,7 +405,7 @@ function LeaveApplication(props: leaveApplicationProps) {
       designation: designation
     };
 
-    onLeaveApplicationClick(applicationDetails);
+    fetchLeaveApplication(applicationDetails);
 
     refetch();
   }
@@ -420,8 +413,52 @@ function LeaveApplication(props: leaveApplicationProps) {
   const { user_detail } = props;
   let gender = user_detail.gender ? user_detail.gender.toLowerCase() : null;
 
-  if (checkingMessage) {
-    return <div className="loader" />;
+  async function fetchLeaveApplication(applicationDetails) {
+    setLoading(true);
+
+    try {
+      let data = new FormData();
+      data.append('user_id', applicationDetails.user_id);
+      data.append('leave', applicationDetails.leave);
+      data.append('leaveType', applicationDetails.leaveType);
+      data.append('startDate', applicationDetails.startDate);
+      data.append('endDate', applicationDetails.endDate);
+      data.append('supervisorEmail', applicationDetails.supervisorEmail);
+      data.append('secretaryEmail', applicationDetails.secretaryEmail);
+      data.append('leaveDays', applicationDetails.leaveDays);
+      data.append('applicationDays', applicationDetails.applicationDays);
+      data.append('reason', applicationDetails.reason);
+      data.append('sickSheet', applicationDetails.sickSheet);
+      data.append('designation', applicationDetails.designation);
+
+      const response = await axios.post(
+        'http://localhost:8000/applyforleave',
+        data
+      );
+
+      setLoading(false);
+
+      if (response.status !== 201) {
+        setErrorMessage(response.data.message);
+      } else {
+        setServerMessage(response.data.message);
+        setStartDate(null);
+        setEndDate(null);
+        setLeave('');
+        setLeaveType('');
+        setStartDate(null);
+        setEndDate(null);
+        setSupervisorEmail('');
+        setSecretaryEmail('');
+        setReason('');
+        setSickSheet('');
+        setFocusedInput(null);
+      }
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      setErrorMessage(error.message);
+    }
   }
 
   return (
@@ -443,10 +480,12 @@ function LeaveApplication(props: leaveApplicationProps) {
                 <option>family care</option>
                 <option>christmas</option>
                 <option>birthday</option>
-                {gender === 'female' &&
-                  user_detail.maternity > 0 && <option>maternity</option>}
-                {gender === 'male' &&
-                  user_detail.paternity > 0 && <option>paternity</option>}
+                {gender === 'female' && user_detail.maternity > 0 && (
+                  <option>maternity</option>
+                )}
+                {gender === 'male' && user_detail.paternity > 0 && (
+                  <option>paternity</option>
+                )}
                 <option>lwop</option>
                 <option>other</option>
               </select>
@@ -550,6 +589,9 @@ function LeaveApplication(props: leaveApplicationProps) {
           </button>
         </div>
       </form>
+      <div className="text-primary text-center">
+        {loading ? <div className="loader" /> : serverMessage}
+      </div>
       <div className="text-danger text-center pt-2">
         <div>{errorMessage}</div>
       </div>
@@ -558,14 +600,11 @@ function LeaveApplication(props: leaveApplicationProps) {
 }
 
 type Props = {
-  id: any,
-  onLeaveApplicationClick: Function,
-  message: string,
-  dispatch: Function
+  id: any
 };
 
-export default function(props: Props) {
-  const { id, message, dispatch, onLeaveApplicationClick } = props;
+export default function Application(props: Props) {
+  const { id } = props;
 
   return (
     <Query query={USER_DETAIL} variables={{ id: id }} pollInterval={60000}>
@@ -586,10 +625,10 @@ export default function(props: Props) {
                   return (
                     <div
                       className="container text-center"
-                      style={{ paddingTop: '100px' }}
+                      style={{ paddingTop: '80px' }}
                     >
                       <div className="col-md-8 ml-auto mr-auto">
-                        <div className="loader1" />
+                        <div className="loader" />
                       </div>
                     </div>
                   );
@@ -625,32 +664,13 @@ export default function(props: Props) {
                         <UserRecord user_detail={user} />
                       </div>
                       <div className="col-md-6 mr-auto mb-2">
-                        {message ? (
-                          <div className="card">
-                            <div className="card-body text-center">
-                              <p>{message}</p>
-                              <button
-                                className="btn btn-primary btn-sm"
-                                onClick={function() {
-                                  dispatch({
-                                    type: 'CLEAR_LEAVE_APPLICATION_MESSAGE'
-                                  });
-                                }}
-                              >
-                                Apply for leave
-                              </button>
-                            </div>
-                          </div>
-                        ) : (
-                          <LeaveApplication
-                            id={id}
-                            user_detail={user}
-                            user_record={userRecord}
-                            public_holiday={publicHoliday}
-                            refetch={refetch}
-                            onLeaveApplicationClick={onLeaveApplicationClick}
-                          />
-                        )}
+                        <LeaveApplication
+                          id={id}
+                          user_detail={user}
+                          user_record={userRecord}
+                          public_holiday={publicHoliday}
+                          refetch={refetch}
+                        />
                       </div>
                     </div>
                   </div>

@@ -1,6 +1,6 @@
 // @flow
 import React, { useState } from 'react';
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 
 import '../spinners.css';
@@ -152,7 +152,7 @@ type Props = {
   id: any
 };
 
-export default function(props: Props) {
+export default function UserRecord(props: Props) {
   return (
     <Query
       query={USER_RECORD}
@@ -164,10 +164,10 @@ export default function(props: Props) {
           return (
             <div
               className="container text-center"
-              style={{ paddingTop: '100px' }}
+              style={{ paddingTop: '80px' }}
             >
               <div className="col-md-8 ml-auto mr-auto">
-                <div className="loader1" />
+                <div className="loader" />
               </div>
             </div>
           );

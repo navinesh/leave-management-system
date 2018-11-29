@@ -1,18 +1,38 @@
 // @flow
 import React from 'react';
+import { ApolloConsumer } from 'react-apollo';
 import { Link } from 'react-router-dom';
 
+function Logout() {
+  return (
+    <ApolloConsumer>
+      {client => (
+        <button
+          onClick={() => {
+            client.writeData({
+              data: {
+                isAuthenticated: false,
+                id: null,
+                user_id: null,
+                auth_token: null
+              }
+            });
+            localStorage.clear();
+          }}
+          className="btn btn-primary ml-2"
+        >
+          Logout
+        </button>
+      )}
+    </ApolloConsumer>
+  );
+}
+
 type Props = {
-  isAuthenticated: boolean,
-  dispatch: Function,
-  logoutUser: Function
+  isAuthenticated: boolean
 };
 
 export default function Navs(props: Props) {
-  function userLogout(e: Event) {
-    props.dispatch(props.logoutUser());
-  }
-
   return (
     <nav className="navbar fixed-top navbar-expand-lg">
       <div className="container">
@@ -43,9 +63,7 @@ export default function Navs(props: Props) {
                 <Link className="nav-item nav-link" to="/leavecalendar">
                   Leave calendar
                 </Link>
-                <button onClick={userLogout} className="btn btn-primary ml-2">
-                  Sign out
-                </button>
+                <Logout />
               </div>
             </div>
           </div>

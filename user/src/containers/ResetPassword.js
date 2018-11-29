@@ -1,47 +1,29 @@
 // @flow
 import React from 'react';
-import { connect } from 'react-redux';
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
 import { Redirect } from 'react-router-dom';
 
 import UserResetPassword from '../components/ResetPassword';
-import { resetPassword } from '../actions/ResetPassword';
 
-type Props = {
-  dispatch: Function,
-  isAuthenticated: boolean,
-  message: string,
-  isFetching: boolean,
-  dispatch: Function
-};
+const IS_AUTHENTICATED = gql`
+  query IsAuthenticated {
+    isAuthenticated @client
+  }
+`;
 
-function ResetPassword(props: Props) {
-  const { dispatch, isAuthenticated, message, isFetching } = props;
-
+export default function ResetPassword() {
   return (
     <div className="container">
-      {!isAuthenticated ? (
-        <UserResetPassword
-          isFetching={isFetching}
-          message={message}
-          dispatch={dispatch}
-          onResetClick={function(email) {
-            return dispatch(resetPassword(email));
-          }}
-        />
-      ) : (
-        <Redirect to="/" />
-      )}
+      <Query query={IS_AUTHENTICATED}>
+        {({ data }) => {
+          return !data.isAuthenticated ? (
+            <UserResetPassword />
+          ) : (
+            <Redirect to="/" />
+          );
+        }}
+      </Query>
     </div>
   );
 }
-
-function mapStateToProps(state) {
-  const { userAuth, resetPassword } = state;
-
-  const { isAuthenticated } = userAuth;
-  const { isFetching, message } = resetPassword;
-
-  return { isAuthenticated, isFetching, message };
-}
-
-export default connect(mapStateToProps)(ResetPassword);

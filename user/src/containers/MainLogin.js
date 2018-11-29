@@ -1,46 +1,38 @@
 // @flow
 import React from 'react';
-import { connect } from 'react-redux';
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
 import { Redirect } from 'react-router-dom';
 
-import MainLogin from '../components/MainLogin';
+import Calendar from '../components/Calendar';
+import UserLogin from '../components/UserLogin';
 
-type Props = {
-  auth_info: Object,
-  dispatch: Function,
-  isAuthenticated: boolean,
-  isFetching: boolean,
-  message: string,
-  verifyUserToken: Function
-};
+const IS_AUTHENTICATED = gql`
+  query IsAuthenticated {
+    isAuthenticated @client
+    sessionError @client
+  }
+`;
 
-function Login(props: Props) {
-  const { dispatch, isAuthenticated, message, isFetching } = props;
-
+export default function Login() {
   return (
-    <>
-      {!isAuthenticated ? (
-        <div className="container">
-          <div className="row">
-            <MainLogin
-              dispatch={dispatch}
-              isFetching={isFetching}
-              message={message}
-            />
+    <Query query={IS_AUTHENTICATED}>
+      {({ data }) => {
+        return !data.isAuthenticated ? (
+          <div className="container">
+            <div className="row">
+              <div className="col-md-8">
+                <Calendar />
+              </div>
+              <div className="col-md-4">
+                <UserLogin sessionError={data.sessionError} />
+              </div>
+            </div>
           </div>
-        </div>
-      ) : (
-        <Redirect to="/" />
-      )}
-    </>
+        ) : (
+          <Redirect to="/" />
+        );
+      }}
+    </Query>
   );
 }
-
-function mapStateToProps(state) {
-  const { userAuth } = state;
-  const { auth_info, isAuthenticated, message, isFetching } = userAuth;
-
-  return { auth_info, isAuthenticated, message, isFetching };
-}
-
-export default connect(mapStateToProps)(Login);

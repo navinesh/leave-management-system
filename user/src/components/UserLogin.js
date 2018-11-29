@@ -1,14 +1,8 @@
 // @flow
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { gql } from 'apollo-boost';
-import { graphql } from 'react-apollo';
-
-import {
-  requestUserLogin,
-  receiveUserLogin,
-  loginUserError
-} from '../actions/UserLogin';
+import { Mutation, ApolloConsumer } from 'react-apollo';
+import gql from 'graphql-tag';
 
 import '../spinners.css';
 
@@ -26,10 +20,9 @@ const AUTHENTICATE_USER = gql`
 `;
 
 type Props = {
-  logInUser: Function,
-  message: string,
-  isFetching: boolean,
-  dispatch: Function
+  login: Function,
+  loading: boolean,
+  error: string
 };
 
 // type State = {
@@ -38,7 +31,11 @@ type Props = {
 //   errorMessage: string
 // };
 
-function Login(props: Props) {
+function LoginForm(props: Props) {
+  useEffect(function() {
+    setErrorMessage(props.sessionError);
+  }, []);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -77,37 +74,8 @@ function Login(props: Props) {
 
     setErrorMessage('');
 
-    authenticateUser();
+    props.login({ variables: { email: email, password: password } });
   }
-
-  async function authenticateUser() {
-    const { dispatch, logInUser } = props;
-
-    try {
-      dispatch(requestUserLogin());
-      const response = await logInUser({
-        variables: { email, password }
-      });
-      localStorage.setItem('auth_token', response.data.authenticateUser.token);
-      localStorage.setItem('user_id', response.data.authenticateUser.User.dbId);
-      localStorage.setItem('id', response.data.authenticateUser.User.id);
-      const auth_info = {
-        auth_token: response.data.authenticateUser.token,
-        user_id: response.data.authenticateUser.User.dbId,
-        id: response.data.authenticateUser.User.id
-      };
-      dispatch(receiveUserLogin(auth_info));
-    } catch (error) {
-      console.log(error);
-      setErrorMessage(error.message);
-      localStorage.removeItem('auth_token');
-      localStorage.removeItem('user_id');
-      localStorage.removeItem('id');
-      dispatch(loginUserError());
-    }
-  }
-
-  const { isFetching, message } = props;
 
   return (
     <>
@@ -145,7 +113,8 @@ function Login(props: Props) {
           </div>
         </form>
         <div className="text-danger text-center">
-          {isFetching ? <div className="loader" /> : message}
+          {props.loading && <div className="loader" />}
+          {props.error && props.error.message}
           {errorMessage}
         </div>
       </div>
@@ -158,4 +127,44 @@ function Login(props: Props) {
   );
 }
 
-export default graphql(AUTHENTICATE_USER, { name: 'logInUser' })(Login);
+export default function Login(props) {
+  return (
+    <ApolloConsumer>
+      {client => (
+        <Mutation
+          mutation={AUTHENTICATE_USER}
+          update={(cache, data) => {
+            localStorage.setItem(
+              'user_id',
+              data.data.authenticateUser.User.dbId
+            );
+            localStorage.setItem(
+              'auth_token',
+              data.data.authenticateUser.token
+            );
+            localStorage.setItem('id', data.data.authenticateUser.User.id);
+            cache.writeData({
+              data: {
+                isAuthenticated: true,
+                id: data.data.authenticateUser.User.id,
+                auth_token: data.data.authenticateUser.token,
+                sessionError: ''
+              }
+            });
+          }}
+        >
+          {(login, { loading, error }) => {
+            return (
+              <LoginForm
+                login={login}
+                loading={loading}
+                error={error}
+                sessionError={props.sessionError}
+              />
+            );
+          }}
+        </Mutation>
+      )}
+    </ApolloConsumer>
+  );
+}

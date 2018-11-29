@@ -1,32 +1,22 @@
 // @flow
 import React from 'react';
-import { connect } from 'react-redux';
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
 
-import { logoutUser } from '../actions/UserLogout';
 import Navs from '../components/Header';
 
-type Props = {
-  isAuthenticated: boolean,
-  dispatch: Function
-};
+const IS_AUTHENTICATED = gql`
+  query IsAuthenticated {
+    isAuthenticated @client
+  }
+`;
 
-function Header(props: Props) {
-  const { dispatch, isAuthenticated } = props;
-
+export default function Header() {
   return (
-    <Navs
-      isAuthenticated={isAuthenticated}
-      dispatch={dispatch}
-      logoutUser={logoutUser}
-    />
+    <Query query={IS_AUTHENTICATED}>
+      {({ data }) => {
+        return <Navs isAuthenticated={data.isAuthenticated} />;
+      }}
+    </Query>
   );
 }
-
-function mapStateToProps(state) {
-  const { userAuth } = state;
-  const { isAuthenticated } = userAuth;
-
-  return { isAuthenticated };
-}
-
-export default connect(mapStateToProps)(Header);

@@ -1,14 +1,12 @@
 // @flow
 import React, { useState } from 'react';
 
+import axios from 'axios';
+
 import '../spinners.css';
 
 type Props = {
-  dispatch: Function,
-  onChangeClick: Function,
-  message: string,
-  isFetching: boolean,
-  auth_info: Object
+  auth_token: string
 };
 
 // type State = {
@@ -22,6 +20,8 @@ export default function UserChange(props: Props) {
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [newPasswordConfirm, setNewPasswordConfirm] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [serverMessage, setServerMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   function handleCurrentPasswordChange({ target }: SyntheticInputEvent<>) {
@@ -38,11 +38,6 @@ export default function UserChange(props: Props) {
 
   function handleSubmit(e: Event) {
     e.preventDefault();
-
-    let auth_token = props.auth_info.auth_token;
-    if (!auth_token) {
-      auth_token = localStorage.getItem('auth_token');
-    }
 
     if (!currentPassword || !newPassword || !newPasswordConfirm) {
       setErrorMessage('One or more required fields are missing!');
@@ -64,17 +59,41 @@ export default function UserChange(props: Props) {
     }
 
     setErrorMessage('');
+    setServerMessage('');
 
-    const creds = {
-      currentPassword: currentPassword,
-      newPassword: newPassword,
-      auth_token: auth_token
-    };
-
-    props.onChangeClick(creds);
+    changePassword();
   }
 
-  const { isFetching, message } = props;
+  async function changePassword() {
+    setLoading(true);
+
+    try {
+      const response = await axios({
+        method: 'post',
+        url: 'http://localhost:8000/change-password',
+        auth: { username: props.auth_token },
+        data: {
+          oldPassword: currentPassword,
+          newPassword: newPassword
+        }
+      });
+
+      setLoading(false);
+
+      if (response.status !== 201) {
+        setErrorMessage(response.data.message);
+        setCurrentPassword('');
+        setNewPassword('');
+        setNewPasswordConfirm('');
+      } else {
+        setServerMessage(response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      setErrorMessage(error.message);
+    }
+  }
 
   return (
     <div className="col-md-3 ml-auto mr-auto">
@@ -130,7 +149,7 @@ export default function UserChange(props: Props) {
           </div>
         </form>
         <div className="text-primary text-center">
-          {isFetching ? <div className="loader" /> : message}
+          {loading ? <div className="loader" /> : serverMessage}
         </div>
         <div className="text-danger text-center">
           <div>{errorMessage}</div>

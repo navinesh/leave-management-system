@@ -11,7 +11,7 @@ type Props = {
   data: Object
 };
 
-export default function(props: Props) {
+export default function ApprovedCalendar(props: Props) {
   const {
     data: { findLeaveRecord }
   } = props;

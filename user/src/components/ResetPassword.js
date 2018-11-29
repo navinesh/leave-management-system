@@ -1,23 +1,19 @@
 // @flow
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+
+import axios from 'axios';
 
 import '../spinners.css';
-import { clearResetPasswordMessage } from '../actions/ResetPassword';
-
-type Props = {
-  onResetClick: Function,
-  message: string,
-  isFetching: boolean,
-  dispatch: Function
-};
 
 // type State = {
 //   errorMessage: string,
 //   email: string
 // };
 
-export default function UserResetPassword(props: Props) {
+export default function UserResetPassword() {
   const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [serverMessage, setServerMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   function handleEmailChange({ target }: SyntheticInputEvent<>) {
@@ -33,20 +29,35 @@ export default function UserResetPassword(props: Props) {
     }
 
     setErrorMessage('');
+    setServerMessage('');
 
-    props.onResetClick(email);
+    resetPassword();
   }
 
-  useEffect(
-    function() {
-      return function() {
-        props.dispatch(clearResetPasswordMessage());
-      };
-    },
-    [errorMessage]
-  );
+  async function resetPassword() {
+    setLoading(true);
 
-  const { isFetching, message } = props;
+    try {
+      const response = await axios.post(
+        'http://localhost:8000/user-reset-password',
+        {
+          email: email
+        }
+      );
+
+      setLoading(false);
+
+      if (response.status !== 201) {
+        setErrorMessage(response.data.message);
+      } else {
+        setServerMessage(response.data.message);
+      }
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      setErrorMessage(error.message);
+    }
+  }
 
   return (
     <div className="col-md-5 ml-auto mr-auto">
@@ -70,8 +81,10 @@ export default function UserResetPassword(props: Props) {
           </div>
         </form>
         <div className="text-primary text-center">
-          {isFetching ? <div className="loader1" /> : message}
-          {errorMessage}
+          {loading ? <div className="loader" /> : serverMessage}
+        </div>
+        <div className="text-danger text-center">
+          <div>{errorMessage}</div>
         </div>
       </div>
     </div>
