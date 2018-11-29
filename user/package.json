@@ -4,17 +4,17 @@
   "private": true,
   "homepage": "http://leave",
   "devDependencies": {
-    "flow-bin": "^0.86.0"
+    "flow-bin": "^0.87.0"
   },
   "dependencies": {
-    "apollo-boost": "^0.1.20",
+    "apollo-boost": "^0.1.22",
     "axios": "^0.18.0",
     "graphql": "^14.0.2",
     "moment": "^2.22.2",
     "moment-range": "^4.0.1",
     "react": "^16.7.0-alpha.2",
     "react-addons-shallow-compare": "^15.6.2",
-    "react-apollo": "^2.2.1",
+    "react-apollo": "^2.3.2",
     "react-dates": "^18.2.2",
     "react-dom": "^16.7.0-alpha.2",
     "react-redux": "^5.1.1",
