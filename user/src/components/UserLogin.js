@@ -22,7 +22,8 @@ const AUTHENTICATE_USER = gql`
 type Props = {
   login: Function,
   loading: boolean,
-  error: string
+  error: string,
+  sessionError: string
 };
 
 // type State = {
@@ -32,13 +33,13 @@ type Props = {
 // };
 
 function LoginForm(props: Props) {
-  useEffect(function() {
-    setErrorMessage(props.sessionError);
-  }, []);
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+
+  useEffect(function() {
+    setErrorMessage(props.sessionError);
+  }, []);
 
   function handleEmailChange({ target }: SyntheticInputEvent<>) {
     setEmail(target.value);
