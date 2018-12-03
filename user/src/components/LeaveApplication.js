@@ -30,6 +30,7 @@ const USER_DETAIL = gql`
       paternity
       gender
       designation
+      dateOfBirth
     }
   }
 `;
@@ -200,7 +201,7 @@ function LeaveApplication(props: leaveApplicationProps) {
     const sickDays = user_detail.sick;
     const bereavementDays = user_detail.bereavement;
     const christmasDays = user_detail.christmas;
-    const dateOfBirth = user_detail.date_of_birth;
+    const dateOfBirth = user_detail.dateOfBirth;
     const familyCareDays = user_detail.familyCare;
     const maternityDays = user_detail.maternity ? user_detail.maternity : null;
     const paternityDays = user_detail.paternity ? user_detail.paternity : null;
@@ -269,7 +270,7 @@ function LeaveApplication(props: leaveApplicationProps) {
     );
     const maternityLeaveDays = daysExcludingOnlyPublicHolidaysSet.size;
 
-    if (maternityLeaveDays === 0) {
+    if (leave === 'maternity' && maternityLeaveDays === 0) {
       setErrorMessage('The dates you selected either fall on public holiday!');
       return;
     }
@@ -321,14 +322,11 @@ function LeaveApplication(props: leaveApplicationProps) {
           return christmasDays - myLeaveDays;
         },
         birthday: function() {
-          // create date
-          const dOB = new Date(dateOfBirth);
-          dOB.setHours(dOB.getHours() - 12);
-          const birthDate = moment.utc(dOB);
-          // check date of birth
-          return moment(startDate).isSame(birthDate) &&
-            moment(endDate).isSame(birthDate)
-            ? myLeaveDays
+          return moment(startDate).format('DD-MM') ===
+            moment(dateOfBirth).format('DD-MM') &&
+            moment(endDate).format('DD-MM') ===
+              moment(dateOfBirth).format('DD-MM')
+            ? 'myLeaveDays'
             : undefined;
         },
         'family care': function() {
