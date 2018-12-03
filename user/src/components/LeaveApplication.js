@@ -28,6 +28,7 @@ const USER_DETAIL = gql`
       paternity
       gender
       designation
+      dateOfBirth
     }
   }
 `;
@@ -109,24 +110,22 @@ function UserRecord(props) {
           {user_detail.christmas}
         </span>
       </li>
-      {gender === 'female' &&
-        user_detail.maternity > 0 && (
-          <li className="list-group-item d-flex justify-content-between align-items-center">
-            Maternity
-            <span className="badge badge-primary badge-pill">
-              {user_detail.maternity}
-            </span>
-          </li>
-        )}
-      {gender === 'male' &&
-        user_detail.paternity > 0 && (
-          <li className="list-group-item d-flex justify-content-between align-items-center">
-            Paternity
-            <span className="badge badge-primary badge-pill">
-              {user_detail.paternity}
-            </span>
-          </li>
-        )}
+      {gender === 'female' && user_detail.maternity > 0 && (
+        <li className="list-group-item d-flex justify-content-between align-items-center">
+          Maternity
+          <span className="badge badge-primary badge-pill">
+            {user_detail.maternity}
+          </span>
+        </li>
+      )}
+      {gender === 'male' && user_detail.paternity > 0 && (
+        <li className="list-group-item d-flex justify-content-between align-items-center">
+          Paternity
+          <span className="badge badge-primary badge-pill">
+            {user_detail.paternity}
+          </span>
+        </li>
+      )}
     </ul>
   );
 }
@@ -205,7 +204,7 @@ function LeaveApplication(props: leaveApplicationProps) {
     const sickDays = user_detail.sick;
     const bereavementDays = user_detail.bereavement;
     const christmasDays = user_detail.christmas;
-    const dateOfBirth = user_detail.date_of_birth;
+    const dateOfBirth = user_detail.dateOfBirth;
     const familyCareDays = user_detail.familyCare;
     const maternityDays = user_detail.maternity ? user_detail.maternity : null;
     const paternityDays = user_detail.paternity ? user_detail.paternity : null;
@@ -274,8 +273,8 @@ function LeaveApplication(props: leaveApplicationProps) {
     );
     const maternityLeaveDays = daysExcludingOnlyPublicHolidaysSet.size;
 
-    if (maternityLeaveDays === 0) {
-      setErrorMessage('The dates you selected either fall on public holiday!');
+    if (leave === 'maternity' && maternityLeaveDays === 0) {
+      setErrorMessage('The dates you selected fall on public holiday!');
       return;
     }
 
@@ -326,14 +325,11 @@ function LeaveApplication(props: leaveApplicationProps) {
           return christmasDays - myLeaveDays;
         },
         birthday: function() {
-          // create date
-          const dOB = new Date(dateOfBirth);
-          dOB.setHours(dOB.getHours() - 12);
-          const birthDate = moment.utc(dOB);
-          // check date of birth
-          return moment(startDate).isSame(birthDate) &&
-            moment(endDate).isSame(birthDate)
-            ? myLeaveDays
+          return moment(startDate).format('DD-MM') ===
+            moment(dateOfBirth).format('DD-MM') &&
+            moment(endDate).format('DD-MM') ===
+              moment(dateOfBirth).format('DD-MM')
+            ? 'myLeaveDays'
             : undefined;
         },
         'family care': function() {
@@ -443,10 +439,12 @@ function LeaveApplication(props: leaveApplicationProps) {
                 <option>family care</option>
                 <option>christmas</option>
                 <option>birthday</option>
-                {gender === 'female' &&
-                  user_detail.maternity > 0 && <option>maternity</option>}
-                {gender === 'male' &&
-                  user_detail.paternity > 0 && <option>paternity</option>}
+                {gender === 'female' && user_detail.maternity > 0 && (
+                  <option>maternity</option>
+                )}
+                {gender === 'male' && user_detail.paternity > 0 && (
+                  <option>paternity</option>
+                )}
                 <option>lwop</option>
                 <option>other</option>
               </select>
