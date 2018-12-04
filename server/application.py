@@ -51,7 +51,7 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'pdf'])
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 # Limit image upload payload to 4MB
-app.config['MAX_CONTENT_LENGTH'] = 4 * 1024 * 1024
+app.config['MAX_CONTENT_LENGTH'] = 8 * 1024 * 1024
 
 engine = create_engine('postgresql:///leavedb')
 Base.metadata.bind = engine
@@ -648,7 +648,7 @@ def new_user():
     send_email(
         email, None, "Leave Management System",
         ("Your Leave Management System account has been created. \
-        Your password is: " + password), file=None)
+        Your password is: " + password + " Login at http://localhost"), file=None)
 
     return jsonify({'message': 'User has been successfully added.'}), 201
 
@@ -1285,7 +1285,7 @@ def edit_approved_leave():
 
         # Send email
         send_email(
-            leave_record.user.email, None, "Leave application update",
+            user_record.email, None, "Leave application update",
             ("Your " + previous_leave_name + " leave application for " + str(
                 format_number(previous_leave_days)) + " day(s) from " +
              previous_start_date + " to " + previous_end_date +
@@ -1482,7 +1482,7 @@ def edit_approved_leave():
         # Send email
         if leave_name == 'lwop' or leave_name == 'other':
             send_email(
-                leave_record.user.email, None, "Leave application update",
+                user_record.email, None, "Leave application update",
                 ("Your " + previous_leave_name + " leave application for " +
                  str(format_number(previous_leave_days)) + " day(s) from " +
                  previous_start_date + " to " + previous_end_date +
@@ -1493,7 +1493,7 @@ def edit_approved_leave():
                 file=None)
         else:
             send_email(
-                leave_record.user.email, None, "Leave application update",
+                user_record.email, None, "Leave application update",
                 ("Your " + previous_leave_name + " leave application for " +
                  str(format_number(previous_leave_days)) + " day(s) from " +
                  previous_start_date + " to " + previous_end_date +
