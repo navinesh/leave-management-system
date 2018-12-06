@@ -4,6 +4,84 @@ import { CSVLink } from 'react-csv';
 
 const moment = require('moment');
 
+export function PendingLeaveReportList(props) {
+  const pendingRecord = props.pending_record
+    .map(a => a)
+    .sort((a, b) => {
+      return a.user.othernames.localeCompare(b.user.othernames);
+    });
+
+  const pendingRecordItems = pendingRecord.map(record => (
+    <tr key={record.id}>
+      <td>
+        {record.user.othernames} {record.user.surname}
+      </td>
+      <td>{record.leaveName}</td>
+      <td>{record.leaveType}</td>
+      <td>{record.startDate}</td>
+      <td>{record.endDate}</td>
+      <td>{record.leaveDays}</td>
+      <td>{record.leaveStatus}</td>
+      <td>{record.leaveReason}</td>
+      <td>{record.datePosted}</td>
+    </tr>
+  ));
+
+  const records = pendingRecord.map(a => {
+    var rObj = {};
+    rObj['Othernames'] = a.user.othernames;
+    rObj['Surname'] = a.user.surname;
+    rObj['Leave'] = a.leaveName;
+    rObj['Type'] = a.leaveType;
+    rObj['Start date'] = a.startDate;
+    rObj['End date'] = a.endDate;
+    rObj['Leave days'] = a.leaveDays;
+    rObj['Status'] = a.leaveStatus;
+    rObj['Reason'] = a.leaveReason;
+    rObj['Date posted'] = a.datePosted;
+    return rObj;
+  });
+
+  return pendingRecordItems.length > 0 ? (
+    <>
+      <CSVLink
+        data={records}
+        filename={'Pending-leave.csv'}
+        className="btn btn-primary btn-sm mb-2"
+      >
+        Download
+      </CSVLink>
+      <div className="table-responsive">
+        <table className="table table-bordered table-hover">
+          <thead className="thead-light">
+            <tr>
+              <th>Name</th>
+              <th>Leave</th>
+              <th>Type</th>
+              <th>Start date</th>
+              <th>End date</th>
+              <th>Leave days</th>
+              <th>Status</th>
+              <th>Reason</th>
+              <th>Date posted</th>
+            </tr>
+          </thead>
+          <tbody>{pendingRecordItems}</tbody>
+        </table>
+      </div>
+    </>
+  ) : (
+    <div
+      className="card card-body border-0"
+      style={{ paddingTop: '100px', paddingBottom: '260px' }}
+    >
+      <h1 className="display-4 text-center">
+        <em>There is no record to display.</em>
+      </h1>
+    </div>
+  );
+}
+
 export function ApprovedLeaveReportList(props) {
   const approvedRecord = props.approved_record
     .map(a => a)
@@ -71,84 +149,6 @@ export function ApprovedLeaveReportList(props) {
             </tr>
           </thead>
           <tbody>{approvedRecordItems}</tbody>
-        </table>
-      </div>
-    </>
-  ) : (
-    <div
-      className="card card-body border-0"
-      style={{ paddingTop: '100px', paddingBottom: '260px' }}
-    >
-      <h1 className="display-4 text-center">
-        <em>There is no record to display.</em>
-      </h1>
-    </div>
-  );
-}
-
-export function PendingLeaveReportList(props) {
-  const pendingRecord = props.pending_record
-    .map(a => a)
-    .sort((a, b) => {
-      return a.user.othernames.localeCompare(b.user.othernames);
-    });
-
-  const pendingRecordItems = pendingRecord.map(record => (
-    <tr key={record.id}>
-      <td>
-        {record.user.othernames} {record.user.surname}
-      </td>
-      <td>{record.leaveName}</td>
-      <td>{record.leaveType}</td>
-      <td>{record.startDate}</td>
-      <td>{record.endDate}</td>
-      <td>{record.leaveDays}</td>
-      <td>{record.leaveStatus}</td>
-      <td>{record.leaveReason}</td>
-      <td>{record.datePosted}</td>
-    </tr>
-  ));
-
-  const records = pendingRecord.map(a => {
-    var rObj = {};
-    rObj['Othernames'] = a.user.othernames;
-    rObj['Surname'] = a.user.surname;
-    rObj['Leave'] = a.leaveName;
-    rObj['Type'] = a.leaveType;
-    rObj['Start date'] = a.startDate;
-    rObj['End date'] = a.endDate;
-    rObj['Leave days'] = a.leaveDays;
-    rObj['Status'] = a.leaveStatus;
-    rObj['Reason'] = a.leaveReason;
-    rObj['Date posted'] = a.datePosted;
-    return rObj;
-  });
-
-  return pendingRecordItems.length > 0 ? (
-    <>
-      <CSVLink
-        data={records}
-        filename={'Pending-leave.csv'}
-        className="btn btn-primary btn-sm mb-2"
-      >
-        Download
-      </CSVLink>
-      <div className="table-responsive">
-        <table className="table table-bordered table-hover">
-          <thead className="thead-light">
-            <tr>
-              <th>Name</th>
-              <th>Leave</th>
-              <th>Type</th>
-              <th>Start date</th>
-              <th>End date</th>
-              <th>Leave days</th>
-              <th>Status</th>
-              <th>Reason</th>
-              <th>Date posted</th>
-            </tr>
-          </thead>
-          <tbody>{pendingRecordItems}</tbody>
         </table>
       </div>
     </>
@@ -311,6 +311,88 @@ export function DeclinedLeaveReportList(props) {
             </tr>
           </thead>
           <tbody>{declinedRecordItems}</tbody>
+        </table>
+      </div>
+    </>
+  ) : (
+    <div
+      className="card card-body border-0"
+      style={{ paddingTop: '100px', paddingBottom: '260px' }}
+    >
+      <h1 className="display-4 text-center">
+        <em>There is no record to display.</em>
+      </h1>
+    </div>
+  );
+}
+
+export function ArchivedLeaveReportList(props) {
+  const archivedRecord = props.archived_record
+    .map(a => a)
+    .sort((a, b) => {
+      return a.user.othernames.localeCompare(b.user.othernames);
+    });
+
+  const archivedRecordItems = archivedRecord.map(record => (
+    <tr key={record.id}>
+      <td>
+        {record.user.othernames} {record.user.surname}
+      </td>
+      <td>{record.leaveName}</td>
+      <td>{record.leaveType}</td>
+      <td>{record.startDate}</td>
+      <td>{record.endDate}</td>
+      <td>{record.leaveDays}</td>
+      <td>{record.leaveStatus}</td>
+      <td>{record.leaveReason}</td>
+      <td>{record.datePosted}</td>
+      <td>{record.dateReviewed}</td>
+    </tr>
+  ));
+
+  const records = archivedRecord.map(a => {
+    var rObj = {};
+    rObj['Othernames'] = a.user.othernames;
+    rObj['Surname'] = a.user.surname;
+    rObj['Employee #'] = a.user.employeeNumber;
+    rObj['Leave'] = a.leaveName;
+    rObj['Type'] = a.leaveType;
+    rObj['Start date'] = a.startDate;
+    rObj['End date'] = a.endDate;
+    rObj['Leave days'] = a.leaveDays;
+    rObj['Status'] = a.leaveStatus;
+    rObj['Reason'] = a.leaveReason;
+    rObj['Date posted'] = a.datePosted;
+    rObj['Date reviewed'] = a.dateReviewed;
+    return rObj;
+  });
+
+  return archivedRecordItems.length > 0 ? (
+    <>
+      <CSVLink
+        data={records}
+        filename={'Approved-leave.csv'}
+        className="btn btn-primary btn-sm mb-2"
+      >
+        Download
+      </CSVLink>
+      <div className="table-responsive">
+        <table className="table table-bordered table-hover">
+          <thead className="thead-light">
+            <tr>
+              <th>Name</th>
+              <th>Leave</th>
+              <th>Type</th>
+              <th>Start date</th>
+              <th>End date</th>
+              <th>Leave days</th>
+              <th>Status</th>
+              <th>Reason</th>
+              <th>Date posted</th>
+              <th>Date reviewed</th>
+            </tr>
+          </thead>
+          <tbody>{archivedRecordItems}</tbody>
         </table>
       </div>
     </>
