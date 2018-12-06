@@ -9,8 +9,6 @@ import { DateRangePicker } from 'react-dates';
 
 import axios from 'axios';
 
-import '../spinners.css';
-
 import Moment from 'moment';
 import { extendMoment } from 'moment-range';
 const moment = extendMoment(Moment);
@@ -271,7 +269,7 @@ function LeaveApplication(props: leaveApplicationProps) {
     const maternityLeaveDays = daysExcludingOnlyPublicHolidaysSet.size;
 
     if (leave === 'maternity' && maternityLeaveDays === 0) {
-      setErrorMessage('The dates you selected either fall on public holiday!');
+      setErrorMessage('The dates you selected fall on public holiday!');
       return;
     }
 
@@ -408,10 +406,7 @@ function LeaveApplication(props: leaveApplicationProps) {
     refetch();
   }
 
-  const { user_detail } = props;
-  let gender = user_detail.gender ? user_detail.gender.toLowerCase() : null;
-
-  async function fetchLeaveApplication(applicationDetails) {
+  async function fetchLeaveApplication(applicationDetails: Object) {
     setLoading(true);
 
     try {
@@ -458,6 +453,9 @@ function LeaveApplication(props: leaveApplicationProps) {
       setErrorMessage(error.message);
     }
   }
+
+  const { user_detail } = props;
+  let gender = user_detail.gender ? user_detail.gender.toLowerCase() : null;
 
   return (
     <div className="card card-body shadow p-3 mb-5 bg-white rounded">
@@ -602,12 +600,18 @@ type Props = {
 };
 
 export default function Application(props: Props) {
-  const { id } = props;
-
   return (
-    <Query query={USER_DETAIL} variables={{ id: id }} pollInterval={60000}>
+    <Query
+      query={USER_DETAIL}
+      variables={{ id: props.id }}
+      pollInterval={60000}
+    >
       {({ loading, error, data: { user }, refetch }) => (
-        <Query query={USER_RECORD} variables={{ id: id }} pollInterval={60000}>
+        <Query
+          query={USER_RECORD}
+          variables={{ id: props.id }}
+          pollInterval={60000}
+        >
           {({
             loading: recordLoading,
             error: recordError,
@@ -663,7 +667,7 @@ export default function Application(props: Props) {
                       </div>
                       <div className="col-md-6 mr-auto mb-2">
                         <LeaveApplication
-                          id={id}
+                          id={props.id}
                           user_detail={user}
                           user_record={userRecord}
                           public_holiday={publicHoliday}
