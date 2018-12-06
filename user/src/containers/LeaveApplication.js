@@ -4,7 +4,16 @@ import gql from 'graphql-tag';
 import { Query, Mutation, ApolloConsumer } from 'react-apollo';
 import { Redirect } from 'react-router-dom';
 
+import { TokenSuccess, TokenFailure } from './TokenComponents';
 import Application from '../components/LeaveApplication';
+
+const REQUEST_DATA = gql`
+  query requestData {
+    isAuthenticated @client
+    id @client
+    auth_token @client
+  }
+`;
 
 const VERIFY_USER_TOKEN = gql`
   mutation verifyUserToken($userToken: String!) {
@@ -19,22 +28,13 @@ const VERIFY_USER_TOKEN = gql`
   }
 `;
 
-const REQUEST_DATA = gql`
-  query requestData {
-    isAuthenticated @client
-    id @client
-    auth_token @client
-  }
-`;
-
 type Props = {
   verifyToken: Function
 };
 
-function Main(props: Props) {
+function MainView(props: Props) {
   useEffect(function() {
     props.verifyToken();
-    setInterval(props.verifyToken, 600000);
   }, []);
 
   return (
@@ -57,7 +57,8 @@ export default function LeaveApplication() {
         let userToken = data.auth_token
           ? data.auth_token
           : localStorage.getItem('auth_token');
-        return (
+
+        return data.isAuthenticated ? (
           <ApolloConsumer>
             {client => (
               <Mutation
@@ -65,37 +66,20 @@ export default function LeaveApplication() {
                 variables={{ userToken: userToken }}
                 onCompleted={data => {
                   if (data.verifyUserToken) {
-                    localStorage.setItem('id', data.verifyUserToken.User.id);
-                    localStorage.setItem(
-                      'auth_token',
-                      data.verifyUserToken.token
-                    );
-                    client.writeData({
-                      data: {
-                        isAuthenticated: true,
-                        id: data.verifyUserToken.User.id,
-                        auth_token: data.verifyUserToken.token
-                      }
-                    });
+                    TokenSuccess(data, client);
                   } else {
-                    client.writeData({
-                      data: {
-                        isAuthenticated: false,
-                        id: null,
-                        auth_token: null,
-                        sessionError: 'Your session has expired!'
-                      }
-                    });
-                    localStorage.clear();
+                    TokenFailure(client);
                   }
                 }}
               >
                 {verifyToken => {
-                  return <Main verifyToken={verifyToken} />;
+                  return <MainView verifyToken={verifyToken} />;
                 }}
               </Mutation>
             )}
           </ApolloConsumer>
+        ) : (
+          <Redirect to="/login" />
         );
       }}
     </Query>
