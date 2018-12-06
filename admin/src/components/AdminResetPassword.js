@@ -2,11 +2,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-type Props = {
-  onResetClick: Function,
-  message: string,
-  isFetching: boolean
-};
+import axios from 'axios';
 
 // type State = {
 //   errorMessage: string,
@@ -15,6 +11,8 @@ type Props = {
 
 export default function AdminResetPassword(props: Props) {
   const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [serverMessage, setServerMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
   function handleEmailChange({ target }: SyntheticInputEvent<>) {
@@ -29,15 +27,42 @@ export default function AdminResetPassword(props: Props) {
       return;
     }
 
-    props.onResetClick(email);
+    setErrorMessage('');
+    setServerMessage('');
+
+    resetPassword();
   }
 
-  const { isFetching, message } = props;
+  async function resetPassword() {
+    setLoading(true);
+
+    try {
+      const response = await axios.post(
+        'http://localhost:8000/admin-reset-password',
+        {
+          email: email
+        }
+      );
+
+      setLoading(false);
+
+      if (response.status !== 201) {
+        setErrorMessage(response.data.message);
+      } else {
+        setServerMessage(response.data.message);
+        setEmail('');
+      }
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      setErrorMessage(error.message);
+    }
+  }
 
   return (
     <>
       <h1 className="display-4 text-center pb-4">Leave Management System</h1>
-      <div className="col-3 ml-auto mr-auto">
+      <div className="col-5 ml-auto mr-auto">
         <div className="card card-body">
           <form onSubmit={handleSubmit}>
             <div className="form-group">
@@ -58,7 +83,7 @@ export default function AdminResetPassword(props: Props) {
             </div>
           </form>
           <div className="text-danger text-center">
-            {isFetching ? <div className="loader" /> : message}
+            {loading ? <div className="loader" /> : serverMessage}
             {errorMessage}
           </div>
         </div>
