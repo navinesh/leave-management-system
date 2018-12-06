@@ -3,8 +3,6 @@ import React, { useState } from 'react';
 
 import axios from 'axios';
 
-import '../spinners.css';
-
 type Props = {
   auth_token: string
 };
@@ -82,11 +80,11 @@ export default function UserChange(props: Props) {
 
       if (response.status !== 201) {
         setErrorMessage(response.data.message);
+      } else {
+        setServerMessage(response.data.message);
         setCurrentPassword('');
         setNewPassword('');
         setNewPasswordConfirm('');
-      } else {
-        setServerMessage(response.data.message);
       }
     } catch (error) {
       console.log(error);
