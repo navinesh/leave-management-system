@@ -1,20 +1,25 @@
 // @flow
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import gql from 'graphql-tag';
+import { Query, Mutation, ApolloConsumer } from 'react-apollo';
 import { Redirect } from 'react-router-dom';
-import { gql } from 'apollo-boost';
-import { graphql, compose, Query } from 'react-apollo';
 
-import {
-  requestAdminLoginFromToken,
-  receiveAdminLoginFromToken,
-  loginAdminErrorFromToken
-} from '../actions/AdminLogin';
+import { TokenSuccess, TokenFailure } from './TokenComponents';
 import SickSheetList from '../components/SickSheetRecord';
+
+const IS_AUTHENTICATED = gql`
+  query isAdminAuthenticated {
+    isAuthenticated @client
+    admin_token @client
+  }
+`;
 
 const VERIFY_ADMIN_TOKEN = gql`
   mutation verifyAdminToken($adminToken: String!) {
     verifyAdminToken(adminToken: $adminToken) {
+      Admin {
+        othernames
+      }
       token
       ok
     }
@@ -39,91 +44,78 @@ const SICK_RECORD = gql`
 `;
 
 type Props = {
-  isAuthenticated: boolean,
-  auth_info: Object,
-  dispatch: Function,
   verifyAdminToken: Function
 };
 
-function SickSheetRecord(props: Props) {
+function MainView(props: Props) {
   useEffect(function() {
-    verifyToken();
-    setInterval(verifyToken, 600000);
+    props.verifyAdminToken();
   }, []);
-
-  async function verifyToken() {
-    const { auth_info, dispatch, verifyAdminToken } = props;
-
-    const adminToken = auth_info.admin_token
-      ? auth_info
-      : localStorage.getItem('admin_token');
-
-    if (adminToken) {
-      try {
-        dispatch(requestAdminLoginFromToken());
-        const response = await verifyAdminToken({
-          variables: { adminToken }
-        });
-        dispatch(
-          receiveAdminLoginFromToken(response.data.verifyAdminToken.token)
-        );
-      } catch (error) {
-        console.log(error);
-        localStorage.removeItem('admin_token');
-        localStorage.removeItem('admin_user');
-        dispatch(loginAdminErrorFromToken('Your session has expired!'));
-      }
-    }
-  }
-
-  const { isAuthenticated } = props;
 
   return (
     <div className="container">
-      {isAuthenticated ? (
-        <Query query={SICK_RECORD} pollInterval={60000}>
-          {({
-            loading,
-            error,
-            data: { findSicksheetRecord: sickSheet_items }
-          }) => {
-            if (loading) {
-              return (
-                <div className="text-center">
-                  <div className="loader1" />
-                </div>
-              );
-            }
+      <Query query={SICK_RECORD} pollInterval={60000}>
+        {({
+          loading,
+          error,
+          data: { findSicksheetRecord: sickSheet_items }
+        }) => {
+          if (loading) {
+            return (
+              <div className="text-center" style={{ marginTop: '80px' }}>
+                <div className="loader" />
+              </div>
+            );
+          }
 
-            if (error) {
-              console.log(error);
-              return (
-                <div className="text-center">
-                  <p>Something went wrong!</p>
-                </div>
-              );
-            }
+          if (error) {
+            console.log(error);
+            return (
+              <div className="text-center">
+                <p>Something went wrong!</p>
+              </div>
+            );
+          }
 
-            return <SickSheetList sickSheet_items={sickSheet_items} />;
-          }}
-        </Query>
-      ) : (
-        <Redirect to="/login" />
-      )}
+          return <SickSheetList sickSheet_items={sickSheet_items} />;
+        }}
+      </Query>
     </div>
   );
 }
 
-function mapStateToProps(state) {
-  const { adminAuth } = state;
-  const { auth_info, isAuthenticated } = adminAuth;
+export default function ArchivedStaffRecord() {
+  return (
+    <Query query={IS_AUTHENTICATED}>
+      {({ data }) => {
+        let adminToken = data.admin_token
+          ? data.admin_token
+          : localStorage.getItem('admin_token');
 
-  return { auth_info, isAuthenticated };
+        return data.isAuthenticated ? (
+          <ApolloConsumer>
+            {client => (
+              <Mutation
+                mutation={VERIFY_ADMIN_TOKEN}
+                variables={{ adminToken: adminToken }}
+                onCompleted={data => {
+                  if (data.verifyAdminToken) {
+                    TokenSuccess(data, client);
+                  } else {
+                    TokenFailure(client);
+                  }
+                }}
+              >
+                {verifyAdminToken => {
+                  return <MainView verifyAdminToken={verifyAdminToken} />;
+                }}
+              </Mutation>
+            )}
+          </ApolloConsumer>
+        ) : (
+          <Redirect to="/login" />
+        );
+      }}
+    </Query>
+  );
 }
-
-export default compose(
-  connect(mapStateToProps),
-  graphql(VERIFY_ADMIN_TOKEN, {
-    name: 'verifyAdminToken'
-  })
-)(SickSheetRecord);

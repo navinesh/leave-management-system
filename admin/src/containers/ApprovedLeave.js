@@ -1,22 +1,25 @@
 // @flow
 import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import gql from 'graphql-tag';
+import { Query, Mutation, ApolloConsumer } from 'react-apollo';
 import { Redirect } from 'react-router-dom';
-import { gql } from 'apollo-boost';
-import { graphql, compose, Query } from 'react-apollo';
 
-import {
-  requestAdminLoginFromToken,
-  receiveAdminLoginFromToken,
-  loginAdminErrorFromToken
-} from '../actions/AdminLogin';
-import { submitEditApprovedLeave } from '../actions/EditLeave';
-import { submitCancelLeave } from '../actions/CancelLeave';
+import { TokenSuccess, TokenFailure } from './TokenComponents';
 import ApprovedLeaveList from '../components/ApprovedLeave';
+
+const IS_AUTHENTICATED = gql`
+  query isAdminAuthenticated {
+    isAuthenticated @client
+    admin_token @client
+  }
+`;
 
 const VERIFY_ADMIN_TOKEN = gql`
   mutation verifyAdminToken($adminToken: String!) {
     verifyAdminToken(adminToken: $adminToken) {
+      Admin {
+        othernames
+      }
       token
       ok
     }
@@ -64,139 +67,93 @@ const PUBLIC_HOLIDAY = gql`
 `;
 
 type Props = {
-  isAuthenticated: boolean,
-  auth_info: Object,
-  isFetching: boolean,
-  dispatch: Function,
-  isEditLeaveFetching: boolean,
-  editLeaveMessage: string,
-  isCancelLeaveFetching: boolean,
-  cancelLeaveMessage: string,
   verifyAdminToken: Function
 };
 
-function ApprovedLeave(props: Props) {
+function MainView(props: Props) {
   useEffect(function() {
-    verifyToken();
-    setInterval(verifyToken, 600000);
+    props.verifyAdminToken();
   }, []);
-
-  async function verifyToken() {
-    const { auth_info, dispatch, verifyAdminToken } = props;
-
-    const adminToken = auth_info.admin_token
-      ? auth_info
-      : localStorage.getItem('admin_token');
-
-    if (adminToken) {
-      try {
-        dispatch(requestAdminLoginFromToken());
-        const response = await verifyAdminToken({
-          variables: { adminToken }
-        });
-        dispatch(
-          receiveAdminLoginFromToken(response.data.verifyAdminToken.token)
-        );
-      } catch (error) {
-        console.log(error);
-        localStorage.removeItem('admin_token');
-        localStorage.removeItem('admin_user');
-        dispatch(loginAdminErrorFromToken('Your session has expired!'));
-      }
-    }
-  }
-
-  const {
-    isAuthenticated,
-    dispatch,
-    isEditLeaveFetching,
-    editLeaveMessage,
-    isCancelLeaveFetching,
-    cancelLeaveMessage
-  } = props;
 
   return (
     <div className="container">
-      {isAuthenticated ? (
-        <Query query={APPROVED_RECORD} pollInterval={60000}>
-          {({
-            loading,
-            error,
-            data: { findLeaveRecord: approved_items },
-            refetch
-          }) => (
-            <Query query={PUBLIC_HOLIDAY}>
-              {({
-                loading: holidayLoading,
-                error: holidayError,
-                data: { publicHoliday }
-              }) => {
-                if (loading || holidayLoading) {
-                  return (
-                    <div className="text-center">
-                      <div className="loader1" />
-                    </div>
-                  );
-                }
-
-                if (error || holidayError) {
-                  console.log(error || holidayError);
-                  return (
-                    <div className="text-center">
-                      <p>Something went wrong!</p>
-                    </div>
-                  );
-                }
-
+      <Query query={APPROVED_RECORD} pollInterval={60000}>
+        {({
+          loading,
+          error,
+          data: { findLeaveRecord: approved_items },
+          refetch
+        }) => (
+          <Query query={PUBLIC_HOLIDAY}>
+            {({
+              loading: holidayLoading,
+              error: holidayError,
+              data: { publicHoliday }
+            }) => {
+              if (loading || holidayLoading) {
                 return (
-                  <ApprovedLeaveList
-                    approved_items={approved_items}
-                    public_holiday={publicHoliday}
-                    refetch={refetch}
-                    dispatch={dispatch}
-                    isEditLeaveFetching={isEditLeaveFetching}
-                    editLeaveMessage={editLeaveMessage}
-                    isCancelLeaveFetching={isCancelLeaveFetching}
-                    cancelLeaveMessage={cancelLeaveMessage}
-                    onEditApprovedLeaveSubmit={function(editLeaveData) {
-                      return dispatch(submitEditApprovedLeave(editLeaveData));
-                    }}
-                    onCancelLeaveSubmit={function(cancelLeaveData) {
-                      return dispatch(submitCancelLeave(cancelLeaveData));
-                    }}
-                  />
+                  <div className="text-center" style={{ marginTop: '80px' }}>
+                    <div className="loader" />
+                  </div>
                 );
-              }}
-            </Query>
-          )}
-        </Query>
-      ) : (
-        <Redirect to="/login" />
-      )}
+              }
+
+              if (error || holidayError) {
+                console.log(error || holidayError);
+                return (
+                  <div className="text-center">
+                    <p>Something went wrong!</p>
+                  </div>
+                );
+              }
+
+              return (
+                <ApprovedLeaveList
+                  approved_items={approved_items}
+                  public_holiday={publicHoliday}
+                  refetch={refetch}
+                />
+              );
+            }}
+          </Query>
+        )}
+      </Query>
     </div>
   );
 }
 
-function mapStateToProps(state) {
-  const { adminAuth, editLeave, cancelLeave } = state;
-  const { auth_info, isAuthenticated } = adminAuth;
+export default function ArchivedStaffRecord() {
+  return (
+    <Query query={IS_AUTHENTICATED}>
+      {({ data }) => {
+        let adminToken = data.admin_token
+          ? data.admin_token
+          : localStorage.getItem('admin_token');
 
-  const { isEditLeaveFetching, editLeaveMessage } = editLeave;
-  const { isCancelLeaveFetching, cancelLeaveMessage } = cancelLeave;
-
-  return {
-    auth_info,
-    isAuthenticated,
-    isEditLeaveFetching,
-    editLeaveMessage,
-    isCancelLeaveFetching,
-    cancelLeaveMessage
-  };
+        return data.isAuthenticated ? (
+          <ApolloConsumer>
+            {client => (
+              <Mutation
+                mutation={VERIFY_ADMIN_TOKEN}
+                variables={{ adminToken: adminToken }}
+                onCompleted={data => {
+                  if (data.verifyAdminToken) {
+                    TokenSuccess(data, client);
+                  } else {
+                    TokenFailure(client);
+                  }
+                }}
+              >
+                {verifyAdminToken => {
+                  return <MainView verifyAdminToken={verifyAdminToken} />;
+                }}
+              </Mutation>
+            )}
+          </ApolloConsumer>
+        ) : (
+          <Redirect to="/login" />
+        );
+      }}
+    </Query>
+  );
 }
-
-export default compose(
-  connect(mapStateToProps),
-  graphql(VERIFY_ADMIN_TOKEN, {
-    name: 'verifyAdminToken'
-  })
-)(ApprovedLeave);

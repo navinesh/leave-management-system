@@ -1,20 +1,34 @@
 // @flow
-import React, { useEffect } from 'react';
-import { connect } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import gql from 'graphql-tag';
+import { Query, Mutation, ApolloConsumer } from 'react-apollo';
 import { Redirect } from 'react-router-dom';
-import { gql } from 'apollo-boost';
-import { graphql, compose, Query } from 'react-apollo';
+
+import { TokenSuccess, TokenFailure } from './TokenComponents';
 
 import {
-  requestAdminLoginFromToken,
-  receiveAdminLoginFromToken,
-  loginAdminErrorFromToken
-} from '../actions/AdminLogin';
-import LeaveReportList from '../components/LeaveReport';
+  ApprovedLeaveReportList,
+  PendingLeaveReportList,
+  CancelledLeaveReportList,
+  DeclinedLeaveReportList,
+  LeaveUpdatesReportList,
+  StaffRecordList,
+  UserUpdatesReportList
+} from '../components/LeaveReport';
+
+const IS_AUTHENTICATED = gql`
+  query isAdminAuthenticated {
+    isAuthenticated @client
+    admin_token @client
+  }
+`;
 
 const VERIFY_ADMIN_TOKEN = gql`
   mutation verifyAdminToken($adminToken: String!) {
     verifyAdminToken(adminToken: $adminToken) {
+      Admin {
+        othernames
+      }
       token
       ok
     }
@@ -175,181 +189,326 @@ const USER_UPDATES_RECORD = gql`
   }
 `;
 
+type tabsProps = {
+  data: Array<any>
+};
+
+// type tabsState = {
+//   activeIndex: number
+// };
+
+export function Tabs(props: tabsProps) {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  function selectTabIndex(e: SyntheticEvent<HTMLElement>) {
+    setActiveIndex(parseInt(e.currentTarget.id, 10));
+  }
+
+  function renderTabs() {
+    return props.data.map((tab, index) => {
+      const isActive = activeIndex === index;
+      return (
+        <div className="nav-link btn" key={index}>
+          <div
+            className={
+              isActive
+                ? 'border border-right-0 border-left-0 border-top-0 border-secondary'
+                : 'text-secondary btn-link'
+            }
+            onClick={selectTabIndex}
+            id={index}
+          >
+            {tab.label}
+          </div>
+        </div>
+      );
+    });
+  }
+
+  function renderPanel() {
+    return <div>{props.data[activeIndex].content}</div>;
+  }
+
+  return (
+    <div className="container">
+      <nav className="nav justify-content-center">{renderTabs()}</nav>
+      <div className="mt-1">{renderPanel()}</div>
+    </div>
+  );
+}
+
 type Props = {
-  isAuthenticated: boolean,
-  auth_info: Object,
-  dispatch: Function,
   verifyAdminToken: Function
 };
 
-function LeaveReport(props: Props) {
+function LeaveReportList(props: Props) {
   useEffect(function() {
-    verifyToken();
-    setInterval(verifyToken, 600000);
+    props.verifyAdminToken();
   }, []);
 
-  async function verifyToken() {
-    const { auth_info, dispatch, verifyAdminToken } = props;
-
-    const adminToken = auth_info.admin_token
-      ? auth_info
-      : localStorage.getItem('admin_token');
-
-    if (adminToken) {
-      try {
-        dispatch(requestAdminLoginFromToken());
-        const response = await verifyAdminToken({
-          variables: { adminToken }
-        });
-        dispatch(
-          receiveAdminLoginFromToken(response.data.verifyAdminToken.token)
-        );
-      } catch (error) {
-        console.log(error);
-        localStorage.removeItem('admin_token');
-        localStorage.removeItem('admin_user');
-        dispatch(loginAdminErrorFromToken('Your session has expired!'));
-      }
-    }
-  }
-
-  const { isAuthenticated } = props;
-
-  return (
-    <>
-      {isAuthenticated ? (
+  const tabData = [
+    {
+      label: 'Approved',
+      content: (
         <Query query={APPROVED_RECORD} pollInterval={60000}>
           {({
             loading: approvedLoading,
             error: approvedError,
             data: { findLeaveRecord: approved_record }
-          }) => (
-            <Query query={PENDING_RECORD} pollInterval={60000}>
-              {({
-                loading: pendingLoading,
-                error: pendingError,
-                data: { findLeaveRecord: pending_record }
-              }) => (
-                <Query query={CANCELLED_RECORD} pollInterval={60000}>
-                  {({
-                    loading: cancelledLoading,
-                    error: cancelledError,
-                    data: { findLeaveRecord: cancelled_record }
-                  }) => (
-                    <Query query={DECLINED_RECORD} pollInterval={60000}>
-                      {({
-                        loading: declinedLoading,
-                        error: declinedError,
-                        data: { findLeaveRecord: declined_record }
-                      }) => (
-                        <Query query={USER_UPDATES_RECORD} pollInterval={60000}>
-                          {({
-                            loading: userLoading,
-                            error: userError,
-                            data: { findUserUpdates: user_updates }
-                          }) => (
-                            <Query
-                              query={LEAVE_UPDATES_RECORD}
-                              pollInterval={60000}
-                            >
-                              {({
-                                loading: leaveLoading,
-                                error: leaveError,
-                                data: { findLeaveUpdates: leave_updates }
-                              }) => (
-                                <Query
-                                  query={ACTIVE_USERS}
-                                  pollInterval={60000}
-                                >
-                                  {({
-                                    loading: activeUsersLoading,
-                                    error: activeUsersError,
-                                    data: { findUsers: staff_record }
-                                  }) => {
-                                    if (
-                                      approvedLoading ||
-                                      pendingLoading ||
-                                      cancelledLoading ||
-                                      declinedLoading ||
-                                      userLoading ||
-                                      leaveLoading ||
-                                      activeUsersLoading
-                                    ) {
-                                      return (
-                                        <div className="text-center">
-                                          <div className="loader1" />
-                                        </div>
-                                      );
-                                    }
+          }) => {
+            if (approvedLoading) {
+              return (
+                <div className="text-center" style={{ marginTop: '80px' }}>
+                  <div className="loader" />
+                </div>
+              );
+            }
 
-                                    if (
-                                      approvedError ||
-                                      pendingError ||
-                                      cancelledError ||
-                                      declinedError ||
-                                      userError ||
-                                      leaveError ||
-                                      activeUsersError
-                                    ) {
-                                      console.log(
-                                        approvedError ||
-                                          pendingError ||
-                                          cancelledError ||
-                                          declinedError ||
-                                          userError ||
-                                          leaveError ||
-                                          activeUsersError
-                                      );
-                                      return (
-                                        <div className="text-center">
-                                          <p>Something went wrong!</p>
-                                        </div>
-                                      );
-                                    }
+            if (approvedError) {
+              console.log(approvedError);
+              return (
+                <div className="text-center">
+                  <p>Something went wrong!</p>
+                </div>
+              );
+            }
 
-                                    return (
-                                      <LeaveReportList
-                                        approved_record={approved_record}
-                                        pending_record={pending_record}
-                                        cancelled_record={cancelled_record}
-                                        declined_record={declined_record}
-                                        user_updates={user_updates}
-                                        leave_updates={leave_updates}
-                                        staff_record={staff_record}
-                                      />
-                                    );
-                                  }}
-                                </Query>
-                              )}
-                            </Query>
-                          )}
-                        </Query>
-                      )}
-                    </Query>
-                  )}
-                </Query>
-              )}
-            </Query>
-          )}
+            return (
+              <ApprovedLeaveReportList approved_record={approved_record} />
+            );
+          }}
         </Query>
-      ) : (
-        <Redirect to="/login" />
-      )}
-    </>
+      )
+    },
+    {
+      label: 'Pending',
+      content: (
+        <Query query={PENDING_RECORD} pollInterval={60000}>
+          {({
+            loading: pendingLoading,
+            error: pendingError,
+            data: { findLeaveRecord: pending_record }
+          }) => {
+            if (pendingLoading) {
+              return (
+                <div className="text-center" style={{ marginTop: '80px' }}>
+                  <div className="loader" />
+                </div>
+              );
+            }
+
+            if (pendingError) {
+              console.log(pendingError);
+              return (
+                <div className="text-center">
+                  <p>Something went wrong!</p>
+                </div>
+              );
+            }
+
+            return <PendingLeaveReportList pending_record={pending_record} />;
+          }}
+        </Query>
+      )
+    },
+    {
+      label: 'Cancelled',
+      content: (
+        <Query query={CANCELLED_RECORD} pollInterval={60000}>
+          {({
+            loading: cancelledLoading,
+            error: cancelledError,
+            data: { findLeaveRecord: cancelled_record }
+          }) => {
+            if (cancelledLoading) {
+              return (
+                <div className="text-center" style={{ marginTop: '80px' }}>
+                  <div className="loader" />
+                </div>
+              );
+            }
+
+            if (cancelledError) {
+              console.log(cancelledError);
+              return (
+                <div className="text-center">
+                  <p>Something went wrong!</p>
+                </div>
+              );
+            }
+
+            return (
+              <CancelledLeaveReportList cancelled_record={cancelled_record} />
+            );
+          }}
+        </Query>
+      )
+    },
+    {
+      label: 'Declined',
+      content: (
+        <Query query={DECLINED_RECORD} pollInterval={60000}>
+          {({
+            loading: declinedLoading,
+            error: declinedError,
+            data: { findLeaveRecord: declined_record }
+          }) => {
+            if (declinedLoading) {
+              return (
+                <div className="text-center" style={{ marginTop: '80px' }}>
+                  <div className="loader" />
+                </div>
+              );
+            }
+
+            if (declinedError) {
+              console.log(declinedError);
+              return (
+                <div className="text-center">
+                  <p>Something went wrong!</p>
+                </div>
+              );
+            }
+
+            return (
+              <DeclinedLeaveReportList declined_record={declined_record} />
+            );
+          }}
+        </Query>
+      )
+    },
+    {
+      label: 'User updates',
+      content: (
+        <Query query={USER_UPDATES_RECORD} pollInterval={60000}>
+          {({
+            loading: userLoading,
+            error: userError,
+            data: { findUserUpdates: user_updates }
+          }) => {
+            if (userLoading) {
+              return (
+                <div className="text-center" style={{ marginTop: '80px' }}>
+                  <div className="loader" />
+                </div>
+              );
+            }
+
+            if (userError) {
+              console.log(userError);
+              return (
+                <div className="text-center">
+                  <p>Something went wrong!</p>
+                </div>
+              );
+            }
+
+            return <UserUpdatesReportList user_updates={user_updates} />;
+          }}
+        </Query>
+      )
+    },
+    {
+      label: 'Leave updates',
+      content: (
+        <Query query={LEAVE_UPDATES_RECORD} pollInterval={60000}>
+          {({
+            loading: leaveLoading,
+            error: leaveError,
+            data: { findLeaveUpdates: leave_updates }
+          }) => {
+            if (leaveLoading) {
+              return (
+                <div className="text-center" style={{ marginTop: '80px' }}>
+                  <div className="loader" />
+                </div>
+              );
+            }
+
+            if (leaveError) {
+              console.log(leaveError);
+              return (
+                <div className="text-center">
+                  <p>Something went wrong!</p>
+                </div>
+              );
+            }
+
+            return <LeaveUpdatesReportList leave_updates={leave_updates} />;
+          }}
+        </Query>
+      )
+    },
+    {
+      label: 'User record',
+      content: (
+        <Query query={ACTIVE_USERS} pollInterval={60000}>
+          {({
+            loading: activeUsersLoading,
+            error: activeUsersError,
+            data: { findUsers: staff_record }
+          }) => {
+            if (activeUsersLoading) {
+              return (
+                <div className="text-center" style={{ marginTop: '80px' }}>
+                  <div className="loader" />
+                </div>
+              );
+            }
+
+            if (activeUsersError) {
+              console.log(activeUsersError);
+              return (
+                <div className="text-center">
+                  <p>Something went wrong!</p>
+                </div>
+              );
+            }
+
+            return <StaffRecordList staff_record={staff_record} />;
+          }}
+        </Query>
+      )
+    }
+  ];
+
+  return <Tabs data={tabData} />;
+}
+
+export default function ArchivedStaffRecord() {
+  return (
+    <Query query={IS_AUTHENTICATED}>
+      {({ data }) => {
+        let adminToken = data.admin_token
+          ? data.admin_token
+          : localStorage.getItem('admin_token');
+
+        return data.isAuthenticated ? (
+          <ApolloConsumer>
+            {client => (
+              <Mutation
+                mutation={VERIFY_ADMIN_TOKEN}
+                variables={{ adminToken: adminToken }}
+                onCompleted={data => {
+                  if (data.verifyAdminToken) {
+                    TokenSuccess(data, client);
+                  } else {
+                    TokenFailure(client);
+                  }
+                }}
+              >
+                {verifyAdminToken => {
+                  return (
+                    <LeaveReportList verifyAdminToken={verifyAdminToken} />
+                  );
+                }}
+              </Mutation>
+            )}
+          </ApolloConsumer>
+        ) : (
+          <Redirect to="/login" />
+        );
+      }}
+    </Query>
   );
 }
-
-function mapStateToProps(state) {
-  const { adminAuth } = state;
-  const { auth_info, isAuthenticated } = adminAuth;
-
-  return { auth_info, isAuthenticated };
-}
-
-export default compose(
-  connect(mapStateToProps),
-  graphql(VERIFY_ADMIN_TOKEN, {
-    name: 'verifyAdminToken',
-    options: { pollInterval: 60000 }
-  })
-)(LeaveReport);
