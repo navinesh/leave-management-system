@@ -1,32 +1,22 @@
 // @flow
 import React from 'react';
-import { connect } from 'react-redux';
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
 
-import { logoutAdmin } from '../actions/AdminLogout';
 import Header from '../components/AdminHeader';
 
-type Props = {
-  isAuthenticated: boolean,
-  dispatch: Function
-};
+const IS_AUTHENTICATED = gql`
+  query isAdminAuthenticated {
+    isAuthenticated @client
+  }
+`;
 
-function AdminHeader(props: Props) {
-  const { isAuthenticated, dispatch } = props;
-
+export default function AdminHeader() {
   return (
-    <>
-      {isAuthenticated && (
-        <Header dispatch={dispatch} logoutAdmin={logoutAdmin} />
-      )}
-    </>
+    <Query query={IS_AUTHENTICATED}>
+      {({ data }) => {
+        return data.isAuthenticated && <Header />;
+      }}
+    </Query>
   );
 }
-
-function mapStateToProps(state) {
-  const { adminAuth } = state;
-  const { isAuthenticated } = adminAuth;
-
-  return { isAuthenticated };
-}
-
-export default connect(mapStateToProps)(AdminHeader);
