@@ -1,14 +1,15 @@
-// @flow
-import React, { useState } from 'react';
+import React from 'react';
 
 import { CSVLink } from 'react-csv';
 
 const moment = require('moment');
 
-function ApprovedLeaveReportList(props) {
-  const approvedRecord = props.approved_record.map(a => a).sort((a, b) => {
-    return a.user.othernames.localeCompare(b.user.othernames);
-  });
+export function ApprovedLeaveReportList(props) {
+  const approvedRecord = props.approved_record
+    .map(a => a)
+    .sort((a, b) => {
+      return a.user.othernames.localeCompare(b.user.othernames);
+    });
 
   const approvedRecordItems = approvedRecord.map(record => (
     <tr key={record.id}>
@@ -85,10 +86,12 @@ function ApprovedLeaveReportList(props) {
   );
 }
 
-function PendingLeaveReportList(props) {
-  const pendingRecord = props.pending_record.map(a => a).sort((a, b) => {
-    return a.user.othernames.localeCompare(b.user.othernames);
-  });
+export function PendingLeaveReportList(props) {
+  const pendingRecord = props.pending_record
+    .map(a => a)
+    .sort((a, b) => {
+      return a.user.othernames.localeCompare(b.user.othernames);
+    });
 
   const pendingRecordItems = pendingRecord.map(record => (
     <tr key={record.id}>
@@ -161,10 +164,12 @@ function PendingLeaveReportList(props) {
   );
 }
 
-function CancelledLeaveReportList(props) {
-  const cancelledRecord = props.cancelled_record.map(a => a).sort((a, b) => {
-    return a.user.othernames.localeCompare(b.user.othernames);
-  });
+export function CancelledLeaveReportList(props) {
+  const cancelledRecord = props.cancelled_record
+    .map(a => a)
+    .sort((a, b) => {
+      return a.user.othernames.localeCompare(b.user.othernames);
+    });
 
   const cancelledRecordItems = cancelledRecord.map(record => (
     <tr key={record.id}>
@@ -240,10 +245,12 @@ function CancelledLeaveReportList(props) {
   );
 }
 
-function DeclinedLeaveReportList(props) {
-  const declinedRecord = props.declined_record.map(a => a).sort((a, b) => {
-    return a.user.othernames.localeCompare(b.user.othernames);
-  });
+export function DeclinedLeaveReportList(props) {
+  const declinedRecord = props.declined_record
+    .map(a => a)
+    .sort((a, b) => {
+      return a.user.othernames.localeCompare(b.user.othernames);
+    });
 
   const declinedRecordItems = declinedRecord.map(record => (
     <tr key={record.id}>
@@ -319,10 +326,12 @@ function DeclinedLeaveReportList(props) {
   );
 }
 
-function LeaveUpdatesReportList(props) {
-  const leaveUpdates = props.leave_updates.map(a => a).sort((b, c) => {
-    return b.leaveId - c.leaveId;
-  });
+export function LeaveUpdatesReportList(props) {
+  const leaveUpdates = props.leave_updates
+    .map(a => a)
+    .sort((b, c) => {
+      return b.leaveId - c.leaveId;
+    });
 
   const leaveUpdateItems = leaveUpdates.map(record => (
     <tr key={record.id}>
@@ -403,10 +412,12 @@ function LeaveUpdatesReportList(props) {
   );
 }
 
-function StaffRecordList(props) {
-  const staffRecordList = props.staff_record.map(a => a).sort((a, b) => {
-    return a.othernames.localeCompare(b.othernames);
-  });
+export function StaffRecordList(props) {
+  const staffRecordList = props.staff_record
+    .map(a => a)
+    .sort((a, b) => {
+      return a.othernames.localeCompare(b.othernames);
+    });
 
   const staffRecordItems = staffRecordList.map(record => (
     <tr key={record.id}>
@@ -482,10 +493,12 @@ function StaffRecordList(props) {
   );
 }
 
-function UserUpdatesReportList(props) {
-  const userUpdates = props.user_updates.map(a => a).sort((b, c) => {
-    return b.userId - c.userId;
-  });
+export function UserUpdatesReportList(props) {
+  const userUpdates = props.user_updates
+    .map(a => a)
+    .sort((b, c) => {
+      return b.userId - c.userId;
+    });
 
   const userUpdateItems = userUpdates.map(record => {
     let dob = new Date(record.dateOfBirth);
@@ -571,103 +584,4 @@ function UserUpdatesReportList(props) {
       </h1>
     </div>
   );
-}
-
-type tabsProps = {
-  data: Array<any>
-};
-
-// type tabsState = {
-//   activeIndex: number
-// };
-
-function Tabs(props: tabsProps) {
-  const [activeIndex, setActiveIndex] = useState(0);
-
-  function selectTabIndex(e: SyntheticEvent<HTMLElement>) {
-    setActiveIndex(parseInt(e.currentTarget.id, 10));
-  }
-
-  function renderTabs() {
-    return props.data.map((tab, index) => {
-      const isActive = activeIndex === index;
-      return (
-        <div className="nav-link btn" key={index}>
-          <div
-            className={
-              isActive
-                ? 'border border-right-0 border-left-0 border-top-0 border-secondary'
-                : 'text-secondary btn-link'
-            }
-            onClick={selectTabIndex}
-            id={index}
-          >
-            {tab.label}
-          </div>
-        </div>
-      );
-    });
-  }
-
-  function renderPanel() {
-    return <div>{props.data[activeIndex].content}</div>;
-  }
-
-  return (
-    <div className="container">
-      <nav className="nav justify-content-center">{renderTabs()}</nav>
-      <div className="mt-1">{renderPanel()}</div>
-    </div>
-  );
-}
-
-type Props = {
-  cancelled_record: Object,
-  declined_record: Object,
-  approved_record: Object,
-  pending_record: Object,
-  user_updates: Object,
-  leave_updates: Object,
-  staff_record: Object
-};
-
-export default function LeaveReportList(props: Props) {
-  const tabData = [
-    {
-      label: 'Approved',
-      content: (
-        <ApprovedLeaveReportList approved_record={props.approved_record} />
-      )
-    },
-    {
-      label: 'Pending',
-      content: <PendingLeaveReportList pending_record={props.pending_record} />
-    },
-    {
-      label: 'Cancelled',
-      content: (
-        <CancelledLeaveReportList cancelled_record={props.cancelled_record} />
-      )
-    },
-    {
-      label: 'Declined',
-      content: (
-        <DeclinedLeaveReportList declined_record={props.declined_record} />
-      )
-    },
-    {
-      label: 'Leave updates',
-      content: <LeaveUpdatesReportList leave_updates={props.leave_updates} />
-    },
-    {
-      label: 'User record',
-      content: <StaffRecordList staff_record={props.staff_record} />
-    },
-    {
-      label: 'User updates',
-      content: <UserUpdatesReportList user_updates={props.user_updates} />
-    }
-  ];
-
-  return <Tabs data={tabData} />;
 }
