@@ -1,14 +1,8 @@
 // @flow
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import gql from 'graphql-tag';
+import { Mutation, ApolloConsumer } from 'react-apollo';
 import { Link } from 'react-router-dom';
-import { gql } from 'apollo-boost';
-import { graphql } from 'react-apollo';
-
-import {
-  requestAdminLogin,
-  receiveAdminLogin,
-  loginAdminError
-} from '../actions/AdminLogin';
 
 const AUTHENTICATE_ADMIN = gql`
   mutation authenticateAdmin($email: String!, $password: String!) {
@@ -24,9 +18,9 @@ const AUTHENTICATE_ADMIN = gql`
 
 type Props = {
   logInAdmin: Function,
-  isFetching: boolean,
-  message: string,
-  dispatch: Function
+  loading: boolean,
+  error: string,
+  sessionError: string
 };
 
 // type State = {
@@ -35,10 +29,14 @@ type Props = {
 //   password: string
 // };
 
-function Login(props: Props) {
+function LoginForm(props: Props) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+
+  useEffect(function() {
+    setErrorMessage(props.sessionError);
+  }, []);
 
   function handleEmailChange({ target }: SyntheticInputEvent<>) {
     setEmail(target.value);
@@ -58,33 +56,7 @@ function Login(props: Props) {
 
     setErrorMessage('');
 
-    authenticateAdmin();
-  }
-
-  async function authenticateAdmin() {
-    const { logInAdmin, dispatch } = props;
-
-    try {
-      dispatch(requestAdminLogin());
-      const response = await logInAdmin({
-        variables: { email, password }
-      });
-      localStorage.setItem(
-        'admin_token',
-        response.data.authenticateAdmin.token
-      );
-      localStorage.setItem(
-        'admin_user',
-        response.data.authenticateAdmin.Admin.othernames
-      );
-      dispatch(receiveAdminLogin(response.data.authenticateAdmin));
-    } catch (error) {
-      console.log(error);
-      setErrorMessage(error.message);
-      localStorage.removeItem('admin_token');
-      localStorage.removeItem('admin_user');
-      dispatch(loginAdminError());
-    }
+    props.login({ variables: { email: email, password: password } });
   }
 
   return (
@@ -100,6 +72,7 @@ function Login(props: Props) {
                 className="form-control"
                 placeholder="Enter email"
                 id="email"
+                value={email}
                 onChange={handleEmailChange}
               />
             </div>
@@ -110,6 +83,7 @@ function Login(props: Props) {
                 className="form-control"
                 placeholder="Password"
                 id="password"
+                value={password}
                 onChange={handlePasswordChange}
               />
             </div>
@@ -120,10 +94,9 @@ function Login(props: Props) {
             </div>
           </form>
           <div className="text-danger text-center">
-            {props.isFetching ? <div className="loader" /> : props.message}
-          </div>
-          <div className="text-danger text-center">
-            <div>{errorMessage}</div>
+            {props.loading && <div className="loader" />}
+            {props.error && props.error.message}
+            {errorMessage}
           </div>
         </div>
         <div className="card card-body mt-3">
@@ -136,6 +109,43 @@ function Login(props: Props) {
   );
 }
 
-export default graphql(AUTHENTICATE_ADMIN, {
-  name: 'logInAdmin'
-})(Login);
+export default function Login(props) {
+  return (
+    <ApolloConsumer>
+      {client => (
+        <Mutation
+          mutation={AUTHENTICATE_ADMIN}
+          update={(cache, data) => {
+            localStorage.setItem(
+              'admin_user',
+              data.data.authenticateAdmin.Admin.othernames
+            );
+            localStorage.setItem(
+              'admin_token',
+              data.data.authenticateAdmin.token
+            );
+            cache.writeData({
+              data: {
+                isAuthenticated: true,
+                admin_user: data.data.authenticateAdmin.Admin.othernames,
+                admin_token: data.data.authenticateAdmin.token,
+                sessionError: ''
+              }
+            });
+          }}
+        >
+          {(login, { loading, error }) => {
+            return (
+              <LoginForm
+                login={login}
+                loading={loading}
+                error={error}
+                sessionError={props.sessionError}
+              />
+            );
+          }}
+        </Mutation>
+      )}
+    </ApolloConsumer>
+  );
+}
