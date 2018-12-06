@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 
-import '../spinners.css';
 import NoData from '../img/undraw_no_data_qbuo.svg';
 
 const USER_RECORD = gql`
