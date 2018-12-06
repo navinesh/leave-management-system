@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function() {
+export default function Error() {
   return (
     <div className="container text-center">
       <div className="col-md-8 ml-auto mr-auto">
