@@ -1,6 +1,8 @@
 // @flow
 import React, { useState, useRef } from 'react';
 
+import axios from 'axios';
+
 import NoData from '../img/undraw_no_data_qbuo.svg';
 
 import 'react-dates/initialize';
@@ -37,60 +39,18 @@ function ClearSearch(props) {
   );
 }
 
-type Props = {
-  approved_items: Object,
-  public_holiday: Object,
-  refetch: Function,
-  dispatch: Function,
-  onEditApprovedLeaveSubmit: Function,
-  onCancelLeaveSubmit: Function,
-  isEditLeaveFetching: boolean,
-  editLeaveMessage: string,
-  isCancelLeaveFetching: boolean,
-  cancelLeaveMessage: string
-};
-
-// type State = {
-//   errorMessage: string,
-//   editReason: string,
-//   cancelReason: string,
-//   listID: string,
-//   startDate: any,
-//   endDate: any,
-//   isEditing: boolean,
-//   isCancel: boolean,
-//   focusedInput: ?boolean,
-//   searchTerm: string
-// };
-
-export default function ApprovedLeaveList(props: Props) {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [isEditing, setIsEditing] = useState(false);
-  const [listID, setListID] = useState('');
+function EditLeave(props) {
   const [editReason, setEditReason] = useState('');
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [focusedInput, setFocusedInput] = useState(null);
-  const [cancelReason, setCancelReason] = useState('');
-  const [isCancel, setIsCancel] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
   const dbStartDate = useRef(null);
   const dbEndDate = useRef(null);
   const dbLeaveName = useRef(null);
   const dbLeaveType = useRef(null);
-
-  function handleSearchChange({ target }: SyntheticInputEvent<>) {
-    setSearchTerm(target.value);
-  }
-
-  function handleClearSearch() {
-    setSearchTerm('');
-  }
-
-  function handleOpenEdit(e: SyntheticEvent<HTMLElement>) {
-    setIsEditing(!isEditing);
-    setListID(e.currentTarget.id);
-  }
+  const [serverMessage, setServerMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
   function handleEditReason({ target }: SyntheticInputEvent<>) {
     setEditReason(target.value);
@@ -98,7 +58,7 @@ export default function ApprovedLeaveList(props: Props) {
 
   function handleEditSubmit(e: Event) {
     e.preventDefault();
-    const { approved_items, public_holiday, onEditApprovedLeaveSubmit } = props;
+    const { approved_items, public_holiday } = props;
 
     const leave = dbLeaveName.current.value;
     const leaveType = dbLeaveType.current.value;
@@ -110,7 +70,7 @@ export default function ApprovedLeaveList(props: Props) {
       : moment(dbEndDate.current.value, 'DD/MM/YYYY');
     const reason = editReason ? editReason.trim() : null;
 
-    const userRecord = approved_items.filter(e => e.id === listID);
+    const userRecord = approved_items.filter(e => e.id === props.listID);
 
     const leaveID = userRecord[0].dbId;
     const previousLeaveName = userRecord[0].leaveName;
@@ -131,7 +91,7 @@ export default function ApprovedLeaveList(props: Props) {
     const dateOfBirth = userRecord[0].user.date_of_birth;
 
     if (
-      !listID ||
+      !props.listID ||
       !leave ||
       !leaveType ||
       !userStartDate ||
@@ -318,82 +278,57 @@ export default function ApprovedLeaveList(props: Props) {
       adminUser: adminUser
     };
 
-    onEditApprovedLeaveSubmit(editLeaveData);
+    editApprovedLeave(editLeaveData);
   }
 
-  function handleCloseEdit() {
-    const { dispatch, refetch } = props;
+  async function editApprovedLeave(editLeaveData: Object) {
+    setLoading(true);
 
-    setIsEditing(!isEditing);
-    setErrorMessage('');
-    setListID('');
+    try {
+      const response = await axios.post(
+        'http://localhost:8000/editapprovedleave',
+        {
+          leave_id: editLeaveData.leave_id,
+          leave: editLeaveData.leave,
+          leaveType: editLeaveData.leaveType,
+          startDate: editLeaveData.startDate,
+          endDate: editLeaveData.endDate,
+          reason: editLeaveData.reason,
+          leaveDays: editLeaveData.leaveDays,
+          applicationDays: editLeaveData.applicationDays,
+          previousLeaveDays: editLeaveData.previousLeaveDays,
+          previousLeaveName: editLeaveData.previousLeaveName,
+          previousLeaveType: editLeaveData.previousLeaveType,
+          previousStartDate: editLeaveData.previousStartDate,
+          previousEndDate: editLeaveData.previousEndDate,
+          newLeaveBalance: editLeaveData.newLeaveBalance,
+          admin_user: editLeaveData.adminUser
+        }
+      );
 
-    if (editReason) {
-      dispatch({ type: 'CLEAR_EDIT_LEAVE' });
-      refetch();
+      setLoading(false);
+
+      if (response.status !== 201) {
+        setErrorMessage(response.data);
+      } else {
+        setServerMessage(response.data.message);
+        setEditReason('');
+        props.refetch();
+      }
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      setErrorMessage(error.message);
     }
   }
 
-  function handleOpenCancel(e: SyntheticEvent<HTMLElement>) {
-    setIsCancel(!isCancel);
-    setListID(e.currentTarget.id);
-  }
+  const { approved_items, listID, handleCloseEdit } = props;
 
-  function handleCancelReason({ target }: SyntheticInputEvent<>) {
-    setCancelReason(target.value);
-  }
-
-  function handleCancelSubmit(e: Event) {
-    e.preventDefault();
-    const { onCancelLeaveSubmit, approved_items } = props;
-
-    if (!cancelReason) {
-      setErrorMessage('Reason field is mandatory!');
-      return;
-    }
-
-    const userRecord = approved_items.filter(e => e.id === listID);
-
-    const userID = userRecord[0].userId;
-    const leaveID = userRecord[0].dbId;
-    const leaveDays = userRecord[0].leaveDays;
-    const leaveName = userRecord[0].leaveName;
-
-    const leaveStatus = 'cancelled';
-    const adminUser = localStorage.getItem('admin_user');
-
-    const cancelLeaveData = {
-      leaveID: leaveID,
-      reason: cancelReason,
-      userID: userID,
-      leaveDays: leaveDays,
-      leaveName: leaveName,
-      leaveStatus: leaveStatus,
-      adminUser: adminUser
-    };
-
-    onCancelLeaveSubmit(cancelLeaveData);
-  }
-
-  function handleCloseCancel(e: Event) {
-    const { dispatch, refetch } = props;
-
-    setIsCancel(!isCancel);
-    setErrorMessage('');
-    setListID('');
-
-    if (cancelReason) {
-      dispatch({ type: 'CLEAR_CANCEL_LEAVE' });
-      refetch();
-    }
-  }
-
-  const { approved_items } = props;
-
-  if (isEditing) {
-    return (
-      <>
-        {approved_items.filter(e => e.id === listID).map(record => (
+  return (
+    <>
+      {approved_items
+        .filter(e => e.id === listID)
+        .map(record => (
           <div key={record.id}>
             <div
               className="col-md-6 ml-auto mr-auto"
@@ -532,12 +467,10 @@ export default function ApprovedLeaveList(props: Props) {
                       </button>
                     </div>
                     <div className="text-primary text-center">
-                      {props.isEditLeaveFetching ? (
+                      {loading ? (
                         <div className="loader2" />
                       ) : (
-                        <p className="text-primary mt-2">
-                          {props.editLeaveMessage}
-                        </p>
+                        <p className="text-primary mt-2">{serverMessage}</p>
                       )}
                     </div>
                     <div className="text-danger text-center">
@@ -549,14 +482,90 @@ export default function ApprovedLeaveList(props: Props) {
             </div>
           </div>
         ))}
-      </>
-    );
+    </>
+  );
+}
+
+function CancelLeave(props) {
+  const [serverMessage, setServerMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [cancelReason, setCancelReason] = useState('');
+
+  function handleCancelReason({ target }: SyntheticInputEvent<>) {
+    setCancelReason(target.value);
   }
 
-  if (isCancel) {
-    return (
-      <>
-        {approved_items.filter(e => e.id === listID).map(record => (
+  function handleCancelSubmit(e: Event) {
+    e.preventDefault();
+
+    if (!cancelReason) {
+      setErrorMessage('Reason field is mandatory!');
+      return;
+    }
+
+    const userRecord = props.approved_items.filter(e => e.id === props.listID);
+
+    const userID = userRecord[0].userId;
+    const leaveID = userRecord[0].dbId;
+    const leaveDays = userRecord[0].leaveDays;
+    const leaveName = userRecord[0].leaveName;
+
+    const leaveStatus = 'cancelled';
+    const adminUser = localStorage.getItem('admin_user');
+
+    setErrorMessage('');
+
+    const cancelLeaveData = {
+      leaveID: leaveID,
+      reason: cancelReason,
+      userID: userID,
+      leaveDays: leaveDays,
+      leaveName: leaveName,
+      leaveStatus: leaveStatus,
+      adminUser: adminUser
+    };
+
+    cancelLeave(cancelLeaveData);
+  }
+
+  async function cancelLeave(cancelLeaveData: Object) {
+    setLoading(true);
+
+    try {
+      const response = await axios.post('http://localhost:8000/cancelleave', {
+        leaveID: cancelLeaveData.leaveID,
+        cancelReason: cancelLeaveData.reason,
+        userID: cancelLeaveData.userID,
+        leaveDays: cancelLeaveData.leaveDays,
+        leaveName: cancelLeaveData.leaveName,
+        leaveStatus: cancelLeaveData.leaveStatus,
+        admin_user: cancelLeaveData.adminUser
+      });
+
+      setLoading(false);
+
+      if (response.status !== 201) {
+        setErrorMessage(response.data.message);
+      } else {
+        setServerMessage(response.data.message);
+        setCancelReason('');
+        props.refetch();
+      }
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      setErrorMessage(error.message);
+    }
+  }
+
+  const { approved_items, listID, handleCloseCancel } = props;
+
+  return (
+    <>
+      {approved_items
+        .filter(e => e.id === listID)
+        .map(record => (
           <div key={record.id}>
             <div
               className="col-md-6 ml-auto mr-auto"
@@ -595,10 +604,10 @@ export default function ApprovedLeaveList(props: Props) {
                       </button>
                     </div>
                     <div className="text-primary text-center">
-                      {props.isCancelLeaveFetching ? (
-                        <div className="loader2" />
+                      {loading ? (
+                        <div className="loader" />
                       ) : (
-                        <p className="mt-3">{props.cancelLeaveMessage}</p>
+                        <p className="mt-3">{serverMessage}</p>
                       )}
                     </div>
                     <div className="text-danger text-center">
@@ -610,7 +619,84 @@ export default function ApprovedLeaveList(props: Props) {
             </div>
           </div>
         ))}
-      </>
+    </>
+  );
+}
+
+type Props = {
+  approved_items: Object,
+  public_holiday: Object,
+  refetch: Function
+};
+
+// type State = {
+//   errorMessage: string,
+//   editReason: string,
+//   cancelReason: string,
+//   listID: string,
+//   startDate: any,
+//   endDate: any,
+//   isEditing: boolean,
+//   isCancel: boolean,
+//   focusedInput: ?boolean,
+//   searchTerm: string
+// };
+
+export default function ApprovedLeaveList(props: Props) {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [listID, setListID] = useState('');
+  const [isEditing, setIsEditing] = useState(false);
+  const [isCancel, setIsCancel] = useState(false);
+
+  function handleSearchChange({ target }: SyntheticInputEvent<>) {
+    setSearchTerm(target.value);
+  }
+
+  function handleClearSearch() {
+    setSearchTerm('');
+  }
+
+  function handleOpenEdit(e: SyntheticEvent<HTMLElement>) {
+    setIsEditing(!isEditing);
+    setListID(e.currentTarget.id);
+  }
+
+  function handleCloseEdit() {
+    setIsEditing(!isEditing);
+    setListID('');
+  }
+
+  function handleOpenCancel(e: SyntheticEvent<HTMLElement>) {
+    setIsCancel(!isCancel);
+    setListID(e.currentTarget.id);
+  }
+
+  function handleCloseCancel(e: Event) {
+    setIsCancel(!isCancel);
+    setListID('');
+  }
+
+  const { approved_items, refetch } = props;
+
+  if (isEditing) {
+    return (
+      <EditLeave
+        approved_items={approved_items}
+        listID={listID}
+        handleCloseEdit={handleCloseEdit}
+        refetch={refetch}
+      />
+    );
+  }
+
+  if (isCancel) {
+    return (
+      <CancelLeave
+        approved_items={approved_items}
+        listID={listID}
+        handleCloseCancel={handleCloseCancel}
+        refetch={refetch}
+      />
     );
   }
 
@@ -656,7 +742,7 @@ export default function ApprovedLeaveList(props: Props) {
 
   return (
     <>
-      {items.length > 0 ? (
+      {approved_items.length > 0 ? (
         <>
           <div className="row">
             <Search

@@ -1,6 +1,6 @@
 // @flow
 import React, { useState } from 'react';
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 
 const moment = require('moment');
@@ -137,7 +137,6 @@ function UnArchiveLeave(props) {
 
 type Props = {
   archived_staff_record: Array<any>,
-  dispatch: Function,
   refetch: Function
 };
 
@@ -178,7 +177,7 @@ export default function ArchivedStaffRecordList(props: Props) {
   if (isUnarchive) {
     return (
       <UnArchiveLeave
-        archived_staff_record={props.archived_staff_record}
+        archived_staff_record={archived_staff_record}
         id={id}
         handleCloseUnarchive={handleCloseUnarchive}
       />

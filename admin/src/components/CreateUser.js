@@ -4,14 +4,9 @@ import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
-const moment = require('moment');
+import axios from 'axios';
 
-type Props = {
-  dispatch: Function,
-  onNewUserRecordSubmit: Function,
-  message: string,
-  isFetching: boolean
-};
+const moment = require('moment');
 
 // type State = {
 //   errorMessage: string,
@@ -32,8 +27,7 @@ type Props = {
 //   paternityLeave: string,
 // };
 
-export default function CreateUserForm(props: Props) {
-  const [errorMessage, setErrorMessage] = useState('');
+export default function CreateUserForm() {
   const [surname, setSurname] = useState('');
   const [otherNames, setOtherNames] = useState('');
   const [staffEmail, setStaffEmail] = useState('');
@@ -49,6 +43,9 @@ export default function CreateUserForm(props: Props) {
   const [employeeStartDate, setEmployeeStartDate] = useState(null);
   const [maternityLeave, setMaternityLeave] = useState('');
   const [paternityLeave, setPaternityLeave] = useState('');
+  const [serverMessage, setServerMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
   function handleSurnameChange({ target }: SyntheticInputEvent<>) {
     setSurname(target.value);
@@ -159,27 +156,64 @@ export default function CreateUserForm(props: Props) {
     };
 
     setErrorMessage('');
-    setSurname('');
-    setOtherNames('');
-    setAnnualLeave('');
-    setStaffEmail('');
-    setDesignation('');
-    setGender('');
-    setSickLeave('');
-    setBereavementLeave('');
-    setFamilyCareLeave('');
-    setChristmasLeave('');
-    setMaternityLeave('');
-    setPaternityLeave('');
-    setEmployeeNumber(0);
-    setDob(null);
-    setEmployeeStartDate(null);
+    setServerMessage('');
 
-    props.onNewUserRecordSubmit(newUserDetails);
+    newUserRecord(newUserDetails);
+  }
+
+  async function newUserRecord(newUserDetails: Object) {
+    setLoading(true);
+
+    try {
+      const response = await axios.post('http://localhost:8000/adduser', {
+        surname: newUserDetails.surname,
+        othernames: newUserDetails.othernames,
+        email: newUserDetails.staffEmail,
+        designation: newUserDetails.designation,
+        annual: newUserDetails.annualDays,
+        sick: newUserDetails.sickDays,
+        bereavement: newUserDetails.bereavementDays,
+        family_care: newUserDetails.familyCareDays,
+        christmas: newUserDetails.christmasDays,
+        date_of_birth: newUserDetails.dateOfBirth,
+        maternity: newUserDetails.maternityDays,
+        paternity: newUserDetails.paternityDays,
+        gender: newUserDetails.gender,
+        employee_number: newUserDetails.employeeNumber,
+        employee_start_date: newUserDetails.employeeStartDate,
+        admin_user: newUserDetails.adminUser
+      });
+
+      setLoading(false);
+
+      if (response.status !== 201) {
+        setErrorMessage(response.data);
+      } else {
+        setServerMessage(response.data.message);
+        setSurname('');
+        setOtherNames('');
+        setAnnualLeave('');
+        setStaffEmail('');
+        setDesignation('');
+        setGender('');
+        setSickLeave('');
+        setBereavementLeave('');
+        setFamilyCareLeave('');
+        setChristmasLeave('');
+        setMaternityLeave('');
+        setPaternityLeave('');
+        setEmployeeNumber(0);
+        setDob(null);
+        setEmployeeStartDate(null);
+      }
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      setErrorMessage(error.message);
+    }
   }
 
   let staffGender = gender.toLowerCase();
-  const { isFetching, message } = props;
 
   return (
     <div className="container">
@@ -430,7 +464,7 @@ export default function CreateUserForm(props: Props) {
             </div>
           </form>
           <div className="text-primary text-center">
-            {isFetching ? <div className="loader" /> : message}
+            {loading ? <div className="loader" /> : serverMessage}
           </div>
           <div className="text-danger text-center">
             <div>{errorMessage}</div>
