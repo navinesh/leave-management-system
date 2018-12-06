@@ -1,8 +1,6 @@
 // @flow
 import React from 'react';
 
-import '../spinners.css';
-
 import done_all from '../img/done_all.png';
 
 const moment = require('moment');
