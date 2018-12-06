@@ -15,6 +15,7 @@ import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
 import './index.css';
 import './bootstrap.min.css';
+import './spinners.css';
 
 import { typeDefs } from './resolvers';
 
@@ -42,6 +43,9 @@ const client = new ApolloClient({
     }),
     new HttpLink({
       uri: 'http://localhost:8000/graphql'
+      // headers: {
+      //   authorization: localStorage.getItem('auth_token')
+      // }
     })
   ]),
   initializers: {
