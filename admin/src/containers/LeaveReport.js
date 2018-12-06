@@ -11,6 +11,7 @@ import {
   PendingLeaveReportList,
   CancelledLeaveReportList,
   DeclinedLeaveReportList,
+  ArchivedLeaveReportList,
   LeaveUpdatesReportList,
   StaffRecordList,
   UserUpdatesReportList
@@ -35,6 +36,26 @@ const VERIFY_ADMIN_TOKEN = gql`
   }
 `;
 
+const PENDING_RECORD = gql`
+  {
+    findLeaveRecord(leaveStatus: "pending", isArchived: "false") {
+      id
+      leaveName
+      leaveType
+      startDate
+      endDate
+      leaveDays
+      leaveStatus
+      leaveReason
+      datePosted
+      user {
+        othernames
+        surname
+      }
+    }
+  }
+`;
+
 const APPROVED_RECORD = gql`
   {
     findLeaveRecord(leaveStatus: "approved", isArchived: "false") {
@@ -53,26 +74,6 @@ const APPROVED_RECORD = gql`
         othernames
         surname
         employeeNumber
-      }
-    }
-  }
-`;
-
-const PENDING_RECORD = gql`
-  {
-    findLeaveRecord(leaveStatus: "pending", isArchived: "false") {
-      id
-      leaveName
-      leaveType
-      startDate
-      endDate
-      leaveDays
-      leaveStatus
-      leaveReason
-      datePosted
-      user {
-        othernames
-        surname
       }
     }
   }
@@ -115,6 +116,29 @@ const DECLINED_RECORD = gql`
       user {
         othernames
         surname
+      }
+    }
+  }
+`;
+
+const ARCHIVED_RECORD = gql`
+  {
+    findLeaveRecord(leaveStatus: "archived", isArchived: "false") {
+      id
+      userId
+      leaveName
+      leaveType
+      startDate
+      endDate
+      leaveDays
+      leaveStatus
+      leaveReason
+      datePosted
+      dateReviewed
+      user {
+        othernames
+        surname
+        employeeNumber
       }
     }
   }
@@ -372,6 +396,39 @@ function LeaveReportList(props: Props) {
 
             return (
               <DeclinedLeaveReportList declined_record={declined_record} />
+            );
+          }}
+        </Query>
+      )
+    },
+    {
+      label: 'Archived',
+      content: (
+        <Query query={ARCHIVED_RECORD} pollInterval={60000}>
+          {({
+            loading: archivedLoading,
+            error: archivedError,
+            data: { findLeaveRecord: archived_record }
+          }) => {
+            if (archivedLoading) {
+              return (
+                <div className="text-center" style={{ marginTop: '80px' }}>
+                  <div className="loader" />
+                </div>
+              );
+            }
+
+            if (archivedError) {
+              console.log(archivedError);
+              return (
+                <div className="text-center">
+                  <p>Something went wrong!</p>
+                </div>
+              );
+            }
+
+            return (
+              <ArchivedLeaveReportList archived_record={archived_record} />
             );
           }}
         </Query>
