@@ -3,8 +3,6 @@ import React, { useState } from 'react';
 
 import axios from 'axios';
 
-import '../spinners.css';
-
 // type State = {
 //   errorMessage: string,
 //   email: string
@@ -51,6 +49,7 @@ export default function UserResetPassword() {
         setErrorMessage(response.data.message);
       } else {
         setServerMessage(response.data.message);
+        setEmail();
       }
     } catch (error) {
       console.log(error);
