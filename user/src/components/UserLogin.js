@@ -1,10 +1,8 @@
 // @flow
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Mutation, ApolloConsumer } from 'react-apollo';
 import gql from 'graphql-tag';
-
-import '../spinners.css';
+import { Mutation, ApolloConsumer } from 'react-apollo';
 
 const AUTHENTICATE_USER = gql`
   mutation authenticateUser($email: String!, $password: String!) {
@@ -19,10 +17,10 @@ const AUTHENTICATE_USER = gql`
   }
 `;
 
-type Props = {
+type formProps = {
   login: Function,
   loading: boolean,
-  error: string,
+  error: Object,
   sessionError: string
 };
 
@@ -32,7 +30,7 @@ type Props = {
 //   errorMessage: string
 // };
 
-function LoginForm(props: Props) {
+function LoginForm(props: formProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
@@ -128,22 +126,22 @@ function LoginForm(props: Props) {
   );
 }
 
-export default function Login(props) {
+type Props = {
+  sessionError: string
+};
+
+export default function Login(props: Props) {
   return (
     <ApolloConsumer>
       {client => (
         <Mutation
           mutation={AUTHENTICATE_USER}
           update={(cache, data) => {
-            localStorage.setItem(
-              'user_id',
-              data.data.authenticateUser.User.dbId
-            );
+            localStorage.setItem('id', data.data.authenticateUser.User.id);
             localStorage.setItem(
               'auth_token',
               data.data.authenticateUser.token
             );
-            localStorage.setItem('id', data.data.authenticateUser.User.id);
             cache.writeData({
               data: {
                 isAuthenticated: true,
