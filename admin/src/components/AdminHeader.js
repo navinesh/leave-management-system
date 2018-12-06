@@ -1,17 +1,34 @@
 // @flow
 import React from 'react';
+import { ApolloConsumer } from 'react-apollo';
 import { Link } from 'react-router-dom';
 
-type Props = {
-  dispatch: Function,
-  logoutAdmin: Function
-};
+function Logout() {
+  return (
+    <ApolloConsumer>
+      {client => (
+        <button
+          onClick={() => {
+            client.writeData({
+              data: {
+                isAuthenticated: false,
+                id: null,
+                user_id: null,
+                auth_token: null
+              }
+            });
+            localStorage.clear();
+          }}
+          className="btn btn-primary ml-1"
+        >
+          Sign out
+        </button>
+      )}
+    </ApolloConsumer>
+  );
+}
 
-export default function Header(props: Props) {
-  function adminLogout(e: Event) {
-    props.dispatch(props.logoutAdmin());
-  }
-
+export default function Header() {
   return (
     <nav className="navbar fixed-top navbar-expand-lg">
       <div className="container">
@@ -53,9 +70,7 @@ export default function Header(props: Props) {
               <Link className="nav-item nav-link" to="/publicholiday">
                 Public Holidays
               </Link>
-              <button onClick={adminLogout} className="btn btn-primary ml-1">
-                Sign out
-              </button>
+              <Logout />
             </div>
           </div>
         </div>
