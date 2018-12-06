@@ -1,36 +1,28 @@
 // @flow
 import React from 'react';
-import { connect } from 'react-redux';
+import gql from 'graphql-tag';
+import { Query } from 'react-apollo';
 import { Redirect } from 'react-router-dom';
 
 import Login from '../components/AdminLogin';
 
-type Props = {
-  isFetching: boolean,
-  message: string,
-  isAuthenticated: boolean,
-  dispatch: Function
-};
+const IS_AUTHENTICATED = gql`
+  query isAdminAuthenticated {
+    isAuthenticated @client
+    sessionError @client
+  }
+`;
 
-function AdminLogin(props: Props) {
-  const { isAuthenticated, dispatch, isFetching, message } = props;
-
+export default function AdminLogin() {
   return (
-    <>
-      {!isAuthenticated ? (
-        <Login isFetching={isFetching} message={message} dispatch={dispatch} />
-      ) : (
-        <Redirect to="/" />
-      )}
-    </>
+    <Query query={IS_AUTHENTICATED}>
+      {({ data }) => {
+        return !data.isAuthenticated ? (
+          <Login sessionError={data.sessionError} />
+        ) : (
+          <Redirect to="/" />
+        );
+      }}
+    </Query>
   );
 }
-
-function mapStateToProps(state) {
-  const { adminAuth } = state;
-  const { isFetching, message, isAuthenticated } = adminAuth;
-
-  return { isFetching, message, isAuthenticated };
-}
-
-export default connect(mapStateToProps)(AdminLogin);
