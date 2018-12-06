@@ -248,6 +248,37 @@ function LeaveReportList(props: Props) {
 
   const tabData = [
     {
+      label: 'Pending',
+      content: (
+        <Query query={PENDING_RECORD} pollInterval={60000}>
+          {({
+            loading: pendingLoading,
+            error: pendingError,
+            data: { findLeaveRecord: pending_record }
+          }) => {
+            if (pendingLoading) {
+              return (
+                <div className="text-center" style={{ marginTop: '80px' }}>
+                  <div className="loader" />
+                </div>
+              );
+            }
+
+            if (pendingError) {
+              console.log(pendingError);
+              return (
+                <div className="text-center">
+                  <p>Something went wrong!</p>
+                </div>
+              );
+            }
+
+            return <PendingLeaveReportList pending_record={pending_record} />;
+          }}
+        </Query>
+      )
+    },
+    {
       label: 'Approved',
       content: (
         <Query query={APPROVED_RECORD} pollInterval={60000}>
@@ -276,37 +307,6 @@ function LeaveReportList(props: Props) {
             return (
               <ApprovedLeaveReportList approved_record={approved_record} />
             );
-          }}
-        </Query>
-      )
-    },
-    {
-      label: 'Pending',
-      content: (
-        <Query query={PENDING_RECORD} pollInterval={60000}>
-          {({
-            loading: pendingLoading,
-            error: pendingError,
-            data: { findLeaveRecord: pending_record }
-          }) => {
-            if (pendingLoading) {
-              return (
-                <div className="text-center" style={{ marginTop: '80px' }}>
-                  <div className="loader" />
-                </div>
-              );
-            }
-
-            if (pendingError) {
-              console.log(pendingError);
-              return (
-                <div className="text-center">
-                  <p>Something went wrong!</p>
-                </div>
-              );
-            }
-
-            return <PendingLeaveReportList pending_record={pending_record} />;
           }}
         </Query>
       )
