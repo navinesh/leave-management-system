@@ -5,6 +5,8 @@ import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
 import { DateRangePicker } from 'react-dates';
 
+import axios from 'axios';
+
 import done_all from '../img/done_all.png';
 
 import Moment from 'moment';
@@ -13,11 +15,7 @@ const moment = extendMoment(Moment);
 
 type approveProps = {
   pending_items: Object,
-  listID: string,
-  onApproveLeaveSubmit: Function,
-  isApproveLeaveFetching: boolean,
-  approveLeavemessage: string,
-  handleCloseApproveLeave: Function
+  listID: string
 };
 
 // type approveState = {
@@ -25,11 +23,13 @@ type approveProps = {
 // };
 
 function ApproveLeave(props: approveProps) {
+  const [serverMessage, setServerMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
   function handleApproveLeaveSubmit(e: Event) {
     e.preventDefault();
-    const { pending_items, listID, onApproveLeaveSubmit } = props;
+    const { pending_items, listID } = props;
 
     const leaveStatus = 'approved';
 
@@ -45,6 +45,8 @@ function ApproveLeave(props: approveProps) {
     const leaveName = userRecord[0].leaveName;
     const adminUser = localStorage.getItem('admin_user');
 
+    setErrorMessage('');
+
     const approveLeaveData = {
       leaveID: leaveID,
       leaveStatus: leaveStatus,
@@ -53,127 +55,147 @@ function ApproveLeave(props: approveProps) {
       adminUser: adminUser
     };
 
-    onApproveLeaveSubmit(approveLeaveData);
+    approveLeave(approveLeaveData);
   }
 
-  const {
-    pending_items,
-    listID,
-    handleCloseApproveLeave,
-    isApproveLeaveFetching,
-    approveLeavemessage
-  } = props;
+  async function approveLeave(approveLeaveData: Object) {
+    setLoading(true);
+
+    try {
+      const response = await axios.post('http://localhost:8000/approveleave', {
+        leave_id: approveLeaveData.leaveID,
+        leaveStatus: approveLeaveData.leaveStatus,
+        userID: approveLeaveData.userID,
+        leaveDays: approveLeaveData.leaveDays,
+        leaveName: approveLeaveData.leaveName,
+        admin_user: approveLeaveData.adminUser
+      });
+
+      setLoading(false);
+
+      if (response.status !== 201) {
+        setErrorMessage(response.data.message);
+      } else {
+        setServerMessage(response.data.message);
+        props.refetch();
+      }
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      setErrorMessage(error.message);
+    }
+  }
+
+  const { pending_items, listID, handleCloseApproveLeave } = props;
 
   return (
     <div className="col-md-10 ml-auto mr-auto">
-      {pending_items.filter(e => e.id === listID).map(record => (
-        <div key={record.id}>
-          <div
-            className="col-md-6 ml-auto mr-auto"
-            style={{ paddingTop: '10px' }}
-          >
-            <div className="card">
-              <h5 className="card-header">Approve</h5>
-              <div className="card-body">
-                <p>
-                  {record.user.othernames} {record.user.surname}
-                </p>
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Leave</label>
-                      <div className="form-control">
-                        <em>{record.leaveName}</em>
+      {pending_items
+        .filter(e => e.id === listID)
+        .map(record => (
+          <div key={record.id}>
+            <div
+              className="col-md-6 ml-auto mr-auto"
+              style={{ paddingTop: '10px' }}
+            >
+              <div className="card">
+                <h5 className="card-header">Approve</h5>
+                <div className="card-body">
+                  <p>
+                    {record.user.othernames} {record.user.surname}
+                  </p>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label>Leave</label>
+                        <div className="form-control">
+                          <em>{record.leaveName}</em>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label>Leave type</label>
+                        <div className="form-control">
+                          <em>{record.leaveType}</em>
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Leave type</label>
-                      <div className="form-control">
-                        <em>{record.leaveType}</em>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label>Start date</label>
+                        <div className="form-control">
+                          <em>{record.startDate}</em>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label>End date</label>
+                        <div className="form-control">
+                          <em>{record.endDate}</em>
+                        </div>
                       </div>
                     </div>
                   </div>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label>Leave days</label>
+                        <div className="form-control text-muted">
+                          <em>{record.leaveDays}</em>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col">
+                      <div className="form-group">
+                        <label>Leave reason</label>
+                        <div className="form-control text-muted">
+                          <em>{record.leaveReason}</em>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <form onSubmit={handleApproveLeaveSubmit}>
+                    <div className="row justify-content-end">
+                      <button type="submit" className="btn btn-primary mr-3">
+                        Approve
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-outline-primary"
+                        onClick={handleCloseApproveLeave}
+                      >
+                        Close
+                      </button>
+                    </div>
+                    <div className="text-primary text-center">
+                      {loading ? (
+                        <div className="loader" />
+                      ) : (
+                        <p className="mt-3">{serverMessage}</p>
+                      )}
+                    </div>
+                    <div className="text-danger text-center">
+                      <div className="mt-3">{errorMessage}</div>
+                    </div>
+                  </form>
                 </div>
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Start date</label>
-                      <div className="form-control">
-                        <em>{record.startDate}</em>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>End date</label>
-                      <div className="form-control">
-                        <em>{record.endDate}</em>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Leave days</label>
-                      <div className="form-control text-muted">
-                        <em>{record.leaveDays}</em>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col">
-                    <div className="form-group">
-                      <label>Leave reason</label>
-                      <div className="form-control text-muted">
-                        <em>{record.leaveReason}</em>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <form onSubmit={handleApproveLeaveSubmit}>
-                  <div className="row justify-content-end">
-                    <button type="submit" className="btn btn-primary mr-3">
-                      Approve
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-outline-primary"
-                      onClick={handleCloseApproveLeave}
-                    >
-                      Close
-                    </button>
-                  </div>
-                  <div className="text-primary text-center">
-                    {isApproveLeaveFetching ? (
-                      <div className="loader2" />
-                    ) : (
-                      <p className="mt-3">{approveLeavemessage}</p>
-                    )}
-                  </div>
-                  <div className="text-danger text-center">
-                    <div className="mt-3">{errorMessage}</div>
-                  </div>
-                </form>
               </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))}
     </div>
   );
 }
 
 type declineProps = {
   pending_items: Object,
-  listID: string,
-  onDeclineLeaveSubmit: Function,
-  declineLeaveMessage: string,
-  isDeclineLeaveFetching: boolean,
-  handleCloseDecline: Function
+  listID: string
 };
 
 // type declineState = {
@@ -183,7 +205,9 @@ type declineProps = {
 
 function DeclineLeave(props: declineProps) {
   const [declineReason, setDeclineReason] = useState('');
+  const [serverMessage, setServerMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
   function handleDeclineReason({ target }: SyntheticInputEvent<>) {
     setDeclineReason(target.value);
@@ -192,7 +216,7 @@ function DeclineLeave(props: declineProps) {
   function handleDeclineSubmit(e: Event) {
     e.preventDefault();
 
-    const { pending_items, listID, onDeclineLeaveSubmit } = props;
+    const { pending_items, listID } = props;
 
     const reason = declineReason ? declineReason.trim() : null;
 
@@ -205,6 +229,8 @@ function DeclineLeave(props: declineProps) {
     const leaveID = userRecord[0].dbId;
     const adminUser = localStorage.getItem('admin_user');
 
+    setErrorMessage('');
+
     const declineLeaveData = {
       leaveID: leaveID,
       LeaveStatus: 'declined',
@@ -212,126 +238,149 @@ function DeclineLeave(props: declineProps) {
       adminUser: adminUser
     };
 
-    onDeclineLeaveSubmit(declineLeaveData);
+    declineLeave(declineLeaveData);
   }
 
-  const {
-    pending_items,
-    listID,
-    declineLeaveMessage,
-    isDeclineLeaveFetching,
-    handleCloseDecline
-  } = props;
+  async function declineLeave(declineLeaveData: Object) {
+    setLoading(true);
+
+    try {
+      const response = await axios.post('http://localhost:8000/declineleave', {
+        leave_id: declineLeaveData.leaveID,
+        LeaveStatus: declineLeaveData.LeaveStatus,
+        DeclineReason: declineLeaveData.DeclineReason,
+        admin_user: declineLeaveData.adminUser
+      });
+
+      setLoading(false);
+
+      if (response.status !== 201) {
+        setErrorMessage(response.data.message);
+      } else {
+        setServerMessage(response.data.message);
+        setDeclineReason('');
+        props.refetch();
+      }
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      setErrorMessage(error.message);
+    }
+  }
+
+  const { pending_items, listID, handleCloseDecline } = props;
 
   return (
     <div>
-      {pending_items.filter(e => e.id === listID).map(record => (
-        <div key={record.id}>
-          <div
-            className="col-md-6 ml-auto mr-auto pb-2"
-            style={{ paddingTop: '10px' }}
-          >
-            <div className="card">
-              <h5 className="card-header">Decline</h5>
-              <div className="card-body">
-                <p>
-                  {record.user.othernames} {record.user.surname}
-                </p>
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Leave</label>
-                      <div className="form-control">
-                        <em>{record.leaveName}</em>
+      {pending_items
+        .filter(e => e.id === listID)
+        .map(record => (
+          <div key={record.id}>
+            <div
+              className="col-md-6 ml-auto mr-auto pb-2"
+              style={{ paddingTop: '10px' }}
+            >
+              <div className="card">
+                <h5 className="card-header">Decline</h5>
+                <div className="card-body">
+                  <p>
+                    {record.user.othernames} {record.user.surname}
+                  </p>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label>Leave</label>
+                        <div className="form-control">
+                          <em>{record.leaveName}</em>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label>Leave type</label>
+                        <div className="form-control">
+                          <em>{record.leaveType}</em>
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Leave type</label>
-                      <div className="form-control">
-                        <em>{record.leaveType}</em>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label>Start date</label>
+                        <div className="form-control">
+                          <em>{record.startDate}</em>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label>End date</label>
+                        <div className="form-control">
+                          <em>{record.endDate}</em>
+                        </div>
                       </div>
                     </div>
                   </div>
+                  <div className="row">
+                    <div className="col-md-6">
+                      <div className="form-group">
+                        <label>Leave days</label>
+                        <div className="form-control">
+                          <em>{record.leaveDays}</em>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="row">
+                    <div className="col">
+                      <div className="form-group">
+                        <label>Leave reason</label>
+                        <div className="form-control">
+                          <em>{record.leaveReason}</em>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <form onSubmit={handleDeclineSubmit}>
+                    <div className="form-group">
+                      <label htmlFor="reason">Decline reason</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Enter reason"
+                        id="reason"
+                        onChange={handleDeclineReason}
+                      />
+                    </div>
+                    <div className="row justify-content-end">
+                      <button type="submit" className="btn btn-primary mr-3">
+                        Decline
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-outline-primary"
+                        onClick={handleCloseDecline}
+                      >
+                        Close
+                      </button>
+                    </div>
+                    <div className="text-primary text-center">
+                      {loading ? (
+                        <div className="loader" />
+                      ) : (
+                        <p className="mt-3">{serverMessage}</p>
+                      )}
+                    </div>
+                    <div className="text-danger text-center">
+                      <div className="mt-3">{errorMessage}</div>
+                    </div>
+                  </form>
                 </div>
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Start date</label>
-                      <div className="form-control">
-                        <em>{record.startDate}</em>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>End date</label>
-                      <div className="form-control">
-                        <em>{record.endDate}</em>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col-md-6">
-                    <div className="form-group">
-                      <label>Leave days</label>
-                      <div className="form-control">
-                        <em>{record.leaveDays}</em>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="col">
-                    <div className="form-group">
-                      <label>Leave reason</label>
-                      <div className="form-control">
-                        <em>{record.leaveReason}</em>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <form onSubmit={handleDeclineSubmit}>
-                  <div className="form-group">
-                    <label htmlFor="reason">Decline reason</label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      placeholder="Enter reason"
-                      id="reason"
-                      onChange={handleDeclineReason}
-                    />
-                  </div>
-                  <div className="row justify-content-end">
-                    <button type="submit" className="btn btn-primary mr-3">
-                      Decline
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-outline-primary"
-                      onClick={handleCloseDecline}
-                    >
-                      Close
-                    </button>
-                  </div>
-                  <div className="text-primary text-center">
-                    {isDeclineLeaveFetching ? (
-                      <div className="loader2" />
-                    ) : (
-                      <p className="mt-3">{declineLeaveMessage}</p>
-                    )}
-                  </div>
-                  <div className="text-danger text-center">
-                    <div className="mt-3">{errorMessage}</div>
-                  </div>
-                </form>
               </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))}
     </div>
   );
 }
@@ -340,10 +389,8 @@ type editProps = {
   pending_items: Object,
   public_holiday: Object,
   listID: string,
-  onEditLeaveSubmit: Function,
-  isEditLeaveFetching: boolean,
-  editLeaveMessage: string,
-  handleCloseEdit: Function
+  handleCloseEdit: Function,
+  refetch: Function
 };
 
 // type editState = {
@@ -363,7 +410,9 @@ function EditLeave(props: editProps) {
   const dbStartDate = useRef(null);
   const dbEndDate = useRef(null);
   const [focusedInput, setFocusedInput] = useState(null);
+  const [serverMessage, setServerMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [loading, setLoading] = useState(false);
 
   function handleEditReason({ target }: SyntheticInputEvent<>) {
     setEditReason(target.value);
@@ -372,7 +421,7 @@ function EditLeave(props: editProps) {
   function handleEditSubmit(e: Event) {
     e.preventDefault();
 
-    const { pending_items, public_holiday, listID, onEditLeaveSubmit } = props;
+    const { pending_items, public_holiday, listID } = props;
 
     const userStartDate = startDate
       ? startDate
@@ -553,168 +602,205 @@ function EditLeave(props: editProps) {
       previousEndDate: previousEndDate
     };
 
-    onEditLeaveSubmit(editLeaveData);
+    editLeave(editLeaveData);
   }
 
-  const {
-    pending_items,
-    listID,
-    handleCloseEdit,
-    isEditLeaveFetching,
-    editLeaveMessage
-  } = props;
+  async function editLeave(editLeaveData: Object) {
+    setLoading(true);
+
+    try {
+      const response = await axios.post('http://localhost:8000/editleave', {
+        leave_id: editLeaveData.leave_id,
+        leave: editLeaveData.leave,
+        leaveType: editLeaveData.leaveType,
+        startDate: editLeaveData.startDate,
+        endDate: editLeaveData.endDate,
+        reason: editLeaveData.reason,
+        leaveDays: editLeaveData.leaveDays,
+        previousLeaveDays: editLeaveData.previousLeaveDays,
+        previousLeaveName: editLeaveData.previousLeaveName,
+        previousLeaveType: editLeaveData.previousLeaveType,
+        previousStartDate: editLeaveData.previousStartDate,
+        previousEndDate: editLeaveData.previousEndDate,
+        admin_user: editLeaveData.adminUser
+      });
+
+      setLoading(false);
+
+      if (response.status !== 201) {
+        setErrorMessage(response.data.message);
+      } else {
+        setServerMessage(response.data.message);
+        setEditReason('');
+        props.refetch();
+      }
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      setErrorMessage(error.message);
+    }
+  }
+
+  const { pending_items, listID, handleCloseEdit } = props;
 
   return (
     <>
-      {pending_items.filter(e => e.id === listID).map(record => (
-        <div key={record.id}>
-          <div
-            className="col-md-6 ml-auto mr-auto"
-            style={{ paddingTop: '10px' }}
-          >
-            <div className="card">
-              <h5 className="card-header">Edit</h5>
-              <div className="card-body">
-                <p>
-                  {record.user.othernames} {record.user.surname}
-                </p>
-                <form encType="multipart/form-data" onSubmit={handleEditSubmit}>
-                  <div className="row">
-                    <div className="col" />
-                  </div>
-                  <div className="row">
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label htmlFor="leave">Leave</label>
-                        <select
-                          className="form-control"
-                          id="leave"
-                          defaultValue={record.leaveName}
-                          ref={dbLeaveName}
-                        >
-                          <option>{record.leaveName}</option>
-                          <option>annual</option>
-                          <option>sick</option>
-                          <option>bereavement</option>
-                          <option>family care</option>
-                          <option>christmas</option>
-                          <option>birthday</option>
-                          {record.user.gender === 'female' &&
-                          record.user.maternity > 0 ? (
-                            <option>maternity</option>
-                          ) : null}
-                          {record.user.gender === 'male' &&
-                          record.user.paternity > 0 ? (
-                            <option>paternity</option>
-                          ) : null}
-                          <option>lwop</option>
-                          <option>other</option>
-                        </select>
+      {pending_items
+        .filter(e => e.id === listID)
+        .map(record => (
+          <div key={record.id}>
+            <div
+              className="col-md-6 ml-auto mr-auto"
+              style={{ paddingTop: '10px' }}
+            >
+              <div className="card">
+                <h5 className="card-header">Edit</h5>
+                <div className="card-body">
+                  <p>
+                    {record.user.othernames} {record.user.surname}
+                  </p>
+                  <form
+                    encType="multipart/form-data"
+                    onSubmit={handleEditSubmit}
+                  >
+                    <div className="row">
+                      <div className="col" />
+                    </div>
+                    <div className="row">
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label htmlFor="leave">Leave</label>
+                          <select
+                            className="form-control"
+                            id="leave"
+                            defaultValue={record.leaveName}
+                            ref={dbLeaveName}
+                          >
+                            <option>{record.leaveName}</option>
+                            <option>annual</option>
+                            <option>sick</option>
+                            <option>bereavement</option>
+                            <option>family care</option>
+                            <option>christmas</option>
+                            <option>birthday</option>
+                            {record.user.gender === 'female' &&
+                            record.user.maternity > 0 ? (
+                              <option>maternity</option>
+                            ) : null}
+                            {record.user.gender === 'male' &&
+                            record.user.paternity > 0 ? (
+                              <option>paternity</option>
+                            ) : null}
+                            <option>lwop</option>
+                            <option>other</option>
+                          </select>
+                        </div>
+                      </div>
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label htmlFor="leave type">Leave type</label>
+                          <select
+                            className="form-control"
+                            id="leave type"
+                            defaultValue={record.leaveType}
+                            ref={dbLeaveType}
+                          >
+                            <option>{record.leaveType}</option>
+                            <option>full</option>
+                            <option>half day am</option>
+                            <option>half day pm</option>
+                          </select>
+                        </div>
                       </div>
                     </div>
-                    <div className="col-md-6">
-                      <div className="form-group">
-                        <label htmlFor="leave type">Leave type</label>
-                        <select
-                          className="form-control"
-                          id="leave type"
-                          defaultValue={record.leaveType}
-                          ref={dbLeaveType}
-                        >
-                          <option>{record.leaveType}</option>
-                          <option>full</option>
-                          <option>half day am</option>
-                          <option>half day pm</option>
-                        </select>
+                    <div className="row">
+                      <div className="col">
+                        <div className="form-group">
+                          <label htmlFor="startDate-endDate">
+                            Start date - End date
+                          </label>
+                          <input
+                            type="hidden"
+                            defaultValue={record.startDate}
+                            ref={dbStartDate}
+                          />
+                          <input
+                            type="hidden"
+                            defaultValue={record.endDate}
+                            ref={dbEndDate}
+                          />
+                          <DateRangePicker
+                            startDatePlaceholderText={record.startDate}
+                            endDatePlaceholderText={record.endDate}
+                            startDateId="start_date_id"
+                            endDateId="end_date_id"
+                            startDate={startDate}
+                            endDate={endDate}
+                            onDatesChange={({ startDate, endDate }) => {
+                              setStartDate(startDate);
+                              setEndDate(endDate);
+                            }}
+                            focusedInput={focusedInput}
+                            onFocusChange={focusedInput =>
+                              setFocusedInput(focusedInput)
+                            }
+                            isOutsideRange={() => false}
+                            minimumNights={0}
+                            showDefaultInputIcon
+                            showClearDates
+                            withPortal
+                            hideKeyboardShortcutsPanel
+                            renderCalendarInfo={() => (
+                              <p className="text-center font-italic">
+                                To select a single day click the date twice.
+                              </p>
+                            )}
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="row">
-                    <div className="col">
-                      <div className="form-group">
-                        <label htmlFor="startDate-endDate">
-                          Start date - End date
-                        </label>
-                        <input
-                          type="hidden"
-                          defaultValue={record.startDate}
-                          ref={dbStartDate}
-                        />
-                        <input
-                          type="hidden"
-                          defaultValue={record.endDate}
-                          ref={dbEndDate}
-                        />
-                        <DateRangePicker
-                          startDatePlaceholderText={record.startDate}
-                          endDatePlaceholderText={record.endDate}
-                          startDateId="start_date_id"
-                          endDateId="end_date_id"
-                          startDate={startDate}
-                          endDate={endDate}
-                          onDatesChange={({ startDate, endDate }) => {
-                            setStartDate(startDate);
-                            setEndDate(endDate);
-                          }}
-                          focusedInput={focusedInput}
-                          onFocusChange={focusedInput =>
-                            setFocusedInput(focusedInput)
-                          }
-                          isOutsideRange={() => false}
-                          minimumNights={0}
-                          showDefaultInputIcon
-                          showClearDates
-                          withPortal
-                          hideKeyboardShortcutsPanel
-                          renderCalendarInfo={() => (
-                            <p className="text-center font-italic">
-                              To select a single day click the date twice.
-                            </p>
-                          )}
-                        />
+                    <div className="row">
+                      <div className="col">
+                        <div className="form-group">
+                          <label htmlFor="reason">Reason</label>
+                          <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Enter reason"
+                            id="reason"
+                            onChange={handleEditReason}
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div className="row">
-                    <div className="col">
-                      <div className="form-group">
-                        <label htmlFor="reason">Reason</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          placeholder="Enter reason"
-                          id="reason"
-                          onChange={handleEditReason}
-                        />
-                      </div>
+                    <div className="row justify-content-end">
+                      <button type="submit" className="btn btn-primary mr-3">
+                        Save changes
+                      </button>
+                      <button
+                        type="button"
+                        className="btn btn-outline-primary"
+                        onClick={handleCloseEdit}
+                      >
+                        Close
+                      </button>
                     </div>
-                  </div>
-                  <div className="row justify-content-end">
-                    <button type="submit" className="btn btn-primary mr-3">
-                      Save changes
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-outline-primary"
-                      onClick={handleCloseEdit}
-                    >
-                      Close
-                    </button>
-                  </div>
-                  <div className="text-primary text-center">
-                    {isEditLeaveFetching ? (
-                      <div className="loader2" />
-                    ) : (
-                      <p className="mt-3">{editLeaveMessage}</p>
-                    )}
-                  </div>
-                  <div className="text-danger text-center">{errorMessage}</div>
-                </form>
+                    <div className="text-primary text-center">
+                      {loading ? (
+                        <div className="loader" />
+                      ) : (
+                        <p className="mt-3">{serverMessage}</p>
+                      )}
+                    </div>
+                    <div className="text-danger text-center">
+                      {errorMessage}
+                    </div>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      ))}
+        ))}
     </>
   );
 }
@@ -722,17 +808,7 @@ function EditLeave(props: editProps) {
 type Props = {
   pending_items: Object,
   public_holiday: Object,
-  refetch: Function,
-  onApproveLeaveSubmit: Function,
-  onDeclineLeaveSubmit: Function,
-  onEditLeaveSubmit: Function,
-  isApproveLeaveFetching: boolean,
-  approveLeavemessage: string,
-  isEditLeaveFetching: boolean,
-  editLeaveMessage: string,
-  isDeclineLeaveFetching: boolean,
-  declineLeaveMessage: string,
-  dispatch: Function
+  refetch: Function
 };
 
 // type State = {
@@ -754,15 +830,8 @@ export default function PendingLeaveList(props: Props) {
   }
 
   function handleCloseApproveLeave() {
-    const { approveLeavemessage, dispatch, refetch } = props;
-
     setIsApproving(!isApproving);
     setListID('');
-
-    if (approveLeavemessage) {
-      dispatch({ type: 'CLEAR_APPROVE_LEAVE' });
-      refetch();
-    }
   }
 
   function handleOpenDecline(e: SyntheticEvent<HTMLElement>) {
@@ -771,15 +840,8 @@ export default function PendingLeaveList(props: Props) {
   }
 
   function handleCloseDecline() {
-    const { declineLeaveMessage, dispatch, refetch } = props;
-
     setIsDeclining(!isDeclining);
     setListID('');
-
-    if (declineLeaveMessage) {
-      dispatch({ type: 'CLEAR_DECLINE_LEAVE' });
-      refetch();
-    }
   }
 
   function handleOpenEdit(e: SyntheticEvent<HTMLElement>) {
@@ -788,40 +850,19 @@ export default function PendingLeaveList(props: Props) {
   }
 
   function handleCloseEdit() {
-    const { editLeaveMessage, dispatch, refetch } = props;
-
     setIsEditing(!isEditing);
     setListID('');
-
-    if (editLeaveMessage) {
-      dispatch({ type: 'CLEAR_EDIT_LEAVE' });
-      refetch();
-    }
   }
 
-  const {
-    pending_items,
-    public_holiday,
-    onApproveLeaveSubmit,
-    isApproveLeaveFetching,
-    approveLeavemessage,
-    onEditLeaveSubmit,
-    isEditLeaveFetching,
-    editLeaveMessage,
-    onDeclineLeaveSubmit,
-    declineLeaveMessage,
-    isDeclineLeaveFetching
-  } = props;
+  const { pending_items, public_holiday } = props;
 
   if (isApproving) {
     return (
       <ApproveLeave
         pending_items={pending_items}
         listID={listID}
-        onApproveLeaveSubmit={onApproveLeaveSubmit}
         handleCloseApproveLeave={handleCloseApproveLeave}
-        isApproveLeaveFetching={isApproveLeaveFetching}
-        approveLeavemessage={approveLeavemessage}
+        refetch={props.refetch}
       />
     );
   }
@@ -832,10 +873,8 @@ export default function PendingLeaveList(props: Props) {
         pending_items={pending_items}
         public_holiday={public_holiday}
         listID={listID}
-        onEditLeaveSubmit={onEditLeaveSubmit}
-        isEditLeaveFetching={isEditLeaveFetching}
-        editLeaveMessage={editLeaveMessage}
         handleCloseEdit={handleCloseEdit}
+        refetch={props.refetch}
       />
     );
   }
@@ -845,17 +884,17 @@ export default function PendingLeaveList(props: Props) {
       <DeclineLeave
         pending_items={pending_items}
         listID={listID}
-        onDeclineLeaveSubmit={onDeclineLeaveSubmit}
-        declineLeaveMessage={declineLeaveMessage}
-        isDeclineLeaveFetching={isDeclineLeaveFetching}
         handleCloseDecline={handleCloseDecline}
+        refetch={props.refetch}
       />
     );
   }
 
-  const items = props.pending_items.map(a => a).sort((a, b) => {
-    return a.user.othernames.localeCompare(b.user.othernames);
-  });
+  const items = props.pending_items
+    .map(a => a)
+    .sort((a, b) => {
+      return a.user.othernames.localeCompare(b.user.othernames);
+    });
 
   const itemNodes = items.map(record => (
     <tr key={record.id}>
