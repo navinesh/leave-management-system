@@ -1,6 +1,6 @@
 // @flow
 import React, { useState } from 'react';
-import { gql } from 'apollo-boost';
+import gql from 'graphql-tag';
 import { Query, Mutation } from 'react-apollo';
 
 import 'react-dates/initialize';
@@ -193,9 +193,11 @@ function PublicHolidays(props: PublicHolidayProps) {
           );
         }
 
-        let list = data.publicHoliday.edges.map(a => a.node).sort((b, c) => {
-          return new Date(c.holidayDate) - new Date(b.holidayDate);
-        });
+        let list = data.publicHoliday.edges
+          .map(a => a.node)
+          .sort((b, c) => {
+            return new Date(c.holidayDate) - new Date(b.holidayDate);
+          });
 
         const public_holidays = list.map(item => {
           let hDate = new Date(item.holidayDate);
