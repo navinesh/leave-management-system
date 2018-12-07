@@ -1,5 +1,7 @@
 // @flow
 import React, { useState, useRef } from 'react';
+import gql from 'graphql-tag';
+import { Mutation } from 'react-apollo';
 
 import axios from 'axios';
 
@@ -12,6 +14,14 @@ import { DateRangePicker } from 'react-dates';
 import Moment from 'moment';
 import { extendMoment } from 'moment-range';
 const moment = extendMoment(Moment);
+
+const ARCHIVED_RECORD = gql`
+  mutation archiveLeaveRecord($id: String!) {
+    archiveLeaverecord(id: $id) {
+      ok
+    }
+  }
+`;
 
 function Search(props) {
   return (
@@ -623,10 +633,50 @@ function CancelLeave(props) {
   );
 }
 
+type archivedRecordProps = {
+  id: string,
+  APPROVED_RECORD: string
+};
+
+function ArchiveLeaveRecord(props: archivedRecordProps) {
+  return (
+    <Mutation
+      mutation={ARCHIVED_RECORD}
+      variables={{ id: props.id }}
+      refetchQueries={[{ query: props.APPROVED_RECORD }]}
+    >
+      {(archiveLeaverecord, { loading, error }) => {
+        if (loading) {
+          return (
+            <span className="ml-2 font-italic text-primary">Loading...</span>
+          );
+        }
+
+        if (error) {
+          console.log(error);
+          return (
+            <span className="ml-2 font-italic text-warning">Error...</span>
+          );
+        }
+
+        return (
+          <button
+            className="btn btn-link btn-sm text-danger"
+            onClick={archiveLeaverecord}
+          >
+            Archive
+          </button>
+        );
+      }}
+    </Mutation>
+  );
+}
+
 type Props = {
   approved_items: Object,
   public_holiday: Object,
-  refetch: Function
+  refetch: Function,
+  APPROVED_RECORD: string
 };
 
 // type State = {
@@ -676,7 +726,7 @@ export default function ApprovedLeaveList(props: Props) {
     setListID('');
   }
 
-  const { approved_items, refetch } = props;
+  const { approved_items, refetch, APPROVED_RECORD } = props;
 
   if (isEditing) {
     return (
@@ -737,6 +787,9 @@ export default function ApprovedLeaveList(props: Props) {
             Cancel
           </button>
         </td>
+        <td>
+          <ArchiveLeaveRecord id={data.id} APPROVED_RECORD={APPROVED_RECORD} />
+        </td>
       </tr>
     ));
 
@@ -765,6 +818,7 @@ export default function ApprovedLeaveList(props: Props) {
                   <th>Leave days</th>
                   <th>Edit</th>
                   <th>Delete</th>
+                  <th>Archive</th>
                 </tr>
               </thead>
               <tbody>{items}</tbody>
