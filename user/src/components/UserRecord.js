@@ -99,6 +99,43 @@ function PendingRecordList(props) {
   }
 }
 
+function ArchivedRecordList(props) {
+  const pendingList = props.user_record.leaverecord.edges
+    .filter(data => data.node.leaveStatus === 'archived')
+    .map(record => (
+      <tr key={record.node.id}>
+        <td>{record.node.leaveName}</td>
+        <td>{record.node.leaveDays}</td>
+        <td>{record.node.startDate}</td>
+        <td>{record.node.endDate}</td>
+        <td>{record.node.leaveReason}</td>
+      </tr>
+    ));
+
+  if (pendingList.length > 0) {
+    return (
+      <table className="table table-bordered table-hover">
+        <thead className="thead-light">
+          <tr>
+            <th>Leave type</th>
+            <th>Leave days</th>
+            <th>Start date</th>
+            <th>End date</th>
+            <th>Reason</th>
+          </tr>
+        </thead>
+        <tbody>{pendingList}</tbody>
+      </table>
+    );
+  } else {
+    return (
+      <div align="center">
+        <img src={NoData} alt="No data" />
+      </div>
+    );
+  }
+}
+
 type tabsProps = {
   data: Array<any>
 };
@@ -188,12 +225,16 @@ export default function UserRecord(props: Props) {
 
         const tabData = [
           {
-            label: 'Approved leave schedule',
+            label: 'Approved',
             content: <ApprovedRecordList user_record={data.user} />
           },
           {
-            label: 'Pending leave schedule',
+            label: 'Pending',
             content: <PendingRecordList user_record={data.user} />
+          },
+          {
+            label: 'Archived',
+            content: <ArchivedRecordList user_record={data.user} />
           }
         ];
 
