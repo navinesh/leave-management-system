@@ -661,7 +661,7 @@ function ArchiveLeaveRecord(props: archivedRecordProps) {
 
         return (
           <button
-            className="btn btn-link btn-sm text-danger"
+            className="btn btn-link btn-sm text-primary"
             onClick={archiveLeaverecord}
           >
             Archive
