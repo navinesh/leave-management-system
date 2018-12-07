@@ -89,7 +89,7 @@ function MainView(props: Props) {
             }) => {
               if (loading || holidayLoading) {
                 return (
-                  <div className="text-center">
+                  <div className="text-center" style={{ marginTop: '80px' }}>
                     <div className="loader" />
                   </div>
                 );
@@ -98,7 +98,7 @@ function MainView(props: Props) {
               if (error || holidayError) {
                 console.log(error || holidayError);
                 return (
-                  <div className="text-center" style={{ marginTop: '80px' }}>
+                  <div className="text-center">
                     <p>Something went wrong!</p>
                   </div>
                 );
