@@ -371,7 +371,7 @@ export function ArchivedLeaveReportList(props) {
     <>
       <CSVLink
         data={records}
-        filename={'Approved-leave.csv'}
+        filename={'Archived-leave.csv'}
         className="btn btn-primary btn-sm mb-2"
       >
         Download
