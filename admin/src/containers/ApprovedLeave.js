@@ -8,7 +8,7 @@ import { TokenSuccess, TokenFailure } from './TokenComponents';
 import ApprovedLeaveList from '../components/ApprovedLeave';
 
 const IS_AUTHENTICATED = gql`
-  query isAdminAuthenticated {
+  query IsAuthenticated {
     isAuthenticated @client
     admin_token @client
   }
@@ -112,6 +112,7 @@ function MainView(props: Props) {
                   approved_items={approved_items}
                   public_holiday={publicHoliday}
                   refetch={refetch}
+                  APPROVED_RECORD={APPROVED_RECORD}
                 />
               );
             }}
