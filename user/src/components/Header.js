@@ -13,7 +13,6 @@ function Logout() {
               data: {
                 isAuthenticated: false,
                 id: null,
-                user_id: null,
                 auth_token: null
               }
             });
