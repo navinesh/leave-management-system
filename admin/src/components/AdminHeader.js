@@ -12,9 +12,8 @@ function Logout() {
             client.writeData({
               data: {
                 isAuthenticated: false,
-                id: null,
-                user_id: null,
-                auth_token: null
+                admin_user: null,
+                admin_token: null
               }
             });
             localStorage.clear();
