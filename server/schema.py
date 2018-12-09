@@ -325,7 +325,7 @@ class DeletePublicholiday(graphene.Mutation):
         db_session.delete(publicHoliday)
         db_session.commit()
         ok = True
-        return DeletePublicholiday(publicHoliday=publicHoliday, ok=ok)
+        return DeletePublicholiday(ok=ok)
 
 
 class Mutations(graphene.ObjectType):
