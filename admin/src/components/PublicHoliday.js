@@ -36,10 +36,7 @@ const ADD_PUBLIC_HOLIDAY = gql`
 const DELETE_PUBLIC_HOLIDAY = gql`
   mutation deletePublicholiday($id: String!) {
     deletePublicholiday(id: $id) {
-      publicHoliday {
-        id
-        holidayDate
-      }
+      ok
     }
   }
 `;
