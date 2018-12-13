@@ -77,7 +77,6 @@ function ApproveLeave(props: approveProps) {
         setErrorMessage(response.data.message);
       } else {
         setServerMessage(response.data.message);
-        props.refetch();
       }
     } catch (error) {
       console.log(error);
@@ -259,7 +258,6 @@ function DeclineLeave(props: declineProps) {
       } else {
         setServerMessage(response.data.message);
         setDeclineReason('');
-        props.refetch();
       }
     } catch (error) {
       console.log(error);
@@ -632,7 +630,6 @@ function EditLeave(props: editProps) {
       } else {
         setServerMessage(response.data.message);
         setEditReason('');
-        props.refetch();
       }
     } catch (error) {
       console.log(error);
@@ -832,6 +829,7 @@ export default function PendingLeaveList(props: Props) {
   function handleCloseApproveLeave() {
     setIsApproving(!isApproving);
     setListID('');
+    props.refetch();
   }
 
   function handleOpenDecline(e: SyntheticEvent<HTMLElement>) {
@@ -842,6 +840,7 @@ export default function PendingLeaveList(props: Props) {
   function handleCloseDecline() {
     setIsDeclining(!isDeclining);
     setListID('');
+    props.refetch();
   }
 
   function handleOpenEdit(e: SyntheticEvent<HTMLElement>) {
@@ -852,6 +851,7 @@ export default function PendingLeaveList(props: Props) {
   function handleCloseEdit() {
     setIsEditing(!isEditing);
     setListID('');
+    props.refetch();
   }
 
   const { pending_items, public_holiday } = props;
