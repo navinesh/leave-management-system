@@ -323,7 +323,6 @@ function EditLeave(props) {
       } else {
         setServerMessage(response.data.message);
         setEditReason('');
-        props.refetch();
       }
     } catch (error) {
       console.log(error);
@@ -560,7 +559,6 @@ function CancelLeave(props) {
       } else {
         setServerMessage(response.data.message);
         setCancelReason('');
-        props.refetch();
       }
     } catch (error) {
       console.log(error);
@@ -714,6 +712,7 @@ export default function ApprovedLeaveList(props: Props) {
   function handleCloseEdit() {
     setIsEditing(!isEditing);
     setListID('');
+    props.refetch();
   }
 
   function handleOpenCancel(e: SyntheticEvent<HTMLElement>) {
@@ -724,6 +723,7 @@ export default function ApprovedLeaveList(props: Props) {
   function handleCloseCancel(e: Event) {
     setIsCancel(!isCancel);
     setListID('');
+    props.refetch();
   }
 
   const { approved_items, refetch, APPROVED_RECORD } = props;
