@@ -61,7 +61,11 @@ function ClearSearch(props) {
   );
 }
 
-function UnArchive(props) {
+type unArchiveProps = {
+  id: string
+};
+
+function UnArchive(props: unArchiveProps) {
   return (
     <Mutation
       mutation={UNARCHIVE_USER}
@@ -95,7 +99,13 @@ function UnArchive(props) {
   );
 }
 
-function UnArchiveLeave(props) {
+type unArchiveLeaveProps = {
+  archived_staff_record: Object,
+  id: string,
+  handleCloseUnarchive: Function
+};
+
+function UnArchiveLeave(props: unArchiveLeaveProps) {
   return (
     <div className="col-md-10 ml-auto mr-auto">
       {props.archived_staff_record
