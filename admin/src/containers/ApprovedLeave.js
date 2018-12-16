@@ -8,7 +8,7 @@ import { TokenSuccess, TokenFailure } from './TokenComponents';
 import ApprovedLeaveList from '../components/ApprovedLeave';
 
 const IS_AUTHENTICATED = gql`
-  query IsAuthenticated {
+  query isAdminAuthenticated {
     isAuthenticated @client
     admin_token @client
   }
@@ -123,7 +123,7 @@ function MainView(props: Props) {
   );
 }
 
-export default function ArchivedStaffRecord() {
+export default function ApprovedLeave() {
   return (
     <Query query={IS_AUTHENTICATED}>
       {({ data }) => {
