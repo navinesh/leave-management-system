@@ -51,11 +51,8 @@ export default function Header() {
               <Link className="nav-item nav-link" to="/approvedleave">
                 Approved
               </Link>
-              <Link className="nav-item nav-link" to="/staffrecord">
+              <Link className="nav-item nav-link" to="/staffview">
                 Staff
-              </Link>
-              <Link className="nav-item nav-link" to="/archivedstaffrecord">
-                Archived
               </Link>
               <Link className="nav-item nav-link" to="/createuser">
                 Create user
