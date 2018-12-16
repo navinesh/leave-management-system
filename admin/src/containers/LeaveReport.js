@@ -428,7 +428,10 @@ function LeaveReportList(props: Props) {
             }
 
             return (
-              <ArchivedLeaveReportList archived_record={archived_record} />
+              <ArchivedLeaveReportList
+                archived_record={archived_record}
+                ARCHIVED_RECORDS={ARCHIVED_RECORD}
+              />
             );
           }}
         </Query>
@@ -532,7 +535,7 @@ function LeaveReportList(props: Props) {
   return <Tabs data={tabData} />;
 }
 
-export default function ArchivedStaffRecord() {
+export default function LeaveReport() {
   return (
     <Query query={IS_AUTHENTICATED}>
       {({ data }) => {
