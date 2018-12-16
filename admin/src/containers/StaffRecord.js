@@ -88,7 +88,7 @@ function MainView(props: Props) {
   );
 }
 
-export default function ArchivedStaffRecord() {
+export default function StaffRecord() {
   return (
     <Query query={IS_AUTHENTICATED}>
       {({ data }) => {
