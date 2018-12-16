@@ -42,7 +42,7 @@ function MainView(props: Props) {
   );
 }
 
-export default function ArchivedStaffRecord() {
+export default function PublicHoliday() {
   return (
     <Query query={IS_AUTHENTICATED}>
       {({ data }) => {
