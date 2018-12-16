@@ -15,7 +15,8 @@ const moment = extendMoment(Moment);
 
 type approveProps = {
   pending_items: Object,
-  listID: string
+  listID: string,
+  handleCloseApproveLeave: Function
 };
 
 // type approveState = {
@@ -194,7 +195,8 @@ function ApproveLeave(props: approveProps) {
 
 type declineProps = {
   pending_items: Object,
-  listID: string
+  listID: string,
+  handleCloseDecline: Function
 };
 
 // type declineState = {
@@ -387,8 +389,7 @@ type editProps = {
   pending_items: Object,
   public_holiday: Object,
   listID: string,
-  handleCloseEdit: Function,
-  refetch: Function
+  handleCloseEdit: Function
 };
 
 // type editState = {
@@ -862,7 +863,6 @@ export default function PendingLeaveList(props: Props) {
         pending_items={pending_items}
         listID={listID}
         handleCloseApproveLeave={handleCloseApproveLeave}
-        refetch={props.refetch}
       />
     );
   }
@@ -874,7 +874,6 @@ export default function PendingLeaveList(props: Props) {
         public_holiday={public_holiday}
         listID={listID}
         handleCloseEdit={handleCloseEdit}
-        refetch={props.refetch}
       />
     );
   }
@@ -885,7 +884,6 @@ export default function PendingLeaveList(props: Props) {
         pending_items={pending_items}
         listID={listID}
         handleCloseDecline={handleCloseDecline}
-        refetch={props.refetch}
       />
     );
   }
