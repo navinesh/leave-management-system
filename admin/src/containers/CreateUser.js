@@ -38,7 +38,7 @@ function MainView(props: Props) {
   return <CreateUserForm />;
 }
 
-export default function ArchivedStaffRecord() {
+export default function CreateUser() {
   return (
     <Query query={IS_AUTHENTICATED}>
       {({ data }) => {
