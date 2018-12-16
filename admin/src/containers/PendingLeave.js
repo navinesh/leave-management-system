@@ -119,7 +119,7 @@ function MainView(props: Props) {
   );
 }
 
-export default function ArchivedStaffRecord() {
+export default function PendingLeave() {
   return (
     <Query query={IS_AUTHENTICATED}>
       {({ data }) => {
