@@ -26,10 +26,7 @@ import AdminResetPassword from './containers/AdminResetPassword';
 import Error from './components/Error';
 
 const ApprovedLeave = lazy(() => import('./containers/ApprovedLeave'));
-const StaffRecord = lazy(() => import('./containers/StaffRecord'));
-const ArchivedStaffRecord = lazy(() =>
-  import('./containers/ArchivedStaffRecord')
-);
+const StaffView = lazy(() => import('./containers/StaffView'));
 const LeaveReport = lazy(() => import('./containers/LeaveReport'));
 const SickSheetRecord = lazy(() => import('./containers/SickSheetRecord'));
 const CreateUser = lazy(() => import('./containers/CreateUser'));
@@ -119,18 +116,14 @@ function App() {
           >
             <Switch>
               <PrivateRoute exact path="/" component={PendingLeave} />
-              <PrivateRoute path="/staffrecord" component={StaffRecord} />
               <PrivateRoute path="/approvedleave" component={ApprovedLeave} />
+              <PrivateRoute path="/staffview" component={StaffView} />
+              <PrivateRoute path="/createuser" component={CreateUser} />
               <PrivateRoute path="/leavereport" component={LeaveReport} />
               <PrivateRoute
                 path="/sicksheetrecord"
                 component={SickSheetRecord}
               />
-              <PrivateRoute
-                path="/archivedstaffrecord"
-                component={ArchivedStaffRecord}
-              />
-              <PrivateRoute path="/createuser" component={CreateUser} />
               <PrivateRoute path="/publicholiday" component={PublicHoliday} />
               <Route path="/login" component={AdminLogin} />
               <Route path="/resetpassword" component={AdminResetPassword} />
