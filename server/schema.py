@@ -286,6 +286,30 @@ class ArchiveLeaveRecord(graphene.Mutation):
         return ArchiveLeaveRecord(ok=ok)
 
 
+class UnArchiveLeaveRecord(graphene.Mutation):
+    """Archive Leave Record"""
+    class Arguments:
+        id = graphene.String()
+
+    leaveRecord = graphene.Field(Leaverecord)
+    ok = graphene.Boolean()
+
+    def mutate(self, info, id):
+        query = Leaverecord.get_query(info)
+        leave_id = from_global_id(id)[1]
+        leaveRecord = query.filter(
+            LeaverecordModel.id == leave_id).first()
+
+        if leaveRecord.leave_status != 'archived':
+            raise Exception('This record has an unarchived status!')
+
+        leaveRecord.leave_status = 'approved'
+        db_session.add(leaveRecord)
+        db_session.commit()
+        ok = True
+        return UnArchiveLeaveRecord(ok=ok)
+
+
 class AddPublicholiday(graphene.Mutation):
     """Create public holiday"""
     class Arguments:
@@ -336,6 +360,7 @@ class Mutations(graphene.ObjectType):
     archive_user = ArchiveUser.Field()
     unArchive_user = UnArchiveUser.Field()
     archive_LeaveRecord = ArchiveLeaveRecord.Field()
+    unarchive_LeaveRecord = UnArchiveLeaveRecord.Field()
     add_publicholiday = AddPublicholiday.Field()
     delete_publicholiday = DeletePublicholiday.Field()
 
