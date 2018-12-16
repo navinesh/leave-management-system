@@ -49,15 +49,22 @@ function ClearSearch(props) {
   );
 }
 
-function EditLeave(props) {
+type editLeave = {
+  listID: string,
+  approved_items: Object,
+  public_holiday: Object,
+  handleCloseEdit: Function
+};
+
+function EditLeave(props: editLeave) {
   const [editReason, setEditReason] = useState('');
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [focusedInput, setFocusedInput] = useState(null);
-  const dbStartDate = useRef(null);
-  const dbEndDate = useRef(null);
   const dbLeaveName = useRef(null);
   const dbLeaveType = useRef(null);
+  const dbStartDate = useRef(null);
+  const dbEndDate = useRef(null);
   const [serverMessage, setServerMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
@@ -495,7 +502,13 @@ function EditLeave(props) {
   );
 }
 
-function CancelLeave(props) {
+type cancelLeaveProps = {
+  listID: string,
+  approved_items: Object,
+  handleCloseCancel: Function
+};
+
+function CancelLeave(props: cancelLeaveProps) {
   const [serverMessage, setServerMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
@@ -733,6 +746,7 @@ export default function ApprovedLeaveList(props: Props) {
       <EditLeave
         approved_items={approved_items}
         listID={listID}
+        public_holiday={props.public_holiday}
         handleCloseEdit={handleCloseEdit}
         refetch={refetch}
       />
