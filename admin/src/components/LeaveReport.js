@@ -1,8 +1,52 @@
 import React from 'react';
+import gql from 'graphql-tag';
+import { Mutation } from 'react-apollo';
 
 import { CSVLink } from 'react-csv';
 
 const moment = require('moment');
+
+const UNARCHIVE_RECORD = gql`
+  mutation unarchiveLeaveRecord($id: String!) {
+    unarchiveLeaverecord(id: $id) {
+      ok
+    }
+  }
+`;
+
+function UnarchiveLeaveRecord(props: archivedRecordProps) {
+  return (
+    <Mutation
+      mutation={UNARCHIVE_RECORD}
+      variables={{ id: props.id }}
+      refetchQueries={[{ query: props.ARCHIVED_RECORD }]}
+    >
+      {(unarchiveLeaverecord, { loading, error }) => {
+        if (loading) {
+          return (
+            <span className="ml-2 font-italic text-primary">Loading...</span>
+          );
+        }
+
+        if (error) {
+          console.log(error);
+          return (
+            <span className="ml-2 font-italic text-warning">Error...</span>
+          );
+        }
+
+        return (
+          <button
+            className="btn btn-link btn-sm text-primary"
+            onClick={unarchiveLeaverecord}
+          >
+            Unarchive
+          </button>
+        );
+      }}
+    </Mutation>
+  );
+}
 
 export function PendingLeaveReportList(props) {
   const pendingRecord = props.pending_record
@@ -37,7 +81,7 @@ export function PendingLeaveReportList(props) {
     rObj['End date'] = a.endDate;
     rObj['Leave days'] = a.leaveDays;
     rObj['Status'] = a.leaveStatus;
-    rObj['Reason'] = a.leaveReason;
+    rObj['Leave reason'] = a.leaveReason;
     rObj['Date posted'] = a.datePosted;
     return rObj;
   });
@@ -62,7 +106,7 @@ export function PendingLeaveReportList(props) {
               <th>End date</th>
               <th>Leave days</th>
               <th>Status</th>
-              <th>Reason</th>
+              <th>Leave reason</th>
               <th>Date posted</th>
             </tr>
           </thead>
@@ -117,7 +161,7 @@ export function ApprovedLeaveReportList(props) {
     rObj['End date'] = a.endDate;
     rObj['Leave days'] = a.leaveDays;
     rObj['Status'] = a.leaveStatus;
-    rObj['Reason'] = a.leaveReason;
+    rObj['Leave reason'] = a.leaveReason;
     rObj['Date posted'] = a.datePosted;
     rObj['Date reviewed'] = a.dateReviewed;
     return rObj;
@@ -143,7 +187,7 @@ export function ApprovedLeaveReportList(props) {
               <th>End date</th>
               <th>Leave days</th>
               <th>Status</th>
-              <th>Reason</th>
+              <th>Leave reason</th>
               <th>Date posted</th>
               <th>Date reviewed</th>
             </tr>
@@ -345,8 +389,12 @@ export function ArchivedLeaveReportList(props) {
       <td>{record.leaveDays}</td>
       <td>{record.leaveStatus}</td>
       <td>{record.leaveReason}</td>
-      <td>{record.datePosted}</td>
-      <td>{record.dateReviewed}</td>
+      <td>
+        <UnarchiveLeaveRecord
+          id={record.id}
+          ARCHIVED_RECORD={props.ARCHIVED_RECORDS}
+        />
+      </td>
     </tr>
   ));
 
@@ -361,7 +409,7 @@ export function ArchivedLeaveReportList(props) {
     rObj['End date'] = a.endDate;
     rObj['Leave days'] = a.leaveDays;
     rObj['Status'] = a.leaveStatus;
-    rObj['Reason'] = a.leaveReason;
+    rObj['Leave reason'] = a.leaveReason;
     rObj['Date posted'] = a.datePosted;
     rObj['Date reviewed'] = a.dateReviewed;
     return rObj;
@@ -387,9 +435,8 @@ export function ArchivedLeaveReportList(props) {
               <th>End date</th>
               <th>Leave days</th>
               <th>Status</th>
-              <th>Reason</th>
-              <th>Date posted</th>
-              <th>Date reviewed</th>
+              <th>Leave reason</th>
+              <th>Unarchive</th>
             </tr>
           </thead>
           <tbody>{archivedRecordItems}</tbody>
