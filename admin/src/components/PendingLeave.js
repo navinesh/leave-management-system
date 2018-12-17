@@ -66,7 +66,6 @@ function ApproveLeave(props: approveProps) {
       const response = await axios.post('http://localhost:8000/approveleave', {
         leave_id: approveLeaveData.leaveID,
         leaveStatus: approveLeaveData.leaveStatus,
-        userID: approveLeaveData.userID,
         leaveDays: approveLeaveData.leaveDays,
         leaveName: approveLeaveData.leaveName,
         admin_user: approveLeaveData.adminUser
@@ -422,14 +421,14 @@ function EditLeave(props: editProps) {
 
     const { pending_items, public_holiday, listID } = props;
 
+    const leave = dbLeaveName.current.value;
+    const leaveType = dbLeaveType.current.value;
     const userStartDate = startDate
       ? startDate
       : moment(dbStartDate.current.value, 'DD/MM/YYYY');
     const userEndDate = endDate
       ? endDate
       : moment(dbStartDate.current.value, 'DD/MM/YYYY');
-    const leave = dbLeaveName.value;
-    const leaveType = dbLeaveType.value;
     const reason = editReason ? editReason.trim() : null;
 
     const userRecord = pending_items.filter(e => e.id === listID);
@@ -460,7 +459,7 @@ function EditLeave(props: editProps) {
       !userEndDate ||
       !reason
     ) {
-      setErrorMessage('Reason field is mandatory!');
+      setErrorMessage('One of the mandatory fields is missing!');
       return;
     }
 

@@ -115,7 +115,7 @@ function EditLeave(props: editLeave) {
       !userEndDate ||
       !reason
     ) {
-      setErrorMessage('Reason field is mandatory!');
+      setErrorMessage('One of the mandatory fields is missing!');
       return;
     }
 
