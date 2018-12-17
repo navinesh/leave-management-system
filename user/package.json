@@ -4,20 +4,20 @@
   "private": true,
   "homepage": "http://leave",
   "devDependencies": {
-    "flow-bin": "^0.87.0"
+    "flow-bin": "^0.89.0"
   },
   "dependencies": {
     "apollo-boost": "^0.1.22",
     "axios": "^0.18.0",
     "graphql": "^14.0.2",
-    "moment": "^2.22.2",
+    "moment": "^2.23.0",
     "moment-range": "^4.0.1",
     "react": "^16.7.0-alpha.2",
     "react-addons-shallow-compare": "^15.6.2",
-    "react-apollo": "^2.3.2",
-    "react-dates": "^18.2.2",
+    "react-apollo": "^2.3.3",
+    "react-dates": "^18.3.1",
     "react-dom": "^16.7.0-alpha.2",
-    "react-redux": "^5.1.1",
+    "react-redux": "^6.0.0",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.1",
     "redux": "^4.0.1",
