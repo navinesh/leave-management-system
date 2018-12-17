@@ -95,11 +95,7 @@ function MainView(props: Props) {
     }
   ];
 
-  return (
-    <>
-      <Tabs data={tabData} />
-    </>
-  );
+  return <Tabs data={tabData} />;
 }
 
 export default function StaffView() {
