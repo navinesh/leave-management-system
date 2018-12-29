@@ -176,6 +176,13 @@ function EditLeave(props: editLeave) {
         ? leaveDays - 0.5
         : leaveDays;
 
+    // since maternity leave is for consecutive days, do not exclude weekends
+    // or public holidays
+    const myMaternityDays =
+      leaveType === 'half day am' || leaveType === 'half day pm'
+        ? leaveRangeDays - 0.5
+        : leaveRangeDays;
+
     // calculate total leave days
     function getLeaveDays(type) {
       const totalDays = {
@@ -206,7 +213,7 @@ function EditLeave(props: editLeave) {
             : undefined;
         },
         maternity: function() {
-          return maternityDays - myLeaveDays;
+          return maternityDays - myMaternityDays;
         },
         paternity: function() {
           return paternityDays - myLeaveDays;
