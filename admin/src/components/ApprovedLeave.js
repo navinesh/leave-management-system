@@ -242,7 +242,7 @@ function EditLeave(props: editLeave) {
       return;
     }
 
-    // check if leave days need to be credited back
+    // check if leave days need to be credited
     function getPreviousLeaveDays(type) {
       if (
         leave !== previousLeaveName &&
@@ -491,7 +491,7 @@ function EditLeave(props: editLeave) {
                     </div>
                     <div className="text-primary text-center">
                       {loading ? (
-                        <div className="loader2" />
+                        <div className="loader" />
                       ) : (
                         <p className="text-primary mt-2">{serverMessage}</p>
                       )}
