@@ -381,11 +381,11 @@ function EditLeave(props: editLeave) {
                             <option>family care</option>
                             <option>christmas</option>
                             <option>birthday</option>
-                            {record.user.gender === 'female' &&
+                            {record.user.gender.toLowerCase() === 'female' &&
                             record.user.maternity > 0 ? (
                               <option>maternity</option>
                             ) : null}
-                            {record.user.gender === 'male' &&
+                            {record.user.gender.toLowerCase() === 'male' &&
                             record.user.paternity > 0 ? (
                               <option>paternity</option>
                             ) : null}
