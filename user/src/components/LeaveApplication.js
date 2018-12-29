@@ -401,12 +401,12 @@ function LeaveApplication(props: leaveApplicationProps) {
       designation: designation
     };
 
-    fetchLeaveApplication(applicationDetails);
+    submitLeaveApplication(applicationDetails);
 
     refetch();
   }
 
-  async function fetchLeaveApplication(applicationDetails: Object) {
+  async function submitLeaveApplication(applicationDetails: Object) {
     setLoading(true);
 
     try {
