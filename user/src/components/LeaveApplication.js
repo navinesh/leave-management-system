@@ -262,26 +262,9 @@ function LeaveApplication(props: leaveApplicationProps) {
     );
     const leaveDays = daysExcludingHolidaysSet.size;
 
-    // since maternity leave is for consecutive days (do not exclude weekends)
-    const daysExcludingOnlyPublicHolidaysSet = new Set(
-      [...dateRangeSet].filter(x => !publicHolidaysSet.has(x))
-    );
-    const maternityLeaveDays = daysExcludingOnlyPublicHolidaysSet.size;
-
-    if (leave === 'maternity' && maternityLeaveDays === 0) {
-      setErrorMessage('The dates you selected fall on public holiday!');
-      return;
-    }
-
-    // if half day then subtract 0.5
-    const myMaternityDays =
-      leaveType === 'half day am' || leaveType === 'half day pm'
-        ? maternityLeaveDays - 0.5
-        : maternityLeaveDays;
-
     if (leaveDays === 0) {
       setErrorMessage(
-        'The dates you selected either fall on public holiday, Saturday or Sunday!'
+        'The dates you selected either fall on weekend or public holiday!'
       );
       return;
     }
@@ -291,6 +274,13 @@ function LeaveApplication(props: leaveApplicationProps) {
       leaveType === 'half day am' || leaveType === 'half day pm'
         ? leaveDays - 0.5
         : leaveDays;
+
+    // since maternity leave is for consecutive days, do not exclude weekends
+    // or public holidays
+    const myMaternityDays =
+      leaveType === 'half day am' || leaveType === 'half day pm'
+        ? leaveRangeDays - 0.5
+        : leaveRangeDays;
 
     // get total of approved single sick leave days
     const approvedSingleSickLeaves = user_record.leaverecord.edges.filter(
