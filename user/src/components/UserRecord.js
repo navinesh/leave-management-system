@@ -151,6 +151,10 @@ function Tabs(props: tabsProps) {
     setActiveIndex(parseInt(e.currentTarget.id, 10));
   }
 
+  function renderHeading() {
+    return <div className="container font-weight-bold">Leave status</div>;
+  }
+
   function renderTabs() {
     return props.data.map((tab, index) => {
       const isActive = activeIndex === index;
@@ -173,13 +177,16 @@ function Tabs(props: tabsProps) {
   }
 
   function renderPanel() {
-    return <>{props.data[activeIndex].content}</>;
+    return (
+      <div className="container pt-2">{props.data[activeIndex].content}</div>
+    );
   }
 
   return (
     <>
-      <nav className="nav">{renderTabs()}</nav>
-      <div className="mt-2">{renderPanel()}</div>
+      {renderHeading()}
+      <div className="container nav">{renderTabs()}</div>
+      {renderPanel()}
     </>
   );
 }
@@ -238,11 +245,7 @@ export default function UserRecord(props: Props) {
           }
         ];
 
-        return (
-          <div className="container">
-            <Tabs data={tabData} />
-          </div>
-        );
+        return <Tabs data={tabData} />;
       }}
     </Query>
   );
