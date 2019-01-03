@@ -212,64 +212,64 @@ export default function ArchivedStaffRecordList(props: Props) {
           <div className="card mb-3 shadow p-3 mb-5 bg-white rounded">
             <ul className="list-group list-group-flush">
               <li className="list-group-item">
-                <p className="h5">
+                <span className="h6">
                   {record.othernames} {record.surname}
-                </p>
+                </span>
               </li>
               <li className="list-group-item d-flex justify-content-between align-items-center">
                 Annual
-                <span className="badge badge-primary badge-pill">
+                <span className="text-primary font-weight-bold">
                   {record.annual}
                 </span>
               </li>
               <li className="list-group-item d-flex justify-content-between align-items-center">
                 Sick
-                <span className="badge badge-primary badge-pill">
+                <span className="text-primary font-weight-bold">
                   {record.sick}
                 </span>
               </li>
               <li className="list-group-item d-flex justify-content-between align-items-center">
                 Bereavement
-                <span className="badge badge-primary badge-pill">
+                <span className="text-primary font-weight-bold">
                   {record.bereavement}
                 </span>
               </li>
               <li className="list-group-item d-flex justify-content-between align-items-center">
                 Family care
-                <span className="badge badge-primary badge-pill">
+                <span className="text-primary font-weight-bold">
                   {record.familyCare}
                 </span>
               </li>
               <li className="list-group-item d-flex justify-content-between align-items-center">
                 Christmas
-                <span className="badge badge-primary badge-pill">
+                <span className="text-primary font-weight-bold">
                   {record.christmas}
                 </span>
               </li>
               <li className="list-group-item d-flex justify-content-between align-items-center">
                 DOB
-                <span className="badge badge-primary badge-pill">
+                <span className="text-primary font-weight-bold">
                   {dateOfBirth}
                 </span>
               </li>
               {record.gender.toLowerCase() === 'female' ? (
                 <li className="list-group-item d-flex justify-content-between align-items-center">
                   Maternity
-                  <span className="badge badge-primary badge-pill">
+                  <span className="text-primary font-weight-bold">
                     {record.maternity}
                   </span>
                 </li>
               ) : (
                 <li className="list-group-item d-flex justify-content-between align-items-center">
                   Paternity
-                  <span className="badge badge-primary badge-pill">
+                  <span className="text-primary font-weight-bold">
                     {record.paternity}
                   </span>
                 </li>
               )}
               <li className="list-group-item">
                 <button
-                  className="btn btn-link text-primary pl-0"
+                  className="btn btn-link pl-0"
                   onClick={handleOpenUnarchive}
                   id={record.id}
                 >
