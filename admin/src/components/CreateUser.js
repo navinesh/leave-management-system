@@ -110,11 +110,6 @@ export default function CreateUserForm() {
   function handleSubmit(e: Event) {
     e.preventDefault();
 
-    const maternityDays = maternityLeave ? maternityLeave : 0;
-    const paternityDays = paternityLeave ? paternityLeave : 0;
-    const dateOfBirth = moment(dob).format('DD/MM/YYYY');
-    const eStartDate = moment(employeeStartDate).format('DD/MM/YYYY');
-
     // verify data
     if (
       !surname ||
@@ -126,12 +121,19 @@ export default function CreateUserForm() {
       !bereavementDays ||
       !familyCareDays ||
       !christmasDays ||
-      !dateOfBirth ||
-      !gender
+      !dob ||
+      !gender ||
+      !employeeNumber ||
+      !employeeStartDate
     ) {
       setErrorMessage('One or more required fields are missing!');
       return null;
     }
+
+    const maternityDays = maternityLeave ? maternityLeave : 0;
+    const paternityDays = paternityLeave ? paternityLeave : 0;
+    const dateOfBirth = moment(dob).format('DD/MM/YYYY');
+    const eStartDate = moment(employeeStartDate).format('DD/MM/YYYY');
 
     const adminUser = localStorage.getItem('admin_user');
 
@@ -382,7 +384,7 @@ export default function CreateUserForm() {
                   <label htmlFor="dob">Date of birth</label>
                   <DatePicker
                     className="form-control"
-                    dateFormat="DD/MM/YYYY"
+                    dateFormat="dd/MM/YYYY"
                     placeholderText="Click to select a date"
                     selected={dob}
                     onChange={handleDOBChange}
@@ -412,7 +414,7 @@ export default function CreateUserForm() {
                   <label htmlFor="dob">Employee start date</label>
                   <DatePicker
                     className="form-control"
-                    dateFormat="DD/MM/YYYY"
+                    dateFormat="dd/MM/YYYY"
                     placeholderText="Click to select a date"
                     selected={employeeStartDate}
                     onChange={handleEmployeeStartDateChange}
