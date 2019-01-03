@@ -68,7 +68,12 @@ function ClearSearch(props) {
   );
 }
 
-function Archive(props) {
+type archiveProps = {
+  id: string,
+  archiveReason: string
+};
+
+function Archive(props: archiveProps) {
   return (
     <Mutation
       mutation={ARCHIVE_USER}
@@ -105,7 +110,15 @@ function Archive(props) {
   );
 }
 
-function ArchiveUser(props) {
+type archiveUserprops = {
+  staff_record: Object,
+  id: string,
+  archiveReason: string,
+  handleArchiveReason: Function,
+  handleCloseArchive: Function
+};
+
+function ArchiveUser(props: archiveUserprops) {
   return (
     <>
       {props.staff_record
@@ -321,6 +334,7 @@ export default function StaffRecordList(props: Props) {
   function handleCloseEdit() {
     setIsEditing(!isEditing);
     setErrorMessage('');
+    setServerMessage('');
     setDOB(null);
     setEmployeeStartDate(null);
     setID('');
@@ -558,7 +572,7 @@ export default function StaffRecordList(props: Props) {
                               />
                               <DatePicker
                                 className="form-control"
-                                dateFormat="DD/MM/YYYY"
+                                dateFormat="dd/MM/YYYY"
                                 openToDate={dob1}
                                 selected={dob}
                                 showMonthDropdown
@@ -595,7 +609,7 @@ export default function StaffRecordList(props: Props) {
                               />
                               <DatePicker
                                 className="form-control"
-                                dateFormat="DD/MM/YYYY"
+                                dateFormat="dd/MM/YYYY"
                                 openToDate={eSD}
                                 selected={employeeStartDate}
                                 showMonthDropdown
@@ -720,76 +734,76 @@ export default function StaffRecordList(props: Props) {
           <div className="card mb-3 shadow p-3 mb-5 bg-white rounded">
             <ul className="list-group list-group-flush">
               <li className="list-group-item">
-                <p className="h5">
+                <span className="h6">
                   {record.othernames} {record.surname}
-                </p>
+                </span>
               </li>
               <li className="list-group-item d-flex justify-content-between align-items-center">
                 Annual
-                <span className="badge badge-primary badge-pill">
+                <span className="text-primary font-weight-bold">
                   {record.annual}
                 </span>
               </li>
               <li className="list-group-item d-flex justify-content-between align-items-center">
                 Sick
-                <span className="badge badge-primary badge-pill">
+                <span className="text-primary font-weight-bold">
                   {record.sick}
                 </span>
               </li>
               <li className="list-group-item d-flex justify-content-between align-items-center">
                 Bereavement
-                <span className="badge badge-primary badge-pill">
+                <span className="text-primary font-weight-bold">
                   {record.bereavement}
                 </span>
               </li>
               <li className="list-group-item d-flex justify-content-between align-items-center">
                 Family care
-                <span className="badge badge-primary badge-pill">
+                <span className="text-primary font-weight-bold">
                   {record.familyCare}
                 </span>
               </li>
               <li className="list-group-item d-flex justify-content-between align-items-center">
                 Christmas
-                <span className="badge badge-primary badge-pill">
+                <span className="text-primary font-weight-bold">
                   {record.christmas}
                 </span>
               </li>
               <li className="list-group-item d-flex justify-content-between align-items-center">
                 Employee #
-                <span className="badge badge-primary badge-pill">
+                <span className="text-primary font-weight-bold">
                   {record.employeeNumber}
                 </span>
               </li>
               <li className="list-group-item d-flex justify-content-between align-items-center">
                 Start Date
-                <span className="badge badge-primary badge-pill">
+                <span className="text-primary font-weight-bold">
                   {employeeStartDate1}
                 </span>
               </li>
               <li className="list-group-item d-flex justify-content-between align-items-center">
                 DOB
-                <span className="badge badge-primary badge-pill">
+                <span className="text-primary font-weight-bold">
                   {dateOfBirth}
                 </span>
               </li>
               {record.gender.toLowerCase() === 'female' ? (
                 <li className="list-group-item d-flex justify-content-between align-items-center">
                   Maternity
-                  <span className="badge badge-primary badge-pill">
+                  <span className="text-primary font-weight-bold">
                     {record.maternity}
                   </span>
                 </li>
               ) : (
                 <li className="list-group-item d-flex justify-content-between align-items-center">
                   Paternity
-                  <span className="badge badge-primary badge-pill">
+                  <span className="text-primary font-weight-bold">
                     {record.paternity}
                   </span>
                 </li>
               )}
               <li className="list-group-item">
                 <button
-                  className="btn btn-link text-primary pl-0"
+                  className="btn btn-link pl-0"
                   onClick={handleOpenEdit}
                   id={record.id}
                   value={record.dbId}
@@ -797,7 +811,7 @@ export default function StaffRecordList(props: Props) {
                   Edit
                 </button>
                 <button
-                  className="btn btn-link text-primary"
+                  className="btn btn-link"
                   onClick={handleOpenArchive}
                   id={record.id}
                 >
