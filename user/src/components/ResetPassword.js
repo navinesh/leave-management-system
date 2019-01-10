@@ -49,7 +49,7 @@ export default function UserResetPassword() {
         setErrorMessage(response.data.message);
       } else {
         setServerMessage(response.data.message);
-        setEmail();
+        setEmail('');
       }
     } catch (error) {
       console.log(error);
