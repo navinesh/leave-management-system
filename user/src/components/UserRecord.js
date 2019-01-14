@@ -147,12 +147,12 @@ type tabsProps = {
 function Tabs(props: tabsProps) {
   const [activeIndex, setActiveIndex] = useState(0);
 
-  function selectTabIndex(e: SyntheticEvent<HTMLElement>) {
-    setActiveIndex(parseInt(e.currentTarget.id, 10));
+  function selectTabIndex(index) {
+    setActiveIndex(index);
   }
 
   function renderHeading() {
-    return <div className="container font-weight-bold">Leave status</div>;
+    return <div className="container h6">Leave status</div>;
   }
 
   function renderTabs() {
@@ -166,8 +166,7 @@ function Tabs(props: tabsProps) {
                 ? 'border border-right-0 border-left-0 border-top-0 border-secondary'
                 : 'text-secondary'
             }
-            onClick={selectTabIndex}
-            id={index}
+            onClick={() => selectTabIndex(index)}
           >
             {tab.label}
           </div>
