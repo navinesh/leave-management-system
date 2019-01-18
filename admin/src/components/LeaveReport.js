@@ -14,6 +14,11 @@ const UNARCHIVE_RECORD = gql`
   }
 `;
 
+type archivedRecordProps = {
+  id: string,
+  ARCHIVED_RECORD: DocumentNode
+};
+
 function UnarchiveLeaveRecord(props: archivedRecordProps) {
   return (
     <Mutation
