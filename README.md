@@ -1,9 +1,9 @@
 # Leave management system
 
 ### Versions
-#### v3 - developed in TypeScript and React Apollo as state container
+#### v3 - developed in TypeScript, React Hooks and React Apollo as state container
 
-#### v2.5 - developed using React hooks
+#### v2.5 - developed using React Hooks
 
 #### v2 - developed using Redux as state container
 ##
