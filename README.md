@@ -13,10 +13,9 @@ There are two web apps; user and admin. User app is for the employees to login a
 ### Required Libraries and Dependencies
 
 * ReactJS
-* Redux
+* TypeScript
 * React-Apollo
 * React-Router
-* Flow
 * MomentJS
 * React-dates
 * React-datepicker
