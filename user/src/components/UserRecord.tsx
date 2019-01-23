@@ -177,7 +177,7 @@ function Tabs(props: TabsProps): JSX.Element {
     setActiveIndex(index);
   }
 
-  function renderHeading() {
+  function renderHeading(): JSX.Element {
     return <div className="container h6">Leave status</div>;
   }
 
