@@ -64,7 +64,7 @@ export default function UserChange(props: Props): JSX.Element {
     setLoading(true);
 
     axios
-      .post('http://localhost:8080/hange-password', {
+      .post('http://localhost:8080/change-password', {
         auth: { username: props.auth_token },
         data: {
           oldPassword: currentPassword,
