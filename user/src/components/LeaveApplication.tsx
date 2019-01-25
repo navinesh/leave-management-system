@@ -185,7 +185,6 @@ interface HolidayData {
 }
 
 interface LeaveApplicationProps {
-  id: number;
   user_detail: UserDetailType;
   user_record: UserRecordType;
   public_holiday: PublicHolidayType;
@@ -659,7 +658,7 @@ function LeaveApplication(props: LeaveApplicationProps) {
 }
 
 interface Props {
-  id: any;
+  id: string;
 }
 
 export default function Application(props: Props): JSX.Element {
@@ -726,7 +725,6 @@ export default function Application(props: Props): JSX.Element {
                       </div>
                       <div className="col-md-6 mr-auto mb-2">
                         <LeaveApplication
-                          id={props.id}
                           user_detail={user}
                           user_record={userRecord}
                           public_holiday={publicHoliday}
