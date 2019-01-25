@@ -5,11 +5,9 @@ ReactJS web application.
 ### Required Libraries and Dependencies
 
 * ReactJS
+* TypeScript
 * React-Router
 * React-Apollo
-* Redux
-* Redux-thunk
-* Flow
 * Axios
 * MomentJS
 * Moment-range
