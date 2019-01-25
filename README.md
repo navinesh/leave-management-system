@@ -10,20 +10,6 @@
 
 There are two web apps; user and admin. User app is for the employees to login and check their leave balance and apply for leave. Admin app is for HR. HR can approve/decline leave, manage employee record, create/archive/unarchive staff record.
 
-### Required Libraries and Dependencies
-
-* ReactJS
-* TypeScript
-* React-Apollo
-* React-Router
-* MomentJS
-* React-dates
-* React-datepicker
-* Moment-range
-* Axios
-* Redux-thunk
-* Bootstrap CSS
-
 ### What's included
 
 Within the download you will find the following directory and files.
