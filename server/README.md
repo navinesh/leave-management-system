@@ -23,7 +23,9 @@ Create Postgres database (create a "lms" user in Postgres before running the com
 
 Run the command `python application.py` to run the application
 
-You can use Postman to create the admin user account by using `POST` request to send email, surname, othernames and password as a json object. Once the admin account has been created you can log in to the admin web app and create user accounts.
+You can use Postman to create the admin user account by using `POST` request to send email, surname, othernames and password as a json object. Once the admin account has been created you can log in to the ````admin web app```` and create user accounts. 
+API is http://localhost:8080/addadminuser
+Payload: {"email": "example@example.com","password": "YourPassword", "surname": "YourSurname", "othernames": "YourOthernames"}
 
 ## Creator
 Navinesh Chand
