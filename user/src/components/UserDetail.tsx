@@ -21,7 +21,7 @@ const USER_DETAIL = gql`
 `;
 
 interface Props {
-  id: any;
+  id: string;
 }
 
 export default function UserDetail(props: Props): JSX.Element {
