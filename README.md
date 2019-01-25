@@ -12,7 +12,7 @@ There are two web apps; user and admin. User app is for the employees to login a
 
 ### What's included
 
-Within the download you will find the following directory and files.
+Within the download you will find the following directories.
 
 User
 
