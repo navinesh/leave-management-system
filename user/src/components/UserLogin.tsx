@@ -131,7 +131,7 @@ interface Props {
 export default function Login(props: Props): JSX.Element {
   return (
     <ApolloConsumer>
-      {client => (
+      {() => (
         <Mutation
           mutation={AUTHENTICATE_USER}
           update={(cache, data) => {
