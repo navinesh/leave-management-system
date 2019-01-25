@@ -5,15 +5,15 @@ ReactJS web application.
 ### Required Libraries and Dependencies
 
 * ReactJS
+* TypeScript
 * React-Router
-* Redux
-* Redux-thunk
-* Flow
+* React Apollo
 * Axios
 * MomentJS
 * Moment-range
 * React-dates
 * React-datepicker
+* React-csv
 * Bootstrap 4 CSS
 
 ### How to Run the Project
