@@ -6,7 +6,7 @@ ReactJS web application.
 
 * ReactJS
 * TypeScript
-* React-Router
+* React Router
 * React Apollo
 * Axios
 * MomentJS
