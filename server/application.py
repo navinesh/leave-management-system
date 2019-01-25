@@ -156,20 +156,6 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 
-# User
-@app.route('/')
-@app.route('/login')
-@app.route('/leaveapplication')
-@app.route('/leavecalendar')
-@app.route('/change-password')
-@app.route('/user-reset-password')
-@app.route('/applyforleave')
-@cross_origin()
-def show_user_home():
-    """Render user index html"""
-    return render_template('userhome.html')
-
-
 # Change password
 @app.route('/change-password', methods=['POST'])
 @auth.login_required
@@ -436,34 +422,6 @@ def apply_for_leave():
                  leave_reason), new_file_name)
 
     return jsonify({'message': 'Your application has been submitted.'}), 201
-
-
-# Admin
-@app.route('/admin')
-@app.route('/admin/login')
-@app.route('/admin/approvedleave')
-@app.route('/admin/staffrecord')
-@app.route('/admin/archivedstaffrecord')
-@app.route('/admin/createuser')
-@app.route('/admin/leavereport')
-@app.route('/admin/sicksheet')
-@app.route('/admin/publicholiday')
-@app.route('/admin/resetpassword')
-@app.route('/addadminuser')
-@app.route('/admin-reset-password')
-@app.route('/admin/sicksheetrecord')
-@app.route('/sicksheetrecord')
-@app.route('/adduser')
-@app.route('/modifyuser')
-@app.route('/approveleave')
-@app.route('/declineleave')
-@app.route('/editleave')
-@app.route('/editapprovedleave')
-@app.route('/cancelleave')
-@cross_origin()
-def show_admin_home():
-    """Render admin index html"""
-    return render_template('index.html')
 
 
 # Add admin user
