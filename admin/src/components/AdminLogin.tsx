@@ -70,6 +70,7 @@ function LoginForm(props: LoginProps): JSX.Element {
                 className="form-control"
                 placeholder="Enter email"
                 id="email"
+                autoComplete="email"
                 value={email}
                 onChange={handleEmailChange}
               />
@@ -81,6 +82,7 @@ function LoginForm(props: LoginProps): JSX.Element {
                 className="form-control"
                 placeholder="Password"
                 id="password"
+                autoComplete="password"
                 value={password}
                 onChange={handlePasswordChange}
               />
