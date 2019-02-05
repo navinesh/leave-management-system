@@ -83,7 +83,7 @@ interface User {
   gender: string;
 }
 
-function UserName(props: UserProps) {
+function UserName(props: UserProps): JSX.Element {
   return (
     <p>
       {props.user_detail.othernames} {props.user_detail.surname}
@@ -91,7 +91,7 @@ function UserName(props: UserProps) {
   );
 }
 
-function UserRecord(props: UserProps) {
+function UserRecord(props: UserProps): JSX.Element {
   const { user_detail } = props;
 
   let gender = user_detail.gender ? user_detail.gender.toLowerCase() : null;
@@ -210,7 +210,7 @@ type TotalDaysType = {
   [key: string]: any;
 };
 
-function LeaveApplication(props: LeaveApplicationProps) {
+function LeaveApplication(props: LeaveApplicationProps): JSX.Element {
   const [leave, setLeave] = useState<string>('');
   const [leaveType, setLeaveType] = useState<string>('');
   const [startDate, setStartDate] = useState<any>(null);
