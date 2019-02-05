@@ -6,6 +6,7 @@ import { Redirect } from 'react-router-dom';
 import { TokenSuccess, TokenFailure } from './TokenComponents';
 import UserDetail from './UserDetail';
 import UserRecord from './UserRecord';
+import useInterval from './UseInterval';
 
 const REQUEST_DATA = gql`
   query requestData {
@@ -35,6 +36,10 @@ function MainView(props: Props): JSX.Element {
   useEffect(function() {
     props.verifyToken();
   }, []);
+
+  useInterval(function(): void {
+    props.verifyToken();
+  }, 600000);
 
   return (
     <Query query={REQUEST_DATA}>
