@@ -95,12 +95,22 @@ export default function UserChange(props: Props): JSX.Element {
       <div className="card card-body shadow p-3 mb-5 bg-white rounded">
         <form onSubmit={handleSubmit}>
           <div className="form-group">
+            <input
+              type="text"
+              className="form-control"
+              id="email"
+              autoComplete="email"
+              style={{ display: 'none' }}
+            />
+          </div>
+          <div className="form-group">
             <label htmlFor="currentPassword">Current password</label>
             <input
               type="password"
               className="form-control"
               placeholder="Current password"
               id="currentPassword"
+              autoComplete="current-password"
               value={currentPassword}
               onChange={handleCurrentPasswordChange}
             />
@@ -112,6 +122,7 @@ export default function UserChange(props: Props): JSX.Element {
               className="form-control"
               placeholder="New password"
               id="newPassword"
+              autoComplete="new-password"
               value={newPassword}
               onChange={handlePasswordChange}
             />
@@ -123,6 +134,7 @@ export default function UserChange(props: Props): JSX.Element {
               className="form-control"
               placeholder="Confirm new password"
               id="newPasswordConfirm"
+              autoComplete="new-password"
               value={newPasswordConfirm}
               onChange={handlePasswordChangeConfirm}
             />
