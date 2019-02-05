@@ -29,7 +29,7 @@ function LoginForm(props: FormProps): JSX.Element {
   const [password, setPassword] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
 
-  useEffect(function() {
+  useEffect(function(): void {
     setErrorMessage(props.sessionError);
   }, []);
 
@@ -85,6 +85,7 @@ function LoginForm(props: FormProps): JSX.Element {
               className="form-control"
               placeholder="Enter email"
               id="email"
+              autoComplete="email"
               value={email}
               onChange={handleEmailChange}
             />
@@ -96,6 +97,7 @@ function LoginForm(props: FormProps): JSX.Element {
               className="form-control"
               placeholder="Password"
               id="password"
+              autoComplete="password"
               value={password}
               onChange={handlePasswordChange}
             />
