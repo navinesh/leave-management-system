@@ -89,7 +89,7 @@ type AddPublicHolidayProps = {
   render(props: Moment | null): ReactNode;
 };
 
-function AddPublicHoliday(props: AddPublicHolidayProps) {
+function AddPublicHoliday(props: AddPublicHolidayProps): JSX.Element {
   const [date, setDate] = useState<Moment | null>(null);
   const [focused, setFocused] = useState<boolean>(false);
 
@@ -119,7 +119,7 @@ type deleteHolidayProps = {
   id: string;
 };
 
-function DeleteHoliday(props: deleteHolidayProps) {
+function DeleteHoliday(props: deleteHolidayProps): JSX.Element {
   return (
     <Mutation
       mutation={DELETE_PUBLIC_HOLIDAY}
@@ -157,7 +157,7 @@ type PublicHolidayProps = {
   render(props: string): ReactNode;
 };
 
-function PublicHolidays(props: PublicHolidayProps) {
+function PublicHolidays(props: PublicHolidayProps): JSX.Element {
   return (
     <Query query={PUBLIC_HOLIDAY}>
       {({ loading, error, data }) => {
