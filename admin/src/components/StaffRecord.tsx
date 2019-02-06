@@ -144,7 +144,7 @@ interface ArchiveUserprops {
   handleCloseArchive: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-function ArchiveUser(props: ArchiveUserprops) {
+function ArchiveUser(props: ArchiveUserprops): JSX.Element {
   return (
     <>
       {props.staff_record
@@ -241,7 +241,7 @@ interface ModifyUserDetailsProps {
   adminUser: string | null;
 }
 
-export default function StaffRecordList(props: Props) {
+export default function StaffRecordList(props: Props): JSX.Element {
   const [id, setID] = useState<string>('');
   const [dbid, setDBID] = useState<number | string | null>(null);
   const [dob, setDOB] = useState<Date | null>(null);
