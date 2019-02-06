@@ -67,7 +67,7 @@ type Props = {
 };
 
 function MainView(props: Props): JSX.Element {
-  useEffect(function() {
+  useEffect(function(): void {
     props.verifyAdminToken();
   }, []);
 
