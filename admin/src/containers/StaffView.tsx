@@ -38,7 +38,7 @@ interface TabData {
 function Tabs(props: TabsProps): JSX.Element {
   const [activeIndex, setActiveIndex] = useState<number>(0);
 
-  function selectTabIndex(index: number) {
+  function selectTabIndex(index: number): void {
     setActiveIndex(index);
   }
 
@@ -79,7 +79,7 @@ type Props = {
 };
 
 function MainView(props: Props): JSX.Element {
-  useEffect(function() {
+  useEffect(function(): void {
     props.verifyAdminToken();
   }, []);
 
