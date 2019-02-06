@@ -28,7 +28,7 @@ function LoginForm(props: LoginProps): JSX.Element {
   const [password, setPassword] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
 
-  useEffect(function() {
+  useEffect(function(): void {
     setErrorMessage(props.sessionError);
   }, []);
 
