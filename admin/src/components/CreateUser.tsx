@@ -118,7 +118,7 @@ export default function CreateUserForm(): JSX.Element {
     setPaternityLeave(target.value);
   }
 
-  function handleDOBChange(e: React.SetStateAction<Date | null>) {
+  function handleDOBChange(e: React.SetStateAction<Date | null>): void {
     setDob(e);
   }
 
@@ -128,7 +128,9 @@ export default function CreateUserForm(): JSX.Element {
     setEmployeeNumber(target.value);
   }
 
-  function handleEmployeeStartDateChange(e: React.SetStateAction<Date | null>) {
+  function handleEmployeeStartDateChange(
+    e: React.SetStateAction<Date | null>
+  ): void {
     setEmployeeStartDate(e);
   }
 
