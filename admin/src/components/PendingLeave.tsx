@@ -893,11 +893,11 @@ function EditLeave(props: EditProps): JSX.Element {
   );
 }
 
-type Props = {
+interface Props {
   pending_items: Array<PendingItems>;
   public_holiday: PublicHolidayType;
   refetch: Function;
-};
+}
 
 export default function PendingLeaveList(props: Props): JSX.Element {
   const [listID, setListID] = useState<string>('');
@@ -1030,7 +1030,7 @@ export default function PendingLeaveList(props: Props): JSX.Element {
             <th>Type</th>
             <th>Start date</th>
             <th>End date</th>
-            <th>Leave days</th>
+            <th>Days</th>
             <th>Reason</th>
             <th>Approve</th>
             <th>Decline</th>
