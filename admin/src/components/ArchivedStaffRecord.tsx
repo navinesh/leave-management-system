@@ -162,10 +162,10 @@ function UnArchiveLeave(props: UnArchiveLeaveProps): JSX.Element {
   );
 }
 
-type Props = {
+interface Props {
   archived_staff_record: Array<UserRecord>;
   refetch: Function;
-};
+}
 
 interface UserRecord extends User {
   dateOfBirth: string;
