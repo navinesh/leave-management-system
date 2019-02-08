@@ -3,6 +3,8 @@
 ### Admin and User versions
 #### v3 (master) - developed in TypeScript, React Hooks and React Apollo as state container
 
+##
+***Not maintained***
 #### v2.5 - developed using React Hooks
 
 #### v2 - developed using Redux as state container
