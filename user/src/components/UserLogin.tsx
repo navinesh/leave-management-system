@@ -17,12 +17,12 @@ const AUTHENTICATE_USER = gql`
   }
 `;
 
-type FormProps = {
+interface FormProps {
   login: Function;
   loading: boolean;
   error: ApolloError | undefined;
   sessionError: string;
-};
+}
 
 function LoginForm(props: FormProps): JSX.Element {
   const [email, setEmail] = useState<string>('');
