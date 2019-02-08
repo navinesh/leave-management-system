@@ -41,9 +41,9 @@ const DELETE_PUBLIC_HOLIDAY = gql`
   }
 `;
 
-type AddHolidayProps = {
+interface AddHolidayProps {
   holidayDate: Moment;
-};
+}
 
 function AddHoliday(props: AddHolidayProps): JSX.Element {
   return (
@@ -115,9 +115,9 @@ function AddPublicHoliday(props: AddPublicHolidayProps): JSX.Element {
   );
 }
 
-type deleteHolidayProps = {
+interface deleteHolidayProps {
   id: string;
-};
+}
 
 function DeleteHoliday(props: deleteHolidayProps): JSX.Element {
   return (
