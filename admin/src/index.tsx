@@ -31,8 +31,10 @@ const SickSheetRecord = lazy(() => import('./containers/SickSheetRecord'));
 const CreateUser = lazy(() => import('./containers/CreateUser'));
 const PublicHoliday = lazy(() => import('./containers/PublicHoliday'));
 
+const cache = new InMemoryCache();
+
 const client = new ApolloClient({
-  cache: new InMemoryCache(),
+  cache,
   link: ApolloLink.from([
     onError(({ graphQLErrors, networkError }) => {
       if (graphQLErrors)
@@ -50,12 +52,6 @@ const client = new ApolloClient({
       // }
     })
   ]),
-  initializers: {
-    isAuthenticated: () => !!localStorage.getItem('admin_token'),
-    admin_user: () => localStorage.getItem('admin_user'),
-    admin_token: () => localStorage.getItem('admin_token'),
-    sessionError: () => ''
-  },
   typeDefs,
   defaultOptions: {
     watchQuery: {
@@ -67,6 +63,15 @@ const client = new ApolloClient({
     mutate: {
       errorPolicy: 'all'
     }
+  }
+});
+
+cache.writeData({
+  data: {
+    isAuthenticated: !!localStorage.getItem('admin_token'),
+    admin_user: localStorage.getItem('admin_user'),
+    admin_token: localStorage.getItem('admin_token'),
+    sessionError: ''
   }
 });
 
