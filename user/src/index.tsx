@@ -28,8 +28,10 @@ import UserError from './components/UserError';
 const UserChangePassword = lazy(() => import('./containers/ChangePassword'));
 const LeaveApplication = lazy(() => import('./containers/LeaveApplication'));
 
+const cache = new InMemoryCache();
+
 const client = new ApolloClient({
-  cache: new InMemoryCache(),
+  cache,
   link: ApolloLink.from([
     onError(({ graphQLErrors, networkError }) => {
       if (graphQLErrors)
@@ -47,12 +49,6 @@ const client = new ApolloClient({
       // }
     })
   ]),
-  initializers: {
-    isAuthenticated: () => !!localStorage.getItem('auth_token'),
-    id: () => localStorage.getItem('id'),
-    auth_token: () => localStorage.getItem('auth_token'),
-    sessionError: () => ''
-  },
   typeDefs,
   defaultOptions: {
     watchQuery: {
@@ -64,6 +60,15 @@ const client = new ApolloClient({
     mutate: {
       errorPolicy: 'all'
     }
+  }
+});
+
+cache.writeData({
+  data: {
+    isAuthenticated: !!localStorage.getItem('auth_token'),
+    id: localStorage.getItem('id'),
+    auth_token: localStorage.getItem('auth_token'),
+    sessionError: ''
   }
 });
 
