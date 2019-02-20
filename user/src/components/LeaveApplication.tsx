@@ -497,8 +497,6 @@ function LeaveApplication(props: LeaveApplicationProps): JSX.Element {
         setErrorMessage(response.data.message);
       } else {
         setServerMessage(response.data.message);
-        setStartDate(null);
-        setEndDate(null);
         setLeave('');
         setLeaveType('');
         setStartDate(null);
