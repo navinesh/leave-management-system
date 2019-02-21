@@ -1028,8 +1028,8 @@ export default function PendingLeaveList(props: Props): JSX.Element {
             <th>Name</th>
             <th>Leave</th>
             <th>Type</th>
-            <th>Start date</th>
-            <th>End date</th>
+            <th>Start</th>
+            <th>End</th>
             <th>Days</th>
             <th>Reason</th>
             <th>Approve</th>
