@@ -910,9 +910,9 @@ export default function ApprovedLeaveList(props: Props): JSX.Element {
                   <th>Name</th>
                   <th>Leave</th>
                   <th>Type</th>
-                  <th>Start date</th>
-                  <th>End date</th>
-                  <th>Leave days</th>
+                  <th>Start</th>
+                  <th>End</th>
+                  <th>Days</th>
                   <th>Edit</th>
                   <th>Delete</th>
                   <th>Archive</th>
