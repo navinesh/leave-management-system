@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 
@@ -218,7 +218,7 @@ function LeaveApplication(props: LeaveApplicationProps): JSX.Element {
   const [supervisorEmail, setSupervisorEmail] = useState<string>('');
   const [secretaryEmail, setSecretaryEmail] = useState<string>('');
   const [reason, setReason] = useState<string>('');
-  const [sickSheet, setSickSheet] = useState<File | null>(null);
+  const fileInput = useRef<any>(null);
   const [focusedInput, setFocusedInput] = useState<FocusedInputShape | null>(
     null
   );
@@ -256,10 +256,6 @@ function LeaveApplication(props: LeaveApplicationProps): JSX.Element {
     setReason(target.value);
   }
 
-  function handleFileChange(e: React.ChangeEvent<HTMLInputElement>): void {
-    if (e.target.files && e.target.files[0]) setSickSheet(e.target.files[0]);
-  }
-
   function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
     e.preventDefault();
     const { user_detail, user_record, refetch } = props;
@@ -274,6 +270,8 @@ function LeaveApplication(props: LeaveApplicationProps): JSX.Element {
     const maternityDays = user_detail.maternity ? user_detail.maternity : null;
     const paternityDays = user_detail.paternity ? user_detail.paternity : null;
     const designation = user_detail.designation;
+
+    const sickSheet = fileInput.current.files && fileInput.current.files[0];
 
     if (
       !user_id ||
@@ -504,7 +502,7 @@ function LeaveApplication(props: LeaveApplicationProps): JSX.Element {
         setSupervisorEmail('');
         setSecretaryEmail('');
         setReason('');
-        setSickSheet(null);
+        fileInput.current.value = null;
         setFocusedInput(null);
       }
     } catch (error) {
@@ -527,6 +525,7 @@ function LeaveApplication(props: LeaveApplicationProps): JSX.Element {
               <select
                 className="form-control"
                 id="leave"
+                value={leave}
                 onChange={handleLeaveChange}
               >
                 <option />
@@ -553,6 +552,7 @@ function LeaveApplication(props: LeaveApplicationProps): JSX.Element {
               <select
                 className="form-control"
                 id="leaveType"
+                value={leaveType}
                 onChange={handleLeaveTypeChange}
               >
                 <option />
@@ -601,6 +601,7 @@ function LeaveApplication(props: LeaveApplicationProps): JSX.Element {
             className="form-control"
             placeholder="Supervisor email"
             id="supervisorEmail"
+            value={supervisorEmail}
             onChange={handleSupervisorEmailChange}
           />
         </div>
@@ -613,6 +614,7 @@ function LeaveApplication(props: LeaveApplicationProps): JSX.Element {
             className="form-control"
             placeholder="Second supervisor / secretary email"
             id="secretaryEmail"
+            value={secretaryEmail}
             onChange={handleSecretaryEmailChange}
           />
         </div>
@@ -623,6 +625,7 @@ function LeaveApplication(props: LeaveApplicationProps): JSX.Element {
             className="form-control"
             placeholder="Reason for leave"
             id="reason"
+            value={reason}
             onChange={handleReasonChange}
           />
         </div>
@@ -632,7 +635,7 @@ function LeaveApplication(props: LeaveApplicationProps): JSX.Element {
             type="file"
             className="form-control-file"
             id="sicksheet"
-            onChange={handleFileChange}
+            ref={fileInput}
           />
           <small className="form-text text-muted">
             A medical certificate is required for absence of two consecutive
