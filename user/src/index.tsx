@@ -128,7 +128,7 @@ function App(): JSX.Element {
                 path="/changepassword"
                 component={UserChangePassword}
               />
-              <Route path="/login" component={UserError} />
+              <Route component={UserError} />
             </Switch>
           </Suspense>
         </>
