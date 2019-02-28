@@ -319,21 +319,6 @@ def apply_for_leave():
     if 'sickSheet' not in request.files:
         new_file_name = None
 
-        leave_record = Leaverecord(
-            user_id=user_id,
-            leave_name=leave_name,
-            leave_type=leave_type,
-            start_date=date_from,
-            end_date=date_to,
-            leave_reason=leave_reason,
-            leave_days=leave_days,
-            leave_status=leave_status,
-            file_name=new_file_name,
-            date_posted=str(datetime.now().date()))
-
-        session.add(leave_record)
-        session.commit()
-
         # Send email
         if secretary_email == 'null' and designation != 'Partner':
             cc_address_list = [user_record.email, om_email, pa_email]
@@ -370,6 +355,22 @@ def apply_for_leave():
                  " day(s) and upon approval new balance will be " +
                  str(new_leave_balance) + " day(s). Reason: " +
                  leave_reason), file=None)
+
+        leave_record = Leaverecord(
+            user_id=user_id,
+            leave_name=leave_name,
+            leave_type=leave_type,
+            start_date=date_from,
+            end_date=date_to,
+            leave_reason=leave_reason,
+            leave_days=leave_days,
+            leave_status=leave_status,
+            file_name=new_file_name,
+            date_posted=str(datetime.now().date()))
+
+        session.add(leave_record)
+        session.commit()
+
     else:
         file = request.files['sickSheet']  # check if an image was posted
         if file and allowed_file(file.filename):  # check extension
@@ -377,22 +378,7 @@ def apply_for_leave():
             filename = secure_filename(file.filename)  # return secure version
             new_file_name = date_and_time_today + '-' + filename
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], new_file_name))
-
-            leave_record = Leaverecord(
-                user_id=user_id,
-                leave_name=leave_name,
-                leave_type=leave_type,
-                start_date=date_from,
-                end_date=date_to,
-                leave_reason=leave_reason,
-                leave_days=leave_days,
-                leave_status=leave_status,
-                file_name=new_file_name,
-                date_posted=str(datetime.now().date()))
-
-            session.add(leave_record)
-            session.commit()
-
+ 
             # Send email
             if secretary_email == 'null' and designation != 'Partner':
                 cc_address_list = [user_record.email, om_email, pa_email]
@@ -420,6 +406,21 @@ def apply_for_leave():
                  " day(s) and upon approval new balance will be " +
                  str(new_leave_balance) + " day(s). Reason: " +
                  leave_reason), new_file_name)
+
+            leave_record = Leaverecord(
+                user_id=user_id,
+                leave_name=leave_name,
+                leave_type=leave_type,
+                start_date=date_from,
+                end_date=date_to,
+                leave_reason=leave_reason,
+                leave_days=leave_days,
+                leave_status=leave_status,
+                file_name=new_file_name,
+                date_posted=str(datetime.now().date()))
+
+            session.add(leave_record)
+            session.commit()
 
     return jsonify({'message': 'Your application has been submitted.'}), 201
 
