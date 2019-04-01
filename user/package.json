@@ -19,11 +19,11 @@
     "graphql-tag": "^2.10.1",
     "moment": "^2.23.0",
     "moment-range": "^4.0.2",
-    "react": "^16.8.5",
+    "react": "^16.8.6",
     "react-addons-shallow-compare": "^15.6.2",
     "react-apollo": "^2.5.3",
     "react-dates": "^20.1.0",
-    "react-dom": "^16.8.5",
+    "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.0",
     "react-scripts": "2.1.8",
     "typescript": "3.3.4000"
