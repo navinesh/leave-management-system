@@ -188,9 +188,7 @@ function Tabs(props: TabsProps): JSX.Element {
         <div className="nav-link btn" key={index}>
           <div
             className={
-              isActive
-                ? 'border border-right-0 border-left-0 border-top-0 border-secondary'
-                : 'text-secondary'
+              isActive ? 'border-secondary border-bottom' : 'text-secondary'
             }
             onClick={() => selectTabIndex(index)}
           >
