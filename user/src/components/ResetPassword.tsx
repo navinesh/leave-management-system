@@ -76,7 +76,13 @@ export default function UserResetPassword(): JSX.Element {
           </div>
         </form>
         <div className="text-primary text-center">
-          {loading ? <div className="loader" /> : serverMessage}
+          {loading ? (
+            <div className="spinner-border text-primary" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+          ) : (
+            serverMessage
+          )}
         </div>
         <div className="text-danger text-center">
           <div>{errorMessage}</div>
