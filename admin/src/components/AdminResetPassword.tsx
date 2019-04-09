@@ -79,12 +79,18 @@ export default function AdminResetPassword(): JSX.Element {
             </div>
           </form>
           <div className="text-danger text-center">
-            {loading ? <div className="loader" /> : serverMessage}
+            {loading ? (
+              <div className="spinner-border text-primary" role="status">
+                <span className="sr-only">Loading...</span>
+              </div>
+            ) : (
+              serverMessage
+            )}
             {errorMessage}
           </div>
         </div>
         <div className="card card-body mt-3">
-          <Link to="/" className="btn">
+          <Link to="/" className="btn text-primary">
             Login
           </Link>
         </div>
