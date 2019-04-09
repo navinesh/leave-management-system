@@ -197,7 +197,12 @@ function ApproveLeave(props: ApproveProps): JSX.Element {
                     </div>
                     <div className="text-primary text-center">
                       {loading ? (
-                        <div className="loader" />
+                        <div
+                          className="spinner-border text-primary"
+                          role="status"
+                        >
+                          <span className="sr-only">Loading...</span>
+                        </div>
                       ) : (
                         <p className="mt-3">{serverMessage}</p>
                       )}
@@ -395,7 +400,12 @@ function DeclineLeave(props: DeclineProps): JSX.Element {
                     </div>
                     <div className="text-primary text-center">
                       {loading ? (
-                        <div className="loader" />
+                        <div
+                          className="spinner-border text-primary"
+                          role="status"
+                        >
+                          <span className="sr-only">Loading...</span>
+                        </div>
                       ) : (
                         <p className="mt-3">{serverMessage}</p>
                       )}
@@ -875,7 +885,12 @@ function EditLeave(props: EditProps): JSX.Element {
                     </div>
                     <div className="text-primary text-center">
                       {loading ? (
-                        <div className="loader" />
+                        <div
+                          className="spinner-border text-primary"
+                          role="status"
+                        >
+                          <span className="sr-only">Loading...</span>
+                        </div>
                       ) : (
                         <p className="mt-3">{serverMessage}</p>
                       )}
