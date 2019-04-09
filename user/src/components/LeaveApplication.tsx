@@ -649,7 +649,13 @@ function LeaveApplication(props: LeaveApplicationProps): JSX.Element {
         </div>
       </form>
       <div className="text-primary text-center">
-        {loading ? <div className="loader" /> : serverMessage}
+        {loading ? (
+          <div className="spinner-border text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+        ) : (
+          serverMessage
+        )}
       </div>
       <div className="text-danger text-center pt-2">
         <div>{errorMessage}</div>
@@ -693,7 +699,12 @@ export default function Application(props: Props): JSX.Element {
                       style={{ paddingTop: '80px' }}
                     >
                       <div className="col-md-8 ml-auto mr-auto">
-                        <div className="loader" />
+                        <div
+                          className="spinner-border text-primary"
+                          role="status"
+                        >
+                          <span className="sr-only">Loading...</span>
+                        </div>
                       </div>
                     </div>
                   );
