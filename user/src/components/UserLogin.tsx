@@ -112,13 +112,17 @@ function LoginForm(props: FormProps): JSX.Element {
           </div>
         </form>
         <div className="text-danger text-center">
-          {props.loading && <div className="loader" />}
+          {props.loading && (
+            <div className="spinner-border text-primary" role="status">
+              <span className="sr-only">Loading...</span>
+            </div>
+          )}
           {props.error && props.error.message}
           {errorMessage}
         </div>
       </div>
       <div className="card card-body mt-3">
-        <Link to="/reset" className="btn">
+        <Link to="/reset" className="btn text-primary">
           Forgot your password?
         </Link>
       </div>
