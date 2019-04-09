@@ -235,7 +235,9 @@ export default function UserRecord(props: Props): JSX.Element {
               style={{ paddingTop: '80px' }}
             >
               <div className="col-md-8 ml-auto mr-auto">
-                <div className="loader" />
+                <div className="spinner-border text-primary" role="status">
+                  <span className="sr-only">Loading...</span>
+                </div>
               </div>
             </div>
           );
