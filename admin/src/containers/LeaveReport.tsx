@@ -282,7 +282,9 @@ function LeaveReportList(props: Props): JSX.Element {
             if (pendingLoading) {
               return (
                 <div className="text-center" style={{ marginTop: '80px' }}>
-                  <div className="loader" />
+                  <div className="spinner-border text-primary" role="status">
+                    <span className="sr-only">Loading...</span>
+                  </div>
                 </div>
               );
             }
@@ -313,7 +315,9 @@ function LeaveReportList(props: Props): JSX.Element {
             if (approvedLoading) {
               return (
                 <div className="text-center" style={{ marginTop: '80px' }}>
-                  <div className="loader" />
+                  <div className="spinner-border text-primary" role="status">
+                    <span className="sr-only">Loading...</span>
+                  </div>
                 </div>
               );
             }
@@ -346,7 +350,9 @@ function LeaveReportList(props: Props): JSX.Element {
             if (cancelledLoading) {
               return (
                 <div className="text-center" style={{ marginTop: '80px' }}>
-                  <div className="loader" />
+                  <div className="spinner-border text-primary" role="status">
+                    <span className="sr-only">Loading...</span>
+                  </div>
                 </div>
               );
             }
@@ -379,7 +385,9 @@ function LeaveReportList(props: Props): JSX.Element {
             if (declinedLoading) {
               return (
                 <div className="text-center" style={{ marginTop: '80px' }}>
-                  <div className="loader" />
+                  <div className="spinner-border text-primary" role="status">
+                    <span className="sr-only">Loading...</span>
+                  </div>
                 </div>
               );
             }
@@ -412,7 +420,9 @@ function LeaveReportList(props: Props): JSX.Element {
             if (archivedLoading) {
               return (
                 <div className="text-center" style={{ marginTop: '80px' }}>
-                  <div className="loader" />
+                  <div className="spinner-border text-primary" role="status">
+                    <span className="sr-only">Loading...</span>
+                  </div>
                 </div>
               );
             }
@@ -448,7 +458,9 @@ function LeaveReportList(props: Props): JSX.Element {
             if (userLoading) {
               return (
                 <div className="text-center" style={{ marginTop: '80px' }}>
-                  <div className="loader" />
+                  <div className="spinner-border text-primary" role="status">
+                    <span className="sr-only">Loading...</span>
+                  </div>
                 </div>
               );
             }
@@ -479,7 +491,9 @@ function LeaveReportList(props: Props): JSX.Element {
             if (leaveLoading) {
               return (
                 <div className="text-center" style={{ marginTop: '80px' }}>
-                  <div className="loader" />
+                  <div className="spinner-border text-primary" role="status">
+                    <span className="sr-only">Loading...</span>
+                  </div>
                 </div>
               );
             }
@@ -510,7 +524,9 @@ function LeaveReportList(props: Props): JSX.Element {
             if (activeUsersLoading) {
               return (
                 <div className="text-center" style={{ marginTop: '80px' }}>
-                  <div className="loader" />
+                  <div className="spinner-border text-primary" role="status">
+                    <span className="sr-only">Loading...</span>
+                  </div>
                 </div>
               );
             }
