@@ -14,7 +14,6 @@ import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 import './index.css';
 import './bootstrap.min.css';
-import './spinners.css';
 
 import { typeDefs } from './resolvers';
 
@@ -114,7 +113,9 @@ function App(): JSX.Element {
           <Suspense
             fallback={
               <div className="text-center" style={{ marginTop: '80px' }}>
-                <div className="loader" />
+                <div className="spinner-border text-primary" role="status">
+                  <span className="sr-only">Loading...</span>
+                </div>
               </div>
             }
           >
