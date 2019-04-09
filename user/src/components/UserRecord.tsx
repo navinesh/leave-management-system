@@ -81,7 +81,7 @@ function ApprovedRecordList(props: UserLeaveDataProps): JSX.Element {
   } else {
     return (
       <div data-align="center">
-        <img src={NoData} alt="No data" width="46%" height="46%" />
+        <img src={NoData} alt="No data" width="40%" height="40%" />
       </div>
     );
   }
@@ -118,7 +118,7 @@ function PendingRecordList(props: UserLeaveDataProps): JSX.Element {
   } else {
     return (
       <div data-align="center">
-        <img src={NoData} alt="No data" width="46%" height="46%" />
+        <img src={NoData} alt="No data" width="40%" height="40%" />
       </div>
     );
   }
@@ -155,7 +155,7 @@ function ArchivedRecordList(props: UserLeaveDataProps): JSX.Element {
   } else {
     return (
       <div data-align="center">
-        <img src={NoData} alt="No data" width="46%" height="46%" />
+        <img src={NoData} alt="No data" width="40%" height="40%" />
       </div>
     );
   }
