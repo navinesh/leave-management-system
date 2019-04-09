@@ -564,7 +564,12 @@ function EditLeave(props: EditLeaveProps): JSX.Element {
                     </div>
                     <div className="text-primary text-center">
                       {loading ? (
-                        <div className="loader" />
+                        <div
+                          className="spinner-border text-primary"
+                          role="status"
+                        >
+                          <span className="sr-only">Loading...</span>
+                        </div>
                       ) : (
                         <p className="text-primary mt-2">{serverMessage}</p>
                       )}
@@ -722,7 +727,12 @@ function CancelLeave(props: CancelLeaveProps): JSX.Element {
                     </div>
                     <div className="text-primary text-center">
                       {loading ? (
-                        <div className="loader" />
+                        <div
+                          className="spinner-border text-primary"
+                          role="status"
+                        >
+                          <span className="sr-only">Loading...</span>
+                        </div>
                       ) : (
                         <p className="mt-3">{serverMessage}</p>
                       )}
