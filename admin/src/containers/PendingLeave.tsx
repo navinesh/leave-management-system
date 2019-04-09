@@ -89,7 +89,9 @@ function MainView(props: Props): JSX.Element {
               if (loading || holidayLoading) {
                 return (
                   <div className="text-center" style={{ marginTop: '80px' }}>
-                    <div className="loader" />
+                    <div className="spinner-border text-primary" role="status">
+                      <span className="sr-only">Loading...</span>
+                    </div>
                   </div>
                 );
               }
