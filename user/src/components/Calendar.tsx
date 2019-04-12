@@ -43,7 +43,7 @@ interface Leave {
 export default function Calendar(): JSX.Element {
   return (
     <Query query={LEAVE_RECORD} pollInterval={60000}>
-      {({ loading, error, data }) => {
+      {({ loading, error, data }: any) => {
         if (loading) {
           return (
             <div
