@@ -16,7 +16,7 @@ const IS_AUTHENTICATED = gql`
 export default function Login(): JSX.Element {
   return (
     <Query query={IS_AUTHENTICATED}>
-      {({ data }) => {
+      {({ data }: any) => {
         return !data.isAuthenticated ? (
           <div className="container">
             <div className="row">
