@@ -13,7 +13,7 @@ const IS_AUTHENTICATED = gql`
 export default function AdminHeader(): JSX.Element {
   return (
     <Query query={IS_AUTHENTICATED}>
-      {({ data }) => {
+      {({ data }: any) => {
         return data.isAuthenticated && <Header />;
       }}
     </Query>
