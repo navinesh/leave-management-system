@@ -91,7 +91,7 @@ function Archive(props: ArchiveProps): JSX.Element {
       }}
       refetchQueries={[{ query: ARCHIVED_USERS }]}
     >
-      {(archiveUser, { loading, error, data }) => {
+      {(archiveUser: any, { loading, error, data }: any) => {
         if (loading) {
           return <p className="font-italic text-primary mr-3">Loading...</p>;
         }
