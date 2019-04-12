@@ -15,7 +15,7 @@ export default function ResetPassword(): JSX.Element {
   return (
     <div className="container">
       <Query query={IS_AUTHENTICATED}>
-        {({ data }) => {
+        {({ data }: any) => {
           return !data.isAuthenticated ? (
             <AdminResetPassword />
           ) : (
