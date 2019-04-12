@@ -28,7 +28,7 @@ function UnarchiveLeaveRecord(props: ArchivedRecordProps): JSX.Element {
       variables={{ id: props.id }}
       refetchQueries={[{ query: props.ARCHIVED_RECORD }]}
     >
-      {(unarchiveLeaverecord, { loading, error }) => {
+      {(unarchiveLeaverecord: any, { loading, error }: any) => {
         if (loading) {
           return (
             <span className="ml-2 font-italic text-primary">Loading...</span>
