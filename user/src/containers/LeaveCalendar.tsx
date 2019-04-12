@@ -30,10 +30,10 @@ const LeaveRecord = gql`
 export default function LeaveCalendar(): JSX.Element {
   return (
     <Query query={IS_AUTHENTICATED}>
-      {({ data }) => {
+      {({ data }: any) => {
         return data.isAuthenticated ? (
           <Query query={LeaveRecord} pollInterval={60000}>
-            {({ loading, error, data }) => {
+            {({ loading, error, data }: any) => {
               if (loading) {
                 return (
                   <div className="text-center" style={{ marginTop: '80px' }}>
