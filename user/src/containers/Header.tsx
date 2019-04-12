@@ -13,7 +13,7 @@ const IS_AUTHENTICATED = gql`
 export default function Header(): JSX.Element {
   return (
     <Query query={IS_AUTHENTICATED}>
-      {({ data }) => {
+      {({ data }: any) => {
         return <Navs isAuthenticated={data.isAuthenticated} />;
       }}
     </Query>
