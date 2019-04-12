@@ -15,7 +15,7 @@ const IS_AUTHENTICATED = gql`
 export default function AdminLogin(): JSX.Element {
   return (
     <Query query={IS_AUTHENTICATED}>
-      {({ data }) => {
+      {({ data }: any) => {
         return !data.isAuthenticated ? (
           <Login sessionError={data.sessionError} />
         ) : (
