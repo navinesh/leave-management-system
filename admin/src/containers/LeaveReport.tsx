@@ -278,7 +278,7 @@ function LeaveReportList(props: Props): JSX.Element {
             loading: pendingLoading,
             error: pendingError,
             data: { findLeaveRecord: pending_record }
-          }) => {
+          }: any) => {
             if (pendingLoading) {
               return (
                 <div className="text-center" style={{ marginTop: '80px' }}>
@@ -311,7 +311,7 @@ function LeaveReportList(props: Props): JSX.Element {
             loading: approvedLoading,
             error: approvedError,
             data: { findLeaveRecord: approved_record }
-          }) => {
+          }: any) => {
             if (approvedLoading) {
               return (
                 <div className="text-center" style={{ marginTop: '80px' }}>
@@ -346,7 +346,7 @@ function LeaveReportList(props: Props): JSX.Element {
             loading: cancelledLoading,
             error: cancelledError,
             data: { findLeaveRecord: cancelled_record }
-          }) => {
+          }: any) => {
             if (cancelledLoading) {
               return (
                 <div className="text-center" style={{ marginTop: '80px' }}>
@@ -381,7 +381,7 @@ function LeaveReportList(props: Props): JSX.Element {
             loading: declinedLoading,
             error: declinedError,
             data: { findLeaveRecord: declined_record }
-          }) => {
+          }: any) => {
             if (declinedLoading) {
               return (
                 <div className="text-center" style={{ marginTop: '80px' }}>
@@ -416,7 +416,7 @@ function LeaveReportList(props: Props): JSX.Element {
             loading: archivedLoading,
             error: archivedError,
             data: { findLeaveRecord: archived_record }
-          }) => {
+          }: any) => {
             if (archivedLoading) {
               return (
                 <div className="text-center" style={{ marginTop: '80px' }}>
@@ -454,7 +454,7 @@ function LeaveReportList(props: Props): JSX.Element {
             loading: userLoading,
             error: userError,
             data: { findUserUpdates: user_updates }
-          }) => {
+          }: any) => {
             if (userLoading) {
               return (
                 <div className="text-center" style={{ marginTop: '80px' }}>
@@ -487,7 +487,7 @@ function LeaveReportList(props: Props): JSX.Element {
             loading: leaveLoading,
             error: leaveError,
             data: { findLeaveUpdates: leave_updates }
-          }) => {
+          }: any) => {
             if (leaveLoading) {
               return (
                 <div className="text-center" style={{ marginTop: '80px' }}>
@@ -520,7 +520,7 @@ function LeaveReportList(props: Props): JSX.Element {
             loading: activeUsersLoading,
             error: activeUsersError,
             data: { findUsers: staff_record }
-          }) => {
+          }: any) => {
             if (activeUsersLoading) {
               return (
                 <div className="text-center" style={{ marginTop: '80px' }}>
@@ -553,7 +553,7 @@ function LeaveReportList(props: Props): JSX.Element {
 export default function LeaveReport(): JSX.Element {
   return (
     <Query query={IS_AUTHENTICATED}>
-      {({ data }) => {
+      {({ data }: any) => {
         let adminToken = data.admin_token
           ? data.admin_token
           : localStorage.getItem('admin_token');
@@ -564,7 +564,7 @@ export default function LeaveReport(): JSX.Element {
               <Mutation
                 mutation={VERIFY_ADMIN_TOKEN}
                 variables={{ adminToken: adminToken }}
-                onCompleted={data => {
+                onCompleted={(data: any) => {
                   if (data.verifyAdminToken) {
                     TokenSuccess(data, client);
                   } else {
@@ -572,7 +572,7 @@ export default function LeaveReport(): JSX.Element {
                   }
                 }}
               >
-                {verifyAdminToken => {
+                {(verifyAdminToken: any) => {
                   return (
                     <LeaveReportList verifyAdminToken={verifyAdminToken} />
                   );
