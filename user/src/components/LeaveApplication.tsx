@@ -675,7 +675,7 @@ export default function Application(props: Props): JSX.Element {
       variables={{ id: props.id }}
       pollInterval={60000}
     >
-      {({ loading, error, data: { user }, refetch }) => (
+      {({ loading, error, data: { user }, refetch }: any) => (
         <Query
           query={USER_RECORD}
           variables={{ id: props.id }}
@@ -685,13 +685,13 @@ export default function Application(props: Props): JSX.Element {
             loading: recordLoading,
             error: recordError,
             data: { user: userRecord }
-          }) => (
+          }: any) => (
             <Query query={PUBLIC_HOLIDAY}>
               {({
                 loading: holidayLoading,
                 error: holidayError,
                 data: { publicHoliday }
-              }) => {
+              }: any) => {
                 if (loading || recordLoading || holidayLoading) {
                   return (
                     <div
