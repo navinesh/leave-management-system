@@ -80,7 +80,7 @@ function UnArchive(props: UnArchiveProps): JSX.Element {
       variables={{ id: props.id }}
       refetchQueries={[{ query: ACTIVE_USERS }]}
     >
-      {(unArchiveUser, { loading, error, data }) => {
+      {(unArchiveUser: any, { loading, error, data }: any) => {
         if (loading) {
           return <p className="font-italic text-primary mr-3">Loading...</p>;
         }
