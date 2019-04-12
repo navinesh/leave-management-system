@@ -61,7 +61,12 @@ function MainView(props: Props): JSX.Element {
   return (
     <div className="container">
       <Query query={ACTIVE_USERS} pollInterval={60000}>
-        {({ loading, error, data: { findUsers: staff_record }, refetch }) => {
+        {({
+          loading,
+          error,
+          data: { findUsers: staff_record },
+          refetch
+        }: any) => {
           if (loading) {
             return (
               <div className="text-center" style={{ marginTop: '80px' }}>
@@ -93,7 +98,7 @@ function MainView(props: Props): JSX.Element {
 export default function StaffRecord(): JSX.Element {
   return (
     <Query query={IS_AUTHENTICATED}>
-      {({ data }) => {
+      {({ data }: any) => {
         let adminToken = data.admin_token
           ? data.admin_token
           : localStorage.getItem('admin_token');
@@ -104,7 +109,7 @@ export default function StaffRecord(): JSX.Element {
               <Mutation
                 mutation={VERIFY_ADMIN_TOKEN}
                 variables={{ adminToken: adminToken }}
-                onCompleted={data => {
+                onCompleted={(data: any) => {
                   if (data.verifyAdminToken) {
                     TokenSuccess(data, client);
                   } else {
@@ -112,7 +117,7 @@ export default function StaffRecord(): JSX.Element {
                   }
                 }}
               >
-                {verifyAdminToken => {
+                {(verifyAdminToken: any) => {
                   return <MainView verifyAdminToken={verifyAdminToken} />;
                 }}
               </Mutation>
