@@ -82,13 +82,13 @@ function MainView(props: Props): JSX.Element {
           error,
           data: { findLeaveRecord: approved_items },
           refetch
-        }) => (
+        }: any) => (
           <Query query={PUBLIC_HOLIDAY}>
             {({
               loading: holidayLoading,
               error: holidayError,
               data: { publicHoliday }
-            }) => {
+            }: any) => {
               if (loading || holidayLoading) {
                 return (
                   <div className="text-center" style={{ marginTop: '80px' }}>
@@ -127,7 +127,7 @@ function MainView(props: Props): JSX.Element {
 export default function ApprovedLeave(): JSX.Element {
   return (
     <Query query={IS_AUTHENTICATED}>
-      {({ data }) => {
+      {({ data }: any) => {
         let adminToken = data.admin_token
           ? data.admin_token
           : localStorage.getItem('admin_token');
@@ -138,7 +138,7 @@ export default function ApprovedLeave(): JSX.Element {
               <Mutation
                 mutation={VERIFY_ADMIN_TOKEN}
                 variables={{ adminToken: adminToken }}
-                onCompleted={data => {
+                onCompleted={(data: any) => {
                   if (data.verifyAdminToken) {
                     TokenSuccess(data, client);
                   } else {
@@ -146,7 +146,7 @@ export default function ApprovedLeave(): JSX.Element {
                   }
                 }}
               >
-                {verifyAdminToken => {
+                {(verifyAdminToken: any) => {
                   return <MainView verifyAdminToken={verifyAdminToken} />;
                 }}
               </Mutation>
