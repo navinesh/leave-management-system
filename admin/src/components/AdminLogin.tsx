@@ -123,7 +123,7 @@ export default function Login(props: Props): JSX.Element {
       {client => (
         <Mutation
           mutation={AUTHENTICATE_ADMIN}
-          update={(cache, data) => {
+          update={(cache: any, data: any) => {
             localStorage.setItem(
               'admin_user',
               data.data.authenticateAdmin.Admin.othernames
@@ -142,7 +142,7 @@ export default function Login(props: Props): JSX.Element {
             });
           }}
         >
-          {(login, { loading, error }) => {
+          {(login: any, { loading, error }: any) => {
             return (
               <LoginForm
                 login={login}
