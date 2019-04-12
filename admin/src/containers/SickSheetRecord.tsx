@@ -58,7 +58,7 @@ function MainView(props: Props): JSX.Element {
           loading,
           error,
           data: { findSicksheetRecord: sickSheet_items }
-        }) => {
+        }: any) => {
           if (loading) {
             return (
               <div className="text-center" style={{ marginTop: '80px' }}>
@@ -88,7 +88,7 @@ function MainView(props: Props): JSX.Element {
 export default function SickSheetRecord(): JSX.Element {
   return (
     <Query query={IS_AUTHENTICATED}>
-      {({ data }) => {
+      {({ data }: any) => {
         let adminToken = data.admin_token
           ? data.admin_token
           : localStorage.getItem('admin_token');
@@ -99,7 +99,7 @@ export default function SickSheetRecord(): JSX.Element {
               <Mutation
                 mutation={VERIFY_ADMIN_TOKEN}
                 variables={{ adminToken: adminToken }}
-                onCompleted={data => {
+                onCompleted={(data: any) => {
                   if (data.verifyAdminToken) {
                     TokenSuccess(data, client);
                   } else {
@@ -107,7 +107,7 @@ export default function SickSheetRecord(): JSX.Element {
                   }
                 }}
               >
-                {verifyAdminToken => {
+                {(verifyAdminToken: any) => {
                   return <MainView verifyAdminToken={verifyAdminToken} />;
                 }}
               </Mutation>
