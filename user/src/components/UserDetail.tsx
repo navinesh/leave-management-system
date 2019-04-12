@@ -31,7 +31,7 @@ export default function UserDetail(props: Props): JSX.Element {
       variables={{ id: props.id }}
       pollInterval={60000}
     >
-      {({ loading, error, data }) => {
+      {({ loading, error, data }: any) => {
         if (loading) {
           return (
             <div
