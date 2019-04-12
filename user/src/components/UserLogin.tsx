@@ -140,7 +140,7 @@ export default function Login(props: Props): JSX.Element {
       {() => (
         <Mutation
           mutation={AUTHENTICATE_USER}
-          update={(cache, data) => {
+          update={(cache: any, data: any) => {
             localStorage.setItem('id', data.data.authenticateUser.User.id);
             localStorage.setItem(
               'auth_token',
@@ -156,7 +156,7 @@ export default function Login(props: Props): JSX.Element {
             });
           }}
         >
-          {(login, { loading, error }) => {
+          {(login: any, { loading, error }: any) => {
             return (
               <LoginForm
                 login={login}
