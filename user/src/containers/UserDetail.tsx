@@ -13,7 +13,7 @@ const GET_ID = gql`
 export default function UserDetails(): JSX.Element {
   return (
     <Query query={GET_ID}>
-      {({ data }) => {
+      {({ data }: any) => {
         let id = data.id ? data.id : localStorage.getItem('id');
         return <UserDetail id={id} />;
       }}
