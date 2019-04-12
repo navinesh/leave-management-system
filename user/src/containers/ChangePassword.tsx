@@ -15,7 +15,7 @@ const IS_AUTHENTICATED = gql`
 export default function UserChangePassword(): JSX.Element {
   return (
     <Query query={IS_AUTHENTICATED}>
-      {({ data }) => {
+      {({ data }: any) => {
         return data.isAuthenticated ? (
           <UserChange auth_token={data.auth_token} />
         ) : (
