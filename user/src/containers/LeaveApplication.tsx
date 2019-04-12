@@ -43,7 +43,7 @@ function MainView(props: Props): JSX.Element {
 
   return (
     <Query query={REQUEST_DATA}>
-      {({ data }) => {
+      {({ data }: any) => {
         return data.isAuthenticated ? (
           <Application id={data.id} />
         ) : (
@@ -57,7 +57,7 @@ function MainView(props: Props): JSX.Element {
 export default function LeaveApplication(): JSX.Element {
   return (
     <Query query={REQUEST_DATA}>
-      {({ data }) => {
+      {({ data }: any) => {
         let userToken = data.auth_token
           ? data.auth_token
           : localStorage.getItem('auth_token');
@@ -68,7 +68,7 @@ export default function LeaveApplication(): JSX.Element {
               <Mutation
                 mutation={VERIFY_USER_TOKEN}
                 variables={{ userToken: userToken }}
-                onCompleted={data => {
+                onCompleted={(data: any) => {
                   if (data.verifyUserToken) {
                     TokenSuccess(data, client);
                   } else {
@@ -76,7 +76,7 @@ export default function LeaveApplication(): JSX.Element {
                   }
                 }}
               >
-                {verifyToken => {
+                {(verifyToken: any) => {
                   return <MainView verifyToken={verifyToken} />;
                 }}
               </Mutation>
