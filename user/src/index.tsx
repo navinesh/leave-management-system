@@ -83,7 +83,7 @@ function PrivateRoute({ component, ...rest }: any): JSX.Element {
       {...rest}
       render={props => (
         <Query query={IS_AUTHENTICATED}>
-          {({ data }) => {
+          {({ data }: any) => {
             return data.isAuthenticated ? (
               React.createElement(component, props)
             ) : (
