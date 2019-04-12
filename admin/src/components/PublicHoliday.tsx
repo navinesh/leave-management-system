@@ -52,7 +52,7 @@ function AddHoliday(props: AddHolidayProps): JSX.Element {
       variables={{ holidayDate: props.holidayDate }}
       refetchQueries={[{ query: PUBLIC_HOLIDAY }]}
     >
-      {(addPublicHoliday, { loading, error }) => {
+      {(addPublicHoliday: any, { loading, error }: any) => {
         if (loading) {
           return <p className="font-italic text-primary mt-4">Loading...</p>;
         }
@@ -126,7 +126,7 @@ function DeleteHoliday(props: deleteHolidayProps): JSX.Element {
       variables={{ id: props.id }}
       refetchQueries={[{ query: PUBLIC_HOLIDAY }]}
     >
-      {(deletePublicHoliday, { loading, error }) => {
+      {(deletePublicHoliday: any, { loading, error }: any) => {
         if (loading) {
           return (
             <span className="ml-2 font-italic text-primary">Loading...</span>
@@ -160,7 +160,7 @@ type PublicHolidayProps = {
 function PublicHolidays(props: PublicHolidayProps): JSX.Element {
   return (
     <Query query={PUBLIC_HOLIDAY}>
-      {({ loading, error, data }) => {
+      {({ loading, error, data }: any) => {
         if (loading) {
           return (
             <div
