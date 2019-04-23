@@ -47,9 +47,13 @@ type Props = {
 };
 
 function MainView(props: Props): JSX.Element {
-  useEffect(function(): void {
-    props.verifyAdminToken();
-  }, []);
+  const { verifyAdminToken } = props;
+  useEffect(
+    function(): void {
+      verifyAdminToken();
+    },
+    [verifyAdminToken]
+  );
 
   return (
     <div className="container">
