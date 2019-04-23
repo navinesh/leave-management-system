@@ -33,9 +33,13 @@ type Props = {
 };
 
 function MainView(props: Props): JSX.Element {
-  useEffect(function(): void {
-    props.verifyToken();
-  }, []);
+  const { verifyToken } = props;
+  useEffect(
+    function(): void {
+      verifyToken();
+    },
+    [verifyToken]
+  );
 
   useInterval(function(): void {
     props.verifyToken();
