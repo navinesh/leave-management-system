@@ -178,14 +178,14 @@ function Tabs(props: TabsProps): JSX.Element {
   }
 
   function renderHeading(): JSX.Element {
-    return <div className="container h6">Leave status</div>;
+    return <h5>Leave status</h5>;
   }
 
   function renderTabs(): JSX.Element[] {
     return props.data.map((tab, index) => {
       const isActive = activeIndex === index;
       return (
-        <div className="nav-link btn" key={index}>
+        <div className="btn pl-0" key={index}>
           <div
             className={
               isActive ? 'border-secondary border-bottom' : 'text-secondary'
@@ -200,17 +200,15 @@ function Tabs(props: TabsProps): JSX.Element {
   }
 
   function renderPanel(): JSX.Element {
-    return (
-      <div className="container pt-2">{props.data[activeIndex].content}</div>
-    );
+    return <div className="pt-2">{props.data[activeIndex].content}</div>;
   }
 
   return (
-    <>
+    <div className="container">
       {renderHeading()}
-      <div className="container nav">{renderTabs()}</div>
+      {renderTabs()}
       {renderPanel()}
-    </>
+    </div>
   );
 }
 
