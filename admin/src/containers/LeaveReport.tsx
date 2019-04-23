@@ -265,9 +265,13 @@ type Props = {
 };
 
 function LeaveReportList(props: Props): JSX.Element {
-  useEffect(function(): void {
-    props.verifyAdminToken();
-  }, []);
+  const { verifyAdminToken } = props;
+  useEffect(
+    function(): void {
+      verifyAdminToken();
+    },
+    [verifyAdminToken]
+  );
 
   const tabData = [
     {
