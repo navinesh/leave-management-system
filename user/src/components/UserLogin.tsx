@@ -29,9 +29,12 @@ function LoginForm(props: FormProps): JSX.Element {
   const [password, setPassword] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
 
-  useEffect(function(): void {
-    setErrorMessage(props.sessionError);
-  }, []);
+  useEffect(
+    function(): void {
+      setErrorMessage(props.sessionError);
+    },
+    [props.sessionError]
+  );
 
   function handleEmailChange({
     target
