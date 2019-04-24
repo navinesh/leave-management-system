@@ -63,31 +63,33 @@ export default function UserChange(props: Props): JSX.Element {
   async function changePassword(): Promise<any> {
     setLoading(true);
 
-    axios
-      .post('http://localhost:8080/change-password', {
-        auth: { username: props.auth_token },
-        data: {
-          oldPassword: currentPassword,
-          newPassword: newPassword
+    try {
+      const response = await axios.post(
+        'http://localhost:8080/change-password',
+        {
+          auth: { username: props.auth_token },
+          data: {
+            oldPassword: currentPassword,
+            newPassword: newPassword
+          }
         }
-      })
-      .then(function(response) {
-        setLoading(false);
+      );
 
-        if (response.status !== 201) {
-          setErrorMessage(response.data.message);
-        } else {
-          setServerMessage(response.data.message);
-          setCurrentPassword('');
-          setNewPassword('');
-          setNewPasswordConfirm('');
-        }
-      })
-      .catch(function(error) {
-        console.log(error);
-        setLoading(false);
-        setErrorMessage(error.message);
-      });
+      setLoading(false);
+
+      if (response.status !== 201) {
+        setErrorMessage(response.data.message);
+      } else {
+        setServerMessage(response.data.message);
+        setCurrentPassword('');
+        setNewPassword('');
+        setNewPasswordConfirm('');
+      }
+    } catch (error) {
+      console.log(error);
+      setLoading(false);
+      setErrorMessage(error.message);
+    }
   }
 
   return (
