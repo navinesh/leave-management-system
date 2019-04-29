@@ -97,7 +97,7 @@ function UserRecord(props: UserProps): JSX.Element {
   let gender = user_detail.gender ? user_detail.gender.toLowerCase() : null;
 
   return (
-    <ul className="list-group">
+    <ul className="list-group shadow bg-white rounded">
       <li className="list-group-item d-flex justify-content-between align-items-center">
         Annual
         <span className="badge badge-primary badge-pill">
