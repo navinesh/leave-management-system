@@ -1015,6 +1015,7 @@ def edit_leave():
     session.commit()
 
     user_id = leave_record.user_id
+    leave_status = leave_record.leave_status
 
     update_log = Leaveupdates(
         updated_leave_name=leave_name,
@@ -1022,6 +1023,7 @@ def edit_leave():
         updated_start_date=date_from,
         updated_end_date=date_to,
         updated_leave_days=leave_days,
+        leave_status=leave_status,
         previous_leave_days=previous_leave_days,
         previous_leave_name=previous_leave_name,
         previous_leave_type=previous_leave_type,
@@ -1103,6 +1105,7 @@ def edit_approved_leave():
     session.commit()
 
     user_id = leave_record.user_id
+    leave_status = leave_record.leave_status
 
     update_log = Leaveupdates(
         updated_leave_name=leave_name,
@@ -1110,6 +1113,7 @@ def edit_approved_leave():
         updated_start_date=date_from,
         updated_end_date=date_to,
         updated_leave_days=leave_days,
+        leave_status=leave_status,
         previous_leave_days=previous_leave_days,
         previous_leave_name=previous_leave_name,
         previous_leave_type=previous_leave_type,
