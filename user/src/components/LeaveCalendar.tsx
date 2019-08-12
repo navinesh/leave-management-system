@@ -1,6 +1,6 @@
 import React from 'react';
 
-import done_all from '../img/done_all.png';
+import NoData from '../img/undraw_no_data_qbuo.svg';
 
 const moment = require('moment');
 
@@ -94,7 +94,7 @@ export default function ApprovedCalendar(props: Props): JSX.Element {
         alignItems: 'center'
       }}
     >
-      <img src={done_all} alt="All done" height="100" width="100" />
+      <img src={NoData} alt="All done" height="60%" width="60%" />
       <h1 className="display-4">You're all caught up.</h1>
     </div>
   );
