@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import gql from 'graphql-tag';
-import { Query, Mutation, ApolloConsumer } from 'react-apollo';
+import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
 import { Redirect } from 'react-router-dom';
 
 import { TokenSuccess, TokenFailure } from './TokenComponents';
@@ -28,68 +28,36 @@ const VERIFY_USER_TOKEN = gql`
   }
 `;
 
-type Props = {
-  verifyToken: Function;
-};
+export default function LeaveApplication(): JSX.Element {
+  const client = useApolloClient();
+  const { data } = useQuery(REQUEST_DATA);
 
-function MainView(props: Props): JSX.Element {
-  const { verifyToken } = props;
-  useEffect(
-    function(): void {
-      verifyToken();
-    },
-    [verifyToken]
-  );
+  let userToken = data.auth_token
+    ? data.auth_token
+    : localStorage.getItem('auth_token');
 
-  useInterval(function(): void {
-    props.verifyToken();
+  const [verifyToken] = useMutation(VERIFY_USER_TOKEN, {
+    variables: { userToken: userToken },
+    onCompleted(data: any) {
+      if (data.verifyUserToken) {
+        TokenSuccess(data, client);
+      } else {
+        TokenFailure(client);
+      }
+    }
+  });
+
+  useEffect((): void => {
+    verifyToken();
+  }, [verifyToken]);
+
+  useInterval((): void => {
+    verifyToken();
   }, 600000);
 
-  return (
-    <Query query={REQUEST_DATA}>
-      {({ data }: any) => {
-        return data.isAuthenticated ? (
-          <Application id={data.id} />
-        ) : (
-          <Redirect to="/login" />
-        );
-      }}
-    </Query>
-  );
-}
-
-export default function LeaveApplication(): JSX.Element {
-  return (
-    <Query query={REQUEST_DATA}>
-      {({ data }: any) => {
-        let userToken = data.auth_token
-          ? data.auth_token
-          : localStorage.getItem('auth_token');
-
-        return data.isAuthenticated ? (
-          <ApolloConsumer>
-            {client => (
-              <Mutation
-                mutation={VERIFY_USER_TOKEN}
-                variables={{ userToken: userToken }}
-                onCompleted={(data: any) => {
-                  if (data.verifyUserToken) {
-                    TokenSuccess(data, client);
-                  } else {
-                    TokenFailure(client);
-                  }
-                }}
-              >
-                {(verifyToken: any) => {
-                  return <MainView verifyToken={verifyToken} />;
-                }}
-              </Mutation>
-            )}
-          </ApolloConsumer>
-        ) : (
-          <Redirect to="/login" />
-        );
-      }}
-    </Query>
+  return data.isAuthenticated ? (
+    <Application id={data.id} />
+  ) : (
+    <Redirect to="/login" />
   );
 }
