@@ -1,6 +1,6 @@
 import React from 'react';
 import gql from 'graphql-tag';
-import { Query } from 'react-apollo';
+import { useQuery } from '@apollo/react-hooks';
 import { Redirect } from 'react-router-dom';
 
 import UserChange from '../components/ChangePassword';
@@ -13,15 +13,11 @@ const IS_AUTHENTICATED = gql`
 `;
 
 export default function UserChangePassword(): JSX.Element {
-  return (
-    <Query query={IS_AUTHENTICATED}>
-      {({ data }: any) => {
-        return data.isAuthenticated ? (
-          <UserChange auth_token={data.auth_token} />
-        ) : (
-          <Redirect to="/" />
-        );
-      }}
-    </Query>
+  const { data } = useQuery(IS_AUTHENTICATED);
+
+  return data.isAuthenticated ? (
+    <UserChange auth_token={data.auth_token} />
+  ) : (
+    <Redirect to="/" />
   );
 }
