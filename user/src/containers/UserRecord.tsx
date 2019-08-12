@@ -1,6 +1,6 @@
 import React from 'react';
 import gql from 'graphql-tag';
-import { Query } from 'react-apollo';
+import { useQuery } from '@apollo/react-hooks';
 
 import UserRecord from '../components/UserRecord';
 
@@ -11,12 +11,9 @@ const GET_ID = gql`
 `;
 
 export default function UserRecords(): JSX.Element {
-  return (
-    <Query query={GET_ID}>
-      {({ data }: any) => {
-        let id = data.id ? data.id : localStorage.getItem('id');
-        return <UserRecord id={id} />;
-      }}
-    </Query>
-  );
+  const { data } = useQuery(GET_ID);
+
+  let id = data.id ? data.id : localStorage.getItem('id');
+
+  return <UserRecord id={id} />;
 }
