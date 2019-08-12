@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import gql from 'graphql-tag';
-import { Mutation, ApolloConsumer } from 'react-apollo';
+import { useMutation } from '@apollo/react-hooks';
 import { ApolloError } from 'apollo-client';
 
 const AUTHENTICATE_USER = gql`
@@ -29,12 +29,9 @@ function LoginForm(props: FormProps): JSX.Element {
   const [password, setPassword] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
 
-  useEffect(
-    function(): void {
-      setErrorMessage(props.sessionError);
-    },
-    [props.sessionError]
-  );
+  useEffect((): void => {
+    setErrorMessage(props.sessionError);
+  }, [props.sessionError]);
 
   function handleEmailChange({
     target
@@ -138,39 +135,27 @@ interface Props {
 }
 
 export default function Login(props: Props): JSX.Element {
+  const [login, { loading, error }] = useMutation(AUTHENTICATE_USER, {
+    update(cache: any, data: any) {
+      localStorage.setItem('id', data.data.authenticateUser.User.id);
+      localStorage.setItem('auth_token', data.data.authenticateUser.token);
+      cache.writeData({
+        data: {
+          isAuthenticated: true,
+          id: data.data.authenticateUser.User.id,
+          auth_token: data.data.authenticateUser.token,
+          sessionError: ''
+        }
+      });
+    }
+  });
+
   return (
-    <ApolloConsumer>
-      {() => (
-        <Mutation
-          mutation={AUTHENTICATE_USER}
-          update={(cache: any, data: any) => {
-            localStorage.setItem('id', data.data.authenticateUser.User.id);
-            localStorage.setItem(
-              'auth_token',
-              data.data.authenticateUser.token
-            );
-            cache.writeData({
-              data: {
-                isAuthenticated: true,
-                id: data.data.authenticateUser.User.id,
-                auth_token: data.data.authenticateUser.token,
-                sessionError: ''
-              }
-            });
-          }}
-        >
-          {(login: any, { loading, error }: any) => {
-            return (
-              <LoginForm
-                login={login}
-                loading={loading}
-                error={error}
-                sessionError={props.sessionError}
-              />
-            );
-          }}
-        </Mutation>
-      )}
-    </ApolloConsumer>
+    <LoginForm
+      login={login}
+      loading={loading}
+      error={error}
+      sessionError={props.sessionError}
+    />
   );
 }
