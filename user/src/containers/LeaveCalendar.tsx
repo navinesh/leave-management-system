@@ -1,9 +1,11 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
 import gql from 'graphql-tag';
-import { Query } from 'react-apollo';
+import { useQuery } from '@apollo/react-hooks';
 
 import ApprovedCalendar from '../components/LeaveCalendar';
+
+import Error from '../img/error.gif';
 
 const IS_AUTHENTICATED = gql`
   query IsAuthenticated {
@@ -11,7 +13,7 @@ const IS_AUTHENTICATED = gql`
   }
 `;
 
-const LeaveRecord = gql`
+const LEAVE_RECORD = gql`
   {
     findLeaveRecord(leaveStatus: "approved", isArchived: "false") {
       id
@@ -28,44 +30,44 @@ const LeaveRecord = gql`
 `;
 
 export default function LeaveCalendar(): JSX.Element {
-  return (
-    <Query query={IS_AUTHENTICATED}>
-      {({ data }: any) => {
-        return data.isAuthenticated ? (
-          <Query query={LeaveRecord} pollInterval={60000}>
-            {({ loading, error, data }: any) => {
-              if (loading) {
-                return (
-                  <div className="text-center" style={{ marginTop: '80px' }}>
-                    <div className="spinner-border text-primary" role="status">
-                      <span className="sr-only">Loading...</span>
-                    </div>
-                  </div>
-                );
-              }
+  const {
+    data: { isAuthenticated }
+  }: any = useQuery(IS_AUTHENTICATED);
 
-              if (error) {
-                console.log(error.message);
-                return (
-                  <div className="col mx-auto">
-                    <div className="text-center">
-                      <p className="display-4">Something went wrong!</p>
-                    </div>
-                  </div>
-                );
-              }
+  const { loading, error, data } = useQuery(LEAVE_RECORD, {
+    pollInterval: 60000
+  });
 
-              return (
-                <div className="container">
-                  <ApprovedCalendar data={data} />
-                </div>
-              );
-            }}
-          </Query>
-        ) : (
-          <Redirect to="/" />
-        );
-      }}
-    </Query>
+  if (loading) {
+    return (
+      <div className="container text-center" style={{ paddingTop: '100px' }}>
+        <div className="col-md-8 ml-auto mr-auto">
+          <div className="spinner-border text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    console.log(error.message);
+    return (
+      <div className="col mx-auto">
+        <div className="text-center">
+          <p style={{ fontSize: '42px' }}>Oops!</p>
+          <p style={{ fontSize: '24px' }}>Something went wrong!</p>
+          <img src={Error} alt="Error" />
+        </div>
+      </div>
+    );
+  }
+
+  return isAuthenticated ? (
+    <div className="container">
+      <ApprovedCalendar data={data} />
+    </div>
+  ) : (
+    <Redirect to="/" />
   );
 }
