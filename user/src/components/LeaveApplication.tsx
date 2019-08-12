@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import gql from 'graphql-tag';
-import { Query } from 'react-apollo';
+import { useQuery } from '@apollo/react-hooks';
 
 import 'react-dates/initialize';
 import 'react-dates/lib/css/_datepicker.css';
@@ -669,88 +669,74 @@ interface Props {
 }
 
 export default function Application(props: Props): JSX.Element {
+  const {
+    loading,
+    error,
+    data: { user }
+  }: any = useQuery(USER_DETAIL, {
+    variables: { id: props.id },
+    pollInterval: 60000
+  });
+
+  const {
+    loading: recordLoading,
+    error: recordError,
+    data: { user: userRecord },
+    refetch
+  }: any = useQuery(USER_RECORD, {
+    variables: { id: props.id },
+    pollInterval: 60000
+  });
+
+  const {
+    loading: holidayLoading,
+    error: holidayError,
+    data: { publicHoliday }
+  }: any = useQuery(PUBLIC_HOLIDAY);
+
+  if (loading || recordLoading || holidayLoading) {
+    return (
+      <div className="container text-center" style={{ paddingTop: '80px' }}>
+        <div className="col-md-8 ml-auto mr-auto">
+          <div className="spinner-border text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || recordError || holidayError) {
+    console.log(error, recordError, holidayError);
+    return (
+      <div className="container text-center" style={{ paddingTop: '100px' }}>
+        <div className="col-md-8 ml-auto mr-auto">
+          <p>Something went wrong!</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <Query
-      query={USER_DETAIL}
-      variables={{ id: props.id }}
-      pollInterval={60000}
-    >
-      {({ loading, error, data: { user }, refetch }: any) => (
-        <Query
-          query={USER_RECORD}
-          variables={{ id: props.id }}
-          pollInterval={60000}
-        >
-          {({
-            loading: recordLoading,
-            error: recordError,
-            data: { user: userRecord }
-          }: any) => (
-            <Query query={PUBLIC_HOLIDAY}>
-              {({
-                loading: holidayLoading,
-                error: holidayError,
-                data: { publicHoliday }
-              }: any) => {
-                if (loading || recordLoading || holidayLoading) {
-                  return (
-                    <div
-                      className="container text-center"
-                      style={{ paddingTop: '80px' }}
-                    >
-                      <div className="col-md-8 ml-auto mr-auto">
-                        <div
-                          className="spinner-border text-primary"
-                          role="status"
-                        >
-                          <span className="sr-only">Loading...</span>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                }
-
-                if (error || recordError || holidayError) {
-                  console.log(error, recordError, holidayError);
-                  return (
-                    <div
-                      className="container text-center"
-                      style={{ paddingTop: '100px' }}
-                    >
-                      <div className="col-md-8 ml-auto mr-auto">
-                        <p>Something went wrong!</p>
-                      </div>
-                    </div>
-                  );
-                }
-
-                return (
-                  <div className="container">
-                    <div className="row">
-                      <div className="col-md-12">
-                        <div className="col-md-9 ml-auto mr-auto">
-                          <UserName user_detail={user} />
-                        </div>
-                      </div>
-                      <div className="col-md-3 ml-auto">
-                        <UserRecord user_detail={user} />
-                      </div>
-                      <div className="col-md-6 mr-auto mb-2">
-                        <LeaveApplication
-                          user_detail={user}
-                          user_record={userRecord}
-                          public_holiday={publicHoliday}
-                          refetch={refetch}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                );
-              }}
-            </Query>
-          )}
-        </Query>
-      )}
-    </Query>
+    <div className="container">
+      <div className="row">
+        <div className="col-md-10 ml-auto mr-auto">
+          <UserName user_detail={user} />
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-md-4 ml-auto">
+          <UserRecord user_detail={user} />
+        </div>
+        <div className="col-md-6 mr-auto mb-2">
+          <LeaveApplication
+            user_detail={user}
+            user_record={userRecord}
+            public_holiday={publicHoliday}
+            refetch={refetch}
+          />
+        </div>
+      </div>
+    </div>
   );
 }
