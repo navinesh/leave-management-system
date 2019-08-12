@@ -1,28 +1,26 @@
 import React from 'react';
-import { ApolloConsumer } from 'react-apollo';
-import { Link } from 'react-router-dom';
+import { useApolloClient } from '@apollo/react-hooks';
+import { NavLink } from 'react-router-dom';
 
 function Logout(): JSX.Element {
+  const client = useApolloClient();
+
   return (
-    <ApolloConsumer>
-      {client => (
-        <button
-          onClick={() => {
-            client.writeData({
-              data: {
-                isAuthenticated: false,
-                id: null,
-                auth_token: null
-              }
-            });
-            localStorage.clear();
-          }}
-          className="btn btn-primary ml-2"
-        >
-          Logout
-        </button>
-      )}
-    </ApolloConsumer>
+    <button
+      onClick={() => {
+        client.writeData({
+          data: {
+            isAuthenticated: false,
+            id: null,
+            auth_token: null
+          }
+        });
+        localStorage.clear();
+      }}
+      className="btn btn-sm btn-primary"
+    >
+      Logout
+    </button>
   );
 }
 
@@ -34,9 +32,9 @@ export default function Navs(props: Props): JSX.Element {
   return (
     <nav className="navbar fixed-top navbar-expand-lg">
       <div className="container">
-        <Link className="navbar-brand" to="/">
+        <NavLink className="navbar-brand" to="/">
           Leave Management System
-        </Link>
+        </NavLink>
         <button
           className="navbar-toggler"
           type="button"
@@ -49,21 +47,41 @@ export default function Navs(props: Props): JSX.Element {
           <span className="navbar-toggler-icon" />
         </button>
         {props.isAuthenticated && (
-          <div className="justify-content-end">
-            <div
-              className="collapse navbar-collapse"
-              id="navbarSupportedContent"
-            >
-              <div className="navbar-nav">
-                <Link className="nav-item nav-link" to="/leaveapplication">
-                  Apply for leave
-                </Link>
-                <Link className="nav-item nav-link" to="/leavecalendar">
-                  Leave calendar
-                </Link>
-                <Logout />
-              </div>
+          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <div className="navbar-nav flex-fill justify-content-center">
+              <NavLink
+                className="nav-item nav-link"
+                style={{ color: 'grey' }}
+                activeStyle={{
+                  color: '#007bff'
+                }}
+                exact
+                to="/"
+              >
+                <div className="centered-label">Home</div>
+              </NavLink>
+              <NavLink
+                className="nav-item nav-link ml-4 mr-4"
+                style={{ color: 'grey' }}
+                activeStyle={{
+                  color: '#007bff'
+                }}
+                to="/leaveapplication"
+              >
+                <div className="centered-label">Apply for leave</div>
+              </NavLink>
+              <NavLink
+                className="nav-item nav-link"
+                style={{ color: 'grey' }}
+                activeStyle={{
+                  color: '#007bff'
+                }}
+                to="/leavecalendar"
+              >
+                <div className="centered-label">Calendar</div>
+              </NavLink>
             </div>
+            <Logout />
           </div>
         )}
       </div>
