@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import gql from 'graphql-tag';
-import { Query } from 'react-apollo';
+import { useQuery } from '@apollo/react-hooks';
 
 import NoData from '../img/undraw_no_data_qbuo.svg';
 
@@ -217,59 +217,48 @@ interface Props {
 }
 
 export default function UserRecord(props: Props): JSX.Element {
-  return (
-    <Query
-      query={USER_RECORD}
-      variables={{ id: props.id }}
-      pollInterval={60000}
-    >
-      {({ loading, error, data }: any) => {
-        if (loading) {
-          return (
-            <div
-              className="container text-center"
-              style={{ paddingTop: '80px' }}
-            >
-              <div className="col-md-8 ml-auto mr-auto">
-                <div className="spinner-border text-primary" role="status">
-                  <span className="sr-only">Loading...</span>
-                </div>
-              </div>
-            </div>
-          );
-        }
+  const { loading, error, data } = useQuery(USER_RECORD, {
+    variables: { id: props.id },
+    pollInterval: 60000
+  });
 
-        if (error) {
-          console.log(error.message);
-          return (
-            <div
-              className="container text-center"
-              style={{ paddingTop: '100px' }}
-            >
-              <div className="col-md-8 ml-auto mr-auto">
-                <p>Something went wrong!</p>
-              </div>
-            </div>
-          );
-        }
+  if (loading) {
+    return (
+      <div className="container text-center" style={{ paddingTop: '80px' }}>
+        <div className="col-md-8 ml-auto mr-auto">
+          <div className="spinner-border text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
-        const tabData = [
-          {
-            label: 'Approved',
-            content: <ApprovedRecordList user_record={data.user} />
-          },
-          {
-            label: 'Pending',
-            content: <PendingRecordList user_record={data.user} />
-          },
-          {
-            label: 'Archived',
-            content: <ArchivedRecordList user_record={data.user} />
-          }
-        ];
+  if (error) {
+    console.log(error.message);
+    return (
+      <div className="container text-center" style={{ paddingTop: '100px' }}>
+        <div className="col-md-8 ml-auto mr-auto">
+          <p>Something went wrong!</p>
+        </div>
+      </div>
+    );
+  }
 
-        return <Tabs data={tabData} />;
-      }}
-    </Query>
-  );
+  const tabData = [
+    {
+      label: 'Approved',
+      content: <ApprovedRecordList user_record={data.user} />
+    },
+    {
+      label: 'Pending',
+      content: <PendingRecordList user_record={data.user} />
+    },
+    {
+      label: 'Archived',
+      content: <ArchivedRecordList user_record={data.user} />
+    }
+  ];
+
+  return <Tabs data={tabData} />;
 }
