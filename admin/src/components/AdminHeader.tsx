@@ -1,28 +1,27 @@
 import React from 'react';
-import { ApolloConsumer } from 'react-apollo';
-import { Link } from 'react-router-dom';
+import { useApolloClient } from '@apollo/react-hooks';
+
+import { NavLink } from 'react-router-dom';
 
 function Logout(): JSX.Element {
+  const client = useApolloClient();
+
   return (
-    <ApolloConsumer>
-      {client => (
-        <button
-          onClick={() => {
-            client.writeData({
-              data: {
-                isAuthenticated: false,
-                admin_user: null,
-                admin_token: null
-              }
-            });
-            localStorage.clear();
-          }}
-          className="btn btn-primary ml-1"
-        >
-          Sign out
-        </button>
-      )}
-    </ApolloConsumer>
+    <button
+      onClick={() => {
+        client.writeData({
+          data: {
+            isAuthenticated: false,
+            admin_user: null,
+            admin_token: null
+          }
+        });
+        localStorage.clear();
+      }}
+      className="btn btn-primary ml-1"
+    >
+      Sign out
+    </button>
   );
 }
 
@@ -30,9 +29,9 @@ export default function Header(): JSX.Element {
   return (
     <nav className="navbar fixed-top navbar-expand-lg">
       <div className="container">
-        <Link className="navbar-brand" to="/">
+        <NavLink className="navbar-brand" to="/">
           Leave Management System
-        </Link>
+        </NavLink>
         <button
           className="navbar-toggler"
           type="button"
@@ -47,24 +46,66 @@ export default function Header(): JSX.Element {
         <div className="justify-content-end">
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <div className="navbar-nav">
-              <Link className="nav-item nav-link" to="/approvedleave">
+              <NavLink
+                className="nav-item nav-link"
+                style={{ color: 'grey' }}
+                activeStyle={{
+                  color: '#007bff'
+                }}
+                to="/approvedleave"
+              >
                 Approved
-              </Link>
-              <Link className="nav-item nav-link" to="/staffview">
+              </NavLink>
+              <NavLink
+                className="nav-item nav-link"
+                style={{ color: 'grey' }}
+                activeStyle={{
+                  color: '#007bff'
+                }}
+                to="/staffview"
+              >
                 Staff
-              </Link>
-              <Link className="nav-item nav-link" to="/createuser">
+              </NavLink>
+              <NavLink
+                className="nav-item nav-link"
+                style={{ color: 'grey' }}
+                activeStyle={{
+                  color: '#007bff'
+                }}
+                to="/createuser"
+              >
                 Create user
-              </Link>
-              <Link className="nav-item nav-link" to="/leavereport">
+              </NavLink>
+              <NavLink
+                className="nav-item nav-link"
+                style={{ color: 'grey' }}
+                activeStyle={{
+                  color: '#007bff'
+                }}
+                to="/leavereport"
+              >
                 Reports
-              </Link>
-              <Link className="nav-item nav-link" to="/sicksheetrecord">
+              </NavLink>
+              <NavLink
+                className="nav-item nav-link"
+                style={{ color: 'grey' }}
+                activeStyle={{
+                  color: '#007bff'
+                }}
+                to="/sicksheetrecord"
+              >
                 Sick sheet
-              </Link>
-              <Link className="nav-item nav-link" to="/publicholiday">
+              </NavLink>
+              <NavLink
+                className="nav-item nav-link"
+                style={{ color: 'grey' }}
+                activeStyle={{
+                  color: '#007bff'
+                }}
+                to="/publicholiday"
+              >
                 Public Holidays
-              </Link>
+              </NavLink>
               <Logout />
             </div>
           </div>
