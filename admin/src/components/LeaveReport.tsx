@@ -1,6 +1,6 @@
 import React from 'react';
 import gql from 'graphql-tag';
-import { Mutation } from 'react-apollo';
+import { useMutation } from '@apollo/react-hooks';
 
 import { CSVLink } from 'react-csv';
 
@@ -22,36 +22,30 @@ interface ArchivedRecordProps {
 }
 
 function UnarchiveLeaveRecord(props: ArchivedRecordProps): JSX.Element {
+  const [unarchiveLeaverecord, { loading, error }] = useMutation(
+    UNARCHIVE_RECORD,
+    {
+      variables: { id: props.id },
+      refetchQueries: [{ query: props.ARCHIVED_RECORD }]
+    }
+  );
+
+  if (loading) {
+    return <span className="ml-2 font-italic text-primary">Loading...</span>;
+  }
+
+  if (error) {
+    console.log(error);
+    return <span className="ml-2 font-italic text-warning">Error...</span>;
+  }
+
   return (
-    <Mutation
-      mutation={UNARCHIVE_RECORD}
-      variables={{ id: props.id }}
-      refetchQueries={[{ query: props.ARCHIVED_RECORD }]}
+    <button
+      className="btn btn-link btn-sm text-primary"
+      onClick={() => unarchiveLeaverecord()}
     >
-      {(unarchiveLeaverecord: any, { loading, error }: any) => {
-        if (loading) {
-          return (
-            <span className="ml-2 font-italic text-primary">Loading...</span>
-          );
-        }
-
-        if (error) {
-          console.log(error);
-          return (
-            <span className="ml-2 font-italic text-warning">Error...</span>
-          );
-        }
-
-        return (
-          <button
-            className="btn btn-link btn-sm text-primary"
-            onClick={() => unarchiveLeaverecord()}
-          >
-            Unarchive
-          </button>
-        );
-      }}
-    </Mutation>
+      Unarchive
+    </button>
   );
 }
 
