@@ -5,7 +5,7 @@ import * as serviceWorker from './serviceWorker';
 import { ApolloClient } from 'apollo-client';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HttpLink } from 'apollo-link-http';
-import { Query, ApolloProvider } from 'react-apollo';
+import { useQuery, ApolloProvider } from '@apollo/react-hooks';
 import gql from 'graphql-tag';
 import { onError } from 'apollo-link-error';
 import { ApolloLink } from 'apollo-link';
@@ -81,25 +81,23 @@ const IS_AUTHENTICATED = gql`
 `;
 
 function PrivateRoute({ component, ...rest }: any): JSX.Element {
+  const { data } = useQuery(IS_AUTHENTICATED);
+
   return (
     <Route
       {...rest}
-      render={props => (
-        <Query query={IS_AUTHENTICATED}>
-          {({ data }: any) => {
-            return data.isAuthenticated ? (
-              React.createElement(component, props)
-            ) : (
-              <Redirect
-                to={{
-                  pathname: '/login',
-                  state: { from: props.location }
-                }}
-              />
-            );
-          }}
-        </Query>
-      )}
+      render={props => {
+        return data.isAuthenticated ? (
+          React.createElement(component, props)
+        ) : (
+          <Redirect
+            to={{
+              pathname: '/login',
+              state: { from: props.location }
+            }}
+          />
+        );
+      }}
     />
   );
 }
