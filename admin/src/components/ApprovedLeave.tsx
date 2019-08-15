@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import gql from 'graphql-tag';
-import { Mutation } from 'react-apollo';
+import { useMutation } from '@apollo/react-hooks';
 
 import axios from 'axios';
 
@@ -756,36 +756,31 @@ interface ArchivedRecordProps {
 }
 
 function ArchiveLeaveRecord(props: ArchivedRecordProps): JSX.Element {
+  const [archiveLeaverecord, { loading, error }] = useMutation(
+    ARCHIVED_RECORD,
+    {
+      variables: {
+        id: props.id
+      },
+      refetchQueries: [{ query: props.APPROVED_RECORD }]
+    }
+  );
+  if (loading) {
+    return <span className="ml-2 font-italic text-primary">Loading...</span>;
+  }
+
+  if (error) {
+    console.log(error);
+    return <span className="ml-2 font-italic text-warning">Error...</span>;
+  }
+
   return (
-    <Mutation
-      mutation={ARCHIVED_RECORD}
-      variables={{ id: props.id }}
-      refetchQueries={[{ query: props.APPROVED_RECORD }]}
+    <button
+      className="btn btn-link btn-sm text-primary"
+      onClick={() => archiveLeaverecord()}
     >
-      {(archiveLeaverecord: any, { loading, error }: any) => {
-        if (loading) {
-          return (
-            <span className="ml-2 font-italic text-primary">Loading...</span>
-          );
-        }
-
-        if (error) {
-          console.log(error);
-          return (
-            <span className="ml-2 font-italic text-warning">Error...</span>
-          );
-        }
-
-        return (
-          <button
-            className="btn btn-link btn-sm text-primary"
-            onClick={() => archiveLeaverecord()}
-          >
-            Archive
-          </button>
-        );
-      }}
-    </Mutation>
+      Archive
+    </button>
   );
 }
 
