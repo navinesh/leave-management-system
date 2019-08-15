@@ -1,6 +1,6 @@
 import React from 'react';
 import gql from 'graphql-tag';
-import { Query } from 'react-apollo';
+import { useQuery } from '@apollo/react-hooks';
 
 import Header from '../components/AdminHeader';
 
@@ -11,11 +11,7 @@ const IS_AUTHENTICATED = gql`
 `;
 
 export default function AdminHeader(): JSX.Element {
-  return (
-    <Query query={IS_AUTHENTICATED}>
-      {({ data }: any) => {
-        return data.isAuthenticated && <Header />;
-      }}
-    </Query>
-  );
+  const { data } = useQuery(IS_AUTHENTICATED);
+
+  return data.isAuthenticated && <Header />;
 }
