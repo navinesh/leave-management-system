@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import gql from 'graphql-tag';
-import { Query, Mutation, ApolloConsumer } from 'react-apollo';
+import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
 import { Redirect } from 'react-router-dom';
 
 import { TokenSuccess, TokenFailure } from './TokenComponents';
@@ -25,54 +25,28 @@ const VERIFY_ADMIN_TOKEN = gql`
   }
 `;
 
-type Props = {
-  verifyAdminToken: Function;
-};
-
-function MainView(props: Props): JSX.Element {
-  const { verifyAdminToken } = props;
-  useEffect(
-    function(): void {
-      verifyAdminToken();
-    },
-    [verifyAdminToken]
-  );
-
-  return <CreateUserForm />;
-}
-
 export default function CreateUser(): JSX.Element {
-  return (
-    <Query query={IS_AUTHENTICATED}>
-      {({ data }: any) => {
-        let adminToken = data.admin_token
-          ? data.admin_token
-          : localStorage.getItem('admin_token');
+  const client = useApolloClient();
 
-        return data.isAuthenticated ? (
-          <ApolloConsumer>
-            {client => (
-              <Mutation
-                mutation={VERIFY_ADMIN_TOKEN}
-                variables={{ adminToken: adminToken }}
-                onCompleted={(data: any) => {
-                  if (data.verifyAdminToken) {
-                    TokenSuccess(data, client);
-                  } else {
-                    TokenFailure(client);
-                  }
-                }}
-              >
-                {(verifyAdminToken: any) => {
-                  return <MainView verifyAdminToken={verifyAdminToken} />;
-                }}
-              </Mutation>
-            )}
-          </ApolloConsumer>
-        ) : (
-          <Redirect to="/login" />
-        );
-      }}
-    </Query>
-  );
+  const { data } = useQuery(IS_AUTHENTICATED);
+  let adminToken = data.admin_token
+    ? data.admin_token
+    : localStorage.getItem('admin_token');
+
+  const [verifyAdminToken] = useMutation(VERIFY_ADMIN_TOKEN, {
+    variables: { adminToken: adminToken },
+    onCompleted(data) {
+      if (data.verifyAdminToken) {
+        TokenSuccess(data, client);
+      } else {
+        TokenFailure(client);
+      }
+    }
+  });
+
+  useEffect((): void => {
+    verifyAdminToken();
+  }, [verifyAdminToken]);
+
+  return data.isAuthenticated ? <CreateUserForm /> : <Redirect to="/login" />;
 }
