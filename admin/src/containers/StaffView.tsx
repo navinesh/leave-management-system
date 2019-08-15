@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import gql from 'graphql-tag';
-import { Query, Mutation, ApolloConsumer } from 'react-apollo';
+import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
 import { Redirect } from 'react-router-dom';
 
 import { TokenSuccess, TokenFailure } from './TokenComponents';
@@ -74,18 +74,28 @@ function Tabs(props: TabsProps): JSX.Element {
   );
 }
 
-type Props = {
-  verifyAdminToken: Function;
-};
+export default function StaffView(): JSX.Element {
+  const client = useApolloClient();
 
-function MainView(props: Props): JSX.Element {
-  const { verifyAdminToken } = props;
-  useEffect(
-    function(): void {
-      verifyAdminToken();
-    },
-    [verifyAdminToken]
-  );
+  const { data } = useQuery(IS_AUTHENTICATED);
+  let adminToken = data.admin_token
+    ? data.admin_token
+    : localStorage.getItem('admin_token');
+
+  const [verifyAdminToken] = useMutation(VERIFY_ADMIN_TOKEN, {
+    variables: { adminToken: adminToken },
+    onCompleted(data) {
+      if (data.verifyAdminToken) {
+        TokenSuccess(data, client);
+      } else {
+        TokenFailure(client);
+      }
+    }
+  });
+
+  useEffect((): void => {
+    verifyAdminToken();
+  }, [verifyAdminToken]);
 
   const tabData = [
     {
@@ -98,41 +108,9 @@ function MainView(props: Props): JSX.Element {
     }
   ];
 
-  return <Tabs data={tabData} />;
-}
-
-export default function StaffView(): JSX.Element {
-  return (
-    <Query query={IS_AUTHENTICATED}>
-      {({ data }: any) => {
-        let adminToken = data.admin_token
-          ? data.admin_token
-          : localStorage.getItem('admin_token');
-
-        return data.isAuthenticated ? (
-          <ApolloConsumer>
-            {client => (
-              <Mutation
-                mutation={VERIFY_ADMIN_TOKEN}
-                variables={{ adminToken: adminToken }}
-                onCompleted={(data: any) => {
-                  if (data.verifyAdminToken) {
-                    TokenSuccess(data, client);
-                  } else {
-                    TokenFailure(client);
-                  }
-                }}
-              >
-                {(verifyAdminToken: any) => {
-                  return <MainView verifyAdminToken={verifyAdminToken} />;
-                }}
-              </Mutation>
-            )}
-          </ApolloConsumer>
-        ) : (
-          <Redirect to="/login" />
-        );
-      }}
-    </Query>
+  return data.isAuthenticated ? (
+    <Tabs data={tabData} />
+  ) : (
+    <Redirect to="/login" />
   );
 }
