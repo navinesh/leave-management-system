@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import gql from 'graphql-tag';
-import { Mutation } from 'react-apollo';
+import { useMutation } from '@apollo/react-hooks';
 
 const moment = require('moment');
 
@@ -74,39 +74,31 @@ interface UnArchiveProps {
 }
 
 function UnArchive(props: UnArchiveProps): JSX.Element {
+  const [unArchiveUser, { loading, error, data }] = useMutation(
+    UNARCHIVE_USER,
+    {
+      variables: { id: props.id },
+      refetchQueries: [{ query: ACTIVE_USERS }]
+    }
+  );
+  if (loading) {
+    return <p className="font-italic text-primary mr-3">Loading...</p>;
+  }
+
+  if (error) {
+    return <p className="font-italic text-warning mr-3">Error...</p>;
+  }
+
+  if (data) {
+    return (
+      <p className="font-italic text-success mr-3">User has been unarchived!</p>
+    );
+  }
+
   return (
-    <Mutation
-      mutation={UNARCHIVE_USER}
-      variables={{ id: props.id }}
-      refetchQueries={[{ query: ACTIVE_USERS }]}
-    >
-      {(unArchiveUser: any, { loading, error, data }: any) => {
-        if (loading) {
-          return <p className="font-italic text-primary mr-3">Loading...</p>;
-        }
-
-        if (error) {
-          return <p className="font-italic text-warning mr-3">Error...</p>;
-        }
-
-        if (data) {
-          return (
-            <p className="font-italic text-success mr-3">
-              User has been unarchived!
-            </p>
-          );
-        }
-
-        return (
-          <button
-            onClick={() => unArchiveUser()}
-            className="btn btn-primary mr-3"
-          >
-            Yes
-          </button>
-        );
-      }}
-    </Mutation>
+    <button onClick={() => unArchiveUser()} className="btn btn-primary mr-3">
+      Yes
+    </button>
   );
 }
 
