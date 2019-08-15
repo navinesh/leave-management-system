@@ -1,6 +1,6 @@
 import React from 'react';
 import gql from 'graphql-tag';
-import { Query } from 'react-apollo';
+import { useQuery } from '@apollo/react-hooks';
 import { Redirect } from 'react-router-dom';
 
 import AdminResetPassword from '../components/AdminResetPassword';
@@ -12,17 +12,13 @@ const IS_AUTHENTICATED = gql`
 `;
 
 export default function ResetPassword(): JSX.Element {
-  return (
+  const { data } = useQuery(IS_AUTHENTICATED);
+
+  return !data.isAuthenticated ? (
     <div className="container">
-      <Query query={IS_AUTHENTICATED}>
-        {({ data }: any) => {
-          return !data.isAuthenticated ? (
-            <AdminResetPassword />
-          ) : (
-            <Redirect to="/" />
-          );
-        }}
-      </Query>
+      <AdminResetPassword />
     </div>
+  ) : (
+    <Redirect to="/" />
   );
 }
