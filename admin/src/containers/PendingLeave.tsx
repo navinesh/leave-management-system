@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import gql from 'graphql-tag';
-import { Query, Mutation, ApolloConsumer } from 'react-apollo';
+import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
 import { Redirect } from 'react-router-dom';
 
 import { TokenSuccess, TokenFailure } from './TokenComponents';
@@ -62,100 +62,76 @@ const PUBLIC_HOLIDAY = gql`
   }
 `;
 
-type Props = {
-  verifyAdminToken: Function;
-};
-
-function MainView(props: Props): JSX.Element {
-  const { verifyAdminToken } = props;
-  useEffect(
-    function(): void {
-      verifyAdminToken();
-    },
-    [verifyAdminToken]
-  );
-
-  return (
-    <div className="container">
-      <Query query={LEAVE_RECORD} pollInterval={60000}>
-        {({
-          loading,
-          error,
-          data: { findLeaveRecord: pending_items },
-          refetch
-        }: any) => (
-          <Query query={PUBLIC_HOLIDAY}>
-            {({
-              loading: holidayLoading,
-              error: holidayError,
-              data: { publicHoliday }
-            }: any) => {
-              if (loading || holidayLoading) {
-                return (
-                  <div className="text-center" style={{ marginTop: '80px' }}>
-                    <div className="spinner-border text-primary" role="status">
-                      <span className="sr-only">Loading...</span>
-                    </div>
-                  </div>
-                );
-              }
-
-              if (error || holidayError) {
-                console.log(error || holidayError);
-                return (
-                  <div className="text-center">
-                    <p>Something went wrong!</p>
-                  </div>
-                );
-              }
-
-              return (
-                <PendingLeaveList
-                  pending_items={pending_items}
-                  public_holiday={publicHoliday}
-                  refetch={refetch}
-                />
-              );
-            }}
-          </Query>
-        )}
-      </Query>
-    </div>
-  );
-}
-
 export default function PendingLeave(): JSX.Element {
-  return (
-    <Query query={IS_AUTHENTICATED}>
-      {({ data }: any) => {
-        let adminToken = data.admin_token
-          ? data.admin_token
-          : localStorage.getItem('admin_token');
+  const client = useApolloClient();
 
-        return data.isAuthenticated ? (
-          <ApolloConsumer>
-            {client => (
-              <Mutation
-                mutation={VERIFY_ADMIN_TOKEN}
-                variables={{ adminToken: adminToken }}
-                onCompleted={(data: any) => {
-                  if (data.verifyAdminToken) {
-                    TokenSuccess(data, client);
-                  } else {
-                    TokenFailure(client);
-                  }
-                }}
-              >
-                {(verifyAdminToken: any) => {
-                  return <MainView verifyAdminToken={verifyAdminToken} />;
-                }}
-              </Mutation>
-            )}
-          </ApolloConsumer>
-        ) : (
-          <Redirect to="/login" />
-        );
-      }}
-    </Query>
+  const { data } = useQuery(IS_AUTHENTICATED);
+  let adminToken = data.admin_token
+    ? data.admin_token
+    : localStorage.getItem('admin_token');
+
+  const {
+    loading,
+    error,
+    data: { findLeaveRecord: pending_items },
+    refetch
+  }: any = useQuery(LEAVE_RECORD, {
+    pollInterval: 60000
+  });
+
+  const {
+    loading: holidayLoading,
+    error: holidayError,
+    data: { publicHoliday }
+  }: any = useQuery(PUBLIC_HOLIDAY);
+
+  const [verifyAdminToken] = useMutation(VERIFY_ADMIN_TOKEN, {
+    variables: { adminToken: adminToken },
+    onCompleted(data) {
+      if (data.verifyAdminToken) {
+        TokenSuccess(data, client);
+      } else {
+        TokenFailure(client);
+      }
+    }
+  });
+
+  useEffect((): void => {
+    verifyAdminToken();
+  }, [verifyAdminToken]);
+
+  if (loading || holidayLoading) {
+    return (
+      <div className="container">
+        <div className="text-center" style={{ marginTop: '80px' }}>
+          <div className="spinner-border text-primary" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error || holidayError) {
+    console.log(error || holidayError);
+    return (
+      <div className="container">
+        <div className="text-center">
+          <p>Something went wrong!</p>
+        </div>
+      </div>
+    );
+  }
+
+  return data.isAuthenticated ? (
+    <div className="container">
+      <PendingLeaveList
+        pending_items={pending_items}
+        public_holiday={publicHoliday}
+        refetch={refetch}
+      />
+    </div>
+  ) : (
+    <Redirect to="/login" />
   );
 }
