@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import gql from 'graphql-tag';
-import { Query, Mutation, ApolloConsumer } from 'react-apollo';
+import { useQuery, useMutation, useApolloClient } from '@apollo/react-hooks';
 import { Redirect } from 'react-router-dom';
 
 import { TokenSuccess, TokenFailure } from './TokenComponents';
@@ -254,340 +254,326 @@ export function Tabs(props: TabsProps): JSX.Element {
 
   return (
     <div className="container">
-      <nav className="nav justify-content-center">{renderTabs()}</nav>
+      <nav className="nav">{renderTabs()}</nav>
       <div className="mt-1">{renderPanel()}</div>
     </div>
   );
 }
 
-type Props = {
-  verifyAdminToken: Function;
-};
+function Pending(): JSX.Element {
+  const {
+    loading: pendingLoading,
+    error: pendingError,
+    data: { findLeaveRecord: pending_record }
+  }: any = useQuery(PENDING_RECORD, {
+    pollInterval: 60000
+  });
 
-function LeaveReportList(props: Props): JSX.Element {
-  const { verifyAdminToken } = props;
-  useEffect(
-    function(): void {
-      verifyAdminToken();
-    },
-    [verifyAdminToken]
+  if (pendingLoading) {
+    return (
+      <div className="text-center" style={{ marginTop: '80px' }}>
+        <div className="spinner-border text-primary" role="status">
+          <span className="sr-only">Loading...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (pendingError) {
+    console.log(pendingError);
+    return (
+      <div className="text-center">
+        <p>Something went wrong!</p>
+      </div>
+    );
+  }
+
+  return <PendingLeaveReportList pending_record={pending_record} />;
+}
+
+function Approved(): JSX.Element {
+  const {
+    loading: approvedLoading,
+    error: approvedError,
+    data: { findLeaveRecord: approved_record }
+  }: any = useQuery(APPROVED_RECORD, {
+    pollInterval: 60000
+  });
+
+  if (approvedLoading) {
+    return (
+      <div className="text-center" style={{ marginTop: '80px' }}>
+        <div className="spinner-border text-primary" role="status">
+          <span className="sr-only">Loading...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (approvedError) {
+    console.log(approvedError);
+    return (
+      <div className="text-center">
+        <p>Something went wrong!</p>
+      </div>
+    );
+  }
+
+  return <ApprovedLeaveReportList approved_record={approved_record} />;
+}
+
+function Cancelled(): JSX.Element {
+  const {
+    loading: cancelledLoading,
+    error: cancelledError,
+    data: { findLeaveRecord: cancelled_record }
+  }: any = useQuery(CANCELLED_RECORD, {
+    pollInterval: 60000
+  });
+
+  if (cancelledLoading) {
+    return (
+      <div className="text-center" style={{ marginTop: '80px' }}>
+        <div className="spinner-border text-primary" role="status">
+          <span className="sr-only">Loading...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (cancelledError) {
+    console.log(cancelledError);
+    return (
+      <div className="text-center">
+        <p>Something went wrong!</p>
+      </div>
+    );
+  }
+
+  return <CancelledLeaveReportList cancelled_record={cancelled_record} />;
+}
+
+function Declined(): JSX.Element {
+  const {
+    loading: declinedLoading,
+    error: declinedError,
+    data: { findLeaveRecord: declined_record }
+  }: any = useQuery(DECLINED_RECORD, {
+    pollInterval: 60000
+  });
+
+  if (declinedLoading) {
+    return (
+      <div className="text-center" style={{ marginTop: '80px' }}>
+        <div className="spinner-border text-primary" role="status">
+          <span className="sr-only">Loading...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (declinedError) {
+    console.log(declinedError);
+    return (
+      <div className="text-center">
+        <p>Something went wrong!</p>
+      </div>
+    );
+  }
+
+  return <DeclinedLeaveReportList declined_record={declined_record} />;
+}
+
+function Archived(): JSX.Element {
+  const {
+    loading: archivedLoading,
+    error: archivedError,
+    data: { findLeaveRecord: archived_record }
+  }: any = useQuery(ARCHIVED_RECORD, {
+    pollInterval: 60000
+  });
+
+  if (archivedLoading) {
+    return (
+      <div className="text-center" style={{ marginTop: '80px' }}>
+        <div className="spinner-border text-primary" role="status">
+          <span className="sr-only">Loading...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (archivedError) {
+    console.log(archivedError);
+    return (
+      <div className="text-center">
+        <p>Something went wrong!</p>
+      </div>
+    );
+  }
+
+  return (
+    <ArchivedLeaveReportList
+      archived_record={archived_record}
+      ARCHIVED_RECORDS={ARCHIVED_RECORD}
+    />
   );
+}
+
+function Userupdates(): JSX.Element {
+  const {
+    loading: userLoading,
+    error: userError,
+    data: { findUserUpdates: user_updates }
+  }: any = useQuery(USER_UPDATES_RECORD, {
+    pollInterval: 60000
+  });
+
+  if (userLoading) {
+    return (
+      <div className="text-center" style={{ marginTop: '80px' }}>
+        <div className="spinner-border text-primary" role="status">
+          <span className="sr-only">Loading...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (userError) {
+    console.log(userError);
+    return (
+      <div className="text-center">
+        <p>Something went wrong!</p>
+      </div>
+    );
+  }
+
+  return <UserUpdatesReportList user_updates={user_updates} />;
+}
+
+function Leaveupdates(): JSX.Element {
+  const {
+    loading: leaveLoading,
+    error: leaveError,
+    data: { findLeaveUpdates: leave_updates }
+  }: any = useQuery(LEAVE_UPDATES_RECORD, {
+    pollInterval: 60000
+  });
+
+  if (leaveLoading) {
+    return (
+      <div className="text-center" style={{ marginTop: '80px' }}>
+        <div className="spinner-border text-primary" role="status">
+          <span className="sr-only">Loading...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (leaveError) {
+    console.log(leaveError);
+    return (
+      <div className="text-center">
+        <p>Something went wrong!</p>
+      </div>
+    );
+  }
+
+  return <LeaveUpdatesReportList leave_updates={leave_updates} />;
+}
+
+function Userrecord(): JSX.Element {
+  const {
+    loading: activeUsersLoading,
+    error: activeUsersError,
+    data: { findUsers: staff_record }
+  }: any = useQuery(ACTIVE_USERS, {
+    pollInterval: 60000
+  });
+
+  if (activeUsersLoading) {
+    return (
+      <div className="text-center" style={{ marginTop: '80px' }}>
+        <div className="spinner-border text-primary" role="status">
+          <span className="sr-only">Loading...</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (activeUsersError) {
+    console.log(activeUsersError);
+    return (
+      <div className="text-center">
+        <p>Something went wrong!</p>
+      </div>
+    );
+  }
+
+  return <StaffRecordList staff_record={staff_record} />;
+}
+
+export default function LeaveReport(): JSX.Element {
+  const client = useApolloClient();
+
+  const { data } = useQuery(IS_AUTHENTICATED);
+  let adminToken = data.admin_token
+    ? data.admin_token
+    : localStorage.getItem('admin_token');
+
+  const [verifyAdminToken] = useMutation(VERIFY_ADMIN_TOKEN, {
+    variables: { adminToken: adminToken },
+    onCompleted(data) {
+      if (data.verifyAdminToken) {
+        TokenSuccess(data, client);
+      } else {
+        TokenFailure(client);
+      }
+    }
+  });
+
+  useEffect((): void => {
+    verifyAdminToken();
+  }, [verifyAdminToken]);
 
   const tabData = [
     {
       label: 'Pending',
-      content: (
-        <Query query={PENDING_RECORD} pollInterval={60000}>
-          {({
-            loading: pendingLoading,
-            error: pendingError,
-            data: { findLeaveRecord: pending_record }
-          }: any) => {
-            if (pendingLoading) {
-              return (
-                <div className="text-center" style={{ marginTop: '80px' }}>
-                  <div className="spinner-border text-primary" role="status">
-                    <span className="sr-only">Loading...</span>
-                  </div>
-                </div>
-              );
-            }
-
-            if (pendingError) {
-              console.log(pendingError);
-              return (
-                <div className="text-center">
-                  <p>Something went wrong!</p>
-                </div>
-              );
-            }
-
-            return <PendingLeaveReportList pending_record={pending_record} />;
-          }}
-        </Query>
-      )
+      content: <Pending />
     },
     {
       label: 'Approved',
-      content: (
-        <Query query={APPROVED_RECORD} pollInterval={60000}>
-          {({
-            loading: approvedLoading,
-            error: approvedError,
-            data: { findLeaveRecord: approved_record }
-          }: any) => {
-            if (approvedLoading) {
-              return (
-                <div className="text-center" style={{ marginTop: '80px' }}>
-                  <div className="spinner-border text-primary" role="status">
-                    <span className="sr-only">Loading...</span>
-                  </div>
-                </div>
-              );
-            }
-
-            if (approvedError) {
-              console.log(approvedError);
-              return (
-                <div className="text-center">
-                  <p>Something went wrong!</p>
-                </div>
-              );
-            }
-
-            return (
-              <ApprovedLeaveReportList approved_record={approved_record} />
-            );
-          }}
-        </Query>
-      )
+      content: <Approved />
     },
     {
       label: 'Cancelled',
-      content: (
-        <Query query={CANCELLED_RECORD} pollInterval={60000}>
-          {({
-            loading: cancelledLoading,
-            error: cancelledError,
-            data: { findLeaveRecord: cancelled_record }
-          }: any) => {
-            if (cancelledLoading) {
-              return (
-                <div className="text-center" style={{ marginTop: '80px' }}>
-                  <div className="spinner-border text-primary" role="status">
-                    <span className="sr-only">Loading...</span>
-                  </div>
-                </div>
-              );
-            }
-
-            if (cancelledError) {
-              console.log(cancelledError);
-              return (
-                <div className="text-center">
-                  <p>Something went wrong!</p>
-                </div>
-              );
-            }
-
-            return (
-              <CancelledLeaveReportList cancelled_record={cancelled_record} />
-            );
-          }}
-        </Query>
-      )
+      content: <Cancelled />
     },
     {
       label: 'Declined',
-      content: (
-        <Query query={DECLINED_RECORD} pollInterval={60000}>
-          {({
-            loading: declinedLoading,
-            error: declinedError,
-            data: { findLeaveRecord: declined_record }
-          }: any) => {
-            if (declinedLoading) {
-              return (
-                <div className="text-center" style={{ marginTop: '80px' }}>
-                  <div className="spinner-border text-primary" role="status">
-                    <span className="sr-only">Loading...</span>
-                  </div>
-                </div>
-              );
-            }
-
-            if (declinedError) {
-              console.log(declinedError);
-              return (
-                <div className="text-center">
-                  <p>Something went wrong!</p>
-                </div>
-              );
-            }
-
-            return (
-              <DeclinedLeaveReportList declined_record={declined_record} />
-            );
-          }}
-        </Query>
-      )
+      content: <Declined />
     },
     {
       label: 'Archived',
-      content: (
-        <Query query={ARCHIVED_RECORD} pollInterval={60000}>
-          {({
-            loading: archivedLoading,
-            error: archivedError,
-            data: { findLeaveRecord: archived_record }
-          }: any) => {
-            if (archivedLoading) {
-              return (
-                <div className="text-center" style={{ marginTop: '80px' }}>
-                  <div className="spinner-border text-primary" role="status">
-                    <span className="sr-only">Loading...</span>
-                  </div>
-                </div>
-              );
-            }
-
-            if (archivedError) {
-              console.log(archivedError);
-              return (
-                <div className="text-center">
-                  <p>Something went wrong!</p>
-                </div>
-              );
-            }
-
-            return (
-              <ArchivedLeaveReportList
-                archived_record={archived_record}
-                ARCHIVED_RECORDS={ARCHIVED_RECORD}
-              />
-            );
-          }}
-        </Query>
-      )
+      content: <Archived />
     },
     {
       label: 'User updates',
-      content: (
-        <Query query={USER_UPDATES_RECORD} pollInterval={60000}>
-          {({
-            loading: userLoading,
-            error: userError,
-            data: { findUserUpdates: user_updates }
-          }: any) => {
-            if (userLoading) {
-              return (
-                <div className="text-center" style={{ marginTop: '80px' }}>
-                  <div className="spinner-border text-primary" role="status">
-                    <span className="sr-only">Loading...</span>
-                  </div>
-                </div>
-              );
-            }
-
-            if (userError) {
-              console.log(userError);
-              return (
-                <div className="text-center">
-                  <p>Something went wrong!</p>
-                </div>
-              );
-            }
-
-            return <UserUpdatesReportList user_updates={user_updates} />;
-          }}
-        </Query>
-      )
+      content: <Userupdates />
     },
     {
       label: 'Leave updates',
-      content: (
-        <Query query={LEAVE_UPDATES_RECORD} pollInterval={60000}>
-          {({
-            loading: leaveLoading,
-            error: leaveError,
-            data: { findLeaveUpdates: leave_updates }
-          }: any) => {
-            if (leaveLoading) {
-              return (
-                <div className="text-center" style={{ marginTop: '80px' }}>
-                  <div className="spinner-border text-primary" role="status">
-                    <span className="sr-only">Loading...</span>
-                  </div>
-                </div>
-              );
-            }
-
-            if (leaveError) {
-              console.log(leaveError);
-              return (
-                <div className="text-center">
-                  <p>Something went wrong!</p>
-                </div>
-              );
-            }
-
-            return <LeaveUpdatesReportList leave_updates={leave_updates} />;
-          }}
-        </Query>
-      )
+      content: <Leaveupdates />
     },
     {
       label: 'User record',
-      content: (
-        <Query query={ACTIVE_USERS} pollInterval={60000}>
-          {({
-            loading: activeUsersLoading,
-            error: activeUsersError,
-            data: { findUsers: staff_record }
-          }: any) => {
-            if (activeUsersLoading) {
-              return (
-                <div className="text-center" style={{ marginTop: '80px' }}>
-                  <div className="spinner-border text-primary" role="status">
-                    <span className="sr-only">Loading...</span>
-                  </div>
-                </div>
-              );
-            }
-
-            if (activeUsersError) {
-              console.log(activeUsersError);
-              return (
-                <div className="text-center">
-                  <p>Something went wrong!</p>
-                </div>
-              );
-            }
-
-            return <StaffRecordList staff_record={staff_record} />;
-          }}
-        </Query>
-      )
+      content: <Userrecord />
     }
   ];
 
-  return <Tabs data={tabData} />;
-}
-
-export default function LeaveReport(): JSX.Element {
-  return (
-    <Query query={IS_AUTHENTICATED}>
-      {({ data }: any) => {
-        let adminToken = data.admin_token
-          ? data.admin_token
-          : localStorage.getItem('admin_token');
-
-        return data.isAuthenticated ? (
-          <ApolloConsumer>
-            {client => (
-              <Mutation
-                mutation={VERIFY_ADMIN_TOKEN}
-                variables={{ adminToken: adminToken }}
-                onCompleted={(data: any) => {
-                  if (data.verifyAdminToken) {
-                    TokenSuccess(data, client);
-                  } else {
-                    TokenFailure(client);
-                  }
-                }}
-              >
-                {(verifyAdminToken: any) => {
-                  return (
-                    <LeaveReportList verifyAdminToken={verifyAdminToken} />
-                  );
-                }}
-              </Mutation>
-            )}
-          </ApolloConsumer>
-        ) : (
-          <Redirect to="/login" />
-        );
-      }}
-    </Query>
+  return data.isAuthenticated ? (
+    <Tabs data={tabData} />
+  ) : (
+    <Redirect to="/login" />
   );
 }
