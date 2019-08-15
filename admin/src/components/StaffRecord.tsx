@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react';
 import gql from 'graphql-tag';
-import { Mutation } from 'react-apollo';
+import { useMutation } from '@apollo/react-hooks';
 
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -82,42 +82,32 @@ interface ArchiveProps {
 }
 
 function Archive(props: ArchiveProps): JSX.Element {
+  const [archiveUser, { loading, error, data }] = useMutation(ARCHIVE_USER, {
+    variables: {
+      id: props.id,
+      archiveReason: props.archiveReason
+    },
+    refetchQueries: [{ query: ARCHIVED_USERS }]
+  });
+
+  if (loading) {
+    return <p className="font-italic text-primary mr-3">Loading...</p>;
+  }
+
+  if (error) {
+    return <p className="font-italic text-warning mr-3">Error...</p>;
+  }
+
+  if (data) {
+    return (
+      <p className="font-italic text-success mr-3">User has been archived!</p>
+    );
+  }
+
   return (
-    <Mutation
-      mutation={ARCHIVE_USER}
-      variables={{
-        id: props.id,
-        archiveReason: props.archiveReason
-      }}
-      refetchQueries={[{ query: ARCHIVED_USERS }]}
-    >
-      {(archiveUser: any, { loading, error, data }: any) => {
-        if (loading) {
-          return <p className="font-italic text-primary mr-3">Loading...</p>;
-        }
-
-        if (error) {
-          return <p className="font-italic text-warning mr-3">Error...</p>;
-        }
-
-        if (data) {
-          return (
-            <p className="font-italic text-success mr-3">
-              User has been archived!
-            </p>
-          );
-        }
-
-        return (
-          <button
-            onClick={() => archiveUser()}
-            className="btn btn-primary mr-3"
-          >
-            Confirm
-          </button>
-        );
-      }}
-    </Mutation>
+    <button onClick={() => archiveUser()} className="btn btn-primary mr-3">
+      Confirm
+    </button>
   );
 }
 
