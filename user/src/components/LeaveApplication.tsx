@@ -669,11 +669,7 @@ interface Props {
 }
 
 export default function Application(props: Props): JSX.Element {
-  const {
-    loading,
-    error,
-    data: { user }
-  }: any = useQuery(USER_DETAIL, {
+  const { loading, error, data: userDetailData }: any = useQuery(USER_DETAIL, {
     variables: { id: props.id },
     pollInterval: 60000
   });
@@ -681,7 +677,7 @@ export default function Application(props: Props): JSX.Element {
   const {
     loading: recordLoading,
     error: recordError,
-    data: { user: userRecord },
+    data: userRecordData,
     refetch
   }: any = useQuery(USER_RECORD, {
     variables: { id: props.id },
@@ -691,7 +687,7 @@ export default function Application(props: Props): JSX.Element {
   const {
     loading: holidayLoading,
     error: holidayError,
-    data: { publicHoliday }
+    data: publicHolidayData
   }: any = useQuery(PUBLIC_HOLIDAY);
 
   if (loading || recordLoading || holidayLoading) {
@@ -721,18 +717,18 @@ export default function Application(props: Props): JSX.Element {
     <div className="container">
       <div className="row">
         <div className="col-md-10 ml-auto mr-auto">
-          <UserName user_detail={user} />
+          <UserName user_detail={userDetailData.user} />
         </div>
       </div>
       <div className="row">
         <div className="col-md-4 ml-auto">
-          <UserRecord user_detail={user} />
+          <UserRecord user_detail={userDetailData.user} />
         </div>
         <div className="col-md-6 mr-auto mb-2">
           <LeaveApplication
-            user_detail={user}
-            user_record={userRecord}
-            public_holiday={publicHoliday}
+            user_detail={userDetailData.user}
+            user_record={userRecordData.user}
+            public_holiday={publicHolidayData.publicHoliday}
             refetch={refetch}
           />
         </div>
