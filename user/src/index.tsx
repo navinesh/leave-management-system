@@ -77,20 +77,20 @@ const IS_AUTHENTICATED = gql`
   }
 `;
 
-function PrivateRoute({ component, ...rest }: any): JSX.Element {
+function PrivateRoute({ children, ...rest }: any): JSX.Element {
   const { data } = useQuery(IS_AUTHENTICATED);
 
   return (
     <Route
       {...rest}
-      render={props => {
+      render={({ location }) => {
         return data.isAuthenticated ? (
-          React.createElement(component, props)
+          children
         ) : (
           <Redirect
             to={{
               pathname: '/login',
-              state: { from: props.location }
+              state: { from: location }
             }}
           />
         );
