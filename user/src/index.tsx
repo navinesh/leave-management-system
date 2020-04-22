@@ -42,24 +42,24 @@ const client = new ApolloClient({
       if (networkError) console.log(`[Network error]: ${networkError}`);
     }),
     new HttpLink({
-      uri: 'http://localhost:8080/graphql'
+      uri: 'http://localhost:8080/graphql',
       // headers: {
       //   authorization: localStorage.getItem('auth_token')
       // }
-    })
+    }),
   ]),
   typeDefs,
   defaultOptions: {
     watchQuery: {
-      errorPolicy: 'all'
+      errorPolicy: 'all',
     },
     query: {
-      errorPolicy: 'all'
+      errorPolicy: 'all',
     },
     mutate: {
-      errorPolicy: 'all'
-    }
-  }
+      errorPolicy: 'all',
+    },
+  },
 });
 
 cache.writeData({
@@ -67,8 +67,8 @@ cache.writeData({
     isAuthenticated: !!localStorage.getItem('auth_token'),
     id: localStorage.getItem('id'),
     auth_token: localStorage.getItem('auth_token'),
-    sessionError: ''
-  }
+    sessionError: '',
+  },
 });
 
 const IS_AUTHENTICATED = gql`
@@ -90,7 +90,7 @@ function PrivateRoute({ children, ...rest }: any): JSX.Element {
           <Redirect
             to={{
               pathname: '/login',
-              state: { from: location }
+              state: { from: location },
             }}
           />
         );
