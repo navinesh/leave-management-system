@@ -70,19 +70,17 @@ export default function PendingLeave(): JSX.Element {
     ? data.admin_token
     : localStorage.getItem('admin_token');
 
-  const {
-    loading,
-    error,
-    data: { findLeaveRecord: pending_items },
-    refetch
-  }: any = useQuery(LEAVE_RECORD, {
-    pollInterval: 60000
-  });
+  const { loading, error, data: pendingItemsData, refetch }: any = useQuery(
+    LEAVE_RECORD,
+    {
+      pollInterval: 60000,
+    }
+  );
 
   const {
     loading: holidayLoading,
     error: holidayError,
-    data: { publicHoliday }
+    data: publicHolidayData,
   }: any = useQuery(PUBLIC_HOLIDAY);
 
   const [verifyAdminToken] = useMutation(VERIFY_ADMIN_TOKEN, {
@@ -93,7 +91,7 @@ export default function PendingLeave(): JSX.Element {
       } else {
         TokenFailure(client);
       }
-    }
+    },
   });
 
   useEffect((): void => {
@@ -126,8 +124,8 @@ export default function PendingLeave(): JSX.Element {
   return data.isAuthenticated ? (
     <div className="container">
       <PendingLeaveList
-        pending_items={pending_items}
-        public_holiday={publicHoliday}
+        pending_items={pendingItemsData.findLeaveRecord}
+        public_holiday={publicHolidayData.publicHoliday}
         refetch={refetch}
       />
     </div>
