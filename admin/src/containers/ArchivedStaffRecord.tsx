@@ -54,14 +54,12 @@ export default function ArchivedStaffRecord(): JSX.Element {
     ? data.admin_token
     : localStorage.getItem('admin_token');
 
-  const {
-    loading,
-    error,
-    data: { findUsers: staff_record },
-    refetch
-  }: any = useQuery(ARCHIVED_USERS, {
-    pollInterval: 60000
-  });
+  const { loading, error, data: staffRecordData, refetch }: any = useQuery(
+    ARCHIVED_USERS,
+    {
+      pollInterval: 60000,
+    }
+  );
 
   const [verifyAdminToken] = useMutation(VERIFY_ADMIN_TOKEN, {
     variables: { adminToken: adminToken },
@@ -71,7 +69,7 @@ export default function ArchivedStaffRecord(): JSX.Element {
       } else {
         TokenFailure(client);
       }
-    }
+    },
   });
 
   useEffect((): void => {
@@ -104,7 +102,7 @@ export default function ArchivedStaffRecord(): JSX.Element {
   return data.isAuthenticated ? (
     <div className="container">
       <ArchivedStaffRecordList
-        archived_staff_record={staff_record}
+        archived_staff_record={staffRecordData.findUsers}
         refetch={refetch}
       />
     </div>
