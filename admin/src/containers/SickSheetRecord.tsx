@@ -50,12 +50,8 @@ export default function SickSheetRecord(): JSX.Element {
     ? data.admin_token
     : localStorage.getItem('admin_token');
 
-  const {
-    loading,
-    error,
-    data: { findSicksheetRecord: sickSheet_items }
-  }: any = useQuery(SICK_RECORD, {
-    pollInterval: 60000
+  const { loading, error, data: sickSheetData }: any = useQuery(SICK_RECORD, {
+    pollInterval: 60000,
   });
 
   const [verifyAdminToken] = useMutation(VERIFY_ADMIN_TOKEN, {
@@ -66,7 +62,7 @@ export default function SickSheetRecord(): JSX.Element {
       } else {
         TokenFailure(client);
       }
-    }
+    },
   });
 
   useEffect((): void => {
@@ -98,7 +94,7 @@ export default function SickSheetRecord(): JSX.Element {
 
   return data.isAuthenticated ? (
     <div className="container">
-      <SickSheetList sickSheet_items={sickSheet_items} />
+      <SickSheetList sickSheet_items={sickSheetData.findSicksheetRecord} />
     </div>
   ) : (
     <Redirect to="/login" />
