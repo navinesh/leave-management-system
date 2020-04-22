@@ -13,7 +13,7 @@ import {
   ArchivedLeaveReportList,
   LeaveUpdatesReportList,
   StaffRecordList,
-  UserUpdatesReportList
+  UserUpdatesReportList,
 } from '../components/LeaveReport';
 
 const IS_AUTHENTICATED = gql`
@@ -261,13 +261,12 @@ export function Tabs(props: TabsProps): JSX.Element {
 }
 
 function Pending(): JSX.Element {
-  const {
-    loading: pendingLoading,
-    error: pendingError,
-    data: { findLeaveRecord: pending_record }
-  }: any = useQuery(PENDING_RECORD, {
-    pollInterval: 60000
-  });
+  const { loading: pendingLoading, error: pendingError, data }: any = useQuery(
+    PENDING_RECORD,
+    {
+      pollInterval: 60000,
+    }
+  );
 
   if (pendingLoading) {
     return (
@@ -288,16 +287,16 @@ function Pending(): JSX.Element {
     );
   }
 
-  return <PendingLeaveReportList pending_record={pending_record} />;
+  return <PendingLeaveReportList pending_record={data.findLeaveRecord} />;
 }
 
 function Approved(): JSX.Element {
   const {
     loading: approvedLoading,
     error: approvedError,
-    data: { findLeaveRecord: approved_record }
+    data,
   }: any = useQuery(APPROVED_RECORD, {
-    pollInterval: 60000
+    pollInterval: 60000,
   });
 
   if (approvedLoading) {
@@ -318,17 +317,16 @@ function Approved(): JSX.Element {
       </div>
     );
   }
-
-  return <ApprovedLeaveReportList approved_record={approved_record} />;
+  return <ApprovedLeaveReportList approved_record={data.findLeaveRecord} />;
 }
 
 function Cancelled(): JSX.Element {
   const {
     loading: cancelledLoading,
     error: cancelledError,
-    data: { findLeaveRecord: cancelled_record }
+    data,
   }: any = useQuery(CANCELLED_RECORD, {
-    pollInterval: 60000
+    pollInterval: 60000,
   });
 
   if (cancelledLoading) {
@@ -349,17 +347,16 @@ function Cancelled(): JSX.Element {
       </div>
     );
   }
-
-  return <CancelledLeaveReportList cancelled_record={cancelled_record} />;
+  return <CancelledLeaveReportList cancelled_record={data.findLeaveRecord} />;
 }
 
 function Declined(): JSX.Element {
   const {
     loading: declinedLoading,
     error: declinedError,
-    data: { findLeaveRecord: declined_record }
+    data,
   }: any = useQuery(DECLINED_RECORD, {
-    pollInterval: 60000
+    pollInterval: 60000,
   });
 
   if (declinedLoading) {
@@ -380,17 +377,16 @@ function Declined(): JSX.Element {
       </div>
     );
   }
-
-  return <DeclinedLeaveReportList declined_record={declined_record} />;
+  return <DeclinedLeaveReportList declined_record={data.findLeaveRecord} />;
 }
 
 function Archived(): JSX.Element {
   const {
     loading: archivedLoading,
     error: archivedError,
-    data: { findLeaveRecord: archived_record }
+    data,
   }: any = useQuery(ARCHIVED_RECORD, {
-    pollInterval: 60000
+    pollInterval: 60000,
   });
 
   if (archivedLoading) {
@@ -414,20 +410,19 @@ function Archived(): JSX.Element {
 
   return (
     <ArchivedLeaveReportList
-      archived_record={archived_record}
+      archived_record={data.findLeaveRecord}
       ARCHIVED_RECORDS={ARCHIVED_RECORD}
     />
   );
 }
 
 function Userupdates(): JSX.Element {
-  const {
-    loading: userLoading,
-    error: userError,
-    data: { findUserUpdates: user_updates }
-  }: any = useQuery(USER_UPDATES_RECORD, {
-    pollInterval: 60000
-  });
+  const { loading: userLoading, error: userError, data }: any = useQuery(
+    USER_UPDATES_RECORD,
+    {
+      pollInterval: 60000,
+    }
+  );
 
   if (userLoading) {
     return (
@@ -447,18 +442,16 @@ function Userupdates(): JSX.Element {
       </div>
     );
   }
-
-  return <UserUpdatesReportList user_updates={user_updates} />;
+  return <UserUpdatesReportList user_updates={data.findUserUpdates} />;
 }
 
 function Leaveupdates(): JSX.Element {
-  const {
-    loading: leaveLoading,
-    error: leaveError,
-    data: { findLeaveUpdates: leave_updates }
-  }: any = useQuery(LEAVE_UPDATES_RECORD, {
-    pollInterval: 60000
-  });
+  const { loading: leaveLoading, error: leaveError, data }: any = useQuery(
+    LEAVE_UPDATES_RECORD,
+    {
+      pollInterval: 60000,
+    }
+  );
 
   if (leaveLoading) {
     return (
@@ -478,17 +471,16 @@ function Leaveupdates(): JSX.Element {
       </div>
     );
   }
-
-  return <LeaveUpdatesReportList leave_updates={leave_updates} />;
+  return <LeaveUpdatesReportList leave_updates={data.findLeaveUpdates} />;
 }
 
 function Userrecord(): JSX.Element {
   const {
     loading: activeUsersLoading,
     error: activeUsersError,
-    data: { findUsers: staff_record }
+    data,
   }: any = useQuery(ACTIVE_USERS, {
-    pollInterval: 60000
+    pollInterval: 60000,
   });
 
   if (activeUsersLoading) {
@@ -509,8 +501,7 @@ function Userrecord(): JSX.Element {
       </div>
     );
   }
-
-  return <StaffRecordList staff_record={staff_record} />;
+  return <StaffRecordList staff_record={data.findUsers} />;
 }
 
 export default function LeaveReport(): JSX.Element {
@@ -529,7 +520,7 @@ export default function LeaveReport(): JSX.Element {
       } else {
         TokenFailure(client);
       }
-    }
+    },
   });
 
   useEffect((): void => {
@@ -539,36 +530,36 @@ export default function LeaveReport(): JSX.Element {
   const tabData = [
     {
       label: 'Pending',
-      content: <Pending />
+      content: <Pending />,
     },
     {
       label: 'Approved',
-      content: <Approved />
+      content: <Approved />,
     },
     {
       label: 'Cancelled',
-      content: <Cancelled />
+      content: <Cancelled />,
     },
     {
       label: 'Declined',
-      content: <Declined />
+      content: <Declined />,
     },
     {
       label: 'Archived',
-      content: <Archived />
+      content: <Archived />,
     },
     {
       label: 'User updates',
-      content: <Userupdates />
+      content: <Userupdates />,
     },
     {
       label: 'Leave updates',
-      content: <Leaveupdates />
+      content: <Leaveupdates />,
     },
     {
       label: 'User record',
-      content: <Userrecord />
-    }
+      content: <Userrecord />,
+    },
   ];
 
   return data.isAuthenticated ? (
