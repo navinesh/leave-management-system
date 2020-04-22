@@ -73,19 +73,17 @@ export default function ApprovedLeave(): JSX.Element {
     ? data.admin_token
     : localStorage.getItem('admin_token');
 
-  const {
-    loading,
-    error,
-    data: { findLeaveRecord: approved_items },
-    refetch
-  }: any = useQuery(APPROVED_RECORD, {
-    pollInterval: 60000
-  });
+  const { loading, error, data: approvedItemsData, refetch }: any = useQuery(
+    APPROVED_RECORD,
+    {
+      pollInterval: 60000,
+    }
+  );
 
   const {
     loading: holidayLoading,
     error: holidayError,
-    data: { publicHoliday }
+    data: publicHolidayData,
   }: any = useQuery(PUBLIC_HOLIDAY);
 
   const [verifyAdminToken] = useMutation(VERIFY_ADMIN_TOKEN, {
@@ -96,7 +94,7 @@ export default function ApprovedLeave(): JSX.Element {
       } else {
         TokenFailure(client);
       }
-    }
+    },
   });
 
   useEffect((): void => {
@@ -129,8 +127,8 @@ export default function ApprovedLeave(): JSX.Element {
   return data.isAuthenticated ? (
     <div className="container">
       <ApprovedLeaveList
-        approved_items={approved_items}
-        public_holiday={publicHoliday}
+        approved_items={approvedItemsData.findLeaveRecord}
+        public_holiday={publicHolidayData.publicHoliday}
         refetch={refetch}
         APPROVED_RECORD={APPROVED_RECORD}
       />
