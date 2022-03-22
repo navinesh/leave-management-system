@@ -34,7 +34,8 @@ CREATE TABLE "user"
     date_of_birth date,
     employee_number numeric,
     is_archived boolean,
-    archive_reason text
+    archive_reason text,
+    employee_start_date date
 );
 
 ALTER TABLE public."user" OWNER TO lms;
@@ -67,6 +68,7 @@ CREATE TABLE userupdates
     designation text,
     gender text,
     employee_number numeric,
+    employee_start_date date,
     edit_reason text,
     date_posted character varying,
     reviewed_by character varying,
