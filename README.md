@@ -1,12 +1,7 @@
 # Leave management system
 
 ### Admin and User versions
-#### v3 (master) - developed in TypeScript, React Hooks and React Apollo as state container
-
-##
-#### v2.5 (***not maintained***) - developed using React Hooks
-
-#### v2 (***not maintained***) - developed using Redux as state container
+Developed in TypeScript, React Hooks and React Apollo as state container
 ##
 
 There are two web apps; user and admin. User app is for the employees to login and check their leave balance and apply for leave. Admin app is for HR. HR can approve/decline leave, manage employee record, create/archive/unarchive staff record.
